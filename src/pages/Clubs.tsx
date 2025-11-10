@@ -8,6 +8,7 @@ import { Search, Filter } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ClubCard from "@/components/ClubCard";
+import SEOHead from "@/components/SEOHead";
 
 const Clubs = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -66,6 +67,12 @@ const Clubs = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <SEOHead
+        title="Cannabis Clubs Directory Madrid | Verified Social Clubs"
+        description="Browse verified cannabis social clubs in Madrid. Filter by district, tourist-friendly options, and ratings. Independent reviews and detailed information."
+        canonical="https://lovable.dev/clubs"
+        keywords="cannabis clubs madrid, weed clubs madrid directory, verified cannabis clubs, madrid districts cannabis"
+      />
       <Header />
       
       <main className="flex-1">

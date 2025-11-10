@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import SEOHead from "@/components/SEOHead";
 import { HelpCircle } from "lucide-react";
 
 const FAQ = () => {
@@ -48,6 +49,12 @@ const FAQ = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <SEOHead
+        title="Cannabis Clubs FAQ | Everything About Madrid Cannabis Social Clubs"
+        description="Frequently asked questions about cannabis social clubs in Madrid. Learn about legality, membership, tourist access, and responsible use."
+        canonical="https://lovable.dev/faq"
+        keywords="cannabis club faq, madrid cannabis questions, join cannabis club, cannabis legal spain"
+      />
       <Header />
       
       <main className="flex-1">

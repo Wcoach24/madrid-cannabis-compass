@@ -8,6 +8,8 @@ import { Search, BookOpen, Scale, Heart, MapPin, ChevronRight } from "lucide-rea
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ClubCard from "@/components/ClubCard";
+import heroImage from "@/assets/hero-main.jpg";
+import SEOHead from "@/components/SEOHead";
 
 const Index = () => {
   const [featuredClubs, setFeaturedClubs] = useState<any[]>([]);
@@ -39,12 +41,32 @@ const Index = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <SEOHead
+        title="Madrid Cannabis Clubs Guide | Independent Cultural & Legal Information"
+        description="Comprehensive guide to cannabis social clubs in Madrid. Independent reviews, legal information, and cultural insights about private cannabis associations in Spain."
+        canonical="https://lovable.dev/"
+        keywords="cannabis club madrid, weed club madrid, cannabis social club, madrid cannabis, join cannabis club madrid, best cannabis clubs madrid"
+        structuredData={{
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "name": "Madrid Cannabis Clubs Guide",
+          "description": "Independent cultural and legal guide to cannabis social clubs in Madrid",
+          "url": "https://lovable.dev"
+        }}
+      />
       <Header />
       
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="relative py-24 md:py-32 bg-gradient-to-br from-primary via-forest-light to-primary overflow-hidden">
-          <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDE2YzAtMS4xLjktMiAyLTJzMiAuOSAyIDItLjkgMi0yIDItMi0uOS0yLTJ6bS04IDBjMC0xLjEuOS0yIDItMnMyIC45IDIgMi0uOSAyLTIgMi0yLS45LTItMnoiLz48L2c+PC9nPjwvc3ZnPg==')] opacity-20"></div>
+        <section className="relative py-24 md:py-32 overflow-hidden">
+          <div className="absolute inset-0">
+            <img 
+              src={heroImage} 
+              alt="Cannabis social club interior" 
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/95 via-forest-light/90 to-primary/95"></div>
+          </div>
           
           <div className="container mx-auto px-4 relative z-10">
             <div className="max-w-3xl mx-auto text-center text-primary-foreground">
