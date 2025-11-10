@@ -14,7 +14,263 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      articles: {
+        Row: {
+          author_bio: string | null
+          author_name: string
+          body_markdown: string
+          canonical_url: string | null
+          category: string
+          cover_image_url: string | null
+          created_at: string
+          excerpt: string | null
+          id: number
+          is_featured: boolean | null
+          language: string
+          published_at: string | null
+          seo_description: string | null
+          seo_title: string | null
+          slug: string
+          status: string
+          subtitle: string | null
+          tags: string[] | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          author_bio?: string | null
+          author_name: string
+          body_markdown: string
+          canonical_url?: string | null
+          category: string
+          cover_image_url?: string | null
+          created_at?: string
+          excerpt?: string | null
+          id?: number
+          is_featured?: boolean | null
+          language: string
+          published_at?: string | null
+          seo_description?: string | null
+          seo_title?: string | null
+          slug: string
+          status?: string
+          subtitle?: string | null
+          tags?: string[] | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          author_bio?: string | null
+          author_name?: string
+          body_markdown?: string
+          canonical_url?: string | null
+          category?: string
+          cover_image_url?: string | null
+          created_at?: string
+          excerpt?: string | null
+          id?: number
+          is_featured?: boolean | null
+          language?: string
+          published_at?: string | null
+          seo_description?: string | null
+          seo_title?: string | null
+          slug?: string
+          status?: string
+          subtitle?: string | null
+          tags?: string[] | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      clubs: {
+        Row: {
+          address: string
+          city: string
+          country: string
+          created_at: string
+          description: string
+          district: string
+          email: string | null
+          gallery_image_urls: string[] | null
+          id: number
+          instagram_url: string | null
+          is_featured: boolean | null
+          is_tourist_friendly: boolean | null
+          is_verified: boolean | null
+          languages: string[] | null
+          latitude: number | null
+          longitude: number | null
+          main_image_url: string | null
+          name: string
+          postal_code: string | null
+          rating_ambience: number | null
+          rating_editorial: number | null
+          rating_location: number | null
+          rating_safety: number | null
+          seo_description: string | null
+          seo_title: string | null
+          short_name: string | null
+          slug: string
+          status: string
+          summary: string | null
+          updated_at: string
+          website_url: string | null
+          whatsapp_number: string | null
+        }
+        Insert: {
+          address: string
+          city?: string
+          country?: string
+          created_at?: string
+          description: string
+          district: string
+          email?: string | null
+          gallery_image_urls?: string[] | null
+          id?: number
+          instagram_url?: string | null
+          is_featured?: boolean | null
+          is_tourist_friendly?: boolean | null
+          is_verified?: boolean | null
+          languages?: string[] | null
+          latitude?: number | null
+          longitude?: number | null
+          main_image_url?: string | null
+          name: string
+          postal_code?: string | null
+          rating_ambience?: number | null
+          rating_editorial?: number | null
+          rating_location?: number | null
+          rating_safety?: number | null
+          seo_description?: string | null
+          seo_title?: string | null
+          short_name?: string | null
+          slug: string
+          status?: string
+          summary?: string | null
+          updated_at?: string
+          website_url?: string | null
+          whatsapp_number?: string | null
+        }
+        Update: {
+          address?: string
+          city?: string
+          country?: string
+          created_at?: string
+          description?: string
+          district?: string
+          email?: string | null
+          gallery_image_urls?: string[] | null
+          id?: number
+          instagram_url?: string | null
+          is_featured?: boolean | null
+          is_tourist_friendly?: boolean | null
+          is_verified?: boolean | null
+          languages?: string[] | null
+          latitude?: number | null
+          longitude?: number | null
+          main_image_url?: string | null
+          name?: string
+          postal_code?: string | null
+          rating_ambience?: number | null
+          rating_editorial?: number | null
+          rating_location?: number | null
+          rating_safety?: number | null
+          seo_description?: string | null
+          seo_title?: string | null
+          short_name?: string | null
+          slug?: string
+          status?: string
+          summary?: string | null
+          updated_at?: string
+          website_url?: string | null
+          whatsapp_number?: string | null
+        }
+        Relationships: []
+      }
+      faq: {
+        Row: {
+          answer_markdown: string
+          category: string | null
+          created_at: string
+          id: number
+          language: string
+          priority: number | null
+          question: string
+          slug: string
+          updated_at: string
+        }
+        Insert: {
+          answer_markdown: string
+          category?: string | null
+          created_at?: string
+          id?: number
+          language: string
+          priority?: number | null
+          question: string
+          slug: string
+          updated_at?: string
+        }
+        Update: {
+          answer_markdown?: string
+          category?: string | null
+          created_at?: string
+          id?: number
+          language?: string
+          priority?: number | null
+          question?: string
+          slug?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      submissions: {
+        Row: {
+          club_id: number | null
+          club_name: string | null
+          created_at: string
+          email: string
+          id: number
+          message: string
+          name: string
+          status: string
+          type: string
+          updated_at: string
+        }
+        Insert: {
+          club_id?: number | null
+          club_name?: string | null
+          created_at?: string
+          email: string
+          id?: number
+          message: string
+          name: string
+          status?: string
+          type: string
+          updated_at?: string
+        }
+        Update: {
+          club_id?: number | null
+          club_name?: string | null
+          created_at?: string
+          email?: string
+          id?: number
+          message?: string
+          name?: string
+          status?: string
+          type?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "submissions_club_id_fkey"
+            columns: ["club_id"]
+            isOneToOne: false
+            referencedRelation: "clubs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
