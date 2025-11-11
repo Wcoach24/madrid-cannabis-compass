@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import SEOHead from "@/components/SEOHead";
 import { BookOpen, Calendar, User } from "lucide-react";
 
 const Guides = () => {
@@ -32,6 +33,12 @@ const Guides = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <SEOHead
+        title="Cannabis Culture Guides | Madrid Cannabis Clubs"
+        description="In-depth articles and guides about cannabis social clubs in Madrid, Spanish cannabis law, membership requirements, and responsible use."
+        canonical="https://lovable.dev/guides"
+        keywords="cannabis guides madrid, cannabis social club guide, cannabis law spain, how to join cannabis club, cannabis tourism madrid"
+      />
       <Header />
       
       <main className="flex-1">

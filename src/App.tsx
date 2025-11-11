@@ -11,6 +11,7 @@ import Guides from "./pages/Guides";
 import GuideDetail from "./pages/GuideDetail";
 import Contact from "./pages/Contact";
 import SeedData from "./pages/SeedData";
+import GenerateArticles from "./pages/GenerateArticles";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -30,6 +31,7 @@ const App = () => (
           <Route path="/guide/:slug" element={<GuideDetail />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/seed-data" element={<SeedData />} />
+          <Route path="/generate-articles" element={<GenerateArticles />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

@@ -51,7 +51,12 @@ const Index = () => {
           "@type": "WebSite",
           "name": "Madrid Cannabis Clubs Guide",
           "description": "Independent cultural and legal guide to cannabis social clubs in Madrid",
-          "url": "https://lovable.dev"
+          "url": "https://lovable.dev",
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://lovable.dev/clubs?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+          }
         }}
       />
       <Header />
