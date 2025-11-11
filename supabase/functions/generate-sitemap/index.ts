@@ -15,7 +15,7 @@ Deno.serve(async (req) => {
     const supabaseKey = Deno.env.get('SUPABASE_PUBLISHABLE_KEY')!;
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    const baseUrl = 'https://lovable.dev'; // Update with actual domain
+    const baseUrl = 'https://lovable.dev'; // TODO: Update with actual production domain
 
     // Fetch all active clubs
     const { data: clubs } = await supabase
@@ -29,7 +29,7 @@ Deno.serve(async (req) => {
       .select('slug, updated_at, language')
       .eq('status', 'published');
 
-    // Build sitemap XML
+    // Build sitemap XML with comprehensive page coverage
     let sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
@@ -37,26 +37,31 @@ Deno.serve(async (req) => {
     <loc>${baseUrl}/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+    <lastmod>${new Date().toISOString()}</lastmod>
   </url>
   <url>
     <loc>${baseUrl}/clubs</loc>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>${baseUrl}/faq</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <lastmod>${new Date().toISOString()}</lastmod>
   </url>
   <url>
     <loc>${baseUrl}/guides</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
+    <lastmod>${new Date().toISOString()}</lastmod>
+  </url>
+  <url>
+    <loc>${baseUrl}/faq</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <lastmod>${new Date().toISOString()}</lastmod>
   </url>
   <url>
     <loc>${baseUrl}/contact</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
+    <lastmod>${new Date().toISOString()}</lastmod>
   </url>
 `;
 

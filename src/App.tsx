@@ -8,6 +8,7 @@ import Clubs from "./pages/Clubs";
 import ClubDetail from "./pages/ClubDetail";
 import FAQ from "./pages/FAQ";
 import Guides from "./pages/Guides";
+import GuideDetail from "./pages/GuideDetail";
 import Contact from "./pages/Contact";
 import SeedData from "./pages/SeedData";
 import NotFound from "./pages/NotFound";
@@ -26,6 +27,7 @@ const App = () => (
           <Route path="/club/:slug" element={<ClubDetail />} />
           <Route path="/faq" element={<FAQ />} />
           <Route path="/guides" element={<Guides />} />
+          <Route path="/guide/:slug" element={<GuideDetail />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/seed-data" element={<SeedData />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

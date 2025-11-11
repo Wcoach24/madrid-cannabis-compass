@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import NavLink from "./NavLink";
 
 const Header = () => {
   const navigation = [
@@ -24,14 +25,10 @@ const Header = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-6">
-            {navigation.map((item) => (
-              <Link
-                key={item.name}
-                to={item.href}
-                className="text-sm font-medium text-foreground/80 transition-colors hover:text-foreground"
-              >
+            {navigation.slice(1).map((item) => (
+              <NavLink key={item.name} to={item.href}>
                 {item.name}
-              </Link>
+              </NavLink>
             ))}
           </nav>
 
