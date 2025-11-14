@@ -75,6 +75,9 @@ export const translations: Record<Language, Record<string, string>> = {
     "club.whatsapp": "WhatsApp",
     "club.disclaimer.title": "About Cannabis Social Clubs",
     "club.disclaimer.text": "Cannabis social clubs operate as private, non-profit associations in Spain. They exist in a legal gray area - not explicitly legal but tolerated when following strict guidelines. Membership is restricted to adults 18+ who are invited by existing members. Public consumption remains illegal throughout Spain.",
+    "club.cta.title": "Request an Invitation",
+    "club.cta.description": "Interested in visiting this club? Request an invitation to become a member.",
+    "club.cta.button": "Request Invitation",
     "club.related.title": "Related Clubs in",
     
     // Guides page
@@ -279,6 +282,9 @@ export const translations: Record<Language, Record<string, string>> = {
     "club.whatsapp": "WhatsApp",
     "club.disclaimer.title": "Sobre Asociaciones Cannábicas",
     "club.disclaimer.text": "Las asociaciones cannábicas operan como asociaciones privadas sin ánimo de lucro en España. Existen en un área legal gris - no explícitamente legales pero toleradas cuando siguen directrices estrictas. La membresía está restringida a adultos +18 que son invitados por socios existentes. El consumo público sigue siendo ilegal en toda España.",
+    "club.cta.title": "Solicitar una Invitación",
+    "club.cta.description": "¿Interesado en visitar este club? Solicita una invitación para convertirte en socio.",
+    "club.cta.button": "Solicitar Invitación",
     "club.related.title": "Clubes Relacionados en",
     
     // Guides page
