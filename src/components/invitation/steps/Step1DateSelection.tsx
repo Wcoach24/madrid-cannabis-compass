@@ -41,19 +41,19 @@ export function Step1DateSelection({ selectedDate, onDateChange, onNext, clubNam
   suggestedDate.setDate(suggestedDate.getDate() + 3);
 
   return (
-    <div className="space-y-8 animate-fade-in">
+    <div className="space-y-6 md:space-y-8 animate-fade-in">
       <div className="text-center space-y-2">
-        <h2 className="text-3xl font-bold">{t("headline")}</h2>
-        <p className="text-muted-foreground">{t("subheadline")}</p>
+        <h2 className="text-2xl md:text-3xl font-bold leading-tight px-2">{t("headline")}</h2>
+        <p className="text-sm md:text-base text-muted-foreground px-2">{t("subheadline")}</p>
       </div>
 
-      <div className="max-w-md mx-auto">
+      <div className="max-w-md mx-auto px-2">
         <Popover>
           <PopoverTrigger asChild>
             <Button
               variant="outline"
               className={cn(
-                "w-full h-16 text-lg justify-start text-left font-normal",
+                "w-full h-14 md:h-16 text-base md:text-lg justify-start text-left font-normal",
                 !selectedDate && "text-muted-foreground"
               )}
             >
@@ -78,12 +78,12 @@ export function Step1DateSelection({ selectedDate, onDateChange, onNext, clubNam
         </p>
       </div>
 
-      <div className="flex justify-center pt-8">
+      <div className="flex justify-center pt-6 md:pt-8 px-2">
         <Button
           onClick={onNext}
           disabled={!selectedDate}
           size="lg"
-          className="min-w-[200px] h-12 text-base"
+          className="w-full md:w-auto md:min-w-[200px] h-12 text-base"
         >
           {t("nextButton")}
           <ChevronRight className="ml-2 h-5 w-5" />

@@ -147,18 +147,20 @@ export function InvitationWizard({ clubName, clubSlug, language }: InvitationWiz
   }
 
   return (
-    <div className="min-h-screen py-8">
-      <div className="container mx-auto px-4">
-        <Card className="max-w-3xl mx-auto">
-          <CardContent className="p-6 md:p-8">
-            <StepIndicator
-              currentStep={currentStep}
-              totalSteps={totalSteps}
-              completedSteps={completedSteps}
-              onStepClick={handleStepClick}
-            />
+    <div className="min-h-screen py-4 md:py-8">
+      <div className="container mx-auto px-3 md:px-4">
+        <Card className="max-w-3xl mx-auto overflow-hidden">
+          <CardContent className="p-4 md:p-6 lg:p-8">
+            <div className="focus:outline-none">
+              <StepIndicator
+                currentStep={currentStep}
+                totalSteps={totalSteps}
+                completedSteps={completedSteps}
+                onStepClick={handleStepClick}
+              />
+            </div>
 
-            <div className="mt-8">
+            <div className="mt-6 md:mt-8">
               {currentStep === 1 && (
                 <Step1DateSelection
                   selectedDate={formData.visitDate}
