@@ -20,6 +20,8 @@ import {
 } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import SEOHead from "@/components/SEOHead";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 
 const ClubDetail = () => {
   const { slug } = useParams();
@@ -46,35 +48,6 @@ const ClubDetail = () => {
     if (data) {
       setClub(data);
       fetchRelatedClubs(data.district, data.id);
-      
-      // Add schema.org JSON-LD
-      const script = document.createElement('script');
-      script.type = 'application/ld+json';
-      script.text = JSON.stringify({
-        "@context": "https://schema.org",
-        "@type": "LocalBusiness",
-        "name": data.name,
-        "description": data.description,
-        "url": window.location.href,
-        "address": {
-          "@type": "PostalAddress",
-          "streetAddress": data.address,
-          "addressLocality": data.city,
-          "postalCode": data.postal_code,
-          "addressCountry": data.country
-        },
-        ...(data.latitude && data.longitude ? {
-          "geo": {
-            "@type": "GeoCoordinates",
-            "latitude": data.latitude,
-            "longitude": data.longitude
-          }
-        } : {}),
-        ...(data.instagram_url || data.website_url ? {
-          "sameAs": [data.website_url, data.instagram_url].filter(Boolean)
-        } : {})
-      });
-      document.head.appendChild(script);
     }
     
     setLoading(false);
@@ -123,8 +96,69 @@ const ClubDetail = () => {
     );
   }
 
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://lovable.dev/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Clubs",
+        "item": "https://lovable.dev/clubs"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": club.name,
+        "item": `https://lovable.dev/club/${club.slug}`
+      }
+    ]
+  };
+
+  const localBusinessSchema = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": club.name,
+    "description": club.description,
+    "url": `https://lovable.dev/club/${club.slug}`,
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": club.address,
+      "addressLocality": club.city,
+      "postalCode": club.postal_code,
+      "addressCountry": club.country
+    },
+    ...(club.latitude && club.longitude ? {
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": club.latitude,
+        "longitude": club.longitude
+      }
+    } : {}),
+    ...(club.instagram_url || club.website_url ? {
+      "sameAs": [club.website_url, club.instagram_url].filter(Boolean)
+    } : {}),
+    ...(club.main_image_url ? {
+      "image": club.main_image_url
+    } : {})
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
+      <SEOHead
+        title={club.seo_title || `${club.name} - Madrid Cannabis Club`}
+        description={club.seo_description || club.summary || club.description.substring(0, 160)}
+        canonical={`https://lovable.dev/club/${club.slug}`}
+        ogImage={club.main_image_url}
+        keywords={`${club.name}, cannabis club Madrid, ${club.district}, cannabis social club, ${club.languages?.join(', ')}`}
+        structuredData={[breadcrumbSchema, localBusinessSchema]}
+      />
       <Header />
       
       <main className="flex-1">
@@ -133,14 +167,35 @@ const ClubDetail = () => {
           <div className="w-full h-64 md:h-96 overflow-hidden bg-muted">
             <img
               src={club.main_image_url}
-              alt={club.name}
+              alt={`${club.name} - Cannabis Social Club in ${club.district}, Madrid`}
               className="w-full h-full object-cover"
+              loading="lazy"
             />
           </div>
         )}
 
-        {/* Back Button */}
+        {/* Back Button and Breadcrumbs */}
         <div className="container mx-auto px-4 py-4">
+          <Breadcrumb className="mb-4">
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink asChild>
+                  <Link to="/">Home</Link>
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbLink asChild>
+                  <Link to="/clubs">Clubs</Link>
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbPage>{club.name}</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+          
           <Button variant="ghost" asChild>
             <Link to="/clubs">
               <ArrowLeft className="w-4 h-4 mr-2" />
