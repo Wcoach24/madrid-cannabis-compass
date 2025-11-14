@@ -7,11 +7,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { Mail, Send } from "lucide-react";
+import SEOHead from "@/components/SEOHead";
+import { Mail } from "lucide-react";
+import { useLanguage } from "@/hooks/useLanguage";
+import { buildLanguageAwarePath } from "@/lib/languageUtils";
+import { generateHreflangLinks, BASE_URL } from "@/lib/hreflangUtils";
 
 const contactSchema = z.object({
   type: z.string().min(1, "Please select a submission type"),
@@ -24,6 +28,7 @@ const contactSchema = z.object({
 type ContactFormData = z.infer<typeof contactSchema>;
 
 const Contact = () => {
+  const { language, t } = useLanguage();
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
 
@@ -56,15 +61,13 @@ const Contact = () => {
       if (error) throw error;
 
       toast({
-        title: "Message Sent Successfully",
-        description: "We'll review your submission and get back to you soon.",
+        title: t("contact.success"),
       });
 
       form.reset();
     } catch (error: any) {
       toast({
-        title: "Error",
-        description: "Failed to send message. Please try again.",
+        title: t("contact.error"),
         variant: "destructive",
       });
     } finally {
@@ -72,8 +75,18 @@ const Contact = () => {
     }
   };
 
+  const hreflangLinks = generateHreflangLinks(BASE_URL, "/contact");
+
   return (
     <div className="min-h-screen flex flex-col">
+      <SEOHead
+        title={t("contact.title") + " | Madrid Cannabis Clubs"}
+        description={t("contact.subtitle")}
+        canonical={`${BASE_URL}${buildLanguageAwarePath("/contact", language)}`}
+        hreflangLinks={hreflangLinks}
+        ogLocale={language === "es" ? "es_ES" : "en_US"}
+        ogLocaleAlternate={language === "es" ? ["en_US"] : ["es_ES"]}
+      />
       <Header />
       
       <main className="flex-1">
@@ -82,10 +95,10 @@ const Contact = () => {
             <div className="max-w-3xl mx-auto text-center text-primary-foreground">
               <Mail className="w-16 h-16 mx-auto mb-6" />
               <h1 className="text-4xl md:text-5xl font-bold mb-4">
-                Contact Us
+                {t("contact.title")}
               </h1>
               <p className="text-xl text-primary-foreground/90">
-                Questions, club submissions, or feedback - we'd love to hear from you
+                {t("contact.subtitle")}
               </p>
             </div>
           </div>
@@ -102,17 +115,17 @@ const Contact = () => {
                       name="type"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Submission Type</FormLabel>
+                          <FormLabel>{t("contact.form.type")}</FormLabel>
                           <Select onValueChange={field.onChange} defaultValue={field.value}>
                             <FormControl>
                               <SelectTrigger>
-                                <SelectValue placeholder="Select a type" />
+                                <SelectValue placeholder={t("contact.form.type")} />
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              <SelectItem value="new_club">Add New Club</SelectItem>
-                              <SelectItem value="update_club">Update Existing Club</SelectItem>
-                              <SelectItem value="general">General Inquiry</SelectItem>
+                              <SelectItem value="general">{t("contact.type.general")}</SelectItem>
+                              <SelectItem value="club_submission">{t("contact.type.club")}</SelectItem>
+                              <SelectItem value="partnership">{t("contact.type.partnership")}</SelectItem>
                             </SelectContent>
                           </Select>
                           <FormMessage />
@@ -125,9 +138,9 @@ const Contact = () => {
                       name="name"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Your Name</FormLabel>
+                          <FormLabel>{t("contact.form.name")}</FormLabel>
                           <FormControl>
-                            <Input placeholder="John Doe" {...field} />
+                            <Input placeholder={t("contact.form.name")} {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -139,9 +152,9 @@ const Contact = () => {
                       name="email"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Email Address</FormLabel>
+                          <FormLabel>{t("contact.form.email")}</FormLabel>
                           <FormControl>
-                            <Input type="email" placeholder="john@example.com" {...field} />
+                            <Input type="email" placeholder={t("contact.form.email")} {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -153,13 +166,10 @@ const Contact = () => {
                       name="club_name"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Club Name (if applicable)</FormLabel>
+                          <FormLabel>{t("contact.form.club")}</FormLabel>
                           <FormControl>
-                            <Input placeholder="My Cannabis Club" {...field} />
+                            <Input placeholder={t("contact.form.club")} {...field} />
                           </FormControl>
-                          <FormDescription>
-                            Optional - only if you're submitting information about a specific club
-                          </FormDescription>
                           <FormMessage />
                         </FormItem>
                       )}
@@ -170,44 +180,24 @@ const Contact = () => {
                       name="message"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Message</FormLabel>
+                          <FormLabel>{t("contact.form.message")}</FormLabel>
                           <FormControl>
                             <Textarea 
-                              placeholder="Tell us about your club, question, or feedback..."
-                              className="min-h-32"
+                              placeholder={t("contact.form.message")}
+                              className="min-h-[150px]"
                               {...field}
                             />
                           </FormControl>
-                          <FormDescription>
-                            Minimum 10 characters, maximum 2000 characters
-                          </FormDescription>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
 
-                    <Button type="submit" className="w-full" size="lg" disabled={loading}>
-                      {loading ? (
-                        <>Sending...</>
-                      ) : (
-                        <>
-                          <Send className="w-4 h-4 mr-2" />
-                          Send Message
-                        </>
-                      )}
+                    <Button type="submit" className="w-full" disabled={loading}>
+                      {loading ? t("contact.form.sending") : t("contact.form.send")}
                     </Button>
                   </form>
                 </Form>
-              </div>
-
-              <div className="mt-8 bg-muted/50 rounded-lg p-6">
-                <h2 className="text-lg font-semibold mb-3">Before You Submit</h2>
-                <ul className="text-sm text-muted-foreground space-y-2">
-                  <li>• We review all club submissions for accuracy and legitimacy</li>
-                  <li>• Listings must be for genuine private cannabis social clubs in Madrid</li>
-                  <li>• We do not promote illegal activity or commercial operations</li>
-                  <li>• Response time is typically 2-5 business days</li>
-                </ul>
               </div>
             </div>
           </div>
