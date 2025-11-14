@@ -8,3 +8,6 @@ verify_jwt = false
 
 [functions.generate-guide-content]
 verify_jwt = false
+
+[functions.submit-invitation-request]
+verify_jwt = false
