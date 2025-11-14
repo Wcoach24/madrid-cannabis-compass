@@ -73,6 +73,31 @@ const GuideDetail = () => {
     );
   }
 
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://lovable.dev/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Guides",
+        "item": "https://lovable.dev/guides"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": article.title,
+        "item": `https://lovable.dev/guide/${article.slug}`
+      }
+    ]
+  };
+
   const blogPostingSchema = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
@@ -109,7 +134,7 @@ const GuideDetail = () => {
         description={article.seo_description || article.excerpt}
         canonical={article.canonical_url}
         ogImage={article.cover_image_url}
-        structuredData={blogPostingSchema}
+        structuredData={[breadcrumbSchema, blogPostingSchema]}
       />
       <Header />
       

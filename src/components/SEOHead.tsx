@@ -6,7 +6,7 @@ interface SEOHeadProps {
   canonical?: string;
   ogImage?: string;
   keywords?: string;
-  structuredData?: object;
+  structuredData?: object | object[];
 }
 
 const SEOHead = ({ 
@@ -54,15 +54,20 @@ const SEOHead = ({
       linkElement.setAttribute('href', canonical);
     }
 
-    // Add structured data
+    // Add structured data (support both single object and array of objects)
     if (structuredData) {
-      let scriptElement = document.querySelector('script[type="application/ld+json"]');
-      if (!scriptElement) {
-        scriptElement = document.createElement('script');
+      // Remove existing structured data scripts
+      const existingScripts = document.querySelectorAll('script[type="application/ld+json"]');
+      existingScripts.forEach(script => script.remove());
+
+      // Add new structured data
+      const dataArray = Array.isArray(structuredData) ? structuredData : [structuredData];
+      dataArray.forEach((data) => {
+        const scriptElement = document.createElement('script');
         scriptElement.setAttribute('type', 'application/ld+json');
+        scriptElement.textContent = JSON.stringify(data);
         document.head.appendChild(scriptElement);
-      }
-      scriptElement.textContent = JSON.stringify(structuredData);
+      });
     }
   }, [title, description, canonical, ogImage, keywords, structuredData]);
 
