@@ -1,0 +1,181 @@
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { ChevronLeft, ChevronRight, Plus, Minus, User } from "lucide-react";
+import { useState } from "react";
+
+interface Step2VisitorInfoProps {
+  visitorCount: number;
+  visitorNames: string[];
+  notes: string;
+  onVisitorCountChange: (count: number) => void;
+  onVisitorNameChange: (index: number, name: string) => void;
+  onNotesChange: (notes: string) => void;
+  onNext: () => void;
+  onBack: () => void;
+  language: string;
+}
+
+export function Step2VisitorInfo({
+  visitorCount,
+  visitorNames,
+  notes,
+  onVisitorCountChange,
+  onVisitorNameChange,
+  onNotesChange,
+  onNext,
+  onBack,
+  language
+}: Step2VisitorInfoProps) {
+  const [showNotes, setShowNotes] = useState(notes.length > 0);
+
+  const t = (key: string) => {
+    const translations: Record<string, Record<string, string>> = {
+      en: {
+        headline: "Great! Who will be joining?",
+        subheadline: "Tell us about your group",
+        visitorCountLabel: "Number of visitors",
+        yourName: "Your name",
+        guestName: "Guest",
+        addMessage: "+ Add a message (optional)",
+        notesPlaceholder: "Any dietary restrictions, special requests, or questions?",
+        notesLabel: "Additional notes",
+        nextButton: "Next",
+        backButton: "Back",
+        justMe: "Just me",
+        people: "people"
+      },
+      es: {
+        headline: "¡Genial! ¿Quién vendrá?",
+        subheadline: "Cuéntanos sobre tu grupo",
+        visitorCountLabel: "Número de visitantes",
+        yourName: "Tu nombre",
+        guestName: "Invitado",
+        addMessage: "+ Añadir mensaje (opcional)",
+        notesPlaceholder: "¿Alguna restricción alimentaria, solicitud especial o pregunta?",
+        notesLabel: "Notas adicionales",
+        nextButton: "Siguiente",
+        backButton: "Atrás",
+        justMe: "Solo yo",
+        people: "personas"
+      }
+    };
+    return translations[language]?.[key] || translations.en[key];
+  };
+
+  const handleCountChange = (delta: number) => {
+    const newCount = Math.max(1, Math.min(10, visitorCount + delta));
+    onVisitorCountChange(newCount);
+  };
+
+  const isValid = visitorNames.slice(0, visitorCount).every(name => name.trim().length > 0);
+
+  return (
+    <div className="space-y-8 animate-fade-in">
+      <div className="text-center space-y-2">
+        <h2 className="text-3xl font-bold">{t("headline")}</h2>
+        <p className="text-muted-foreground">{t("subheadline")}</p>
+      </div>
+
+      <div className="max-w-md mx-auto space-y-6">
+        {/* Visitor Count Selector */}
+        <div className="space-y-3">
+          <Label className="text-base">{t("visitorCountLabel")}</Label>
+          <div className="flex items-center justify-center gap-4">
+            <Button
+              type="button"
+              variant="outline"
+              size="icon"
+              className="h-12 w-12"
+              onClick={() => handleCountChange(-1)}
+              disabled={visitorCount <= 1}
+            >
+              <Minus className="h-5 w-5" />
+            </Button>
+            <div className="text-center min-w-[120px]">
+              <div className="text-4xl font-bold">{visitorCount}</div>
+              <div className="text-sm text-muted-foreground">
+                {visitorCount === 1 ? t("justMe") : t("people")}
+              </div>
+            </div>
+            <Button
+              type="button"
+              variant="outline"
+              size="icon"
+              className="h-12 w-12"
+              onClick={() => handleCountChange(1)}
+              disabled={visitorCount >= 10}
+            >
+              <Plus className="h-5 w-5" />
+            </Button>
+          </div>
+        </div>
+
+        {/* Visitor Names */}
+        <div className="space-y-4">
+          {Array.from({ length: visitorCount }, (_, i) => (
+            <div key={i} className="space-y-2 animate-scale-in">
+              <Label htmlFor={`visitor-${i}`} className="text-sm font-medium">
+                {i === 0 ? t("yourName") : `${t("guestName")} ${i + 1}`}
+              </Label>
+              <div className="relative">
+                <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input
+                  id={`visitor-${i}`}
+                  value={visitorNames[i] || ""}
+                  onChange={(e) => onVisitorNameChange(i, e.target.value)}
+                  placeholder={i === 0 ? t("yourName") : `${t("guestName")} ${i + 1}`}
+                  className="pl-10"
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Optional Notes */}
+        {!showNotes ? (
+          <button
+            type="button"
+            onClick={() => setShowNotes(true)}
+            className="text-sm text-primary hover:underline"
+          >
+            {t("addMessage")}
+          </button>
+        ) : (
+          <div className="space-y-2 animate-scale-in">
+            <Label htmlFor="notes">{t("notesLabel")}</Label>
+            <Textarea
+              id="notes"
+              value={notes}
+              onChange={(e) => onNotesChange(e.target.value)}
+              placeholder={t("notesPlaceholder")}
+              className="min-h-[100px]"
+            />
+          </div>
+        )}
+      </div>
+
+      <div className="flex justify-between pt-8">
+        <Button
+          onClick={onBack}
+          variant="outline"
+          size="lg"
+          className="min-w-[120px]"
+        >
+          <ChevronLeft className="mr-2 h-5 w-5" />
+          {t("backButton")}
+        </Button>
+        <Button
+          onClick={onNext}
+          disabled={!isValid}
+          size="lg"
+          className="min-w-[120px]"
+        >
+          {t("nextButton")}
+          <ChevronRight className="ml-2 h-5 w-5" />
+        </Button>
+      </div>
+    </div>
+  );
+}
