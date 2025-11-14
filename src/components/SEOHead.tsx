@@ -1,5 +1,10 @@
 import { useEffect } from "react";
 
+export interface HreflangLink {
+  lang: string;
+  href: string;
+}
+
 interface SEOHeadProps {
   title: string;
   description: string;
@@ -7,6 +12,9 @@ interface SEOHeadProps {
   ogImage?: string;
   keywords?: string;
   structuredData?: object | object[];
+  hreflangLinks?: HreflangLink[];
+  ogLocale?: string;
+  ogLocaleAlternate?: string[];
 }
 
 const SEOHead = ({ 
@@ -15,7 +23,10 @@ const SEOHead = ({
   canonical, 
   ogImage,
   keywords,
-  structuredData 
+  structuredData,
+  hreflangLinks,
+  ogLocale = "en_US",
+  ogLocaleAlternate = []
 }: SEOHeadProps) => {
   useEffect(() => {
     // Update title
@@ -37,7 +48,21 @@ const SEOHead = ({
     updateMetaTag('og:title', title, 'property');
     updateMetaTag('og:description', description, 'property');
     updateMetaTag('og:type', 'website', 'property');
+    updateMetaTag('og:locale', ogLocale, 'property');
     if (ogImage) updateMetaTag('og:image', ogImage, 'property');
+    
+    // Add og:locale:alternate for other languages
+    ogLocaleAlternate.forEach((locale, index) => {
+      const existingAlternates = document.querySelectorAll('meta[property="og:locale:alternate"]');
+      let element = existingAlternates[index] as HTMLMetaElement;
+      if (!element) {
+        element = document.createElement('meta');
+        element.setAttribute('property', 'og:locale:alternate');
+        document.head.appendChild(element);
+      }
+      element.setAttribute('content', locale);
+    });
+    
     updateMetaTag('twitter:card', 'summary_large_image');
     updateMetaTag('twitter:title', title);
     updateMetaTag('twitter:description', description);
@@ -52,6 +77,22 @@ const SEOHead = ({
         document.head.appendChild(linkElement);
       }
       linkElement.setAttribute('href', canonical);
+    }
+
+    // Update hreflang links
+    if (hreflangLinks && hreflangLinks.length > 0) {
+      // Remove existing hreflang links
+      const existingHreflangs = document.querySelectorAll('link[rel="alternate"][hreflang]');
+      existingHreflangs.forEach(link => link.remove());
+
+      // Add new hreflang links
+      hreflangLinks.forEach(({ lang, href }) => {
+        const linkElement = document.createElement('link');
+        linkElement.setAttribute('rel', 'alternate');
+        linkElement.setAttribute('hreflang', lang);
+        linkElement.setAttribute('href', href);
+        document.head.appendChild(linkElement);
+      });
     }
 
     // Add structured data (support both single object and array of objects)
@@ -69,7 +110,7 @@ const SEOHead = ({
         document.head.appendChild(scriptElement);
       });
     }
-  }, [title, description, canonical, ogImage, keywords, structuredData]);
+  }, [title, description, canonical, ogImage, keywords, structuredData, hreflangLinks, ogLocale, ogLocaleAlternate]);
 
   return null;
 };
