@@ -15,6 +15,7 @@ import Contact from "./pages/Contact";
 import InvitationForm from "./pages/InvitationForm";
 import SeedData from "./pages/SeedData";
 import GenerateArticles from "./pages/GenerateArticles";
+import Auth from "./pages/Auth";
 import AdminInvitations from "./pages/AdminInvitations";
 import NotFound from "./pages/NotFound";
 
@@ -40,6 +41,7 @@ const App = () => (
             <Route path="/contact" element={<Contact />} />
             <Route path="/seed-data" element={<SeedData />} />
             <Route path="/generate-articles" element={<GenerateArticles />} />
+            <Route path="/auth" element={<Auth />} />
             <Route path="/admin/invitations" element={<AdminInvitations />} />
             
             {/* Language-prefixed routes */}
@@ -51,6 +53,7 @@ const App = () => (
             <Route path="/:lang/guides" element={<Guides />} />
             <Route path="/:lang/guide/:slug" element={<GuideDetail />} />
             <Route path="/:lang/contact" element={<Contact />} />
+            <Route path="/:lang/auth" element={<Auth />} />
             <Route path="/:lang/admin/invitations" element={<AdminInvitations />} />
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

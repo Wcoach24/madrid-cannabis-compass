@@ -96,6 +96,25 @@ export const translations: Record<Language, Record<string, string>> = {
     "guide.cta.desc": "Browse our comprehensive directory of verified cannabis clubs in Madrid",
     "guide.cta.button": "Browse Cannabis Clubs",
     
+    // Auth page
+    "auth.title": "Admin Login",
+    "auth.subtitle": "Sign in to access the admin dashboard",
+    "auth.email": "Email",
+    "auth.email.placeholder": "admin@example.com",
+    "auth.password": "Password",
+    "auth.password.placeholder": "Enter your password",
+    "auth.login": "Sign In",
+    "auth.signup": "Sign Up",
+    "auth.signup.title": "Create Admin Account",
+    "auth.signup.subtitle": "Register a new admin account",
+    "auth.toggle.signup": "Need an account? Sign up",
+    "auth.toggle.login": "Already have an account? Sign in",
+    "auth.error.invalid": "Invalid email or password",
+    "auth.error.exists": "An account with this email already exists",
+    "auth.error.generic": "An error occurred. Please try again.",
+    "auth.success.signup": "Account created! Please check your email to verify.",
+    "auth.success.login": "Successfully logged in!",
+    
     // FAQ page
     "faq.title": "Frequently Asked Questions",
     "faq.subtitle": "Common questions about cannabis clubs, membership, and legality in Madrid",
@@ -302,6 +321,25 @@ export const translations: Record<Language, Record<string, string>> = {
     "guide.cta.title": "¿Listo para Explorar?",
     "guide.cta.desc": "Explora nuestro directorio completo de clubes de cannabis verificados en Madrid",
     "guide.cta.button": "Explorar Clubes de Cannabis",
+    
+    // Auth page
+    "auth.title": "Inicio de Sesión Administrador",
+    "auth.subtitle": "Inicia sesión para acceder al panel de administración",
+    "auth.email": "Correo Electrónico",
+    "auth.email.placeholder": "admin@ejemplo.com",
+    "auth.password": "Contraseña",
+    "auth.password.placeholder": "Introduce tu contraseña",
+    "auth.login": "Iniciar Sesión",
+    "auth.signup": "Registrarse",
+    "auth.signup.title": "Crear Cuenta de Administrador",
+    "auth.signup.subtitle": "Registrar una nueva cuenta de administrador",
+    "auth.toggle.signup": "¿Necesitas una cuenta? Regístrate",
+    "auth.toggle.login": "¿Ya tienes una cuenta? Inicia sesión",
+    "auth.error.invalid": "Email o contraseña inválidos",
+    "auth.error.exists": "Ya existe una cuenta con este correo electrónico",
+    "auth.error.generic": "Ocurrió un error. Por favor, intenta de nuevo.",
+    "auth.success.signup": "¡Cuenta creada! Por favor revisa tu correo para verificar.",
+    "auth.success.login": "¡Sesión iniciada exitosamente!",
     
     // FAQ page
     "faq.title": "Preguntas Frecuentes",
