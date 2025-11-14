@@ -224,6 +224,27 @@ const ClubDetail = () => {
 
         <section className="py-12">
           <div className="container mx-auto px-4">
+            {/* Mobile CTA - Appears first on mobile only */}
+            <Card className="lg:hidden mb-8 bg-gradient-to-br from-primary/10 via-primary/5 to-background border-primary/20 shadow-lg">
+              <CardContent className="p-8 space-y-4">
+                <div>
+                  <h3 className="text-2xl font-bold mb-2">{t("club.cta.title")}</h3>
+                  <p className="text-sm text-muted-foreground mb-2">
+                    {t("club.cta.description")}
+                  </p>
+                  <p className="text-xs font-medium text-primary">
+                    {t("club.cta.urgency")}
+                  </p>
+                </div>
+                <Button asChild className="w-full h-12 text-base shadow-md hover:shadow-lg transition-shadow">
+                  <Link to={buildLanguageAwarePath(`/invite/${club.slug}`, language)}>
+                    <UserPlus className="w-5 h-5 mr-2" />
+                    {t("club.cta.button")}
+                  </Link>
+                </Button>
+              </CardContent>
+            </Card>
+
             <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
               <div className="lg:col-span-3 space-y-8">
                 <div>
@@ -273,8 +294,8 @@ const ClubDetail = () => {
               </div>
 
               <div className="lg:col-span-2 space-y-6 lg:sticky lg:top-24 self-start">
-                {/* Enhanced CTA Card - Top Priority */}
-                <Card className="bg-gradient-to-br from-primary/10 via-primary/5 to-background border-primary/20 shadow-lg">
+                {/* Enhanced CTA Card - Desktop only (hidden on mobile) */}
+                <Card className="hidden lg:block bg-gradient-to-br from-primary/10 via-primary/5 to-background border-primary/20 shadow-lg">
                   <CardContent className="p-8 space-y-4">
                     <div>
                       <h3 className="text-2xl font-bold mb-2">{t("club.cta.title")}</h3>
