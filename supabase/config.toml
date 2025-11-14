@@ -11,3 +11,9 @@ verify_jwt = false
 
 [functions.submit-invitation-request]
 verify_jwt = false
+
+[functions.approve-invitation]
+verify_jwt = true
+
+[functions.reject-invitation]
+verify_jwt = true
