@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { MapPin, Star, Languages, Globe, Instagram, Mail, Phone, ChevronLeft, Building, Clock } from "lucide-react";
+import { MapPin, Star, Languages, Globe, Instagram, Mail, Phone, ChevronLeft, Building, Clock, UserPlus } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ClubCard from "@/components/ClubCard";
@@ -224,32 +224,138 @@ const ClubDetail = () => {
 
         <section className="py-12">
           <div className="container mx-auto px-4">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              <div className="lg:col-span-2 space-y-8">
+            <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+              <div className="lg:col-span-3 space-y-8">
                 <div>
-                  <h2 className="text-2xl font-bold mb-4">About</h2>
+                  <h2 className="text-2xl font-bold mb-4">{t("club.about.title")}</h2>
                   <p className="text-muted-foreground leading-relaxed whitespace-pre-line">
                     {club.description}
                   </p>
                 </div>
+
+                {/* What to Expect Section */}
+                <div>
+                  <h2 className="text-2xl font-bold mb-4">{t("club.expect.title")}</h2>
+                  <ul className="space-y-3 text-muted-foreground">
+                    <li className="flex items-start gap-2">
+                      <span className="text-primary mt-1">•</span>
+                      <span>{t("club.expect.atmosphere")}</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-primary mt-1">•</span>
+                      <span>{t("club.expect.community")}</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-primary mt-1">•</span>
+                      <span>{t("club.expect.products")}</span>
+                    </li>
+                  </ul>
+                </div>
+
+                {/* Membership Requirements */}
+                <div>
+                  <h2 className="text-2xl font-bold mb-4">{t("club.requirements.title")}</h2>
+                  <ul className="space-y-3 text-muted-foreground">
+                    <li className="flex items-start gap-2">
+                      <span className="text-primary mt-1">•</span>
+                      <span>{t("club.requirements.age")}</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-primary mt-1">•</span>
+                      <span>{t("club.requirements.invitation")}</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-primary mt-1">•</span>
+                      <span>{t("club.requirements.documentation")}</span>
+                    </li>
+                  </ul>
+                </div>
               </div>
 
-              <div className="space-y-6">
-                <Card className="bg-gradient-to-br from-primary/10 via-primary/5 to-background border-primary/20">
-                  <CardContent className="p-6 space-y-4">
+              <div className="lg:col-span-2 space-y-6 lg:sticky lg:top-24 self-start">
+                {/* Enhanced CTA Card - Top Priority */}
+                <Card className="bg-gradient-to-br from-primary/10 via-primary/5 to-background border-primary/20 shadow-lg">
+                  <CardContent className="p-8 space-y-4">
                     <div>
-                      <h3 className="text-xl font-bold mb-2">{t("club.cta.title")}</h3>
-                      <p className="text-sm text-muted-foreground">
+                      <h3 className="text-2xl font-bold mb-2">{t("club.cta.title")}</h3>
+                      <p className="text-sm text-muted-foreground mb-2">
                         {t("club.cta.description")}
                       </p>
+                      <p className="text-xs font-medium text-primary">
+                        {t("club.cta.urgency")}
+                      </p>
                     </div>
-                    <Button asChild className="w-full">
+                    <Button asChild className="w-full h-12 text-base shadow-md hover:shadow-lg transition-shadow">
                       <Link to={buildLanguageAwarePath(`/invite/${club.slug}`, language)}>
+                        <UserPlus className="w-5 h-5 mr-2" />
                         {t("club.cta.button")}
                       </Link>
                     </Button>
                   </CardContent>
                 </Card>
+
+                {/* Opening Hours Card - High Priority */}
+                {club.timetable && (
+                  <Card>
+                    <CardContent className="p-6">
+                      <div className="flex items-center gap-2 mb-4">
+                        <Clock className="h-5 w-5 text-primary" />
+                        <h3 className="font-semibold">{t("club.hours.title")}</h3>
+                      </div>
+                      
+                      {/* Open Now Badge */}
+                      <div className="mb-4">
+                        {isOpenNow(club.timetable as Timetable) ? (
+                          <Badge className="bg-green-500/10 text-green-700 dark:text-green-400 border-green-500/20">
+                            {t("club.hours.open_now")}
+                          </Badge>
+                        ) : (
+                          <Badge variant="secondary">
+                            {t("club.hours.closed_now")}
+                          </Badge>
+                        )}
+                      </div>
+
+                      {/* Daily Schedule */}
+                      <div className="space-y-2">
+                        {getDaysInOrder().map((day) => {
+                          const timetable = club.timetable as Timetable;
+                          const schedule = timetable[day as keyof Omit<Timetable, 'notes'>];
+                          const isToday = getCurrentDay() === day;
+                          
+                          return (
+                            <div
+                              key={day}
+                              className={`flex justify-between py-2 px-3 rounded-lg ${
+                                isToday ? 'bg-accent/50 font-medium' : ''
+                              }`}
+                            >
+                              <span className="capitalize">
+                                {t(`club.hours.${day}`)}
+                              </span>
+                              {schedule?.closed ? (
+                                <span className="text-muted-foreground">{t("club.hours.closed")}</span>
+                              ) : schedule ? (
+                                <span>
+                                  {formatTime(schedule.open)} - {formatTime(schedule.close)}
+                                </span>
+                              ) : (
+                                <span className="text-muted-foreground">-</span>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
+
+                      {/* Notes */}
+                      {club.timetable.notes && (club.timetable.notes as any)[language] && (
+                        <div className="mt-4 pt-4 border-t text-sm text-muted-foreground">
+                          {(club.timetable.notes as any)[language]}
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                )}
                 
                 <Card>
                   <CardContent className="p-6 space-y-4">
@@ -330,69 +436,6 @@ const ClubDetail = () => {
                           </a>
                         )}
                       </div>
-                    </CardContent>
-                  </Card>
-                )}
-
-                {/* Opening Hours Card */}
-                {club.timetable && (
-                  <Card>
-                    <CardContent className="p-6">
-                      <div className="flex items-center gap-2 mb-4">
-                        <Clock className="h-5 w-5 text-primary" />
-                        <h3 className="font-semibold">{t("club.hours.title")}</h3>
-                      </div>
-                      
-                      {/* Open Now Badge */}
-                      <div className="mb-4">
-                        {isOpenNow(club.timetable as Timetable) ? (
-                          <Badge className="bg-green-500/10 text-green-700 dark:text-green-400 border-green-500/20">
-                            {t("club.hours.open_now")}
-                          </Badge>
-                        ) : (
-                          <Badge variant="secondary">
-                            {t("club.hours.closed_now")}
-                          </Badge>
-                        )}
-                      </div>
-
-                      {/* Daily Schedule */}
-                      <div className="space-y-2">
-                        {getDaysInOrder().map((day) => {
-                          const timetable = club.timetable as Timetable;
-                          const schedule = timetable[day as keyof Omit<Timetable, 'notes'>];
-                          const isToday = getCurrentDay() === day;
-                          
-                          return (
-                            <div
-                              key={day}
-                              className={`flex justify-between py-2 px-3 rounded-lg ${
-                                isToday ? 'bg-accent/50 font-medium' : ''
-                              }`}
-                            >
-                              <span className="capitalize">
-                                {t(`club.hours.${day}`)}
-                              </span>
-                              {schedule?.closed ? (
-                                <span className="text-muted-foreground">{t("club.hours.closed")}</span>
-                              ) : schedule ? (
-                                <span>
-                                  {formatTime(schedule.open)} - {formatTime(schedule.close)}
-                                </span>
-                              ) : (
-                                <span className="text-muted-foreground">-</span>
-                              )}
-                            </div>
-                          );
-                        })}
-                      </div>
-
-                      {/* Notes */}
-                      {club.timetable.notes && (club.timetable.notes as any)[language] && (
-                        <div className="mt-4 pt-4 border-t text-sm text-muted-foreground">
-                          {(club.timetable.notes as any)[language]}
-                        </div>
-                      )}
                     </CardContent>
                   </Card>
                 )}
