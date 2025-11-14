@@ -1,24 +1,31 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Button } from "@/components/ui/button";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SEOHead from "@/components/SEOHead";
 import { HelpCircle } from "lucide-react";
+import { useLanguage } from "@/hooks/useLanguage";
+import { buildLanguageAwarePath } from "@/lib/languageUtils";
+import { generateHreflangLinks, BASE_URL } from "@/lib/hreflangUtils";
+import ReactMarkdown from "react-markdown";
 
 const FAQ = () => {
+  const { language, t } = useLanguage();
   const [faqs, setFaqs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchFAQs();
-  }, []);
+  }, [language]);
 
   const fetchFAQs = async () => {
     const { data, error } = await supabase
       .from("faq")
       .select("*")
-      .eq("language", "en")
+      .eq("language", language)
       .order("priority", { ascending: true });
 
     if (data) {
@@ -47,13 +54,18 @@ const FAQ = () => {
     setLoading(false);
   };
 
+  const hreflangLinks = generateHreflangLinks(BASE_URL, "/faq");
+
   return (
     <div className="min-h-screen flex flex-col">
       <SEOHead
-        title="Cannabis Clubs FAQ | Everything About Madrid Cannabis Social Clubs"
-        description="Frequently asked questions about cannabis social clubs in Madrid. Learn about legality, membership, tourist access, and responsible use."
-        canonical="https://lovable.dev/faq"
+        title={t("faq.title") + " | Madrid Cannabis Clubs"}
+        description={t("faq.subtitle")}
+        canonical={`${BASE_URL}${buildLanguageAwarePath("/faq", language)}`}
         keywords="cannabis club faq, madrid cannabis questions, join cannabis club, cannabis legal spain"
+        hreflangLinks={hreflangLinks}
+        ogLocale={language === "es" ? "es_ES" : "en_US"}
+        ogLocaleAlternate={language === "es" ? ["en_US"] : ["es_ES"]}
       />
       <Header />
       
@@ -64,10 +76,10 @@ const FAQ = () => {
             <div className="max-w-3xl mx-auto text-center text-primary-foreground">
               <HelpCircle className="w-16 h-16 mx-auto mb-6" />
               <h1 className="text-4xl md:text-5xl font-bold mb-4">
-                Frequently Asked Questions
+                {t("faq.title")}
               </h1>
               <p className="text-xl text-primary-foreground/90">
-                Everything you need to know about cannabis social clubs in Madrid
+                {t("faq.subtitle")}
               </p>
             </div>
           </div>
@@ -79,11 +91,11 @@ const FAQ = () => {
             <div className="max-w-3xl mx-auto">
               {loading ? (
                 <div className="text-center py-12">
-                  <p className="text-muted-foreground">Loading FAQ...</p>
+                  <p className="text-muted-foreground">{t("faq.loading")}</p>
                 </div>
               ) : faqs.length === 0 ? (
                 <div className="text-center py-12">
-                  <p className="text-muted-foreground">No FAQ entries found.</p>
+                  <p className="text-muted-foreground">{t("faq.nofound")}</p>
                 </div>
               ) : (
                 <Accordion type="single" collapsible className="space-y-4">
