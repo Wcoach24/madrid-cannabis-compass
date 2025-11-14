@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { MapPin, Star, Languages, Globe, Instagram, Mail, Phone, ChevronLeft, Building } from "lucide-react";
+import { MapPin, Star, Languages, Globe, Instagram, Mail, Phone, ChevronLeft, Building, Clock } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ClubCard from "@/components/ClubCard";
@@ -13,6 +13,7 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbP
 import { useLanguage } from "@/hooks/useLanguage";
 import { buildLanguageAwarePath, removeLanguageFromPath } from "@/lib/languageUtils";
 import { generateHreflangLinks, BASE_URL } from "@/lib/hreflangUtils";
+import { Timetable, isOpenNow, getDaysInOrder, getCurrentDay, formatTime } from "@/lib/timetableUtils";
 
 const ClubDetail = () => {
   const { slug } = useParams();
@@ -329,6 +330,69 @@ const ClubDetail = () => {
                           </a>
                         )}
                       </div>
+                    </CardContent>
+                  </Card>
+                )}
+
+                {/* Opening Hours Card */}
+                {club.timetable && (
+                  <Card>
+                    <CardContent className="p-6">
+                      <div className="flex items-center gap-2 mb-4">
+                        <Clock className="h-5 w-5 text-primary" />
+                        <h3 className="font-semibold">{t("club.hours.title")}</h3>
+                      </div>
+                      
+                      {/* Open Now Badge */}
+                      <div className="mb-4">
+                        {isOpenNow(club.timetable as Timetable) ? (
+                          <Badge className="bg-green-500/10 text-green-700 dark:text-green-400 border-green-500/20">
+                            {t("club.hours.open_now")}
+                          </Badge>
+                        ) : (
+                          <Badge variant="secondary">
+                            {t("club.hours.closed_now")}
+                          </Badge>
+                        )}
+                      </div>
+
+                      {/* Daily Schedule */}
+                      <div className="space-y-2">
+                        {getDaysInOrder().map((day) => {
+                          const timetable = club.timetable as Timetable;
+                          const schedule = timetable[day as keyof Omit<Timetable, 'notes'>];
+                          const isToday = getCurrentDay() === day;
+                          
+                          return (
+                            <div
+                              key={day}
+                              className={`flex justify-between py-2 px-3 rounded-lg ${
+                                isToday ? 'bg-accent/50 font-medium' : ''
+                              }`}
+                            >
+                              <span className="capitalize">
+                                {t(`club.hours.${day}`)}
+                              </span>
+                              {schedule?.closed ? (
+                                <span className="text-muted-foreground">{t("club.hours.closed")}</span>
+                              ) : schedule ? (
+                                <span>
+                                  {formatTime(schedule.open)} - {formatTime(schedule.close)}
+                                </span>
+                              ) : (
+                                <span className="text-muted-foreground">-</span>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
+
+                      {/* Notes */}
+                      {club.timetable.notes && (club.timetable.notes as any)[language] && (
+                        <div className="mt-4 pt-4 border-t text-sm text-muted-foreground">
+                          {(club.timetable.notes as any)[language]}
+                        </div>
+                      )}
                     </CardContent>
                   </Card>
                 )}
