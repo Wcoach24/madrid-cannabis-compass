@@ -3,6 +3,8 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { LanguageProvider } from "@/contexts/LanguageContext";
+import LanguageSuggestion from "@/components/LanguageSuggestion";
 import Index from "./pages/Index";
 import Clubs from "./pages/Clubs";
 import ClubDetail from "./pages/ClubDetail";
@@ -22,19 +24,33 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/clubs" element={<Clubs />} />
-          <Route path="/club/:slug" element={<ClubDetail />} />
-          <Route path="/faq" element={<FAQ />} />
-          <Route path="/guides" element={<Guides />} />
-          <Route path="/guide/:slug" element={<GuideDetail />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/seed-data" element={<SeedData />} />
-          <Route path="/generate-articles" element={<GenerateArticles />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <LanguageProvider>
+          <LanguageSuggestion />
+          <Routes>
+            {/* Default English routes */}
+            <Route path="/" element={<Index />} />
+            <Route path="/clubs" element={<Clubs />} />
+            <Route path="/club/:slug" element={<ClubDetail />} />
+            <Route path="/faq" element={<FAQ />} />
+            <Route path="/guides" element={<Guides />} />
+            <Route path="/guide/:slug" element={<GuideDetail />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/seed-data" element={<SeedData />} />
+            <Route path="/generate-articles" element={<GenerateArticles />} />
+            
+            {/* Language-prefixed routes */}
+            <Route path="/:lang" element={<Index />} />
+            <Route path="/:lang/clubs" element={<Clubs />} />
+            <Route path="/:lang/club/:slug" element={<ClubDetail />} />
+            <Route path="/:lang/faq" element={<FAQ />} />
+            <Route path="/:lang/guides" element={<Guides />} />
+            <Route path="/:lang/guide/:slug" element={<GuideDetail />} />
+            <Route path="/:lang/contact" element={<Contact />} />
+            
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </LanguageProvider>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

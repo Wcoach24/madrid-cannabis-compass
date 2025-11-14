@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { MapPin, Star, Languages } from "lucide-react";
+import { useLanguage } from "@/hooks/useLanguage";
+import { buildLanguageAwarePath } from "@/lib/languageUtils";
 
 interface ClubCardProps {
   slug: string;
@@ -26,8 +28,10 @@ const ClubCard = ({
   languages,
   main_image_url,
 }: ClubCardProps) => {
+  const { language, t } = useLanguage();
+  
   return (
-    <Link to={`/club/${slug}`}>
+    <Link to={buildLanguageAwarePath(`/club/${slug}`, language)}>
       <Card className="h-full overflow-hidden transition-all hover:shadow-lg hover:-translate-y-1 duration-300 bg-gradient-to-b from-card to-muted/20">
         {main_image_url && (
           <div className="aspect-video w-full overflow-hidden bg-muted">
@@ -45,7 +49,7 @@ const ClubCard = ({
             </h3>
             {is_verified && (
               <Badge variant="secondary" className="ml-2 shrink-0">
-                Verified
+                {t("clubcard.verified")}
               </Badge>
             )}
           </div>
@@ -72,7 +76,7 @@ const ClubCard = ({
           <div className="flex flex-wrap gap-2">
             {is_tourist_friendly && (
               <Badge variant="outline" className="text-xs">
-                Tourist Friendly
+                {t("clubcard.touristfriendly")}
               </Badge>
             )}
             {languages && languages.length > 0 && (
