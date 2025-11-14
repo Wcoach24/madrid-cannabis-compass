@@ -12,6 +12,7 @@ import FAQ from "./pages/FAQ";
 import Guides from "./pages/Guides";
 import GuideDetail from "./pages/GuideDetail";
 import Contact from "./pages/Contact";
+import InvitationForm from "./pages/InvitationForm";
 import SeedData from "./pages/SeedData";
 import GenerateArticles from "./pages/GenerateArticles";
 import NotFound from "./pages/NotFound";
@@ -31,6 +32,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/clubs" element={<Clubs />} />
             <Route path="/club/:slug" element={<ClubDetail />} />
+            <Route path="/invite/:slug" element={<InvitationForm />} />
             <Route path="/faq" element={<FAQ />} />
             <Route path="/guides" element={<Guides />} />
             <Route path="/guide/:slug" element={<GuideDetail />} />
@@ -42,6 +44,7 @@ const App = () => (
             <Route path="/:lang" element={<Index />} />
             <Route path="/:lang/clubs" element={<Clubs />} />
             <Route path="/:lang/club/:slug" element={<ClubDetail />} />
+            <Route path="/:lang/invite/:slug" element={<InvitationForm />} />
             <Route path="/:lang/faq" element={<FAQ />} />
             <Route path="/:lang/guides" element={<Guides />} />
             <Route path="/:lang/guide/:slug" element={<GuideDetail />} />

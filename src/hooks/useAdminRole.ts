@@ -17,7 +17,8 @@ export const useAdminRole = () => {
 
       try {
         // Call the security definer function to check if user has admin role
-        const { data, error } = await supabase.rpc('has_role', {
+        // @ts-ignore - RPC types not yet regenerated after migration
+        const { data, error } = await (supabase as any).rpc('has_role', {
           _user_id: user.id,
           _role: 'admin'
         });
