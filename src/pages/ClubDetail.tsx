@@ -234,6 +234,22 @@ const ClubDetail = () => {
               </div>
 
               <div className="space-y-6">
+                <Card className="bg-gradient-to-br from-primary/10 via-primary/5 to-background border-primary/20">
+                  <CardContent className="p-6 space-y-4">
+                    <div>
+                      <h3 className="text-xl font-bold mb-2">{t("club.cta.title")}</h3>
+                      <p className="text-sm text-muted-foreground">
+                        {t("club.cta.description")}
+                      </p>
+                    </div>
+                    <Button asChild className="w-full">
+                      <Link to={buildLanguageAwarePath(`/invite/${club.slug}`, language)}>
+                        {t("club.cta.button")}
+                      </Link>
+                    </Button>
+                  </CardContent>
+                </Card>
+                
                 <Card>
                   <CardContent className="p-6 space-y-4">
                     <div className="flex items-start gap-3">
