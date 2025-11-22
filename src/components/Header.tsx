@@ -6,6 +6,7 @@ import NavLink from "./NavLink";
 import LanguageSelect from "./LanguageSelect";
 import { useLanguage } from "@/hooks/useLanguage";
 import { buildLanguageAwarePath } from "@/lib/languageUtils";
+import logoWeedMadrid from "@/assets/logo-weed-madrid.png";
 
 const Header = () => {
   const { language, t } = useLanguage();
@@ -23,8 +24,13 @@ const Header = () => {
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
           <Link to={buildLanguageAwarePath("/", language)} className="flex items-center space-x-2">
-            <span className="text-2xl font-bold bg-gradient-to-r from-primary to-forest-light bg-clip-text text-transparent">
-              Madrid Cannabis Clubs
+            <img 
+              src={logoWeedMadrid} 
+              alt="Weed Madrid" 
+              className="h-10 w-10 md:h-12 md:w-12 object-contain"
+            />
+            <span className="text-xl md:text-2xl font-bold bg-gradient-to-r from-primary to-forest-light bg-clip-text text-transparent">
+              Weed Madrid
             </span>
           </Link>
 
