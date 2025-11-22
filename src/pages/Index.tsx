@@ -380,7 +380,7 @@ const Index = () => {
                         variant="gold" 
                         className="w-full text-base md:text-lg py-5 md:py-6 shadow-gold md:group-hover:shadow-gold-intense transition-all"
                       >
-                        <Link to={buildLanguageAwarePath(`/clubs/${club.slug}`, language)}>
+                        <Link to={buildLanguageAwarePath(`/invite/${club.slug}`, language)}>
                           Get Invitation
                         </Link>
                       </Button>
