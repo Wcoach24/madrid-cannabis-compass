@@ -273,9 +273,11 @@ export type Database = {
           club_slug: string
           created_at: string | null
           email: string
+          email_sent_at: string | null
           expires_at: string | null
           gdpr_consent: boolean
           id: number
+          invitation_code: string | null
           ip_address: unknown
           language: string
           legal_age_confirmed: boolean
@@ -295,9 +297,11 @@ export type Database = {
           club_slug: string
           created_at?: string | null
           email: string
+          email_sent_at?: string | null
           expires_at?: string | null
           gdpr_consent: boolean
           id?: number
+          invitation_code?: string | null
           ip_address?: unknown
           language?: string
           legal_age_confirmed: boolean
@@ -317,9 +321,11 @@ export type Database = {
           club_slug?: string
           created_at?: string | null
           email?: string
+          email_sent_at?: string | null
           expires_at?: string | null
           gdpr_consent?: boolean
           id?: number
+          invitation_code?: string | null
           ip_address?: unknown
           language?: string
           legal_age_confirmed?: boolean
