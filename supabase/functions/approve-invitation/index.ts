@@ -191,7 +191,7 @@ Deno.serve(async (req) => {
             admin_id: user.id,
             admin_email: user.email,
             action: "email_failed",
-            ip_address: req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip'),
+            ip_address: (req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || '').split(',')[0].trim(),
             metadata: { error: emailError.message },
           });
       } else {
@@ -210,7 +210,7 @@ Deno.serve(async (req) => {
         admin_id: user.id,
         admin_email: user.email,
         action: 'approved',
-        ip_address: req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip'),
+        ip_address: (req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || '').split(',')[0].trim(),
         metadata: {
           invitation_code: invitationCode,
           club_slug: request.club_slug,

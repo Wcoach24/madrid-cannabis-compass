@@ -99,11 +99,7 @@ export const InvitationEmail = ({
         <Hr style={hr} />
 
         <Text style={footer}>
-          Questions? Visit{' '}
-          <Link href="https://www.weedmadrid.com" target="_blank" style={link}>
-            weedmadrid.com
-          </Link>
-          {' '}or reply to this email.
+          Questions? Visit <Link href="https://www.weedmadrid.com" target="_blank" style={link}>weedmadrid.com</Link> or reply to this email.
         </Text>
 
         <Text style={footerBrand}>
