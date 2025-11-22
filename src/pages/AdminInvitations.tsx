@@ -39,6 +39,8 @@ type InvitationRequest = {
   status: string;
   created_at: string;
   notes?: string;
+  invitation_code?: string;
+  email_sent_at?: string;
 };
 
 const AdminInvitations = () => {
@@ -218,6 +220,7 @@ const AdminInvitations = () => {
                   <TableHead>{t("admin.invitations.table.visitors")}</TableHead>
                   <TableHead>{t("admin.invitations.table.visitDate")}</TableHead>
                   <TableHead>{t("admin.invitations.table.status")}</TableHead>
+                  <TableHead>Code</TableHead>
                   <TableHead>{t("admin.invitations.table.created")}</TableHead>
                   <TableHead>{t("admin.invitations.table.actions")}</TableHead>
                 </TableRow>
@@ -243,6 +246,9 @@ const AdminInvitations = () => {
                       >
                         {request.status}
                       </span>
+                    </TableCell>
+                    <TableCell className="font-mono text-sm">
+                      {request.invitation_code || "-"}
                     </TableCell>
                     <TableCell>{new Date(request.created_at).toLocaleDateString()}</TableCell>
                     <TableCell>
