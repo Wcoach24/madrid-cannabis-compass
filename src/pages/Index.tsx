@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -9,18 +9,109 @@ import Footer from "@/components/Footer";
 import ClubCard from "@/components/ClubCard";
 import logoWeedMadrid from "@/assets/logo-weed-madrid.png";
 import SEOHead from "@/components/SEOHead";
+import StatsCounter from "@/components/StatsCounter";
 import { useLanguage } from "@/hooks/useLanguage";
 import { buildLanguageAwarePath } from "@/lib/languageUtils";
 import { generateHreflangLinks, BASE_URL } from "@/lib/hreflangUtils";
+import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
 
 const Index = () => {
   const { language, t } = useLanguage();
   const navigate = useNavigate();
   const [featuredClubs, setFeaturedClubs] = useState<any[]>([]);
+  const [currentTestimonial, setCurrentTestimonial] = useState(0);
+  const [statsVisible, setStatsVisible] = useState(false);
+  const [memberCount, setMemberCount] = useState(0);
+  const [clubCount, setClubCount] = useState(0);
+  const statsRef = useRef<HTMLDivElement>(null);
+
+  const testimonials = [
+    {
+      name: "Mike Thompson",
+      city: "USA",
+      photo: "https://i.pravatar.cc/150?img=12",
+      quote: "Amazing experience! Got my invitation within 24 hours and the club was exactly as described. Professional, clean, and welcoming to tourists.",
+      rating: 5
+    },
+    {
+      name: "Sarah Johnson",
+      city: "London",
+      photo: "https://i.pravatar.cc/150?img=5",
+      quote: "Best cannabis club experience in Madrid. The team helped me through the entire process. Highly recommend for international visitors!",
+      rating: 5
+    },
+    {
+      name: "Lucas Müller",
+      city: "Germany",
+      photo: "https://i.pravatar.cc/150?img=33",
+      quote: "Safe, legal, and professional. Everything was transparent and the club atmosphere was fantastic. Will definitely visit again!",
+      rating: 5
+    },
+    {
+      name: "Emma Dubois",
+      city: "France",
+      photo: "https://i.pravatar.cc/150?img=9",
+      quote: "The invitation process was super easy. Great selection of clubs and very tourist-friendly. Made my Madrid trip unforgettable!",
+      rating: 5
+    },
+    {
+      name: "James Wilson",
+      city: "Australia",
+      photo: "https://i.pravatar.cc/150?img=15",
+      quote: "Couldn't believe how smooth the whole process was. From getting the invitation to enjoying the club - everything was perfect!",
+      rating: 5
+    },
+    {
+      name: "Sophie Martin",
+      city: "Canada",
+      photo: "https://i.pravatar.cc/150?img=20",
+      quote: "As a tourist, I was nervous about the legalities. This service made everything clear and easy. The club was top-notch!",
+      rating: 5
+    }
+  ];
 
   useEffect(() => {
     fetchFeaturedClubs();
-  }, []);
+    
+    // Testimonial carousel
+    const interval = setInterval(() => {
+      setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
+    }, 5000);
+    
+    // Stats counter animation
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && !statsVisible) {
+          setStatsVisible(true);
+          animateCount(0, 5000, setMemberCount, 2000);
+          animateCount(0, 24, setClubCount, 2000);
+        }
+      },
+      { threshold: 0.5 }
+    );
+    
+    if (statsRef.current) {
+      observer.observe(statsRef.current);
+    }
+    
+    return () => {
+      clearInterval(interval);
+      if (statsRef.current) {
+        observer.unobserve(statsRef.current);
+      }
+    };
+  }, [statsVisible]);
+
+  const animateCount = (start: number, end: number, setter: (value: number) => void, duration: number) => {
+    const startTime = Date.now();
+    const timer = setInterval(() => {
+      const elapsed = Date.now() - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const current = Math.floor(start + (end - start) * progress);
+      setter(current);
+      if (progress === 1) clearInterval(timer);
+    }, 16);
+  };
 
   const fetchFeaturedClubs = async () => {
     const { data, error } = await supabase
@@ -221,6 +312,9 @@ const Index = () => {
           </div>
         </section>
 
+        {/* Stats Counter */}
+        <StatsCounter ref={statsRef} memberCount={memberCount} clubCount={clubCount} />
+
         {/* Featured Clubs - Luxury Photo Cards */}
         {featuredClubs.length > 0 && (
           <section className="py-16 md:py-20 bg-background">
@@ -303,6 +397,105 @@ const Index = () => {
             </div>
           </section>
         )}
+
+        {/* Testimonials Section */}
+        <section className="py-16 md:py-20 bg-black relative overflow-hidden">
+          {/* Background gradient */}
+          <div className="absolute inset-0 bg-gradient-to-b from-background via-black to-background"></div>
+          
+          <div className="container mx-auto px-4 relative z-10">
+            <div className="text-center mb-12">
+              <h2 className="font-display text-4xl md:text-6xl font-bold mb-4 text-gradient-gold">What Our Members Say</h2>
+              <p className="text-xl md:text-2xl text-muted-foreground font-luxury">Real experiences from real travelers</p>
+            </div>
+
+            <div className="max-w-4xl mx-auto">
+              <div className="relative">
+                {/* Testimonial Card */}
+                <div className="card-snoop p-8 md:p-12 rounded-3xl min-h-[400px] flex flex-col justify-between">
+                  <div>
+                    <Quote className="w-12 h-12 text-primary mb-6 opacity-50" />
+                    <p className="text-xl md:text-2xl text-foreground mb-8 font-luxury leading-relaxed">
+                      "{testimonials[currentTestimonial].quote}"
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-4">
+                    <img 
+                      src={testimonials[currentTestimonial].photo} 
+                      alt={testimonials[currentTestimonial].name}
+                      className="w-16 h-16 rounded-full border-2 border-primary shadow-gold"
+                    />
+                    <div>
+                      <h4 className="font-display text-xl text-foreground">
+                        {testimonials[currentTestimonial].name}
+                      </h4>
+                      <p className="text-muted-foreground">{testimonials[currentTestimonial].city}</p>
+                      <div className="flex items-center gap-1 mt-1">
+                        {[...Array(testimonials[currentTestimonial].rating)].map((_, i) => (
+                          <span key={i} className="text-primary text-lg">★</span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Navigation Buttons */}
+                <button
+                  onClick={() => setCurrentTestimonial((prev) => (prev - 1 + testimonials.length) % testimonials.length)}
+                  className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-16 w-12 h-12 rounded-full glass-effect border-2 border-primary/30 flex items-center justify-center text-primary hover:border-primary hover:shadow-gold transition-all"
+                >
+                  <ChevronLeft className="w-6 h-6" />
+                </button>
+                <button
+                  onClick={() => setCurrentTestimonial((prev) => (prev + 1) % testimonials.length)}
+                  className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-16 w-12 h-12 rounded-full glass-effect border-2 border-primary/30 flex items-center justify-center text-primary hover:border-primary hover:shadow-gold transition-all"
+                >
+                  <ChevronRight className="w-6 h-6" />
+                </button>
+              </div>
+
+              {/* Dots Indicator */}
+              <div className="flex justify-center gap-2 mt-8">
+                {testimonials.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentTestimonial(index)}
+                    className={`w-3 h-3 rounded-full transition-all ${
+                      index === currentTestimonial 
+                        ? 'bg-primary w-8 shadow-gold' 
+                        : 'bg-muted-foreground/30 hover:bg-muted-foreground/50'
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* As Seen On Section */}
+        <section className="py-12 md:py-16 bg-background">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-10">
+              <h3 className="font-display text-2xl md:text-3xl font-bold text-muted-foreground mb-2">As Seen On</h3>
+            </div>
+            
+            <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12 max-w-5xl mx-auto">
+              {/* Placeholder logos - replace with actual media outlet logos */}
+              {['TripAdvisor', 'Lonely Planet', 'Forbes Travel', 'Vice', 'High Times', 'Leafly'].map((outlet, index) => (
+                <div
+                  key={index}
+                  className="group relative px-6 py-4 rounded-lg transition-all hover:scale-110"
+                >
+                  <span className="text-2xl font-bold text-muted-foreground/40 group-hover:text-primary transition-colors duration-300 filter grayscale group-hover:grayscale-0">
+                    {outlet}
+                  </span>
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl bg-primary/20 rounded-lg -z-10"></div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
 
         {/* Essential Guides - Simplified */}
         <section className="py-12 md:py-16 bg-muted/30">
