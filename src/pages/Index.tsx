@@ -66,7 +66,7 @@ const Index = () => {
       
       <main className="flex-1">
         {/* Hero Section - Tourist-Focused */}
-        <section className="relative py-20 md:py-32 overflow-hidden bg-gradient-to-br from-[#0891b2] via-[#ec4899] to-[#eab308]">
+        <section className="relative py-20 md:py-32 overflow-hidden bg-gradient-to-br from-weed-cyan via-weed-pink to-weed-yellow">
           <div className="absolute inset-0 bg-gradient-to-br from-background/95 via-background/90 to-background/95"></div>
           
           <div className="container mx-auto px-4 relative z-10">
@@ -79,7 +79,7 @@ const Index = () => {
                 />
               </div>
               
-              <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight bg-gradient-to-r from-primary via-[#10b981] to-primary bg-clip-text text-transparent animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-150">
+              <h1 className="font-display text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight text-gradient-logo animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-150">
                 {t("home.title")}
               </h1>
               
@@ -90,7 +90,7 @@ const Index = () => {
               <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-500">
                 <Button 
                   size="lg" 
-                  className="bg-primary hover:bg-primary/90 text-primary-foreground text-lg px-8 py-6 h-auto shadow-xl hover:shadow-2xl transition-all hover:scale-105"
+                  className="bg-primary hover:bg-primary/90 text-primary-foreground text-lg px-8 py-6 h-auto shadow-xl hover:shadow-neon transition-all hover:scale-105"
                   asChild
                 >
                   <Link to={buildLanguageAwarePath("/clubs", language)}>
@@ -101,7 +101,7 @@ const Index = () => {
                 <Button 
                   size="lg" 
                   variant="outline"
-                  className="text-lg px-8 py-6 h-auto border-2 hover:bg-accent hover:text-accent-foreground transition-all hover:scale-105"
+                  className="text-lg px-8 py-6 h-auto border-2 border-primary hover:bg-primary hover:text-primary-foreground transition-all hover:scale-105"
                   asChild
                 >
                   <Link to={buildLanguageAwarePath("/guides", language)}>
@@ -133,42 +133,42 @@ const Index = () => {
         <section className="py-16 md:py-20 bg-muted/30">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-5xl font-bold mb-4">{t("home.howitworks.title")}</h2>
+              <h2 className="font-display text-3xl md:text-5xl font-bold mb-4">{t("home.howitworks.title")}</h2>
               <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
                 {t("home.howitworks.subtitle")}
               </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto mb-12">
-              <Card className="relative overflow-hidden border-2 hover:border-primary transition-all hover:shadow-xl">
-                <div className="absolute top-4 left-4 w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-2xl font-bold">
+              <Card className="relative overflow-hidden border-2 hover:border-accent transition-all hover:shadow-xl">
+                <div className="absolute top-4 left-4 w-12 h-12 rounded-full bg-accent text-accent-foreground flex items-center justify-center text-2xl font-bold shadow-neon">
                   1
                 </div>
                 <CardContent className="p-8 pt-20">
                   <Search className="w-16 h-16 text-primary mb-6" />
-                  <h3 className="text-2xl font-bold mb-3">{t("home.howitworks.private.title")}</h3>
+                  <h3 className="font-display text-2xl font-bold mb-3">{t("home.howitworks.private.title")}</h3>
                   <p className="text-muted-foreground text-lg">{t("home.howitworks.private.desc")}</p>
                 </CardContent>
               </Card>
 
-              <Card className="relative overflow-hidden border-2 hover:border-primary transition-all hover:shadow-xl">
-                <div className="absolute top-4 left-4 w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-2xl font-bold">
+              <Card className="relative overflow-hidden border-2 hover:border-accent transition-all hover:shadow-xl">
+                <div className="absolute top-4 left-4 w-12 h-12 rounded-full bg-accent text-accent-foreground flex items-center justify-center text-2xl font-bold shadow-neon">
                   2
                 </div>
                 <CardContent className="p-8 pt-20">
                   <Calendar className="w-16 h-16 text-primary mb-6" />
-                  <h3 className="text-2xl font-bold mb-3">{t("home.howitworks.membership.title")}</h3>
+                  <h3 className="font-display text-2xl font-bold mb-3">{t("home.howitworks.membership.title")}</h3>
                   <p className="text-muted-foreground text-lg">{t("home.howitworks.membership.desc")}</p>
                 </CardContent>
               </Card>
 
-              <Card className="relative overflow-hidden border-2 hover:border-primary transition-all hover:shadow-xl">
-                <div className="absolute top-4 left-4 w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-2xl font-bold">
+              <Card className="relative overflow-hidden border-2 hover:border-accent transition-all hover:shadow-xl">
+                <div className="absolute top-4 left-4 w-12 h-12 rounded-full bg-accent text-accent-foreground flex items-center justify-center text-2xl font-bold shadow-neon">
                   3
                 </div>
                 <CardContent className="p-8 pt-20">
                   <PartyPopper className="w-16 h-16 text-primary mb-6" />
-                  <h3 className="text-2xl font-bold mb-3">{t("home.howitworks.responsible.title")}</h3>
+                  <h3 className="font-display text-2xl font-bold mb-3">{t("home.howitworks.responsible.title")}</h3>
                   <p className="text-muted-foreground text-lg">{t("home.howitworks.responsible.desc")}</p>
                 </CardContent>
               </Card>
@@ -190,7 +190,7 @@ const Index = () => {
           <section className="py-16 md:py-20 bg-background">
             <div className="container mx-auto px-4">
               <div className="text-center mb-12">
-                <h2 className="text-3xl md:text-5xl font-bold mb-4">{t("home.featured.title")}</h2>
+                <h2 className="font-display text-3xl md:text-5xl font-bold mb-4">{t("home.featured.title")}</h2>
                 <p className="text-lg md:text-xl text-muted-foreground">{t("home.featured.subtitle")}</p>
               </div>
               
@@ -226,7 +226,7 @@ const Index = () => {
         <section className="py-12 md:py-16 bg-muted/30">
           <div className="container mx-auto px-4">
             <div className="text-center mb-8">
-              <h2 className="text-2xl md:text-3xl font-bold mb-6">{t("home.guides.title")}</h2>
+              <h2 className="font-display text-2xl md:text-3xl font-bold mb-6">{t("home.guides.title")}</h2>
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-3xl mx-auto">
                 <Link 

@@ -47,11 +47,21 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        // Logo-inspired colors
+        "weed-green": "hsl(var(--weed-green))",
+        "weed-cyan": "hsl(var(--weed-cyan))",
+        "weed-pink": "hsl(var(--weed-pink))",
+        "weed-yellow": "hsl(var(--weed-yellow))",
+        // Legacy compatibility
         forest: "hsl(var(--forest))",
         "forest-light": "hsl(var(--forest-light))",
         earth: "hsl(var(--earth))",
         sand: "hsl(var(--sand))",
         gold: "hsl(var(--gold))",
+      },
+      fontFamily: {
+        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        display: ['Righteous', 'Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -75,10 +85,30 @@ export default {
             height: "0",
           },
         },
+        "fade-in": {
+          from: {
+            opacity: "0",
+          },
+          to: {
+            opacity: "1",
+          },
+        },
+        "slide-in-from-bottom": {
+          from: {
+            transform: "translateY(20px)",
+            opacity: "0",
+          },
+          to: {
+            transform: "translateY(0)",
+            opacity: "1",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "fade-in": "fade-in 0.6s ease-out",
+        "slide-in-from-bottom": "slide-in-from-bottom 0.6s ease-out",
       },
     },
   },
