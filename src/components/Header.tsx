@@ -29,7 +29,7 @@ const Header = () => {
               alt="Weed Madrid" 
               className="h-10 w-10 md:h-12 md:w-12 object-contain"
             />
-            <span className="text-xl md:text-2xl font-bold bg-gradient-to-r from-primary to-forest-light bg-clip-text text-transparent">
+            <span className="font-display text-xl md:text-2xl font-bold text-gradient-primary">
               Weed Madrid
             </span>
           </Link>
