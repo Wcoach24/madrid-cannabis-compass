@@ -65,9 +65,19 @@ const Index = () => {
       <Header />
       
       <main className="flex-1">
-        {/* Hero Section - Tourist-Focused */}
-        <section className="relative py-20 md:py-32 overflow-hidden bg-gradient-to-br from-weed-cyan via-weed-pink to-weed-yellow">
-          <div className="absolute inset-0 bg-gradient-to-br from-background/95 via-background/90 to-background/95"></div>
+        {/* Hero Section - Dark Luxury with Smoke Animation */}
+        <section className="relative py-20 md:py-32 overflow-hidden bg-black">
+          {/* Animated Smoke/Haze Particles */}
+          <div className="absolute inset-0">
+            <div className="smoke-particle smoke-1"></div>
+            <div className="smoke-particle smoke-2"></div>
+            <div className="smoke-particle smoke-3"></div>
+            <div className="smoke-particle smoke-4"></div>
+            <div className="smoke-particle smoke-5"></div>
+          </div>
+          
+          {/* Dark Overlay for Readability */}
+          <div className="absolute inset-0 bg-black/70"></div>
           
           <div className="container mx-auto px-4 relative z-10">
             <div className="max-w-4xl mx-auto text-center">
@@ -110,19 +120,31 @@ const Index = () => {
                 </Button>
               </div>
 
-              {/* Trust Signals */}
-              <div className="flex flex-wrap justify-center gap-6 text-sm text-muted-foreground animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-700">
-                <div className="flex items-center gap-2">
-                  <Shield className="w-5 h-5 text-primary" />
-                  <span>{t("home.features.legal")}</span>
+              {/* Trust Signals - Luxury Badges */}
+              <div className="flex flex-wrap justify-center gap-6 md:gap-8 mb-8 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-700">
+                <div className="flex items-center gap-3 glass-effect px-6 py-3 rounded-full border-2 border-primary/30 hover:border-primary/60 transition-all hover:shadow-gold">
+                  <Shield className="w-6 h-6 text-primary" />
+                  <span className="text-foreground font-medium">{t("home.features.legal")}</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle className="w-5 h-5 text-primary" />
-                  <span>{t("home.features.verified")}</span>
+                <div className="flex items-center gap-3 glass-effect px-6 py-3 rounded-full border-2 border-primary/30 hover:border-primary/60 transition-all hover:shadow-gold">
+                  <CheckCircle className="w-6 h-6 text-primary" />
+                  <span className="text-foreground font-medium">{t("home.features.verified")}</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Clock className="w-5 h-5 text-primary" />
-                  <span>24h Response</span>
+                <div className="flex items-center gap-3 glass-effect px-6 py-3 rounded-full border-2 border-primary/30 hover:border-primary/60 transition-all hover:shadow-gold">
+                  <Clock className="w-6 h-6 text-primary" />
+                  <span className="text-foreground font-medium">Same-Day Access</span>
+                </div>
+              </div>
+
+              {/* Social Proof Counter */}
+              <div className="text-center animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-900">
+                <div className="inline-flex items-center gap-2 glass-effect px-8 py-4 rounded-full border border-primary/20">
+                  <div className="flex -space-x-3">
+                    <div className="w-8 h-8 rounded-full bg-primary/20 border-2 border-primary"></div>
+                    <div className="w-8 h-8 rounded-full bg-primary/30 border-2 border-primary"></div>
+                    <div className="w-8 h-8 rounded-full bg-primary/40 border-2 border-primary"></div>
+                  </div>
+                  <span className="text-foreground font-semibold text-lg">Join 5,000+ Members</span>
                 </div>
               </div>
             </div>
