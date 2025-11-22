@@ -250,4 +250,34 @@ All colors MUST be HSL.
       opacity: 0.2;
     }
   }
+  
+  /* Snoop Dogg Luxury Card System */
+  .card-snoop {
+    background: rgba(10, 10, 10, 0.8);
+    border: 2px solid rgba(212, 175, 55, 0.3);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 20px rgba(212, 175, 55, 0.1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .card-snoop:hover {
+    border-color: rgba(212, 175, 55, 0.8);
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6), 0 0 40px rgba(212, 175, 55, 0.3);
+    transform: translateY(-4px);
+  }
+  
+  /* Connecting lines animation */
+  @keyframes drawLine {
+    from {
+      width: 0;
+    }
+    to {
+      width: 100%;
+    }
+  }
+  
+  .connector-line {
+    animation: drawLine 1s ease-out forwards;
+  }
 }
