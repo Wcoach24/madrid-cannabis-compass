@@ -184,8 +184,8 @@ All colors MUST be HSL.
     .smoke-particle {
       position: absolute;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, transparent 70%);
-      filter: blur(40px);
+      background: radial-gradient(circle, rgba(212, 175, 55, 0.25) 0%, transparent 70%);
+      filter: blur(25px);
       opacity: 0;
       animation: float 20s infinite ease-in-out;
     }
@@ -196,7 +196,7 @@ All colors MUST be HSL.
       top: 10%;
       left: 10%;
       animation-delay: 0s;
-      animation-duration: 25s;
+      animation-duration: 18s;
     }
 
     .smoke-2 {
@@ -205,7 +205,7 @@ All colors MUST be HSL.
       top: 30%;
       right: 15%;
       animation-delay: 5s;
-      animation-duration: 30s;
+      animation-duration: 22s;
     }
 
     .smoke-3 {
@@ -214,7 +214,7 @@ All colors MUST be HSL.
       bottom: 20%;
       left: 20%;
       animation-delay: 10s;
-      animation-duration: 28s;
+      animation-duration: 20s;
     }
 
     .smoke-4 {
@@ -223,7 +223,7 @@ All colors MUST be HSL.
       top: 50%;
       left: 50%;
       animation-delay: 15s;
-      animation-duration: 32s;
+      animation-duration: 24s;
     }
 
     .smoke-5 {
@@ -232,7 +232,36 @@ All colors MUST be HSL.
       bottom: 15%;
       right: 10%;
       animation-delay: 20s;
-      animation-duration: 27s;
+      animation-duration: 19s;
+    }
+
+    .smoke-6 {
+      width: 320px;
+      height: 320px;
+      top: 20%;
+      right: 30%;
+      animation-delay: 8s;
+      animation-duration: 21s;
+      background: radial-gradient(circle, rgba(160, 81, 149, 0.2) 0%, transparent 70%);
+    }
+
+    .smoke-7 {
+      width: 380px;
+      height: 380px;
+      bottom: 30%;
+      left: 40%;
+      animation-delay: 12s;
+      animation-duration: 23s;
+    }
+
+    .smoke-8 {
+      width: 290px;
+      height: 290px;
+      top: 60%;
+      right: 20%;
+      animation-delay: 18s;
+      animation-duration: 20s;
+      background: radial-gradient(circle, rgba(212, 175, 55, 0.3) 0%, transparent 70%);
     }
   }
   
@@ -249,15 +278,26 @@ All colors MUST be HSL.
       opacity: 0;
     }
     10% {
-      opacity: 0.3;
+      opacity: 0.4;
     }
     50% {
       transform: translate(50px, -100px) scale(1.2);
-      opacity: 0.5;
+      opacity: 0.6;
     }
     90% {
-      opacity: 0.2;
+      opacity: 0.35;
     }
+  }
+  
+  /* Subtle gradient background for hero sections */
+  .hero-gradient-bg {
+    background: linear-gradient(
+      135deg,
+      hsl(270 50% 8%) 0%,
+      hsl(0 0% 4%) 30%,
+      hsl(45 100% 8%) 60%,
+      hsl(270 40% 6%) 100%
+    );
   }
   
   /* Snoop Dogg Luxury Card System */
