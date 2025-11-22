@@ -1,8 +1,5 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.81.0';
 import { Resend } from "https://esm.sh/resend@4.0.0";
-import React from "https://esm.sh/react@18.3.1";
-import { renderAsync } from "https://esm.sh/@react-email/components@0.0.22";
-import { InvitationEmail } from "./_templates/invitation-email.tsx";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -160,17 +157,107 @@ Deno.serve(async (req) => {
     try {
       const resend = new Resend(Deno.env.get("RESEND_API_KEY") as string);
       
-      // Render email template
-      const emailHtml = await renderAsync(
-        React.createElement(InvitationEmail, {
-          invitationCode,
-          clubName: club.name,
-          clubAddress: `${club.address}, ${club.district}, Madrid`,
-          visitorNames: request.visitor_names,
-          visitDate: request.visit_date,
-          recipientEmail: request.email,
-        })
-      );
+      // Format visit date
+      const visitDate = new Date(request.visit_date).toLocaleDateString('en-US', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+
+      // Generate plain HTML email
+      const emailHtml = `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Weed Madrid Invitation</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; background-color: #0a0a0a; color: #ffffff;">
+  <div style="max-width: 600px; margin: 0 auto; padding: 40px 20px;">
+    
+    <!-- Logo -->
+    <div style="text-align: center; margin-bottom: 40px;">
+      <h1 style="color: #d4af37; font-size: 32px; margin: 0; font-weight: bold;">🔥 WEED MADRID</h1>
+    </div>
+
+    <!-- Invitation Code Box -->
+    <div style="background: linear-gradient(135deg, #d4af37 0%, #ffd700 100%); border-radius: 12px; padding: 30px; text-align: center; margin-bottom: 30px; box-shadow: 0 0 40px rgba(212, 175, 55, 0.3);">
+      <p style="margin: 0 0 10px 0; font-size: 16px; color: #0a0a0a; font-weight: 600; text-transform: uppercase;">Your Invitation Code</p>
+      <h2 style="margin: 0 0 20px 0; font-size: 48px; color: #0a0a0a; font-weight: bold; letter-spacing: 4px;">${invitationCode}</h2>
+      <p style="margin: 0; font-size: 18px; color: #0a0a0a; font-weight: bold;">⚠️ SHOW THIS CODE AT THE DOOR</p>
+    </div>
+
+    <!-- Club Details -->
+    <div style="background-color: rgba(212, 175, 55, 0.1); border: 2px solid rgba(212, 175, 55, 0.3); border-radius: 12px; padding: 25px; margin-bottom: 30px;">
+      <h3 style="color: #d4af37; margin: 0 0 20px 0; font-size: 24px;">📍 Club Details</h3>
+      <p style="margin: 0 0 10px 0; font-size: 16px; line-height: 1.6;">
+        <strong>Club:</strong> ${club.name}<br>
+        <strong>Address:</strong> ${club.address}, ${club.district}, Madrid<br>
+        <strong>Visit Date:</strong> ${visitDate}<br>
+        <strong>Visitors:</strong> ${request.visitor_names.join(', ')}
+      </p>
+      
+      <!-- Action Buttons -->
+      <div style="margin-top: 25px;">
+        <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(club.address + ', ' + club.district + ', Madrid')}" style="display: inline-block; background-color: #d4af37; color: #0a0a0a; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: bold; margin: 5px; font-size: 14px;">📍 Open in Google Maps</a>
+        
+        <a href="https://wa.me/34632332050" style="display: inline-block; background-color: #25D366; color: #ffffff; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: bold; margin: 5px; font-size: 14px;">💬 WhatsApp Club (+34 632 332 050)</a>
+      </div>
+    </div>
+
+    <!-- At the Door Section -->
+    <div style="background-color: rgba(212, 175, 55, 0.1); border: 2px solid rgba(212, 175, 55, 0.3); border-radius: 12px; padding: 25px; margin-bottom: 30px;">
+      <h3 style="color: #d4af37; margin: 0 0 15px 0; font-size: 24px;">🚪 AT THE DOOR</h3>
+      <ol style="margin: 0; padding-left: 20px; font-size: 16px; line-height: 1.8;">
+        <li><strong>Show this invitation code</strong> (${invitationCode})</li>
+        <li><strong>Present your ID</strong> (must be 18+ or 21+ depending on club)</li>
+        <li><strong>Confirm your name</strong> matches the invitation</li>
+        <li>The club staff will complete your registration</li>
+      </ol>
+    </div>
+
+    <!-- Important Tips -->
+    <div style="background-color: rgba(212, 175, 55, 0.1); border: 2px solid rgba(212, 175, 55, 0.3); border-radius: 12px; padding: 25px; margin-bottom: 30px;">
+      <h3 style="color: #d4af37; margin: 0 0 15px 0; font-size: 20px;">💡 Important Tips</h3>
+      <ul style="margin: 0; padding-left: 20px; font-size: 14px; line-height: 1.8; color: #cccccc;">
+        <li><strong>Save this email</strong> – you'll need to show the code at the door</li>
+        <li><strong>Bring valid ID</strong> – passport or national ID card required</li>
+        <li><strong>Only members can consume</strong> – clubs are private associations, not shops</li>
+        <li><strong>Respect club rules</strong> – each club has its own house rules and etiquette</li>
+        <li><strong>Check opening hours</strong> – contact the club via WhatsApp if unsure</li>
+      </ul>
+    </div>
+
+    <!-- Legal Notice -->
+    <div style="background-color: rgba(255, 0, 0, 0.1); border: 2px solid rgba(255, 0, 0, 0.3); border-radius: 12px; padding: 20px; margin-bottom: 30px;">
+      <h3 style="color: #ff6b6b; margin: 0 0 15px 0; font-size: 18px;">⚖️ Legal Notice for International Visitors</h3>
+      <p style="margin: 0 0 10px 0; font-size: 13px; line-height: 1.6; color: #cccccc;">
+        Cannabis social clubs in Spain operate as <strong>private non-profit associations</strong> under Spanish law. Membership and consumption are legal within club premises, but cannabis remains illegal in public spaces.
+      </p>
+      <p style="margin: 0; font-size: 13px; line-height: 1.6; color: #cccccc;">
+        <strong style="color: #ff6b6b;">DO:</strong> Consume only inside the club • Respect local laws • Bring valid ID • Follow club etiquette<br>
+        <strong style="color: #ff6b6b;">DON'T:</strong> Consume in public • Take cannabis outside the club • Share with non-members • Resell or distribute
+      </p>
+    </div>
+
+    <!-- Footer -->
+    <div style="text-align: center; padding-top: 30px; border-top: 1px solid rgba(212, 175, 55, 0.2);">
+      <p style="margin: 0 0 10px 0; font-size: 12px; color: #888888;">
+        This invitation was sent to ${request.email}<br>
+        Questions? Contact us at <a href="mailto:invitations@weedmadrid.com" style="color: #d4af37; text-decoration: none;">invitations@weedmadrid.com</a>
+      </p>
+      <p style="margin: 10px 0 0 0; font-size: 11px; color: #666666;">
+        Weed Madrid provides information for educational and cultural purposes.<br>
+        We do not promote illegal activity.
+      </p>
+    </div>
+
+  </div>
+</body>
+</html>
+      `;
 
       console.log("Sending email to:", request.email);
       
