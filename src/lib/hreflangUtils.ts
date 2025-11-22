@@ -57,4 +57,4 @@ export const generateHreflangLinks = (
   return links;
 };
 
-export const BASE_URL = "https://lovable.dev"; // TODO: Update this to your production domain
+export const BASE_URL = "https://www.weedmadrid.com";
