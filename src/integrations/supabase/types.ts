@@ -114,6 +114,7 @@ export type Database = {
           slug: string
           status: string
           summary: string | null
+          timetable: Json | null
           updated_at: string
           website_url: string | null
           whatsapp_number: string | null
@@ -148,6 +149,7 @@ export type Database = {
           slug: string
           status?: string
           summary?: string | null
+          timetable?: Json | null
           updated_at?: string
           website_url?: string | null
           whatsapp_number?: string | null
@@ -182,6 +184,7 @@ export type Database = {
           slug?: string
           status?: string
           summary?: string | null
+          timetable?: Json | null
           updated_at?: string
           website_url?: string | null
           whatsapp_number?: string | null
@@ -221,6 +224,116 @@ export type Database = {
           question?: string
           slug?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      invitation_audit_log: {
+        Row: {
+          action: string
+          admin_email: string | null
+          admin_id: string | null
+          id: number
+          ip_address: unknown
+          metadata: Json | null
+          request_id: number | null
+          timestamp: string | null
+        }
+        Insert: {
+          action: string
+          admin_email?: string | null
+          admin_id?: string | null
+          id?: number
+          ip_address?: unknown
+          metadata?: Json | null
+          request_id?: number | null
+          timestamp?: string | null
+        }
+        Update: {
+          action?: string
+          admin_email?: string | null
+          admin_id?: string | null
+          id?: number
+          ip_address?: unknown
+          metadata?: Json | null
+          request_id?: number | null
+          timestamp?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "invitation_audit_log_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "invitation_requests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      invitation_requests: {
+        Row: {
+          club_slug: string
+          created_at: string | null
+          email: string
+          expires_at: string | null
+          gdpr_consent: boolean
+          id: number
+          ip_address: unknown
+          language: string
+          legal_age_confirmed: boolean
+          legal_knowledge_confirmed: boolean
+          notes: string | null
+          phone: string
+          qr_code_url: string | null
+          rejection_reason: string | null
+          status: string | null
+          updated_at: string | null
+          user_agent: string | null
+          visit_date: string
+          visitor_count: number
+          visitor_names: string[]
+        }
+        Insert: {
+          club_slug: string
+          created_at?: string | null
+          email: string
+          expires_at?: string | null
+          gdpr_consent: boolean
+          id?: number
+          ip_address?: unknown
+          language?: string
+          legal_age_confirmed: boolean
+          legal_knowledge_confirmed: boolean
+          notes?: string | null
+          phone: string
+          qr_code_url?: string | null
+          rejection_reason?: string | null
+          status?: string | null
+          updated_at?: string | null
+          user_agent?: string | null
+          visit_date: string
+          visitor_count: number
+          visitor_names: string[]
+        }
+        Update: {
+          club_slug?: string
+          created_at?: string | null
+          email?: string
+          expires_at?: string | null
+          gdpr_consent?: boolean
+          id?: number
+          ip_address?: unknown
+          language?: string
+          legal_age_confirmed?: boolean
+          legal_knowledge_confirmed?: boolean
+          notes?: string | null
+          phone?: string
+          qr_code_url?: string | null
+          rejection_reason?: string | null
+          status?: string | null
+          updated_at?: string | null
+          user_agent?: string | null
+          visit_date?: string
+          visitor_count?: number
+          visitor_names?: string[]
         }
         Relationships: []
       }
@@ -271,15 +384,42 @@ export type Database = {
           },
         ]
       }
+      user_roles: {
+        Row: {
+          created_at: string | null
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "moderator" | "viewer"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -406,6 +546,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "moderator", "viewer"],
+    },
   },
 } as const
