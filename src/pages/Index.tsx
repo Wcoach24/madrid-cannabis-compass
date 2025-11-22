@@ -2,13 +2,12 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
-import { Search, BookOpen, Scale, Heart, MapPin, ChevronRight } from "lucide-react";
+import { Search, Calendar, Mail, PartyPopper, Shield, Clock, CheckCircle } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ClubCard from "@/components/ClubCard";
-import heroImage from "@/assets/hero-main.jpg";
+import logoWeedMadrid from "@/assets/logo-weed-madrid.png";
 import SEOHead from "@/components/SEOHead";
 import { useLanguage } from "@/hooks/useLanguage";
 import { buildLanguageAwarePath } from "@/lib/languageUtils";
@@ -18,7 +17,6 @@ const Index = () => {
   const { language, t } = useLanguage();
   const navigate = useNavigate();
   const [featuredClubs, setFeaturedClubs] = useState<any[]>([]);
-  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     fetchFeaturedClubs();
@@ -38,11 +36,6 @@ const Index = () => {
     }
   };
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    navigate(buildLanguageAwarePath(`/clubs?q=${encodeURIComponent(searchQuery)}`, language));
-  };
-
   const hreflangLinks = generateHreflangLinks(BASE_URL, "/");
 
   return (
@@ -51,14 +44,14 @@ const Index = () => {
         title={t("home.title")}
         description={t("home.subtitle")}
         canonical={`${BASE_URL}${buildLanguageAwarePath("/", language)}`}
-        keywords="cannabis club madrid, weed club madrid, cannabis social club, madrid cannabis, join cannabis club madrid, best cannabis clubs madrid"
+        keywords="weed madrid, cannabis club madrid, weed club madrid, cannabis madrid, join cannabis club madrid, tourist cannabis madrid"
         hreflangLinks={hreflangLinks}
         ogLocale={language === "es" ? "es_ES" : "en_US"}
         ogLocaleAlternate={language === "es" ? ["en_US"] : ["es_ES"]}
         structuredData={{
           "@context": "https://schema.org",
           "@type": "WebSite",
-          "name": "Madrid Cannabis Clubs Guide",
+          "name": "Weed Madrid",
           "description": t("home.subtitle"),
           "url": BASE_URL,
           "inLanguage": language,
@@ -72,70 +65,133 @@ const Index = () => {
       <Header />
       
       <main className="flex-1">
-        {/* Hero Section */}
-        <section className="relative py-24 md:py-32 overflow-hidden">
-          <div className="absolute inset-0">
-            <img 
-              src={heroImage} 
-              alt="Cannabis social club interior" 
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/95 via-forest-light/90 to-primary/95"></div>
-          </div>
+        {/* Hero Section - Tourist-Focused */}
+        <section className="relative py-20 md:py-32 overflow-hidden bg-gradient-to-br from-[#0891b2] via-[#ec4899] to-[#eab308]">
+          <div className="absolute inset-0 bg-gradient-to-br from-background/95 via-background/90 to-background/95"></div>
           
           <div className="container mx-auto px-4 relative z-10">
-            <div className="max-w-3xl mx-auto text-center text-primary-foreground">
-              <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+            <div className="max-w-4xl mx-auto text-center">
+              <div className="mb-8 animate-in fade-in slide-in-from-bottom-4 duration-1000">
+                <img 
+                  src={logoWeedMadrid} 
+                  alt="Weed Madrid Logo" 
+                  className="w-32 h-32 md:w-40 md:h-40 mx-auto mb-6 drop-shadow-2xl"
+                />
+              </div>
+              
+              <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight bg-gradient-to-r from-primary via-[#10b981] to-primary bg-clip-text text-transparent animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-150">
                 {t("home.title")}
               </h1>
-              <p className="text-xl md:text-2xl mb-8 text-primary-foreground/90">
+              
+              <p className="text-xl md:text-2xl lg:text-3xl mb-10 text-foreground/80 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-300">
                 {t("home.subtitle")}
               </p>
               
-              <form onSubmit={handleSearch} className="max-w-2xl mx-auto mb-8">
-                <div className="flex gap-2">
-                  <Input
-                    type="text"
-                    placeholder={t("home.search.placeholder")}
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="bg-background/95 backdrop-blur h-12 text-base"
-                  />
-                  <Button type="submit" size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground">
-                    <Search className="w-5 h-5 mr-2" />
+              <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-500">
+                <Button 
+                  size="lg" 
+                  className="bg-primary hover:bg-primary/90 text-primary-foreground text-lg px-8 py-6 h-auto shadow-xl hover:shadow-2xl transition-all hover:scale-105"
+                  asChild
+                >
+                  <Link to={buildLanguageAwarePath("/clubs", language)}>
+                    <Search className="w-6 h-6 mr-2" />
                     {t("home.search.button")}
-                  </Button>
-                </div>
-              </form>
+                  </Link>
+                </Button>
+                <Button 
+                  size="lg" 
+                  variant="outline"
+                  className="text-lg px-8 py-6 h-auto border-2 hover:bg-accent hover:text-accent-foreground transition-all hover:scale-105"
+                  asChild
+                >
+                  <Link to={buildLanguageAwarePath("/guides", language)}>
+                    {t("home.howitworks.readguide")}
+                  </Link>
+                </Button>
+              </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
-                <div className="bg-background/10 backdrop-blur p-6 rounded-lg">
-                  <Scale className="w-8 h-8 mb-4 mx-auto text-primary-foreground" />
-                  <h3 className="text-lg font-semibold mb-2">{t("home.features.legal")}</h3>
-                  <p className="text-sm text-primary-foreground/80">{t("home.features.legal.desc")}</p>
+              {/* Trust Signals */}
+              <div className="flex flex-wrap justify-center gap-6 text-sm text-muted-foreground animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-700">
+                <div className="flex items-center gap-2">
+                  <Shield className="w-5 h-5 text-primary" />
+                  <span>{t("home.features.legal")}</span>
                 </div>
-                <div className="bg-background/10 backdrop-blur p-6 rounded-lg">
-                  <Heart className="w-8 h-8 mb-4 mx-auto text-primary-foreground" />
-                  <h3 className="text-lg font-semibold mb-2">{t("home.features.verified")}</h3>
-                  <p className="text-sm text-primary-foreground/80">{t("home.features.verified.desc")}</p>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="w-5 h-5 text-primary" />
+                  <span>{t("home.features.verified")}</span>
                 </div>
-                <div className="bg-background/10 backdrop-blur p-6 rounded-lg">
-                  <MapPin className="w-8 h-8 mb-4 mx-auto text-primary-foreground" />
-                  <h3 className="text-lg font-semibold mb-2">{t("home.features.tourist")}</h3>
-                  <p className="text-sm text-primary-foreground/80">{t("home.features.tourist.desc")}</p>
+                <div className="flex items-center gap-2">
+                  <Clock className="w-5 h-5 text-primary" />
+                  <span>24h Response</span>
                 </div>
               </div>
             </div>
           </div>
         </section>
 
+        {/* How It Works - 3 Steps for Tourists */}
+        <section className="py-16 md:py-20 bg-muted/30">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-5xl font-bold mb-4">{t("home.howitworks.title")}</h2>
+              <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
+                {t("home.howitworks.subtitle")}
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto mb-12">
+              <Card className="relative overflow-hidden border-2 hover:border-primary transition-all hover:shadow-xl">
+                <div className="absolute top-4 left-4 w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-2xl font-bold">
+                  1
+                </div>
+                <CardContent className="p-8 pt-20">
+                  <Search className="w-16 h-16 text-primary mb-6" />
+                  <h3 className="text-2xl font-bold mb-3">{t("home.howitworks.private.title")}</h3>
+                  <p className="text-muted-foreground text-lg">{t("home.howitworks.private.desc")}</p>
+                </CardContent>
+              </Card>
+
+              <Card className="relative overflow-hidden border-2 hover:border-primary transition-all hover:shadow-xl">
+                <div className="absolute top-4 left-4 w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-2xl font-bold">
+                  2
+                </div>
+                <CardContent className="p-8 pt-20">
+                  <Calendar className="w-16 h-16 text-primary mb-6" />
+                  <h3 className="text-2xl font-bold mb-3">{t("home.howitworks.membership.title")}</h3>
+                  <p className="text-muted-foreground text-lg">{t("home.howitworks.membership.desc")}</p>
+                </CardContent>
+              </Card>
+
+              <Card className="relative overflow-hidden border-2 hover:border-primary transition-all hover:shadow-xl">
+                <div className="absolute top-4 left-4 w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-2xl font-bold">
+                  3
+                </div>
+                <CardContent className="p-8 pt-20">
+                  <PartyPopper className="w-16 h-16 text-primary mb-6" />
+                  <h3 className="text-2xl font-bold mb-3">{t("home.howitworks.responsible.title")}</h3>
+                  <p className="text-muted-foreground text-lg">{t("home.howitworks.responsible.desc")}</p>
+                </CardContent>
+              </Card>
+            </div>
+
+            <div className="text-center">
+              <Button asChild size="lg" className="text-lg px-8 py-6 h-auto">
+                <Link to={buildLanguageAwarePath("/clubs", language)}>
+                  <Mail className="w-5 h-5 mr-2" />
+                  Get Your Invitation Now
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </section>
+
         {/* Featured Clubs */}
         {featuredClubs.length > 0 && (
-          <section className="py-16 bg-background">
+          <section className="py-16 md:py-20 bg-background">
             <div className="container mx-auto px-4">
               <div className="text-center mb-12">
-                <h2 className="text-3xl md:text-4xl font-bold mb-4">{t("home.featured.title")}</h2>
-                <p className="text-xl text-muted-foreground">{t("home.featured.subtitle")}</p>
+                <h2 className="text-3xl md:text-5xl font-bold mb-4">{t("home.featured.title")}</h2>
+                <p className="text-lg md:text-xl text-muted-foreground">{t("home.featured.subtitle")}</p>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto mb-8">
@@ -156,10 +212,9 @@ const Index = () => {
               </div>
 
               <div className="text-center">
-                <Button asChild size="lg">
+                <Button asChild size="lg" variant="outline" className="text-lg px-8 py-6 h-auto">
                   <Link to={buildLanguageAwarePath("/clubs", language)}>
                     {t("home.featured.viewall")}
-                    <ChevronRight className="w-5 h-5 ml-2" />
                   </Link>
                 </Button>
               </div>
@@ -167,87 +222,34 @@ const Index = () => {
           </section>
         )}
 
-        {/* How It Works */}
-        <section className="py-16 bg-muted/30">
+        {/* Essential Guides - Simplified */}
+        <section className="py-12 md:py-16 bg-muted/30">
           <div className="container mx-auto px-4">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">{t("home.howitworks.title")}</h2>
-              <p className="text-xl text-muted-foreground">{t("home.howitworks.subtitle")}</p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-              <Card>
-                <CardContent className="p-6">
-                  <div className="mb-4">
-                    <Scale className="w-12 h-12 text-primary" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-3">{t("home.howitworks.private.title")}</h3>
-                  <p className="text-muted-foreground">{t("home.howitworks.private.desc")}</p>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardContent className="p-6">
-                  <div className="mb-4">
-                    <Heart className="w-12 h-12 text-primary" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-3">{t("home.howitworks.membership.title")}</h3>
-                  <p className="text-muted-foreground">{t("home.howitworks.membership.desc")}</p>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardContent className="p-6">
-                  <div className="mb-4">
-                    <BookOpen className="w-12 h-12 text-primary" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-3">{t("home.howitworks.responsible.title")}</h3>
-                  <p className="text-muted-foreground">{t("home.howitworks.responsible.desc")}</p>
-                </CardContent>
-              </Card>
-            </div>
-
-            <div className="text-center mt-8">
-              <Button asChild size="lg" variant="outline">
-                <Link to={buildLanguageAwarePath("/guides", language)}>
-                  {t("home.howitworks.readguide")}
+            <div className="text-center mb-8">
+              <h2 className="text-2xl md:text-3xl font-bold mb-6">{t("home.guides.title")}</h2>
+              
+              <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-3xl mx-auto">
+                <Link 
+                  to={buildLanguageAwarePath("/guides", language)}
+                  className="text-lg text-primary hover:text-primary/80 underline underline-offset-4 transition-colors"
+                >
+                  {t("home.guides.best.title")}
                 </Link>
-              </Button>
-            </div>
-          </div>
-        </section>
-
-        {/* Essential Guides */}
-        <section className="py-16 bg-background">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold">{t("home.guides.title")}</h2>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-              <Card className="hover:shadow-lg transition-shadow">
-                <CardContent className="p-6">
-                  <BookOpen className="w-12 h-12 text-primary mb-4" />
-                  <h3 className="text-xl font-semibold mb-2">{t("home.guides.best.title")}</h3>
-                  <p className="text-muted-foreground">{t("home.guides.best.desc")}</p>
-                </CardContent>
-              </Card>
-
-              <Card className="hover:shadow-lg transition-shadow">
-                <CardContent className="p-6">
-                  <Heart className="w-12 h-12 text-primary mb-4" />
-                  <h3 className="text-xl font-semibold mb-2">{t("home.guides.join.title")}</h3>
-                  <p className="text-muted-foreground">{t("home.guides.join.desc")}</p>
-                </CardContent>
-              </Card>
-
-              <Card className="hover:shadow-lg transition-shadow">
-                <CardContent className="p-6">
-                  <Scale className="w-12 h-12 text-primary mb-4" />
-                  <h3 className="text-xl font-semibold mb-2">{t("home.guides.legal.title")}</h3>
-                  <p className="text-muted-foreground">{t("home.guides.legal.desc")}</p>
-                </CardContent>
-              </Card>
+                <span className="hidden sm:inline text-muted-foreground">•</span>
+                <Link 
+                  to={buildLanguageAwarePath("/guides", language)}
+                  className="text-lg text-primary hover:text-primary/80 underline underline-offset-4 transition-colors"
+                >
+                  {t("home.guides.join.title")}
+                </Link>
+                <span className="hidden sm:inline text-muted-foreground">•</span>
+                <Link 
+                  to={buildLanguageAwarePath("/guides", language)}
+                  className="text-lg text-primary hover:text-primary/80 underline underline-offset-4 transition-colors"
+                >
+                  {t("home.guides.legal.title")}
+                </Link>
+              </div>
             </div>
           </div>
         </section>
