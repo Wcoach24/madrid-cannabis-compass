@@ -17,9 +17,6 @@ export const translations: Record<Language, Record<string, string>> = {
     // Homepage
     "home.title": "Weed Madrid - Cannabis Clubs & Invitations",
     "home.subtitle": "Get access to the best cannabis clubs in Madrid - Fast, legal, safe",
-    "home.hero.title": "Get VIP Access to Madrid's Hottest Cannabis Clubs",
-    "home.hero.subtitle": "Exclusive invitations. Verified clubs. Tonight.",
-    "home.hero.cta": "Claim Your VIP Access",
     "home.search.placeholder": "Search clubs by name or district...",
     "home.search.button": "Search Clubs",
     "home.features.legal": "Legal & Safe",
@@ -267,9 +264,6 @@ export const translations: Record<Language, Record<string, string>> = {
     // Homepage
     "home.title": "Weed Madrid - Invitaciones a Clubes de Cannabis",
     "home.subtitle": "Accede a los mejores clubes de cannabis en Madrid - Rápido, legal, seguro",
-    "home.hero.title": "Acceso VIP a Los Mejores Clubes de Cannabis de Madrid",
-    "home.hero.subtitle": "Invitaciones exclusivas. Clubes verificados. Esta noche.",
-    "home.hero.cta": "Reclama Tu Acceso VIP",
     "home.search.placeholder": "Buscar clubes por nombre o distrito...",
     "home.search.button": "Buscar Clubes",
     "home.features.legal": "Legal y Seguro",

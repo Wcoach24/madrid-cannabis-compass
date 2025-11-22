@@ -65,79 +65,65 @@ const Index = () => {
       <Header />
       
       <main className="flex-1">
-        {/* Hero Section - Dark Luxury with Snoop Dogg Vibes */}
-        <section className="relative py-24 md:py-40 overflow-hidden bg-weed-black">
-          {/* Dark gradient overlay with smoke effect */}
-          <div className="absolute inset-0 bg-gradient-to-br from-weed-purple-dark/80 via-weed-black to-weed-purple-dark/60"></div>
-          
-          {/* Animated glow effects */}
-          <div className="absolute top-20 left-10 w-96 h-96 bg-weed-gold/10 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-20 right-10 w-96 h-96 bg-weed-glow-green/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        {/* Hero Section - Tourist-Focused */}
+        <section className="relative py-20 md:py-32 overflow-hidden bg-gradient-to-br from-weed-cyan via-weed-pink to-weed-yellow">
+          <div className="absolute inset-0 bg-gradient-to-br from-background/95 via-background/90 to-background/95"></div>
           
           <div className="container mx-auto px-4 relative z-10">
-            <div className="max-w-5xl mx-auto text-center">
-              {/* Logo - Larger with glow animation */}
-              <div className="mb-10 animate-in fade-in slide-in-from-bottom-4 duration-1000">
+            <div className="max-w-4xl mx-auto text-center">
+              <div className="mb-8 animate-in fade-in slide-in-from-bottom-4 duration-1000">
                 <img 
                   src={logoWeedMadrid} 
                   alt="Weed Madrid Logo" 
-                  className="w-40 h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 mx-auto drop-shadow-2xl shadow-gold animate-pulse"
-                  style={{ filter: 'drop-shadow(0 0 30px rgba(212, 175, 55, 0.4))' }}
+                  className="w-32 h-32 md:w-40 md:h-40 mx-auto mb-6 drop-shadow-2xl"
                 />
               </div>
               
-              {/* Headline - Massive with gold gradient and 3D shadow */}
-              <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-bold mb-6 leading-tight text-gradient-gold text-glow text-3d animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-150">
-                {t("home.hero.title")}
+              <h1 className="font-display text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight text-gradient-logo animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-150">
+                {t("home.title")}
               </h1>
               
-              {/* Subheadline - Luxury serif font */}
-              <p className="font-luxury text-2xl md:text-3xl lg:text-4xl mb-12 text-weed-gold/80 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-300">
-                {t("home.hero.subtitle")}
+              <p className="text-xl md:text-2xl lg:text-3xl mb-10 text-foreground/80 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-300">
+                {t("home.subtitle")}
               </p>
               
-              {/* Single prominent gold CTA button */}
-              <div className="mb-16 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-500">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-500">
                 <Button 
-                  size="xl" 
-                  variant="gold"
+                  size="lg" 
+                  className="bg-primary hover:bg-primary/90 text-primary-foreground text-lg px-8 py-6 h-auto shadow-xl hover:shadow-neon transition-all hover:scale-105"
                   asChild
                 >
                   <Link to={buildLanguageAwarePath("/clubs", language)}>
-                    {t("home.hero.cta")}
+                    <Search className="w-6 h-6 mr-2" />
+                    {t("home.search.button")}
+                  </Link>
+                </Button>
+                <Button 
+                  size="lg" 
+                  variant="outline"
+                  className="text-lg px-8 py-6 h-auto border-2 border-primary hover:bg-primary hover:text-primary-foreground transition-all hover:scale-105"
+                  asChild
+                >
+                  <Link to={buildLanguageAwarePath("/guides", language)}>
+                    {t("home.howitworks.readguide")}
                   </Link>
                 </Button>
               </div>
 
-              {/* Trust Signals - Rich badges with social proof */}
-              <div className="flex flex-wrap justify-center gap-8 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-700">
-                <div className="flex flex-col items-center gap-2 glass-effect px-6 py-4 rounded-lg">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-weed-gold to-weed-gold-dark flex items-center justify-center shadow-gold">
-                    <CheckCircle className="w-7 h-7 text-weed-black" />
-                  </div>
-                  <span className="text-sm font-bold text-weed-gold uppercase tracking-wide">Premium Verified</span>
+              {/* Trust Signals */}
+              <div className="flex flex-wrap justify-center gap-6 text-sm text-muted-foreground animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-700">
+                <div className="flex items-center gap-2">
+                  <Shield className="w-5 h-5 text-primary" />
+                  <span>{t("home.features.legal")}</span>
                 </div>
-                
-                <div className="flex flex-col items-center gap-2 glass-effect px-6 py-4 rounded-lg">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-weed-gold to-weed-gold-dark flex items-center justify-center shadow-gold">
-                    <Shield className="w-7 h-7 text-weed-black" />
-                  </div>
-                  <span className="text-sm font-bold text-weed-gold uppercase tracking-wide">100% Legal</span>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="w-5 h-5 text-primary" />
+                  <span>{t("home.features.verified")}</span>
                 </div>
-                
-                <div className="flex flex-col items-center gap-2 glass-effect px-6 py-4 rounded-lg">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-weed-gold to-weed-gold-dark flex items-center justify-center shadow-gold">
-                    <Clock className="w-7 h-7 text-weed-black" />
-                  </div>
-                  <span className="text-sm font-bold text-weed-gold uppercase tracking-wide">Same-Day Access</span>
+                <div className="flex items-center gap-2">
+                  <Clock className="w-5 h-5 text-primary" />
+                  <span>24h Response</span>
                 </div>
-              </div>
-
-              {/* Social Proof Counter */}
-              <div className="mt-12 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-900">
-                <p className="text-weed-gold/60 text-lg">
-                  <span className="text-3xl font-bold text-weed-gold text-glow">5,000+</span> Members Already Inside
-                </p>
               </div>
             </div>
           </div>
