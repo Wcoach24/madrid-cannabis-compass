@@ -179,59 +179,68 @@ All colors MUST be HSL.
     box-shadow: var(--shadow-gold);
   }
   
-  /* Smoke/Haze Particle Animations */
-  .smoke-particle {
-    position: absolute;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, transparent 70%);
-    filter: blur(40px);
-    opacity: 0;
-    animation: float 20s infinite ease-in-out;
-  }
+  /* Smoke/Haze Particle Animations - Disabled on mobile for performance */
+  @media (min-width: 768px) {
+    .smoke-particle {
+      position: absolute;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, transparent 70%);
+      filter: blur(40px);
+      opacity: 0;
+      animation: float 20s infinite ease-in-out;
+    }
 
-  .smoke-1 {
-    width: 300px;
-    height: 300px;
-    top: 10%;
-    left: 10%;
-    animation-delay: 0s;
-    animation-duration: 25s;
-  }
+    .smoke-1 {
+      width: 300px;
+      height: 300px;
+      top: 10%;
+      left: 10%;
+      animation-delay: 0s;
+      animation-duration: 25s;
+    }
 
-  .smoke-2 {
-    width: 400px;
-    height: 400px;
-    top: 30%;
-    right: 15%;
-    animation-delay: 5s;
-    animation-duration: 30s;
-  }
+    .smoke-2 {
+      width: 400px;
+      height: 400px;
+      top: 30%;
+      right: 15%;
+      animation-delay: 5s;
+      animation-duration: 30s;
+    }
 
-  .smoke-3 {
-    width: 250px;
-    height: 250px;
-    bottom: 20%;
-    left: 20%;
-    animation-delay: 10s;
-    animation-duration: 28s;
-  }
+    .smoke-3 {
+      width: 250px;
+      height: 250px;
+      bottom: 20%;
+      left: 20%;
+      animation-delay: 10s;
+      animation-duration: 28s;
+    }
 
-  .smoke-4 {
-    width: 350px;
-    height: 350px;
-    top: 50%;
-    left: 50%;
-    animation-delay: 15s;
-    animation-duration: 32s;
-  }
+    .smoke-4 {
+      width: 350px;
+      height: 350px;
+      top: 50%;
+      left: 50%;
+      animation-delay: 15s;
+      animation-duration: 32s;
+    }
 
-  .smoke-5 {
-    width: 280px;
-    height: 280px;
-    bottom: 15%;
-    right: 10%;
-    animation-delay: 20s;
-    animation-duration: 27s;
+    .smoke-5 {
+      width: 280px;
+      height: 280px;
+      bottom: 15%;
+      right: 10%;
+      animation-delay: 20s;
+      animation-duration: 27s;
+    }
+  }
+  
+  /* Mobile: Hide smoke particles */
+  @media (max-width: 767px) {
+    .smoke-particle {
+      display: none;
+    }
   }
 
   @keyframes float {
@@ -261,10 +270,24 @@ All colors MUST be HSL.
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  .card-snoop:hover {
-    border-color: rgba(212, 175, 55, 0.8);
-    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6), 0 0 40px rgba(212, 175, 55, 0.3);
-    transform: translateY(-4px);
+  /* Only apply hover effects on devices that support hover (not touch) */
+  @media (hover: hover) {
+    .card-snoop:hover {
+      border-color: rgba(212, 175, 55, 0.8);
+      box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6), 0 0 40px rgba(212, 175, 55, 0.3);
+      transform: translateY(-4px);
+    }
+  }
+  
+  /* Touch-friendly active state for mobile */
+  .card-snoop:active {
+    transform: scale(0.98);
+  }
+  
+  /* Touch manipulation for better mobile interaction */
+  .touch-manipulation {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
   }
   
   /* Connecting lines animation */
