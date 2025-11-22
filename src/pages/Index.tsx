@@ -151,55 +151,69 @@ const Index = () => {
           </div>
         </section>
 
-        {/* How It Works - 3 Steps for Tourists */}
-        <section className="py-16 md:py-20 bg-muted/30">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-12">
-              <h2 className="font-display text-3xl md:text-5xl font-bold mb-4">{t("home.howitworks.title")}</h2>
-              <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
+        {/* How It Works - Dark Luxury with Gold Pattern */}
+        <section className="relative py-16 md:py-20 bg-black overflow-hidden">
+          {/* Subtle gold pattern background */}
+          <div className="absolute inset-0 opacity-5" style={{
+            backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(212, 175, 55, 0.3) 35px, rgba(212, 175, 55, 0.3) 36px)',
+          }}></div>
+          
+          <div className="container mx-auto px-4 relative z-10">
+            <div className="text-center mb-16">
+              <h2 className="font-display text-4xl md:text-6xl font-bold mb-4 text-gradient-gold">{t("home.howitworks.title")}</h2>
+              <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto font-luxury">
                 {t("home.howitworks.subtitle")}
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto mb-12">
-              <Card className="relative overflow-hidden border-2 hover:border-accent transition-all hover:shadow-xl">
-                <div className="absolute top-4 left-4 w-12 h-12 rounded-full bg-accent text-accent-foreground flex items-center justify-center text-2xl font-bold shadow-neon">
-                  1
+            <div className="relative max-w-6xl mx-auto mb-12">
+              {/* Connecting lines between steps (hidden on mobile) */}
+              <div className="hidden md:block absolute top-24 left-1/4 w-1/4 h-0.5 bg-gradient-to-r from-primary/50 to-primary/30 connector-line" style={{ animationDelay: '0.5s' }}></div>
+              <div className="hidden md:block absolute top-24 right-1/4 w-1/4 h-0.5 bg-gradient-to-r from-primary/30 to-primary/50 connector-line" style={{ animationDelay: '1s' }}></div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {/* Step 1 */}
+                <div className="card-snoop relative overflow-hidden rounded-2xl p-8">
+                  <div className="absolute top-6 left-1/2 -translate-x-1/2 w-20 h-20 rounded-full bg-gradient-to-br from-primary to-weed-gold-dark flex items-center justify-center text-4xl font-bold text-black shadow-gold-intense">
+                    1
+                  </div>
+                  <div className="pt-24 text-center">
+                    <Search className="w-20 h-20 text-primary mb-6 mx-auto" strokeWidth={1.5} />
+                    <h3 className="font-display text-3xl font-bold mb-4 text-foreground">{t("home.howitworks.private.title")}</h3>
+                    <p className="text-muted-foreground text-lg leading-relaxed">{t("home.howitworks.private.desc")}</p>
+                  </div>
                 </div>
-                <CardContent className="p-8 pt-20">
-                  <Search className="w-16 h-16 text-primary mb-6" />
-                  <h3 className="font-display text-2xl font-bold mb-3">{t("home.howitworks.private.title")}</h3>
-                  <p className="text-muted-foreground text-lg">{t("home.howitworks.private.desc")}</p>
-                </CardContent>
-              </Card>
 
-              <Card className="relative overflow-hidden border-2 hover:border-accent transition-all hover:shadow-xl">
-                <div className="absolute top-4 left-4 w-12 h-12 rounded-full bg-accent text-accent-foreground flex items-center justify-center text-2xl font-bold shadow-neon">
-                  2
+                {/* Step 2 */}
+                <div className="card-snoop relative overflow-hidden rounded-2xl p-8">
+                  <div className="absolute top-6 left-1/2 -translate-x-1/2 w-20 h-20 rounded-full bg-gradient-to-br from-primary to-weed-gold-dark flex items-center justify-center text-4xl font-bold text-black shadow-gold-intense">
+                    2
+                  </div>
+                  <div className="pt-24 text-center">
+                    <Calendar className="w-20 h-20 text-primary mb-6 mx-auto" strokeWidth={1.5} />
+                    <h3 className="font-display text-3xl font-bold mb-4 text-foreground">{t("home.howitworks.membership.title")}</h3>
+                    <p className="text-muted-foreground text-lg leading-relaxed">{t("home.howitworks.membership.desc")}</p>
+                  </div>
                 </div>
-                <CardContent className="p-8 pt-20">
-                  <Calendar className="w-16 h-16 text-primary mb-6" />
-                  <h3 className="font-display text-2xl font-bold mb-3">{t("home.howitworks.membership.title")}</h3>
-                  <p className="text-muted-foreground text-lg">{t("home.howitworks.membership.desc")}</p>
-                </CardContent>
-              </Card>
 
-              <Card className="relative overflow-hidden border-2 hover:border-accent transition-all hover:shadow-xl">
-                <div className="absolute top-4 left-4 w-12 h-12 rounded-full bg-accent text-accent-foreground flex items-center justify-center text-2xl font-bold shadow-neon">
-                  3
+                {/* Step 3 */}
+                <div className="card-snoop relative overflow-hidden rounded-2xl p-8">
+                  <div className="absolute top-6 left-1/2 -translate-x-1/2 w-20 h-20 rounded-full bg-gradient-to-br from-primary to-weed-gold-dark flex items-center justify-center text-4xl font-bold text-black shadow-gold-intense">
+                    3
+                  </div>
+                  <div className="pt-24 text-center">
+                    <PartyPopper className="w-20 h-20 text-primary mb-6 mx-auto" strokeWidth={1.5} />
+                    <h3 className="font-display text-3xl font-bold mb-4 text-foreground">{t("home.howitworks.responsible.title")}</h3>
+                    <p className="text-muted-foreground text-lg leading-relaxed">{t("home.howitworks.responsible.desc")}</p>
+                  </div>
                 </div>
-                <CardContent className="p-8 pt-20">
-                  <PartyPopper className="w-16 h-16 text-primary mb-6" />
-                  <h3 className="font-display text-2xl font-bold mb-3">{t("home.howitworks.responsible.title")}</h3>
-                  <p className="text-muted-foreground text-lg">{t("home.howitworks.responsible.desc")}</p>
-                </CardContent>
-              </Card>
+              </div>
             </div>
 
             <div className="text-center">
-              <Button asChild size="lg" className="text-lg px-8 py-6 h-auto">
+              <Button asChild size="lg" variant="gold" className="text-lg px-10 py-7 h-auto text-xl shadow-gold-intense hover:shadow-gold-intense hover:scale-105">
                 <Link to={buildLanguageAwarePath("/clubs", language)}>
-                  <Mail className="w-5 h-5 mr-2" />
+                  <Mail className="w-6 h-6 mr-3" />
                   Get Your Invitation Now
                 </Link>
               </Button>
@@ -207,34 +221,80 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Featured Clubs */}
+        {/* Featured Clubs - Luxury Photo Cards */}
         {featuredClubs.length > 0 && (
           <section className="py-16 md:py-20 bg-background">
             <div className="container mx-auto px-4">
               <div className="text-center mb-12">
-                <h2 className="font-display text-3xl md:text-5xl font-bold mb-4">{t("home.featured.title")}</h2>
-                <p className="text-lg md:text-xl text-muted-foreground">{t("home.featured.subtitle")}</p>
+                <h2 className="font-display text-4xl md:text-6xl font-bold mb-4 text-gradient-gold">{t("home.featured.title")}</h2>
+                <p className="text-xl md:text-2xl text-muted-foreground font-luxury">{t("home.featured.subtitle")}</p>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto mb-8">
-                {featuredClubs.map((club) => (
-                  <ClubCard
-                    key={club.id}
-                    slug={club.slug}
-                    name={club.name}
-                    summary={club.summary}
-                    district={club.district}
-                    rating_editorial={club.rating_editorial}
-                    is_tourist_friendly={club.is_tourist_friendly}
-                    is_verified={club.is_verified}
-                    languages={club.languages}
-                    main_image_url={club.main_image_url}
-                  />
+                {featuredClubs.map((club, index) => (
+                  <div key={club.id} className="card-snoop group relative overflow-hidden rounded-2xl cursor-pointer">
+                    {/* VIP Badge for top clubs */}
+                    {index === 0 && (
+                      <div className="absolute top-4 right-4 z-20 bg-gradient-to-r from-primary to-weed-gold-dark text-black text-xs font-bold px-4 py-2 rounded-full shadow-gold-intense">
+                        VIP
+                      </div>
+                    )}
+                    {index === 1 && (
+                      <div className="absolute top-4 right-4 z-20 bg-gradient-to-r from-primary to-weed-gold-dark text-black text-xs font-bold px-4 py-2 rounded-full shadow-gold">
+                        PREMIUM
+                      </div>
+                    )}
+                    
+                    {/* Club Image with zoom effect */}
+                    <div className="relative h-64 overflow-hidden">
+                      <img 
+                        src={club.main_image_url || "/placeholder.svg"} 
+                        alt={club.name}
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      />
+                      {/* Dark gradient overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent opacity-80 group-hover:opacity-90 transition-opacity"></div>
+                      
+                      {/* Club info overlay */}
+                      <div className="absolute bottom-0 left-0 right-0 p-6">
+                        <h3 className="font-display text-3xl font-bold mb-2 text-foreground">{club.name}</h3>
+                        <div className="flex items-center gap-2 mb-3">
+                          <div className="flex items-center gap-1">
+                            {[...Array(5)].map((_, i) => (
+                              <span key={i} className={`text-lg ${i < Math.floor(club.rating_editorial || 0) ? 'text-primary' : 'text-muted-foreground/30'}`}>
+                                ★
+                              </span>
+                            ))}
+                          </div>
+                          <span className="text-primary font-bold text-lg">{club.rating_editorial?.toFixed(1)}</span>
+                        </div>
+                        <p className="text-muted-foreground text-sm mb-1">📍 {club.district}</p>
+                        {club.is_tourist_friendly && (
+                          <span className="inline-block text-xs bg-primary/20 text-primary px-3 py-1 rounded-full border border-primary/30">
+                            Tourist Friendly
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    
+                    {/* Get Invitation Button */}
+                    <div className="p-6">
+                      <Button 
+                        asChild 
+                        variant="gold" 
+                        className="w-full text-lg py-6 shadow-gold group-hover:shadow-gold-intense transition-all"
+                      >
+                        <Link to={buildLanguageAwarePath(`/clubs/${club.slug}`, language)}>
+                          Get Invitation
+                        </Link>
+                      </Button>
+                    </div>
+                  </div>
                 ))}
               </div>
 
               <div className="text-center">
-                <Button asChild size="lg" variant="outline" className="text-lg px-8 py-6 h-auto">
+                <Button asChild size="lg" variant="glow" className="text-lg px-10 py-6 h-auto">
                   <Link to={buildLanguageAwarePath("/clubs", language)}>
                     {t("home.featured.viewall")}
                   </Link>
