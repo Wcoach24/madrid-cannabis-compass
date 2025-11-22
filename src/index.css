@@ -8,62 +8,72 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 220 13% 13%;
+    /* Dark Luxury Base - Deep Black Backgrounds */
+    --background: 0 0% 4%;
+    --foreground: 0 0% 98%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 220 13% 13%;
+    --card: 0 0% 6%;
+    --card-foreground: 0 0% 98%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 220 13% 13%;
+    --popover: 0 0% 6%;
+    --popover-foreground: 0 0% 98%;
 
-    /* Primary: Vibrant Green from logo */
-    --primary: 160 84% 39%;
-    --primary-foreground: 0 0% 100%;
+    /* Primary: Gold Luxury */
+    --primary: 45 100% 51%;
+    --primary-foreground: 0 0% 0%;
 
-    /* Secondary: Cyan from logo */
-    --secondary: 189 91% 36%;
-    --secondary-foreground: 0 0% 100%;
+    /* Secondary: Deep Purple */
+    --secondary: 270 50% 15%;
+    --secondary-foreground: 45 100% 51%;
 
-    --muted: 210 20% 96%;
-    --muted-foreground: 220 9% 46%;
+    --muted: 0 0% 12%;
+    --muted-foreground: 0 0% 60%;
 
-    /* Accent: Pink from logo */
-    --accent: 330 81% 60%;
-    --accent-foreground: 0 0% 100%;
+    /* Accent: Vibrant Gold */
+    --accent: 45 100% 51%;
+    --accent-foreground: 0 0% 0%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 160 84% 39%;
+    --border: 45 100% 51% / 0.2;
+    --input: 0 0% 12%;
+    --ring: 45 100% 51%;
 
     --radius: 0.75rem;
 
-    /* Logo-inspired design tokens */
-    --weed-green: 160 84% 39%;
+    /* Snoop Dogg Design Tokens */
+    --weed-gold: 45 100% 51%;
+    --weed-gold-dark: 43 74% 49%;
+    --weed-black: 0 0% 4%;
+    --weed-purple-dark: 270 50% 15%;
+    --weed-glow-green: 160 84% 39%;
     --weed-cyan: 189 91% 36%;
     --weed-pink: 330 81% 60%;
-    --weed-yellow: 45 93% 47%;
     
-    /* Legacy tokens for backwards compatibility */
+    /* Legacy tokens */
+    --weed-green: 160 84% 39%;
+    --weed-yellow: 45 100% 51%;
     --forest: 160 84% 39%;
     --forest-light: 160 70% 50%;
     --earth: 25 45% 65%;
     --sand: 42 35% 85%;
-    --gold: 45 93% 47%;
+    --gold: 45 100% 51%;
     
-    /* Gradients with vibrant logo colors */
-    --gradient-hero: linear-gradient(135deg, hsl(189 91% 36%) 0%, hsl(330 81% 60%) 50%, hsl(45 93% 47%) 100%);
-    --gradient-primary: linear-gradient(135deg, hsl(160 84% 39%) 0%, hsl(189 91% 36%) 100%);
+    /* Gradients - Gold & Dark */
+    --gradient-hero: linear-gradient(135deg, hsl(270 50% 15%) 0%, hsl(0 0% 4%) 50%, hsl(270 40% 10%) 100%);
+    --gradient-gold: linear-gradient(135deg, hsl(45 100% 51%) 0%, hsl(43 74% 49%) 100%);
+    --gradient-gold-glow: linear-gradient(135deg, hsl(45 100% 51%) 0%, hsl(45 93% 47%) 100%);
+    --gradient-primary: linear-gradient(135deg, hsl(45 100% 51%) 0%, hsl(43 74% 49%) 100%);
     --gradient-accent: linear-gradient(135deg, hsl(330 81% 60%) 0%, hsl(45 93% 47%) 100%);
-    --gradient-card: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(210 20% 98%) 100%);
+    --gradient-card: linear-gradient(180deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.6) 100%);
     
-    /* Shadows with color tints */
-    --shadow-subtle: 0 2px 8px hsla(160 84% 39% / 0.08);
-    --shadow-elevated: 0 8px 24px hsla(160 84% 39% / 0.12);
-    --shadow-neon: 0 0 20px hsla(330 81% 60% / 0.4), 0 0 40px hsla(160 84% 39% / 0.2);
+    /* Shadows - Gold Glow Effects */
+    --shadow-subtle: 0 2px 8px hsla(0 0% 0% / 0.5);
+    --shadow-elevated: 0 8px 24px hsla(0 0% 0% / 0.6);
+    --shadow-gold: 0 8px 32px hsla(45 100% 51% / 0.3), 0 0 20px hsla(45 100% 51% / 0.1);
+    --shadow-gold-intense: 0 12px 48px hsla(45 100% 51% / 0.4), 0 0 40px hsla(45 100% 51% / 0.3);
+    --shadow-neon: 0 0 20px hsla(160 84% 39% / 0.4), 0 0 40px hsla(160 84% 39% / 0.2);
     
     /* Transitions */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -71,36 +81,26 @@ All colors MUST be HSL.
   }
 
   .dark {
-    --background: 220 13% 9%;
+    /* Dark mode inherits the dark luxury theme */
+    --background: 0 0% 4%;
     --foreground: 0 0% 98%;
-
-    --card: 220 13% 11%;
+    --card: 0 0% 6%;
     --card-foreground: 0 0% 98%;
-
-    --popover: 220 13% 11%;
+    --popover: 0 0% 6%;
     --popover-foreground: 0 0% 98%;
-
-    /* Primary: Brighter green for dark mode */
-    --primary: 160 84% 45%;
-    --primary-foreground: 220 13% 9%;
-
-    /* Secondary: Brighter cyan for dark mode */
-    --secondary: 189 91% 42%;
-    --secondary-foreground: 220 13% 9%;
-
-    --muted: 220 13% 16%;
-    --muted-foreground: 220 9% 60%;
-
-    /* Accent: Vibrant pink for dark mode */
-    --accent: 330 81% 65%;
-    --accent-foreground: 220 13% 9%;
-
+    --primary: 45 100% 51%;
+    --primary-foreground: 0 0% 0%;
+    --secondary: 270 50% 15%;
+    --secondary-foreground: 45 100% 51%;
+    --muted: 0 0% 12%;
+    --muted-foreground: 0 0% 60%;
+    --accent: 45 100% 51%;
+    --accent-foreground: 0 0% 0%;
     --destructive: 0 62% 50%;
     --destructive-foreground: 0 0% 98%;
-
-    --border: 220 13% 18%;
-    --input: 220 13% 18%;
-    --ring: 160 84% 45%;
+    --border: 45 100% 51% / 0.2;
+    --input: 0 0% 12%;
+    --ring: 45 100% 51%;
   }
 }
 
@@ -108,16 +108,25 @@ All colors MUST be HSL.
   body {
     @apply bg-background text-foreground;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-weight: 300;
   }
   
-  /* Display font for headlines */
+  /* Display font for headlines - Bebas Neue */
   h1, h2, h3 {
-    font-family: 'Righteous', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    letter-spacing: -0.02em;
+    font-family: 'Bebas Neue', 'Impact', -apple-system, sans-serif;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+  
+  /* Luxury serif for subheadlines */
+  .font-luxury {
+    font-family: 'Playfair Display', 'Georgia', serif;
+    text-transform: none;
+    letter-spacing: 0;
   }
 }
 
-/* Utility classes for gradient text */
+/* Utility classes for gradient text and effects */
 @layer utilities {
   .text-gradient-logo {
     @apply bg-gradient-to-r from-weed-cyan via-weed-pink to-weed-yellow bg-clip-text text-transparent;
@@ -127,7 +136,46 @@ All colors MUST be HSL.
     @apply bg-gradient-to-r from-primary to-weed-cyan bg-clip-text text-transparent;
   }
   
+  .text-gradient-gold {
+    background: var(--gradient-gold);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .text-glow {
+    text-shadow: 0 0 20px hsla(45 100% 51% / 0.5),
+                 0 0 40px hsla(45 100% 51% / 0.3),
+                 0 0 60px hsla(45 100% 51% / 0.2);
+  }
+  
+  .text-3d {
+    text-shadow: 2px 2px 0px hsla(0 0% 0% / 0.8),
+                 4px 4px 0px hsla(0 0% 0% / 0.6),
+                 6px 6px 0px hsla(0 0% 0% / 0.4);
+  }
+  
   .shadow-neon {
     box-shadow: var(--shadow-neon);
+  }
+  
+  .shadow-gold {
+    box-shadow: var(--shadow-gold);
+  }
+  
+  .shadow-gold-intense {
+    box-shadow: var(--shadow-gold-intense);
+  }
+  
+  .glass-effect {
+    background: rgba(10, 10, 10, 0.8);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 2px solid hsla(45 100% 51% / 0.3);
+  }
+  
+  .glass-effect:hover {
+    border-color: hsla(45 100% 51% / 0.8);
+    box-shadow: var(--shadow-gold);
   }
 }

@@ -47,7 +47,12 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        // Logo-inspired colors
+        // Snoop Dogg Luxury Colors
+        "weed-gold": "hsl(var(--weed-gold))",
+        "weed-gold-dark": "hsl(var(--weed-gold-dark))",
+        "weed-black": "hsl(var(--weed-black))",
+        "weed-purple-dark": "hsl(var(--weed-purple-dark))",
+        "weed-glow-green": "hsl(var(--weed-glow-green))",
         "weed-green": "hsl(var(--weed-green))",
         "weed-cyan": "hsl(var(--weed-cyan))",
         "weed-pink": "hsl(var(--weed-pink))",
@@ -61,7 +66,8 @@ export default {
       },
       fontFamily: {
         sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
-        display: ['Righteous', 'Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        display: ['Bebas Neue', 'Impact', '-apple-system', 'sans-serif'],
+        luxury: ['Playfair Display', 'Georgia', 'serif'],
       },
       borderRadius: {
         lg: "var(--radius)",
