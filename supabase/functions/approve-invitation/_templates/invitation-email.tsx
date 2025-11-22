@@ -9,6 +9,7 @@ import {
   Section,
   Text,
   Hr,
+  Button,
 } from 'https://esm.sh/@react-email/components@0.0.22';
 import * as React from 'https://esm.sh/react@18.3.1';
 
@@ -31,22 +32,35 @@ export const InvitationEmail = ({
 }: InvitationEmailProps) => (
   <Html>
     <Head />
-    <Preview>Your Weed Madrid Invitation Code - {invitationCode}</Preview>
+    <Preview>Your Weed Madrid Invitation - {invitationCode}</Preview>
     <Body style={main}>
       <Container style={container}>
         <Section style={logoSection}>
-          <Heading style={logo}>🌿 Weed Madrid</Heading>
+          <Heading style={logo}>🌿 WEED MADRID</Heading>
         </Section>
         
         <Heading style={h1}>Your Invitation is Approved!</Heading>
         
         <Text style={text}>
-          Great news! Your request to visit <strong>{clubName}</strong> has been approved.
+          Your request to visit <strong>{clubName}</strong> has been approved. Follow the instructions below to access the club.
         </Text>
 
+        <Section style={doorInstructionBox}>
+          <Text style={doorInstructionLabel}>📱 SHOW THIS CODE AT THE DOOR</Text>
+        </Section>
+
         <Section style={codeSection}>
-          <Text style={codeLabel}>Your Invitation Code:</Text>
           <Text style={code}>{invitationCode}</Text>
+        </Section>
+
+        <Hr style={hr} />
+
+        <Section style={doorStepsSection}>
+          <Heading style={h2}>🚪 AT THE DOOR</Heading>
+          <Text style={stepText}>1. Show this invitation code on your phone</Text>
+          <Text style={stepText}>2. Present your ID (passport or national ID card)</Text>
+          <Text style={stepText}>3. Confirm your name matches the reservation</Text>
+          <Text style={stepText}>4. You'll be registered as a guest member</Text>
         </Section>
 
         <Hr style={hr} />
@@ -73,26 +87,57 @@ export const InvitationEmail = ({
           <Text style={detailText}>
             <strong>Email:</strong> {recipientEmail}
           </Text>
+          <Text style={detailText}>
+            <strong>Valid for:</strong> 30 days from approval
+          </Text>
+        </Section>
+
+        <Section style={actionSection}>
+          <Link 
+            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(clubAddress + ', Madrid')}`}
+            style={mapButton}
+          >
+            📍 Open in Google Maps
+          </Link>
+          <Link 
+            href="https://wa.me/34632332050"
+            style={whatsappButton}
+          >
+            💬 WhatsApp Club
+          </Link>
         </Section>
 
         <Hr style={hr} />
 
-        <Section style={instructionsSection}>
-          <Heading style={h2}>What to Do Next</Heading>
-          <Text style={listItem}>1. Present this invitation code at the club</Text>
-          <Text style={listItem}>2. Bring a valid ID (passport or national ID)</Text>
-          <Text style={listItem}>3. Remember: You must be 18+ to enter</Text>
-          <Text style={listItem}>4. Respect club rules and Spanish cannabis legislation</Text>
+        <Section style={tipsSection}>
+          <Heading style={h2}>Important Tips</Heading>
+          <Text style={tipText}>🕐 Check club opening hours before visiting</Text>
+          <Text style={tipText}>🎒 Bring a valid ID - entry requires verification</Text>
+          <Text style={tipText}>📱 Save this email or screenshot the code</Text>
+          <Text style={tipText}>❓ Lost or have questions? Contact the club via WhatsApp</Text>
         </Section>
 
         <Hr style={hr} />
 
         <Section style={legalSection}>
+          <Heading style={legalHeading}>⚠️ Legal Notice - Read Carefully</Heading>
           <Text style={legalText}>
-            <strong>Important Legal Notice:</strong> Cannabis clubs in Madrid are private, 
-            non-profit associations. This invitation grants you access as a guest member. 
-            Cannabis consumption is only legal within the club premises. Public consumption, 
-            sale, or distribution is illegal under Spanish law.
+            Cannabis clubs in Madrid are <strong>private, non-profit associations</strong>. This invitation grants you access as a guest member. 
+          </Text>
+          <Section style={legalDoSection}>
+            <Text style={legalDoTitle}>✅ DO:</Text>
+            <Text style={legalDoText}>• Consume cannabis ONLY inside the club premises</Text>
+            <Text style={legalDoText}>• Respect club rules and Spanish cannabis legislation</Text>
+            <Text style={legalDoText}>• Verify you are 18+ years old</Text>
+          </Section>
+          <Section style={legalDontSection}>
+            <Text style={legalDontTitle}>❌ DON'T:</Text>
+            <Text style={legalDontText}>• Never consume cannabis in public spaces (illegal)</Text>
+            <Text style={legalDontText}>• Never attempt to sell or distribute cannabis (illegal)</Text>
+            <Text style={legalDontText}>• Never take cannabis outside of Spain (federal crime)</Text>
+          </Section>
+          <Text style={legalWarning}>
+            Public consumption, sale, or distribution is <strong>illegal under Spanish law</strong> and can result in fines or prosecution.
           </Text>
         </Section>
 
@@ -114,18 +159,19 @@ export default InvitationEmail;
 
 // Styles
 const main = {
-  backgroundColor: '#f6f9fc',
+  backgroundColor: '#0a0a0a',
   fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
   padding: '20px 0',
 };
 
 const container = {
-  backgroundColor: '#ffffff',
+  backgroundColor: '#1a1a1a',
   margin: '0 auto',
   padding: '40px 20px',
   maxWidth: '600px',
-  borderRadius: '8px',
-  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.05)',
+  borderRadius: '12px',
+  border: '2px solid #d4af37',
+  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.5), 0 0 20px rgba(212, 175, 55, 0.2)',
 };
 
 const logoSection = {
@@ -134,16 +180,17 @@ const logoSection = {
 };
 
 const logo = {
-  color: '#10b981',
-  fontSize: '32px',
+  color: '#d4af37',
+  fontSize: '36px',
   fontWeight: 'bold',
   margin: '0',
   textAlign: 'center' as const,
+  letterSpacing: '2px',
 };
 
 const h1 = {
-  color: '#1a1a1a',
-  fontSize: '28px',
+  color: '#ffd700',
+  fontSize: '32px',
   fontWeight: 'bold',
   margin: '0 0 24px',
   textAlign: 'center' as const,
@@ -151,51 +198,73 @@ const h1 = {
 };
 
 const h2 = {
-  color: '#1a1a1a',
-  fontSize: '20px',
+  color: '#d4af37',
+  fontSize: '22px',
   fontWeight: 'bold',
   margin: '0 0 16px',
 };
 
 const text = {
-  color: '#525252',
+  color: '#e5e5e5',
   fontSize: '16px',
   lineHeight: '1.6',
   margin: '0 0 24px',
   textAlign: 'center' as const,
 };
 
-const codeSection = {
-  backgroundColor: '#f3f4f6',
-  borderRadius: '8px',
-  padding: '24px',
+const doorInstructionBox = {
   textAlign: 'center' as const,
-  margin: '32px 0',
-  border: '2px solid #10b981',
+  margin: '24px 0 16px',
 };
 
-const codeLabel = {
-  color: '#525252',
-  fontSize: '14px',
-  fontWeight: '600',
+const doorInstructionLabel = {
+  color: '#ffd700',
+  fontSize: '18px',
+  fontWeight: '700',
   textTransform: 'uppercase' as const,
-  letterSpacing: '0.5px',
-  margin: '0 0 12px',
+  letterSpacing: '1px',
+  margin: '0',
+};
+
+const codeSection = {
+  background: 'linear-gradient(135deg, #d4af37 0%, #ffd700 100%)',
+  borderRadius: '12px',
+  padding: '32px 24px',
+  textAlign: 'center' as const,
+  margin: '0 0 32px',
+  border: '3px solid #ffd700',
+  boxShadow: '0 4px 20px rgba(212, 175, 55, 0.4)',
 };
 
 const code = {
-  color: '#10b981',
-  fontSize: '32px',
+  color: '#0a0a0a',
+  fontSize: '48px',
   fontWeight: 'bold',
   fontFamily: 'monospace',
-  letterSpacing: '2px',
+  letterSpacing: '4px',
   margin: '0',
 };
 
 const hr = {
   border: 'none',
-  borderTop: '1px solid #e5e7eb',
+  borderTop: '1px solid #333333',
   margin: '32px 0',
+};
+
+const doorStepsSection = {
+  backgroundColor: 'rgba(212, 175, 55, 0.1)',
+  borderRadius: '8px',
+  padding: '24px',
+  margin: '24px 0',
+  border: '1px solid rgba(212, 175, 55, 0.3)',
+};
+
+const stepText = {
+  color: '#e5e5e5',
+  fontSize: '16px',
+  lineHeight: '1.8',
+  margin: '8px 0',
+  fontWeight: '500',
 };
 
 const detailsSection = {
@@ -203,39 +272,124 @@ const detailsSection = {
 };
 
 const detailText = {
-  color: '#525252',
+  color: '#cccccc',
   fontSize: '15px',
   lineHeight: '1.6',
   margin: '8px 0',
 };
 
-const instructionsSection = {
+const actionSection = {
+  textAlign: 'center' as const,
+  margin: '32px 0',
+};
+
+const mapButton = {
+  display: 'inline-block',
+  backgroundColor: '#d4af37',
+  color: '#0a0a0a',
+  fontSize: '16px',
+  fontWeight: '600',
+  padding: '14px 28px',
+  borderRadius: '8px',
+  textDecoration: 'none',
+  margin: '8px',
+  boxShadow: '0 4px 12px rgba(212, 175, 55, 0.3)',
+};
+
+const whatsappButton = {
+  display: 'inline-block',
+  backgroundColor: '#25D366',
+  color: '#ffffff',
+  fontSize: '16px',
+  fontWeight: '600',
+  padding: '14px 28px',
+  borderRadius: '8px',
+  textDecoration: 'none',
+  margin: '8px',
+  boxShadow: '0 4px 12px rgba(37, 211, 102, 0.3)',
+};
+
+const tipsSection = {
   margin: '24px 0',
 };
 
-const listItem = {
-  color: '#525252',
+const tipText = {
+  color: '#cccccc',
   fontSize: '15px',
   lineHeight: '1.8',
   margin: '8px 0',
 };
 
 const legalSection = {
-  backgroundColor: '#fef3c7',
+  backgroundColor: 'rgba(212, 175, 55, 0.15)',
   borderRadius: '8px',
-  padding: '20px',
+  padding: '24px',
   margin: '24px 0',
+  border: '2px solid #d4af37',
+};
+
+const legalHeading = {
+  color: '#ffd700',
+  fontSize: '18px',
+  fontWeight: 'bold',
+  margin: '0 0 16px',
+  textAlign: 'center' as const,
 };
 
 const legalText = {
-  color: '#92400e',
+  color: '#e5e5e5',
+  fontSize: '14px',
+  lineHeight: '1.6',
+  margin: '0 0 16px',
+};
+
+const legalDoSection = {
+  margin: '16px 0',
+};
+
+const legalDoTitle = {
+  color: '#4ade80',
+  fontSize: '15px',
+  fontWeight: 'bold',
+  margin: '0 0 8px',
+};
+
+const legalDoText = {
+  color: '#cccccc',
   fontSize: '13px',
   lineHeight: '1.6',
-  margin: '0',
+  margin: '4px 0',
+};
+
+const legalDontSection = {
+  margin: '16px 0',
+};
+
+const legalDontTitle = {
+  color: '#f87171',
+  fontSize: '15px',
+  fontWeight: 'bold',
+  margin: '0 0 8px',
+};
+
+const legalDontText = {
+  color: '#cccccc',
+  fontSize: '13px',
+  lineHeight: '1.6',
+  margin: '4px 0',
+};
+
+const legalWarning = {
+  color: '#ffd700',
+  fontSize: '13px',
+  lineHeight: '1.6',
+  margin: '16px 0 0',
+  fontWeight: '600',
+  textAlign: 'center' as const,
 };
 
 const footer = {
-  color: '#737373',
+  color: '#999999',
   fontSize: '14px',
   lineHeight: '1.6',
   margin: '24px 0 8px',
@@ -243,13 +397,14 @@ const footer = {
 };
 
 const footerBrand = {
-  color: '#a3a3a3',
+  color: '#d4af37',
   fontSize: '13px',
   margin: '0',
   textAlign: 'center' as const,
+  fontWeight: '600',
 };
 
 const link = {
-  color: '#10b981',
+  color: '#d4af37',
   textDecoration: 'underline',
 };
