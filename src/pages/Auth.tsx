@@ -147,7 +147,7 @@ const Auth = () => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-background">
       <SEOHead
         title={t(isLogin ? "auth.title" : "auth.signup.title")}
         description={t(isLogin ? "auth.subtitle" : "auth.signup.subtitle")}
@@ -155,10 +155,14 @@ const Auth = () => {
       <Header />
       
       <main className="flex-1 flex items-center justify-center py-12 px-4">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>{t(isLogin ? "auth.title" : "auth.signup.title")}</CardTitle>
-            <CardDescription>{t(isLogin ? "auth.subtitle" : "auth.signup.subtitle")}</CardDescription>
+        <Card className="w-full max-w-md shadow-lg">
+          <CardHeader className="space-y-2 text-center">
+            <CardTitle className="text-2xl font-bold">
+              {t(isLogin ? "auth.title" : "auth.signup.title")}
+            </CardTitle>
+            <CardDescription className="text-base">
+              {t(isLogin ? "auth.subtitle" : "auth.signup.subtitle")}
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -172,6 +176,7 @@ const Auth = () => {
                   onChange={(e) => setEmail(e.target.value)}
                   required
                   disabled={loading}
+                  className="h-11"
                 />
               </div>
               
@@ -186,16 +191,28 @@ const Auth = () => {
                   required
                   disabled={loading}
                   minLength={6}
+                  className="h-11"
                 />
               </div>
 
-              <Button type="submit" className="w-full" disabled={loading}>
+              <Button type="submit" className="w-full h-11" disabled={loading}>
                 {loading ? "..." : t(isLogin ? "auth.login" : "auth.signup")}
               </Button>
 
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                  <span className="w-full border-t" />
+                </div>
+                <div className="relative flex justify-center text-xs uppercase">
+                  <span className="bg-background px-2 text-muted-foreground">
+                    or
+                  </span>
+                </div>
+              </div>
+
               <Button
                 type="button"
-                variant="link"
+                variant="outline"
                 className="w-full"
                 onClick={() => setIsLogin(!isLogin)}
                 disabled={loading}

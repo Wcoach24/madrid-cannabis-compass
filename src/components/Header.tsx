@@ -1,15 +1,19 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu } from "lucide-react";
+import { Menu, Shield } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import NavLink from "./NavLink";
 import LanguageSelect from "./LanguageSelect";
 import { useLanguage } from "@/hooks/useLanguage";
 import { buildLanguageAwarePath } from "@/lib/languageUtils";
+import { useAuth } from "@/hooks/useAuth";
+import { useAdminRole } from "@/hooks/useAdminRole";
 import logoWeedMadrid from "@/assets/logo-weed-madrid.png";
 
 const Header = () => {
   const { language, t } = useLanguage();
+  const { user } = useAuth();
+  const { isAdmin } = useAdminRole();
   
   const navigation = [
     { name: t("nav.home"), href: buildLanguageAwarePath("/", language) },
@@ -41,6 +45,23 @@ const Header = () => {
                 {item.name}
               </NavLink>
             ))}
+            {user && isAdmin && (
+              <Link
+                to={buildLanguageAwarePath("/admin/invitations", language)}
+                className="flex items-center gap-1.5 text-sm font-medium text-foreground/80 transition-colors hover:text-foreground"
+              >
+                <Shield className="h-4 w-4" />
+                Admin
+              </Link>
+            )}
+            {!user && (
+              <Link
+                to={buildLanguageAwarePath("/auth", language)}
+                className="text-sm font-medium text-foreground/80 transition-colors hover:text-foreground"
+              >
+                Login
+              </Link>
+            )}
             <LanguageSelect />
           </nav>
 
@@ -64,6 +85,23 @@ const Header = () => {
                       {item.name}
                     </Link>
                   ))}
+                  {user && isAdmin && (
+                    <Link
+                      to={buildLanguageAwarePath("/admin/invitations", language)}
+                      className="flex items-center gap-2 text-lg font-medium text-foreground/80 transition-colors hover:text-foreground"
+                    >
+                      <Shield className="h-5 w-5" />
+                      Admin
+                    </Link>
+                  )}
+                  {!user && (
+                    <Link
+                      to={buildLanguageAwarePath("/auth", language)}
+                      className="text-lg font-medium text-foreground/80 transition-colors hover:text-foreground"
+                    >
+                      Login
+                    </Link>
+                  )}
                 </nav>
               </SheetContent>
             </Sheet>

@@ -186,17 +186,24 @@ const AdminInvitations = () => {
 
   return (
     <div className="min-h-screen bg-background">
-        <SEOHead
-          title={t("admin.invitations.title")}
-          description="Manage invitation requests for cannabis clubs"
-          canonical={`/${language}/admin/invitations`}
-        />
+      <SEOHead
+        title={t("admin.invitations.title")}
+        description="Manage invitation requests for cannabis clubs"
+        canonical={`/${language}/admin/invitations`}
+      />
       <Header />
-      <main className="container mx-auto px-4 py-16">
-        <h1 className="text-4xl font-bold mb-8">{t("admin.invitations.title")}</h1>
+      <main className="container mx-auto px-4 py-8 md:py-12">
+        <div className="mb-8">
+          <h1 className="text-3xl md:text-4xl font-bold mb-2">
+            {t("admin.invitations.title")}
+          </h1>
+          <p className="text-muted-foreground">
+            Review and manage club invitation requests
+          </p>
+        </div>
 
-        <Tabs value={filter} onValueChange={setFilter} className="mb-8">
-          <TabsList>
+        <Tabs value={filter} onValueChange={setFilter} className="mb-6">
+          <TabsList className="grid w-full max-w-md grid-cols-4">
             <TabsTrigger value="all">{t("admin.invitations.filters.all")}</TabsTrigger>
             <TabsTrigger value="pending">{t("admin.invitations.filters.pending")}</TabsTrigger>
             <TabsTrigger value="approved">{t("admin.invitations.filters.approved")}</TabsTrigger>
@@ -205,11 +212,13 @@ const AdminInvitations = () => {
         </Tabs>
 
         {filteredRequests.length === 0 ? (
-          <div className="text-center py-12 text-muted-foreground">
-            {t("admin.invitations.noRequests")}
+          <div className="bg-card rounded-lg border p-12 text-center">
+            <p className="text-muted-foreground text-lg">
+              {t("admin.invitations.noRequests")}
+            </p>
           </div>
         ) : (
-          <div className="bg-card rounded-lg border overflow-hidden">
+          <div className="bg-card rounded-lg border shadow-sm overflow-hidden">
             <Table>
               <TableHeader>
                 <TableRow>
