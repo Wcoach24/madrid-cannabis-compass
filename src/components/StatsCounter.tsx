@@ -15,36 +15,36 @@ const StatsCounter = forwardRef<HTMLDivElement, StatsCounterProps>(
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-primary/10 rounded-full blur-3xl"></div>
         </div>
         
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            {/* Members Counter */}
-            <div className="text-center card-snoop p-8 rounded-2xl">
-              <Users className="w-12 h-12 text-primary mx-auto mb-4" />
-              <div className="text-5xl md:text-6xl font-display font-bold text-gradient-gold mb-2 text-glow">
-                {memberCount.toLocaleString()}+
-              </div>
-              <p className="text-xl text-muted-foreground font-luxury">Happy Members</p>
-            </div>
+            <div className="container mx-auto px-4 relative z-10">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8 max-w-5xl mx-auto">
+                {/* Members Counter */}
+                <div className="text-center card-snoop p-6 md:p-8 rounded-2xl">
+                  <Users className="w-10 h-10 md:w-12 md:h-12 text-primary mx-auto mb-3 md:mb-4" />
+                  <div className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-gradient-gold mb-2 text-glow">
+                    {memberCount.toLocaleString()}+
+                  </div>
+                  <p className="text-lg md:text-xl text-muted-foreground font-luxury">Happy Members</p>
+                </div>
 
-            {/* Clubs Counter */}
-            <div className="text-center card-snoop p-8 rounded-2xl">
-              <Building2 className="w-12 h-12 text-primary mx-auto mb-4" />
-              <div className="text-5xl md:text-6xl font-display font-bold text-gradient-gold mb-2 text-glow">
-                {clubCount}+
-              </div>
-              <p className="text-xl text-muted-foreground font-luxury">Verified Clubs</p>
-            </div>
+                {/* Clubs Counter */}
+                <div className="text-center card-snoop p-6 md:p-8 rounded-2xl">
+                  <Building2 className="w-10 h-10 md:w-12 md:h-12 text-primary mx-auto mb-3 md:mb-4" />
+                  <div className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-gradient-gold mb-2 text-glow">
+                    {clubCount}+
+                  </div>
+                  <p className="text-lg md:text-xl text-muted-foreground font-luxury">Verified Clubs</p>
+                </div>
 
-            {/* Same-Day Access */}
-            <div className="text-center card-snoop p-8 rounded-2xl">
-              <Clock className="w-12 h-12 text-primary mx-auto mb-4" />
-              <div className="text-5xl md:text-6xl font-display font-bold text-gradient-gold mb-2 text-glow">
-                24h
+                {/* Same-Day Access */}
+                <div className="text-center card-snoop p-6 md:p-8 rounded-2xl sm:col-span-2 md:col-span-1">
+                  <Clock className="w-10 h-10 md:w-12 md:h-12 text-primary mx-auto mb-3 md:mb-4" />
+                  <div className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-gradient-gold mb-2 text-glow">
+                    24h
+                  </div>
+                  <p className="text-lg md:text-xl text-muted-foreground font-luxury">Same-Day Access</p>
+                </div>
               </div>
-              <p className="text-xl text-muted-foreground font-luxury">Same-Day Access</p>
             </div>
-          </div>
-        </div>
       </section>
     );
   }
