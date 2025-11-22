@@ -157,7 +157,7 @@ const Index = () => {
       
       <main className="flex-1">
         {/* Hero Section - Dark Luxury with Smoke Animation */}
-        <section className="relative py-20 md:py-32 overflow-hidden bg-black">
+        <section className="relative py-20 md:py-32 overflow-hidden hero-gradient-bg">
           {/* Animated Smoke/Haze Particles */}
           <div className="absolute inset-0">
             <div className="smoke-particle smoke-1"></div>
@@ -165,6 +165,9 @@ const Index = () => {
             <div className="smoke-particle smoke-3"></div>
             <div className="smoke-particle smoke-4"></div>
             <div className="smoke-particle smoke-5"></div>
+            <div className="smoke-particle smoke-6"></div>
+            <div className="smoke-particle smoke-7"></div>
+            <div className="smoke-particle smoke-8"></div>
           </div>
           
           {/* Dark Overlay for Readability */}
