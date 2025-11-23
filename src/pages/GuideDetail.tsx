@@ -359,7 +359,7 @@ const GuideDetail = () => {
               <div className="mb-12 rounded-lg overflow-hidden">
                 <img 
                   src={article.cover_image_url} 
-                  alt={article.title}
+                  alt={`${article.title} - Comprehensive guide about ${article.category} for cannabis clubs in Madrid, Spain`}
                   className="w-full h-auto"
                   loading="eager"
                 />
@@ -392,7 +392,7 @@ const GuideDetail = () => {
                       {related.cover_image_url && (
                         <img 
                           src={related.cover_image_url} 
-                          alt={related.title}
+                          alt={`${related.title} - Related article about cannabis clubs in Madrid`}
                           className="w-full h-48 object-cover"
                           loading="lazy"
                         />

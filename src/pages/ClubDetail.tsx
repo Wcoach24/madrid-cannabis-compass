@@ -231,7 +231,7 @@ const ClubDetail = () => {
           <div className="w-full h-64 md:h-96 overflow-hidden">
             <img 
               src={club.main_image_url} 
-              alt={club.name}
+              alt={`${club.name} cannabis social club - Interior view of ${club.district} district club in Madrid, Spain`}
               className="w-full h-full object-cover"
               loading="eager"
             />

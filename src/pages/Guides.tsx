@@ -37,6 +37,36 @@ const Guides = () => {
 
   const hreflangLinks = generateHreflangLinks(BASE_URL, "/guides");
 
+  // ItemList schema for the articles directory
+  const itemListSchema = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "Cannabis Guides and Articles - Madrid",
+    "description": "Comprehensive guides about cannabis clubs, laws, and tourism in Madrid, Spain",
+    "numberOfItems": articles.length,
+    "itemListElement": articles.map((article, index) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "item": {
+        "@type": "Article",
+        "@id": `${BASE_URL}/guide/${article.slug}`,
+        "headline": article.title,
+        "url": `${BASE_URL}/guide/${article.slug}`,
+        "description": article.excerpt,
+        "image": article.cover_image_url,
+        "datePublished": article.published_at,
+        "author": {
+          "@type": "Person",
+          "name": article.author_name
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "Weed Madrid"
+        }
+      }
+    }))
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <SEOHead
@@ -47,6 +77,7 @@ const Guides = () => {
         hreflangLinks={hreflangLinks}
         ogLocale={language === "es" ? "es_ES" : "en_US"}
         ogLocaleAlternate={language === "es" ? ["en_US"] : ["es_ES"]}
+        structuredData={[itemListSchema]}
       />
       <Header />
       
@@ -84,7 +115,7 @@ const Guides = () => {
                         <div className="aspect-video w-full overflow-hidden bg-muted">
                           <img
                             src={article.cover_image_url}
-                            alt={article.title}
+                            alt={`${article.title} - Cannabis guide for Madrid covering ${article.category}`}
                             className="w-full h-full object-cover transition-transform hover:scale-105 duration-300"
                             loading="lazy"
                           />
