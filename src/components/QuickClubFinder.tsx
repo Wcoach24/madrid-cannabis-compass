@@ -88,23 +88,23 @@ export default function QuickClubFinder({ onClose }: QuickClubFinderProps) {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       <div className="text-center space-y-2">
-        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-4">
-          <MapPin className="w-8 h-8 text-primary" />
+        <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-primary/10 mb-2 sm:mb-4">
+          <MapPin className="w-6 h-6 sm:w-8 sm:h-8 text-primary" />
         </div>
-        <h3 className="text-2xl font-bold">{t("quickfinder.title")}</h3>
-        <p className="text-muted-foreground">{t("quickfinder.subtitle")}</p>
+        <h3 className="text-xl sm:text-2xl font-bold">{t("quickfinder.title")}</h3>
+        <p className="text-sm sm:text-base text-muted-foreground px-2">{t("quickfinder.subtitle")}</p>
       </div>
 
       <div className="space-y-4">
         <div className="space-y-2">
           <label className="text-sm font-medium">{t("quickfinder.district.label")}</label>
           <Select value={selectedDistrict} onValueChange={setSelectedDistrict}>
-            <SelectTrigger className="w-full">
+            <SelectTrigger className="w-full h-11">
               <SelectValue placeholder={t("quickfinder.district.placeholder")} />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="bg-popover z-50 max-h-[300px]">
               {DISTRICTS.map((district) => (
                 <SelectItem key={district} value={district}>
                   {district}
@@ -124,13 +124,13 @@ export default function QuickClubFinder({ onClose }: QuickClubFinderProps) {
           >
             {isLoading ? (
               <>
-                <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                {t("quickfinder.finding")}
+                <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 mr-2 animate-spin" />
+                <span className="text-sm sm:text-base">{t("quickfinder.finding")}</span>
               </>
             ) : (
               <>
-                <Search className="w-5 h-5 mr-2" />
-                {t("quickfinder.button.find")}
+                <Search className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+                <span className="text-sm sm:text-base">{t("quickfinder.button.find")}</span>
               </>
             )}
           </Button>
@@ -142,7 +142,7 @@ export default function QuickClubFinder({ onClose }: QuickClubFinderProps) {
             size="lg"
             disabled={isLoading}
           >
-            {t("quickfinder.button.browse")}
+            <span className="text-sm sm:text-base">{t("quickfinder.button.browse")}</span>
           </Button>
         </div>
       </div>
