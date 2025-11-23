@@ -77,6 +77,28 @@ const Contact = () => {
 
   const hreflangLinks = generateHreflangLinks(BASE_URL, "/contact");
 
+  // ContactPage schema for better GEO/SEO
+  const contactPageSchema = {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    "name": "Contact Weed Madrid",
+    "description": "Get in touch with us for general inquiries, club submissions, or partnership opportunities",
+    "url": `${BASE_URL}/contact`,
+    "mainEntity": {
+      "@type": "Organization",
+      "name": "Weed Madrid",
+      "url": BASE_URL,
+      "email": "info@weedmadrid.com",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "email": "info@weedmadrid.com",
+        "availableLanguage": ["English", "Spanish"],
+        "areaServed": "Madrid, Spain"
+      }
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <SEOHead
@@ -86,6 +108,7 @@ const Contact = () => {
         hreflangLinks={hreflangLinks}
         ogLocale={language === "es" ? "es_ES" : "en_US"}
         ogLocaleAlternate={language === "es" ? ["en_US"] : ["es_ES"]}
+        structuredData={[contactPageSchema]}
       />
       <Header />
       

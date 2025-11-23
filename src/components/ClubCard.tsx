@@ -41,7 +41,7 @@ const ClubCard = ({
           <div className="aspect-video w-full overflow-hidden bg-muted">
             <img
               src={main_image_url}
-              alt={name}
+              alt={`${name} - Cannabis social club in ${district}, Madrid. ${is_tourist_friendly ? 'Tourist friendly' : ''} ${is_verified ? 'verified' : ''} cannabis club`}
               className="w-full h-full object-cover transition-transform hover:scale-105 duration-300"
             />
           </div>
