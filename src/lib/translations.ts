@@ -61,6 +61,19 @@ export const translations: Record<Language, Record<string, string>> = {
     "clubs.nofound": "No clubs found",
     "clubs.nofound.desc": "Try adjusting your filters or search criteria",
     
+    // Quick Club Finder
+    "quickfinder.title": "Find Your Nearest Club",
+    "quickfinder.subtitle": "Select your district and we'll find the best club for you",
+    "quickfinder.district.label": "Select District",
+    "quickfinder.district.placeholder": "Choose your district...",
+    "quickfinder.button.find": "Find Club Now",
+    "quickfinder.button.browse": "Browse All Clubs",
+    "quickfinder.finding": "Finding...",
+    "quickfinder.success": "Perfect! Taking you to {club}",
+    "quickfinder.noclubs": "No clubs in this district. Showing nearby options...",
+    "quickfinder.error.selectdistrict": "Please select a district first",
+    "quickfinder.error.general": "Something went wrong. Please try again.",
+    
     // Club detail
     "club.backtoclubs": "Back to Clubs",
     "club.verified": "Verified",
@@ -307,6 +320,19 @@ export const translations: Record<Language, Record<string, string>> = {
     "clubs.loading": "Cargando clubes...",
     "clubs.nofound": "No se encontraron clubes",
     "clubs.nofound.desc": "Intenta ajustar tus filtros o criterios de búsqueda",
+    
+    // Quick Club Finder
+    "quickfinder.title": "Encuentra tu Club Más Cercano",
+    "quickfinder.subtitle": "Selecciona tu distrito y te encontraremos el mejor club",
+    "quickfinder.district.label": "Seleccionar Distrito",
+    "quickfinder.district.placeholder": "Elige tu distrito...",
+    "quickfinder.button.find": "Encontrar Club Ahora",
+    "quickfinder.button.browse": "Ver Todos los Clubs",
+    "quickfinder.finding": "Buscando...",
+    "quickfinder.success": "¡Perfecto! Llevándote a {club}",
+    "quickfinder.noclubs": "No hay clubs en este distrito. Mostrando opciones cercanas...",
+    "quickfinder.error.selectdistrict": "Por favor selecciona un distrito primero",
+    "quickfinder.error.general": "Algo salió mal. Por favor inténtalo de nuevo.",
     
     // Club detail
     "club.backtoclubs": "Volver a Clubes",

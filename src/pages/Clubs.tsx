@@ -3,11 +3,13 @@ import { useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Search } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ClubCard from "@/components/ClubCard";
+import QuickClubFinder from "@/components/QuickClubFinder";
 import SEOHead from "@/components/SEOHead";
 import { useLanguage } from "@/hooks/useLanguage";
 import { buildLanguageAwarePath } from "@/lib/languageUtils";
@@ -104,6 +106,11 @@ const Clubs = () => {
 
         <section className="py-8 bg-background border-b">
           <div className="container mx-auto px-4">
+            {/* Quick Club Finder */}
+            <Card className="mb-8 p-6 bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20">
+              <QuickClubFinder />
+            </Card>
+
             <form onSubmit={handleSearch} className="flex flex-col md:flex-row gap-4">
               <div className="flex-1">
                 <Input
