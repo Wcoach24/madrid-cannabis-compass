@@ -270,6 +270,10 @@ export type Database = {
       }
       invitation_requests: {
         Row: {
+          actual_attendee_count: number | null
+          attendance_marked_at: string | null
+          attendance_marked_by: string | null
+          attended: boolean | null
           club_slug: string
           created_at: string | null
           email: string
@@ -294,6 +298,10 @@ export type Database = {
           visitor_names: string[]
         }
         Insert: {
+          actual_attendee_count?: number | null
+          attendance_marked_at?: string | null
+          attendance_marked_by?: string | null
+          attended?: boolean | null
           club_slug: string
           created_at?: string | null
           email: string
@@ -318,6 +326,10 @@ export type Database = {
           visitor_names: string[]
         }
         Update: {
+          actual_attendee_count?: number | null
+          attendance_marked_at?: string | null
+          attendance_marked_by?: string | null
+          attended?: boolean | null
           club_slug?: string
           created_at?: string | null
           email?: string
