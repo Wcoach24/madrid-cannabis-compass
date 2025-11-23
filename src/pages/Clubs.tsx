@@ -79,6 +79,42 @@ const Clubs = () => {
 
   const hreflangLinks = generateHreflangLinks(BASE_URL, "/clubs");
 
+  // ItemList schema for the clubs directory
+  const itemListSchema = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "Cannabis Clubs in Madrid",
+    "description": "Comprehensive directory of verified cannabis social clubs in Madrid, Spain",
+    "numberOfItems": clubs.length,
+    "itemListElement": clubs.map((club, index) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "item": {
+        "@type": "LocalBusiness",
+        "@id": `${BASE_URL}/club/${club.slug}`,
+        "name": club.name,
+        "url": `${BASE_URL}/club/${club.slug}`,
+        "description": club.summary || club.description?.substring(0, 150),
+        "image": club.main_image_url,
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": club.district,
+          "addressRegion": "Madrid",
+          "addressCountry": "ES"
+        },
+        ...(club.rating_editorial ? {
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": club.rating_editorial,
+            "bestRating": "5"
+          }
+        } : {}),
+        ...(club.is_verified ? { "badge": "Verified Club" } : {}),
+        ...(club.is_tourist_friendly ? { "touristType": "International Tourists" } : {})
+      }
+    }))
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <SEOHead
@@ -89,6 +125,7 @@ const Clubs = () => {
         hreflangLinks={hreflangLinks}
         ogLocale={language === "es" ? "es_ES" : "en_US"}
         ogLocaleAlternate={language === "es" ? ["en_US"] : ["es_ES"]}
+        structuredData={[itemListSchema]}
       />
       <Header />
       

@@ -117,12 +117,14 @@ const ClubDetail = () => {
     ]
   };
 
+  // Enhanced LocalBusiness schema with opening hours, contact info, and services
   const localBusinessSchema = {
     "@context": "https://schema.org",
-    "@type": "LocalBusiness",
+    "@type": ["LocalBusiness", "PrivateMembershipOrganization"],
     "name": club.name,
     "description": club.description,
     "url": `${BASE_URL}/club/${club.slug}`,
+    "image": club.main_image_url || club.gallery_image_urls?.[0],
     "address": {
       "@type": "PostalAddress",
       "streetAddress": club.address,
@@ -141,10 +143,69 @@ const ClubDetail = () => {
       "aggregateRating": {
         "@type": "AggregateRating",
         "ratingValue": club.rating_editorial,
-        "bestRating": "5"
+        "bestRating": "5",
+        "ratingCount": "1"
       }
+    } : {}),
+    // Opening hours specification
+    ...(club.timetable ? {
+      "openingHoursSpecification": Object.entries(club.timetable as Timetable)
+        .filter(([day]) => day !== 'notes')
+        .map(([day, schedule]: [string, any]) => ({
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": day.charAt(0).toUpperCase() + day.slice(1),
+          ...(schedule?.closed ? {
+            "opens": "00:00",
+            "closes": "00:00"
+          } : schedule ? {
+            "opens": formatTime(schedule.open),
+            "closes": formatTime(schedule.close)
+          } : {})
+        }))
+    } : {}),
+    // Contact information
+    ...(club.whatsapp_number ? { "telephone": club.whatsapp_number } : {}),
+    ...(club.email ? { "email": club.email } : {}),
+    // Price range indicator (typical for cannabis clubs)
+    "priceRange": "€€",
+    // Services offered
+    "makesOffer": {
+      "@type": "Offer",
+      "itemOffered": {
+        "@type": "Service",
+        "name": "Cannabis Social Club Membership",
+        "description": "Legal cannabis access for private members in Madrid",
+        "areaServed": {
+          "@type": "City",
+          "name": "Madrid"
+        }
+      }
+    },
+    // Knowledge areas
+    "knowsAbout": ["Cannabis", "Social Club", "Madrid Cannabis Culture", "Legal Cannabis Spain"],
+    // Tourist friendly indicator
+    ...(club.is_tourist_friendly ? {
+      "touristType": ["International Tourists", "Cannabis Tourists"]
+    } : {}),
+    // Languages spoken
+    ...(club.languages?.length ? {
+      "availableLanguage": club.languages.map((lang: string) => ({
+        "@type": "Language",
+        "name": lang
+      }))
     } : {})
   };
+
+  // ImageObject schema for the main club image
+  const imageSchema = club.main_image_url ? {
+    "@context": "https://schema.org",
+    "@type": "ImageObject",
+    "contentUrl": club.main_image_url,
+    "description": `${club.name} - Cannabis social club in ${club.district}, Madrid`,
+    "name": club.name,
+    "author": "Weed Madrid",
+    "copyrightHolder": "Weed Madrid"
+  } : null;
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -157,7 +218,11 @@ const ClubDetail = () => {
         hreflangLinks={hreflangLinks}
         ogLocale={language === "es" ? "es_ES" : "en_US"}
         ogLocaleAlternate={language === "es" ? ["en_US"] : ["es_ES"]}
-        structuredData={[breadcrumbSchema, localBusinessSchema]}
+        structuredData={[
+          breadcrumbSchema, 
+          localBusinessSchema,
+          ...(imageSchema ? [imageSchema] : [])
+        ]}
       />
       <Header />
       
