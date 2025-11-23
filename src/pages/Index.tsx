@@ -3,10 +3,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Search, Calendar, Mail, PartyPopper, Shield, Clock, CheckCircle } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ClubCard from "@/components/ClubCard";
+import QuickClubFinder from "@/components/QuickClubFinder";
 import logoWeedMadrid from "@/assets/logo-weed-madrid.png";
 import SEOHead from "@/components/SEOHead";
 import StatsCounter from "@/components/StatsCounter";
@@ -23,6 +25,7 @@ const Index = () => {
   const [statsVisible, setStatsVisible] = useState(false);
   const [memberCount, setMemberCount] = useState(0);
   const [clubCount, setClubCount] = useState(0);
+  const [finderDialogOpen, setFinderDialogOpen] = useState(false);
   const statsRef = useRef<HTMLDivElement>(null);
 
   const testimonials = [
@@ -192,16 +195,20 @@ const Index = () => {
               </p>
               
               <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center mb-8 md:mb-12 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-500 px-4">
-                <Button 
-                  size="lg" 
-                  className="bg-primary hover:bg-primary/90 text-primary-foreground text-base md:text-lg px-6 md:px-8 py-5 md:py-6 h-auto shadow-xl hover:shadow-neon transition-all hover:scale-105"
-                  asChild
-                >
-                  <Link to={buildLanguageAwarePath("/clubs", language)}>
-                    <Search className="w-5 h-5 md:w-6 md:h-6 mr-2" />
-                    {t("home.search.button")}
-                  </Link>
-                </Button>
+                <Dialog open={finderDialogOpen} onOpenChange={setFinderDialogOpen}>
+                  <DialogTrigger asChild>
+                    <Button 
+                      size="lg" 
+                      className="bg-primary hover:bg-primary/90 text-primary-foreground text-base md:text-lg px-6 md:px-8 py-5 md:py-6 h-auto shadow-xl hover:shadow-neon transition-all hover:scale-105"
+                    >
+                      <Search className="w-5 h-5 md:w-6 md:h-6 mr-2" />
+                      {t("home.search.button")}
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-md">
+                    <QuickClubFinder onClose={() => setFinderDialogOpen(false)} />
+                  </DialogContent>
+                </Dialog>
                 <Button 
                   size="lg" 
                   variant="outline"
