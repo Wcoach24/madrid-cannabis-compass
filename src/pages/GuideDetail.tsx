@@ -138,6 +138,39 @@ const GuideDetail = () => {
     "keywords": article.tags?.join(", ")
   };
 
+  // Extract FAQ schema if article contains FAQ section
+  const extractFAQSchema = (markdown: string) => {
+    const faqRegex = /##\s+Frequently Asked Questions[\s\S]*?###\s+(.+?)\n\n([\s\S]+?)(?=###|##|$)/g;
+    const faqs: Array<{question: string; answer: string}> = [];
+    let match;
+
+    while ((match = faqRegex.exec(markdown)) !== null) {
+      const question = match[1].trim();
+      const answer = match[2].trim().replace(/\*\*/g, '').replace(/\[([^\]]+)\]\([^\)]+\)/g, '$1');
+      faqs.push({ question, answer });
+    }
+
+    if (faqs.length === 0) return null;
+
+    return {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": faqs.map(faq => ({
+        "@type": "Question",
+        "name": faq.question,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": faq.answer
+        }
+      }))
+    };
+  };
+
+  const faqSchema = extractFAQSchema(article.body_markdown);
+  const allSchemas = faqSchema 
+    ? [breadcrumbSchema, blogPostingSchema, faqSchema]
+    : [breadcrumbSchema, blogPostingSchema];
+
   return (
     <div className="min-h-screen flex flex-col">
       <SEOHead
@@ -149,7 +182,7 @@ const GuideDetail = () => {
         hreflangLinks={hreflangLinks}
         ogLocale={language === "es" ? "es_ES" : "en_US"}
         ogLocaleAlternate={language === "es" ? ["en_US"] : ["es_ES"]}
-        structuredData={[breadcrumbSchema, blogPostingSchema]}
+        structuredData={allSchemas}
       />
       <Header />
       
