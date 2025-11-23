@@ -1,0 +1,10 @@
+# ============================================
+# STAGING/DEVELOPMENT ROBOTS.TXT
+# ============================================
+# This version is for non-production environments
+# Blocks all crawlers to prevent indexing of test content
+
+User-agent: *
+Disallow: /
+
+# No sitemaps for staging

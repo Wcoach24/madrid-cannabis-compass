@@ -1,67 +1,219 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-  DYNAMIC SITEMAP REDIRECT
-  This is a static fallback. The live sitemap is dynamically generated.
-  Access the dynamic sitemap at: https://www.weedmadrid.com/api/generate-sitemap
+  ENHANCED DYNAMIC SITEMAP - STATIC FALLBACK
   
-  The dynamic sitemap includes:
-  - All static pages (home, clubs, guides, FAQ, contact)
-  - All active club pages
-  - All published articles
-  - Hreflang tags for English/Spanish versions
-  - Real-time lastmod dates
+  LIVE DYNAMIC VERSION: https://www.weedmadrid.com/api/generate-sitemap
   
-  Last static update: 2025-01-15
+  The dynamic sitemap provides superior SEO with:
+  ✓ Real-time content from Supabase database
+  ✓ Dynamic priority calculation based on content quality
+  ✓ Image sitemap integration for all club and article photos
+  ✓ Google News sitemap for recent articles (7-day window)
+  ✓ Complete hreflang implementation (en, en-US, en-GB, es, es-ES, es-MX)
+  ✓ Accurate lastmod timestamps from database
+  ✓ Optimized changefreq based on content type and freshness
+  ✓ Featured content prioritization
+  
+  SEO Features:
+  - Multi-language support with regional variants
+  - Image optimization signals to Google Images
+  - News article discoverability enhancement
+  - Proper canonical URL structure
+  - Mobile-first indexing ready
+  
+  This static version serves as fallback only.
+  Last static update: 2025-11-23
+  
+  Sitemap Coverage:
+  - 5 core pages (home, clubs, guides, FAQ, contact) × 2 languages = 10 URLs
+  - 9+ active cannabis clubs × 2 languages = 18+ URLs
+  - 5+ published guides × 2 languages = 10+ URLs
+  Total: ~40+ URLs with full i18n support
 -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  <!-- Static Pages -->
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+  <!-- CORE PAGES - Homepage (Highest Priority) -->
   <url>
     <loc>https://www.weedmadrid.com/</loc>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.weedmadrid.com/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://www.weedmadrid.com/"/>
+    <xhtml:link rel="alternate" hreflang="en-US" href="https://www.weedmadrid.com/"/>
+    <xhtml:link rel="alternate" hreflang="en-GB" href="https://www.weedmadrid.com/"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://www.weedmadrid.com/es/"/>
-    <changefreq>weekly</changefreq>
+    <xhtml:link rel="alternate" hreflang="es-ES" href="https://www.weedmadrid.com/es/"/>
+    <xhtml:link rel="alternate" hreflang="es-MX" href="https://www.weedmadrid.com/es/"/>
+    <changefreq>daily</changefreq>
     <priority>1.0</priority>
-    <lastmod>2025-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2025-11-23T00:00:00+00:00</lastmod>
+    <image:image>
+      <image:loc>https://www.weedmadrid.com/images/hero-main.jpg</image:loc>
+      <image:title>Madrid Cannabis Clubs - Weed Madrid Guide</image:title>
+      <image:caption>Your trusted guide to legal cannabis social clubs in Madrid, Spain</image:caption>
+    </image:image>
   </url>
+  <url>
+    <loc>https://www.weedmadrid.com/es/</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.weedmadrid.com/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.weedmadrid.com/"/>
+    <xhtml:link rel="alternate" hreflang="en-US" href="https://www.weedmadrid.com/"/>
+    <xhtml:link rel="alternate" hreflang="en-GB" href="https://www.weedmadrid.com/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.weedmadrid.com/es/"/>
+    <xhtml:link rel="alternate" hreflang="es-ES" href="https://www.weedmadrid.com/es/"/>
+    <xhtml:link rel="alternate" hreflang="es-MX" href="https://www.weedmadrid.com/es/"/>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+    <lastmod>2025-11-23T00:00:00+00:00</lastmod>
+    <image:image>
+      <image:loc>https://www.weedmadrid.com/images/hero-main.jpg</image:loc>
+      <image:title>Clubes de Cannabis en Madrid - Guía Weed Madrid</image:title>
+      <image:caption>Tu guía de confianza para clubes sociales de cannabis legales en Madrid, España</image:caption>
+    </image:image>
+  </url>
+  <!-- CLUBS DIRECTORY (High Priority - Updated Daily) -->
   <url>
     <loc>https://www.weedmadrid.com/clubs</loc>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.weedmadrid.com/clubs"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://www.weedmadrid.com/clubs"/>
+    <xhtml:link rel="alternate" hreflang="en-US" href="https://www.weedmadrid.com/clubs"/>
+    <xhtml:link rel="alternate" hreflang="en-GB" href="https://www.weedmadrid.com/clubs"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://www.weedmadrid.com/es/clubs"/>
+    <xhtml:link rel="alternate" hreflang="es-ES" href="https://www.weedmadrid.com/es/clubs"/>
+    <xhtml:link rel="alternate" hreflang="es-MX" href="https://www.weedmadrid.com/es/clubs"/>
     <changefreq>daily</changefreq>
-    <priority>0.9</priority>
-    <lastmod>2025-01-15T00:00:00+00:00</lastmod>
+    <priority>0.95</priority>
+    <lastmod>2025-11-23T00:00:00+00:00</lastmod>
   </url>
+  <url>
+    <loc>https://www.weedmadrid.com/es/clubs</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.weedmadrid.com/clubs"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.weedmadrid.com/clubs"/>
+    <xhtml:link rel="alternate" hreflang="en-US" href="https://www.weedmadrid.com/clubs"/>
+    <xhtml:link rel="alternate" hreflang="en-GB" href="https://www.weedmadrid.com/clubs"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.weedmadrid.com/es/clubs"/>
+    <xhtml:link rel="alternate" hreflang="es-ES" href="https://www.weedmadrid.com/es/clubs"/>
+    <xhtml:link rel="alternate" hreflang="es-MX" href="https://www.weedmadrid.com/es/clubs"/>
+    <changefreq>daily</changefreq>
+    <priority>0.95</priority>
+    <lastmod>2025-11-23T00:00:00+00:00</lastmod>
+  </url>
+  <!-- GUIDES SECTION (High Priority - SEO Content) -->
   <url>
     <loc>https://www.weedmadrid.com/guides</loc>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.weedmadrid.com/guides"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://www.weedmadrid.com/guides"/>
+    <xhtml:link rel="alternate" hreflang="en-US" href="https://www.weedmadrid.com/guides"/>
+    <xhtml:link rel="alternate" hreflang="en-GB" href="https://www.weedmadrid.com/guides"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://www.weedmadrid.com/es/guides"/>
+    <xhtml:link rel="alternate" hreflang="es-ES" href="https://www.weedmadrid.com/es/guides"/>
+    <xhtml:link rel="alternate" hreflang="es-MX" href="https://www.weedmadrid.com/es/guides"/>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
-    <lastmod>2025-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2025-11-23T00:00:00+00:00</lastmod>
   </url>
+  <url>
+    <loc>https://www.weedmadrid.com/es/guides</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.weedmadrid.com/guides"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.weedmadrid.com/guides"/>
+    <xhtml:link rel="alternate" hreflang="en-US" href="https://www.weedmadrid.com/guides"/>
+    <xhtml:link rel="alternate" hreflang="en-GB" href="https://www.weedmadrid.com/guides"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.weedmadrid.com/es/guides"/>
+    <xhtml:link rel="alternate" hreflang="es-ES" href="https://www.weedmadrid.com/es/guides"/>
+    <xhtml:link rel="alternate" hreflang="es-MX" href="https://www.weedmadrid.com/es/guides"/>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <lastmod>2025-11-23T00:00:00+00:00</lastmod>
+  </url>
+
+  <!-- FAQ PAGE (Important for GEO/Featured Snippets) -->
   <url>
     <loc>https://www.weedmadrid.com/faq</loc>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.weedmadrid.com/faq"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://www.weedmadrid.com/faq"/>
+    <xhtml:link rel="alternate" hreflang="en-US" href="https://www.weedmadrid.com/faq"/>
+    <xhtml:link rel="alternate" hreflang="en-GB" href="https://www.weedmadrid.com/faq"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://www.weedmadrid.com/es/faq"/>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-    <lastmod>2025-01-15T00:00:00+00:00</lastmod>
+    <xhtml:link rel="alternate" hreflang="es-ES" href="https://www.weedmadrid.com/es/faq"/>
+    <xhtml:link rel="alternate" hreflang="es-MX" href="https://www.weedmadrid.com/es/faq"/>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+    <lastmod>2025-11-23T00:00:00+00:00</lastmod>
   </url>
+  <url>
+    <loc>https://www.weedmadrid.com/es/faq</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.weedmadrid.com/faq"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.weedmadrid.com/faq"/>
+    <xhtml:link rel="alternate" hreflang="en-US" href="https://www.weedmadrid.com/faq"/>
+    <xhtml:link rel="alternate" hreflang="en-GB" href="https://www.weedmadrid.com/faq"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.weedmadrid.com/es/faq"/>
+    <xhtml:link rel="alternate" hreflang="es-ES" href="https://www.weedmadrid.com/es/faq"/>
+    <xhtml:link rel="alternate" hreflang="es-MX" href="https://www.weedmadrid.com/es/faq"/>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+    <lastmod>2025-11-23T00:00:00+00:00</lastmod>
+  </url>
+
+  <!-- CONTACT PAGE -->
   <url>
     <loc>https://www.weedmadrid.com/contact</loc>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.weedmadrid.com/contact"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://www.weedmadrid.com/contact"/>
+    <xhtml:link rel="alternate" hreflang="en-US" href="https://www.weedmadrid.com/contact"/>
+    <xhtml:link rel="alternate" hreflang="en-GB" href="https://www.weedmadrid.com/contact"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://www.weedmadrid.com/es/contact"/>
+    <xhtml:link rel="alternate" hreflang="es-ES" href="https://www.weedmadrid.com/es/contact"/>
+    <xhtml:link rel="alternate" hreflang="es-MX" href="https://www.weedmadrid.com/es/contact"/>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
-    <lastmod>2025-01-15T00:00:00+00:00</lastmod>
+    <lastmod>2025-11-23T00:00:00+00:00</lastmod>
+  </url>
+  <url>
+    <loc>https://www.weedmadrid.com/es/contact</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.weedmadrid.com/contact"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.weedmadrid.com/contact"/>
+    <xhtml:link rel="alternate" hreflang="en-US" href="https://www.weedmadrid.com/contact"/>
+    <xhtml:link rel="alternate" hreflang="en-GB" href="https://www.weedmadrid.com/contact"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.weedmadrid.com/es/contact"/>
+    <xhtml:link rel="alternate" hreflang="es-ES" href="https://www.weedmadrid.com/es/contact"/>
+    <xhtml:link rel="alternate" hreflang="es-MX" href="https://www.weedmadrid.com/es/contact"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <lastmod>2025-11-23T00:00:00+00:00</lastmod>
   </url>
   
-  <!-- Note: Dynamic club and article URLs are generated in real-time via the edge function -->
-  <!-- Access the full dynamic sitemap at: https://www.weedmadrid.com/api/generate-sitemap -->
+  <!-- 
+    DYNAMIC CONTENT URLS (40+ additional URLs):
+    
+    The following content is generated dynamically via edge function:
+    
+    CLUB PAGES (18+ URLs):
+    - /club/club-malasana (EN + ES)
+    - /club/club-retiro (EN + ES)
+    - /club/club-greenhouse (EN + ES)
+    - /club/club-wellness (EN + ES)
+    - /club/club-atocha (EN + ES)
+    - /club/club-latina (EN + ES)
+    - /club/club-vallehermoso (EN + ES)
+    - /club/club-tetuan (EN + ES)
+    - /club/club-granvia (EN + ES)
+    + more clubs added monthly
+    
+    GUIDE ARTICLES (10+ URLs):
+    - /guide/best-cannabis-clubs-madrid-2025 (EN + ES)
+    - /guide/cannabis-laws-spain-2025 (EN + ES)
+    - /guide/complete-guide-cannabis-clubs (EN + ES)
+    - /guide/how-to-join-cannabis-club-madrid (EN + ES)
+    - /guide/cannabis-tourism-madrid (EN + ES)
+    + more guides added weekly
+    
+    Each dynamic URL includes:
+    ✓ Full hreflang tags (6 variants per language)
+    ✓ Image sitemap data (up to 5 images per club/article)
+    ✓ Dynamic priority calculation based on ratings and freshness
+    ✓ Google News tags for articles published within 7 days
+    ✓ Accurate lastmod timestamps from database
+    
+    Access full dynamic sitemap: https://www.weedmadrid.com/api/generate-sitemap
+  -->
 </urlset>
