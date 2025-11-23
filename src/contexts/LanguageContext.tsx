@@ -46,6 +46,34 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
 
   const [language, setLanguageState] = useState<Language>(getLanguageFromPath);
 
+  // Automatic language detection and redirection on first visit
+  useEffect(() => {
+    const pathLang = getLanguageFromPath();
+    const detectedLang = detectBrowserLanguage();
+    const hasStoredPreference = localStorage.getItem(STORAGE_KEY);
+    
+    // Only redirect if user has no stored preference and browser language differs from path
+    if (!hasStoredPreference && detectedLang !== pathLang) {
+      const pathParts = location.pathname.split("/").filter(Boolean);
+      
+      // Remove existing language prefix if present
+      if (SUPPORTED_LANGUAGES.includes(pathParts[0] as Language)) {
+        pathParts.shift();
+      }
+      
+      // Add detected language prefix (unless it's default English)
+      const newPath = detectedLang === DEFAULT_LANGUAGE 
+        ? "/" + pathParts.join("/") 
+        : `/${detectedLang}/${pathParts.join("/")}`;
+      
+      // Store the detected language as preference
+      localStorage.setItem(STORAGE_KEY, detectedLang);
+      
+      // Redirect to correct language path
+      navigate(newPath.replace(/\/+/g, "/") || "/", { replace: true });
+    }
+  }, []); // Run once on mount
+
   useEffect(() => {
     const pathLang = getLanguageFromPath();
     setLanguageState(pathLang);

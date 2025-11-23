@@ -4,7 +4,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LanguageProvider } from "@/contexts/LanguageContext";
-import LanguageSuggestion from "@/components/LanguageSuggestion";
 import ScrollToTop from "@/components/ScrollToTop";
 import Index from "./pages/Index";
 import Clubs from "./pages/Clubs";
@@ -30,7 +29,6 @@ const App = () => (
       <BrowserRouter>
         <ScrollToTop />
         <LanguageProvider>
-          <LanguageSuggestion />
           <Routes>
             {/* Default English routes */}
             <Route path="/" element={<Index />} />
