@@ -104,18 +104,25 @@
 
 ---
 
-#### 3. Content Generation 🟡 MEDIUM PRIORITY
-**Current status:** 0 articles published
+#### 3. Content Generation ✅ COMPLETED
+**Current status:** 5 pillar articles published (12,500+ words total)
 
-**Recommended first articles to generate:**
-1. "Best Cannabis Clubs in Madrid 2025" (2500+ words)
-2. "How to Join a Cannabis Club in Madrid" (2000+ words)
-3. "Complete Guide to Cannabis Clubs Madrid" (3000+ words)
+**Articles Published:**
+1. ✅ "Best Cannabis Clubs in Madrid 2025" (2500+ words) - Slug: best-cannabis-clubs-madrid-2025
+2. ✅ "Complete Guide to Cannabis Clubs Madrid" (3000+ words) - Slug: complete-guide-cannabis-clubs-madrid
+3. ✅ "How to Join a Cannabis Club in Madrid" (2500+ words) - Slug: how-to-join-cannabis-club-madrid
+4. ✅ "Cannabis Tourism Madrid" (3000+ words) - Slug: cannabis-tourism-madrid-guide
+5. ✅ "Cannabis Laws in Spain" (3000+ words) - Slug: cannabis-laws-spain-legal-guide
 
-**How to generate:**
-- Use existing `/generate-articles` page
-- Leverage `supabase/functions/generate-guide-content/index.ts`
-- Focus on keyword-rich, AI-friendly content
+**All articles include:**
+- SEO-optimized titles and meta descriptions
+- Clear H1/H2/H3 structure for featured snippets
+- Declarative sentences for AI citations
+- Statistics and quoted data
+- Internal linking opportunities
+- FAQ sections with Schema.org markup
+- Citation-friendly formatting
+- Target keyword optimization
 
 ---
 
