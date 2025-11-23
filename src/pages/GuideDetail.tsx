@@ -112,9 +112,77 @@ const GuideDetail = () => {
     ]
   };
 
-  const blogPostingSchema = {
+  // Determine if this is a HowTo article
+  const isHowToArticle = article.title.toLowerCase().includes("how to") || 
+                         article.category.toLowerCase().includes("how-to") ||
+                         article.slug.includes("how-to");
+
+  // HowTo Schema for step-by-step guides
+  const howToSchema = isHowToArticle ? {
     "@context": "https://schema.org",
-    "@type": "BlogPosting",
+    "@type": "HowTo",
+    "name": article.title,
+    "description": article.subtitle || article.excerpt,
+    "image": article.cover_image_url,
+    "totalTime": "PT15M",
+    "step": [
+      {
+        "@type": "HowToStep",
+        "name": "Check Legal Requirements",
+        "text": "Verify you meet the age requirement (21+) and have valid identification documents.",
+        "position": 1
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Find a Verified Club",
+        "text": "Browse our directory of verified cannabis clubs and select one based on your preferred district and amenities.",
+        "position": 2,
+        "url": `${BASE_URL}/clubs`
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Request Club Invitation",
+        "text": "Submit an invitation request through the club's official contact method or our platform.",
+        "position": 3,
+        "url": `${BASE_URL}/invitation`
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Provide Required Documents",
+        "text": "Submit your ID, contact information, and any additional documents required by the club.",
+        "position": 4
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Await Approval",
+        "text": "The club will review your application, typically taking 1-3 business days.",
+        "position": 5
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Visit the Club",
+        "text": "Once approved, visit the club in person with your original documents to complete membership registration.",
+        "position": 6
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Pay Membership Fee",
+        "text": "Pay the one-time or annual membership fee as specified by the club.",
+        "position": 7
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Sign Membership Agreement",
+        "text": "Review and sign the club's rules, legal terms, and membership agreement.",
+        "position": 8
+      }
+    ]
+  } : null;
+
+  // Article Schema (replacing BlogPosting with more specific Article type)
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "Article",
     "headline": article.title,
     "description": article.excerpt || article.seo_description,
     "image": article.cover_image_url,
@@ -124,18 +192,28 @@ const GuideDetail = () => {
     "author": {
       "@type": "Person",
       "name": article.author_name,
-      "description": article.author_bio
+      "description": article.author_bio,
+      "jobTitle": "Cannabis Tourism Expert"
     },
     "publisher": {
       "@type": "Organization",
-      "name": "Madrid Cannabis Clubs Guide"
+      "name": "Weed Madrid",
+      "logo": {
+        "@type": "ImageObject",
+        "url": `${BASE_URL}/logo.png`
+      }
     },
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": `${BASE_URL}/guide/${article.slug}`
     },
     "articleSection": article.category,
-    "keywords": article.tags?.join(", ")
+    "wordCount": article.body_markdown.split(' ').length,
+    "keywords": article.tags?.join(", "),
+    "citation": article.body_markdown.includes("STS 484/2015") ? [
+      "Spanish Supreme Court STS 484/2015",
+      "Organic Law 1/2015"
+    ] : undefined
   };
 
   // Extract FAQ schema if article contains FAQ section
@@ -167,9 +245,14 @@ const GuideDetail = () => {
   };
 
   const faqSchema = extractFAQSchema(article.body_markdown);
-  const allSchemas = faqSchema 
-    ? [breadcrumbSchema, blogPostingSchema, faqSchema]
-    : [breadcrumbSchema, blogPostingSchema];
+  
+  // Build schemas array with all applicable schemas
+  const allSchemas = [
+    breadcrumbSchema,
+    articleSchema,
+    ...(howToSchema ? [howToSchema] : []),
+    ...(faqSchema ? [faqSchema] : [])
+  ];
 
   return (
     <div className="min-h-screen flex flex-col">
