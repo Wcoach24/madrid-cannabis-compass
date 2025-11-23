@@ -107,7 +107,7 @@ const Clubs = () => {
         <section className="py-8 bg-background border-b">
           <div className="container mx-auto px-4">
             {/* Quick Club Finder */}
-            <Card className="mb-8 p-6 bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20">
+            <Card className="mb-8 p-4 sm:p-6 bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20">
               <QuickClubFinder />
             </Card>
 
