@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SEOHead from "@/components/SEOHead";
+import OrganizationSchema from "@/components/OrganizationSchema";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import { Calendar, User, ChevronLeft } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -179,13 +180,19 @@ const GuideDetail = () => {
     ]
   } : null;
 
-  // Article Schema (replacing BlogPosting with more specific Article type)
-  const articleSchema = {
+  // BlogPosting Schema - More specific than Article for SEO
+  const blogPostingSchema = {
     "@context": "https://schema.org",
-    "@type": "Article",
+    "@type": "BlogPosting",
     "headline": article.title,
+    "alternativeHeadline": article.subtitle,
     "description": article.excerpt || article.seo_description,
-    "image": article.cover_image_url,
+    "image": {
+      "@type": "ImageObject",
+      "url": article.cover_image_url,
+      "width": 1200,
+      "height": 630
+    },
     "datePublished": article.published_at,
     "dateModified": article.updated_at,
     "inLanguage": language,
@@ -193,27 +200,56 @@ const GuideDetail = () => {
       "@type": "Person",
       "name": article.author_name,
       "description": article.author_bio,
-      "jobTitle": "Cannabis Tourism Expert"
+      "jobTitle": "Cannabis Tourism Expert",
+      "url": `${BASE_URL}`
     },
     "publisher": {
       "@type": "Organization",
       "name": "Weed Madrid",
+      "url": BASE_URL,
       "logo": {
         "@type": "ImageObject",
-        "url": `${BASE_URL}/logo.png`
-      }
+        "url": `${BASE_URL}/logo.png`,
+        "width": 200,
+        "height": 200
+      },
+      "email": "info@weedmadrid.com",
+      "sameAs": [BASE_URL]
     },
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": `${BASE_URL}/guide/${article.slug}`
     },
     "articleSection": article.category,
+    "articleBody": article.body_markdown,
     "wordCount": article.body_markdown.split(' ').length,
     "keywords": article.tags?.join(", "),
+    "about": {
+      "@type": "Thing",
+      "name": "Cannabis Social Clubs Madrid"
+    },
+    "mentions": article.body_markdown.includes("cannabis club") ? {
+      "@type": "Place",
+      "name": "Madrid Cannabis Clubs",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Madrid",
+        "addressCountry": "ES"
+      }
+    } : undefined,
     "citation": article.body_markdown.includes("STS 484/2015") ? [
-      "Spanish Supreme Court STS 484/2015",
-      "Organic Law 1/2015"
-    ] : undefined
+      {
+        "@type": "Legislation",
+        "name": "Spanish Supreme Court STS 484/2015",
+        "legislationJurisdiction": "Spain"
+      },
+      {
+        "@type": "Legislation",
+        "name": "Organic Law 1/2015",
+        "legislationJurisdiction": "Spain"
+      }
+    ] : undefined,
+    "timeRequired": `PT${Math.ceil(article.body_markdown.split(' ').length / 200)}M`
   };
 
   // Extract FAQ schema if article contains FAQ section
@@ -249,13 +285,14 @@ const GuideDetail = () => {
   // Build schemas array with all applicable schemas
   const allSchemas = [
     breadcrumbSchema,
-    articleSchema,
+    blogPostingSchema,
     ...(howToSchema ? [howToSchema] : []),
     ...(faqSchema ? [faqSchema] : [])
   ];
 
   return (
     <div className="min-h-screen flex flex-col">
+      <OrganizationSchema />
       <SEOHead
         title={article.seo_title || article.title}
         description={article.seo_description || article.excerpt}

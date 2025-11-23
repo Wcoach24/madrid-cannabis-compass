@@ -79,6 +79,17 @@ const SEOHead = ({
       linkElement.setAttribute('href', canonical);
     }
 
+    // Add RSS feed link
+    let rssLink = document.querySelector('link[rel="alternate"][type="application/rss+xml"]');
+    if (!rssLink) {
+      rssLink = document.createElement('link');
+      rssLink.setAttribute('rel', 'alternate');
+      rssLink.setAttribute('type', 'application/rss+xml');
+      rssLink.setAttribute('title', 'Weed Madrid RSS Feed');
+      document.head.appendChild(rssLink);
+    }
+    rssLink.setAttribute('href', 'https://www.weedmadrid.com/api/rss');
+
     // Update hreflang links
     if (hreflangLinks && hreflangLinks.length > 0) {
       // Remove existing hreflang links

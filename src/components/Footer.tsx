@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/hooks/useLanguage";
 import { buildLanguageAwarePath } from "@/lib/languageUtils";
+import { Rss } from "lucide-react";
 
 const Footer = () => {
   const { language, t } = useLanguage();
@@ -33,6 +34,17 @@ const Footer = () => {
                 <Link to={buildLanguageAwarePath("/clubs", language)} className="text-muted-foreground hover:text-foreground transition-colors">
                   {t("footer.clubs")}
                 </Link>
+              </li>
+              <li>
+                <a 
+                  href="https://www.weedmadrid.com/api/rss" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-1"
+                >
+                  <Rss className="w-3 h-3" />
+                  RSS Feed
+                </a>
               </li>
             </ul>
           </div>

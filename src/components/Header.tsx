@@ -26,7 +26,7 @@ const Header = () => {
           <Link to={buildLanguageAwarePath("/", language)} className="flex items-center space-x-2">
             <img 
               src={logoWeedMadrid} 
-              alt="Weed Madrid" 
+              alt="Weed Madrid Logo - Cannabis Clubs Directory" 
               className="h-10 w-10 md:h-12 md:w-12 object-contain"
             />
             <span className="font-display text-xl md:text-2xl font-bold text-gradient-primary">

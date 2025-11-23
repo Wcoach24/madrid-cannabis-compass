@@ -13,6 +13,7 @@ import QuickClubFinder from "@/components/QuickClubFinder";
 import logoWeedMadrid from "@/assets/logo-weed-madrid.png";
 import SEOHead from "@/components/SEOHead";
 import StatsCounter from "@/components/StatsCounter";
+import OrganizationSchema from "@/components/OrganizationSchema";
 import { useLanguage } from "@/hooks/useLanguage";
 import { buildLanguageAwarePath } from "@/lib/languageUtils";
 import { generateHreflangLinks, BASE_URL } from "@/lib/hreflangUtils";
@@ -137,6 +138,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <OrganizationSchema />
       <SEOHead
         title={t("home.title")}
         description={t("home.subtitle")}
