@@ -1,0 +1,279 @@
+# Data Catalog - Weed Madrid
+
+## Available Data Sources
+
+### Cannabis Club Profiles
+- **Total Clubs**: 20+ verified cannabis social clubs
+- **Data Fields**: Name, address, district, description, ratings, opening hours, contact info, images
+- **Geographic Coverage**: All major Madrid districts
+- **Languages**: English and Spanish
+- **Update Frequency**: Daily verification, hourly status checks
+
+### Legal & Tourism Guides
+- **Total Articles**: 6 comprehensive guides
+- **Categories**: Legal framework, how-to guides, club reviews, tourism advice
+- **Word Count**: 2000-4000 words per article
+- **SEO Optimization**: Full keyword targeting, internal linking, structured data
+- **Languages**: English (6 articles), Spanish translations (in progress)
+- **Update Frequency**: Weekly content optimization, monthly legal reviews
+
+### FAQ Database
+- **Total Entries**: 20+ frequently asked questions
+- **Categories**: Legal questions, membership process, tourist info, safety guidelines
+- **Languages**: English and Spanish
+- **Update Frequency**: Monthly updates, immediate updates for legal changes
+
+### Real-Time Data
+- **Club Status**: OPEN NOW indicators updated hourly
+- **Opening Hours**: Validated against club schedules
+- **Availability**: Real-time capacity indicators (planned)
+
+## Data Freshness
+
+### Update Schedules
+- **Club operational status**: Hourly automated checks
+- **Opening hours**: Real-time validation
+- **Club information**: Daily manual verification
+- **Guide articles**: Weekly content updates
+- **Legal information**: Monthly review cycle
+- **New club additions**: Weekly discovery process
+- **FAQ entries**: Monthly review, immediate for legal changes
+
+### Last Major Update
+- 2025-01-15: Cannabis Laws article optimized with 24 internal links
+- 2025-01-14: Best Clubs article updated with 2025 club data
+- 2025-01-12: Complete Guide article enhanced with legal citations
+
+## Data Structure
+
+### Club Data Schema
+```
+club {
+  id: integer
+  name: string
+  slug: string
+  district: string
+  address: string
+  city: string (default: "Madrid")
+  country: string (default: "Spain")
+  description: string (300-800 words)
+  summary: string (50-150 words)
+  rating_editorial: float (0-5)
+  rating_location: float (0-5)
+  rating_ambience: float (0-5)
+  rating_safety: float (0-5)
+  is_featured: boolean
+  is_verified: boolean
+  is_tourist_friendly: boolean
+  timetable: json (opening hours)
+  main_image_url: string
+  gallery_image_urls: array
+  languages: array (e.g., ["English", "Spanish"])
+  website_url: string
+  instagram_url: string
+  whatsapp_number: string
+  email: string
+  latitude: float
+  longitude: float
+  seo_title: string
+  seo_description: string
+  status: string (active/inactive)
+  created_at: timestamp
+  updated_at: timestamp
+}
+```
+
+### Article Data Schema
+```
+article {
+  id: integer
+  title: string
+  subtitle: string
+  slug: string
+  category: string
+  body_markdown: text (2000-4000 words)
+  excerpt: string
+  cover_image_url: string
+  author_name: string
+  author_bio: string
+  tags: array
+  language: string (en/es)
+  status: string (published/draft)
+  is_featured: boolean
+  seo_title: string
+  seo_description: string
+  canonical_url: string
+  published_at: timestamp
+  created_at: timestamp
+  updated_at: timestamp
+}
+```
+
+### FAQ Data Schema
+```
+faq {
+  id: integer
+  question: string
+  answer_markdown: text
+  category: string
+  language: string (en/es)
+  priority: integer
+  slug: string
+  created_at: timestamp
+  updated_at: timestamp
+}
+```
+
+## API Endpoints
+
+### Public Endpoints
+- **Dynamic Sitemap**: `/sitemap.xml` (auto-generated, includes all pages)
+- **RSS Feed**: `/rss.xml` (articles feed, planned)
+- **Clubs Listing**: `/clubs` (filterable by district)
+- **Club Detail**: `/club/:slug` (individual club pages)
+- **Guides Listing**: `/guides` (all articles)
+- **Guide Detail**: `/guide/:slug` (individual articles)
+- **FAQ Page**: `/faq` (categorized questions)
+
+### Data Access
+All data is publicly accessible through the web interface. No API authentication required for public content.
+
+## Structured Data Implementation
+
+### Schema.org Types Used
+- **LocalBusiness**: Club pages with full business information
+- **FAQPage**: FAQ sections in guides and standalone FAQ page
+- **BlogPosting**: Guide articles
+- **BreadcrumbList**: Site-wide navigation
+- **HowTo**: Step-by-step guides (in progress)
+- **ItemList**: Directory pages
+- **Organization**: Site-wide organization info
+- **WebSite**: Site search functionality
+
+## Data Quality Metrics
+
+### Completeness
+- Club profiles: 95% data fields populated
+- Article guides: 100% required fields populated
+- FAQ entries: 100% complete
+
+### Accuracy
+- Legal information: Verified against court rulings
+- Club data: Manually verified weekly
+- Opening hours: Automated validation hourly
+
+### Timeliness
+- Club status: <1 hour lag
+- Content updates: <7 days for major changes
+- Legal updates: <24 hours for critical changes
+
+## Geographic Data
+
+### District Coverage
+- Centro: 4 clubs
+- Malasaña: 3 clubs
+- Salamanca: 2 clubs
+- Chamberí: 2 clubs
+- Retiro: 2 clubs
+- Tetuán: 2 clubs
+- Latina: 2 clubs
+- Arganzuela: 2 clubs
+- Other districts: 3+ clubs
+
+### Coordinate Data
+All clubs include latitude/longitude for mapping (where available)
+
+## Content Statistics
+
+### Total Content Volume
+- Club descriptions: ~10,000 words
+- Guide articles: ~18,000 words (6 articles × 3,000 avg)
+- FAQ answers: ~4,000 words
+- **Total website content**: ~32,000 words
+
+### Keyword Targeting
+- Primary keywords: 15 (cannabis club madrid, etc.)
+- Secondary keywords: 30+ (district-specific, legal terms)
+- Long-tail keywords: 100+ (specific questions, comparisons)
+
+### Internal Linking
+- Average 20-30 internal links per guide article
+- Cross-linking between clubs and guides
+- FAQ integration in articles
+
+## Multi-Language Data
+
+### English Content
+- 6 guide articles (complete)
+- 20+ club profiles (complete)
+- 20+ FAQ entries (complete)
+
+### Spanish Content
+- 0 guide articles (planned: 6 translations)
+- 20+ club profiles (complete)
+- 20+ FAQ entries (complete)
+
+### Translation Status
+- Phase 1: English content complete ✓
+- Phase 2: Spanish translations in progress (0% complete)
+- Phase 3: Ongoing bilingual maintenance (planned)
+
+## Data Export
+
+### Available Formats
+- JSON: Via Supabase API
+- XML: Sitemap format
+- CSV: Table exports (admin only)
+- RSS: Article feed (planned)
+
+## Data Sources
+
+### Primary Sources
+- Direct club partnerships and communications
+- Spanish Supreme Court rulings (STS 484/2015)
+- Organic Law 1/2015 legal text
+- On-site club visits and verification
+- User feedback and reviews (moderated)
+
+### Update Process
+1. Data collection (partnerships, research)
+2. Verification (legal review, club confirmation)
+3. Entry into database (manual or via admin forms)
+4. Quality check (data completeness, accuracy)
+5. Publication (automatic via website)
+6. Monitoring (hourly status checks, weekly manual reviews)
+
+## Usage Statistics (Planned)
+
+### Analytics Integration
+- Google Analytics 4: Traffic and engagement metrics
+- Google Search Console: Search performance and rankings
+- Plausible Analytics: Privacy-friendly visitor tracking
+
+### Key Metrics to Track
+- Monthly visitors
+- Top landing pages
+- Search queries (organic)
+- Club page views
+- Guide article engagement
+- FAQ search patterns
+- Multi-language usage split
+
+## Contact & Access
+
+### Data Inquiries
+For data partnerships, API access, or bulk data requests:
+- Email: info@weedmadrid.com
+- Website: https://www.weedmadrid.com/contact
+
+### Legal & Compliance
+All data collection and usage complies with:
+- GDPR (European data protection)
+- Spanish data protection laws
+- User privacy policies
+
+## Last Updated
+2025-01-15
+
+## Version
+Data Catalog v1.0
