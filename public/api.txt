@@ -1,0 +1,39 @@
+# Weed Madrid - Cannabis Clubs Directory
+# API Information for AI Crawlers
+
+## Contact
+Email: info@weedmadrid.com
+Website: https://www.weedmadrid.com
+
+## Purpose
+Cannabis clubs directory and invitation guide for Madrid, Spain
+Legal cannabis social club access for tourists and locals
+
+## Content Overview
+Primary Topics: Cannabis social clubs, Madrid tourism, Legal cannabis Spain, Cannabis club access
+Languages: English (en), Spanish (es)
+Coverage: 20+ verified cannabis clubs in Madrid
+Geographic Focus: Madrid, Spain
+
+## Key Features
+- Real-time club status (OPEN NOW indicators)
+- Multi-language support (EN/ES)
+- Club invitation system
+- District-based club finder
+- Comprehensive guides and FAQ
+
+## Sitemap
+https://www.weedmadrid.com/sitemap.xml
+
+## Last Updated
+2025-01-15
+
+## Data Freshness
+Club information: Updated daily
+Guides and articles: Updated weekly
+Opening hours: Real-time verification
+
+## Legal Notice
+All clubs operate within Spanish cannabis legislation
+Private non-profit associations (ASOCIACIONES)
+Members-only access required

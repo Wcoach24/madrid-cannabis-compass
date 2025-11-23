@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import ScrollToTop from "@/components/ScrollToTop";
+import { Analytics } from "@/components/Analytics";
 import Index from "./pages/Index";
 import Clubs from "./pages/Clubs";
 import ClubDetail from "./pages/ClubDetail";
@@ -27,6 +28,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <Analytics />
         <ScrollToTop />
         <LanguageProvider>
           <Routes>

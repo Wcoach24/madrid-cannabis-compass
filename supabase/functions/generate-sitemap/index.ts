@@ -15,7 +15,7 @@ Deno.serve(async (req) => {
     const supabaseKey = Deno.env.get('SUPABASE_PUBLISHABLE_KEY')!;
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    const baseUrl = 'https://lovable.dev';
+    const baseUrl = 'https://www.weedmadrid.com';
 
     const { data: clubs } = await supabase
       .from('clubs')

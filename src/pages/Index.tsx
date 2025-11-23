@@ -18,6 +18,7 @@ import { buildLanguageAwarePath } from "@/lib/languageUtils";
 import { generateHreflangLinks, BASE_URL } from "@/lib/hreflangUtils";
 import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
 import { isOpenNow, Timetable } from "@/lib/timetableUtils";
+import { trackQuickFinderUse, trackClubView } from "@/components/Analytics";
 
 const Index = () => {
   const { language, t } = useLanguage();
@@ -202,6 +203,7 @@ const Index = () => {
                     <Button 
                       size="lg" 
                       className="bg-primary hover:bg-primary/90 text-primary-foreground text-base md:text-lg px-6 md:px-8 py-5 md:py-6 h-auto shadow-xl hover:shadow-neon transition-all hover:scale-105"
+                      onClick={() => trackQuickFinderUse()}
                     >
                       <Search className="w-5 h-5 md:w-6 md:h-6 mr-2" />
                       {t("home.search.button")}
@@ -388,6 +390,7 @@ const Index = () => {
                         asChild 
                         variant="gold" 
                         className="w-full text-base md:text-lg py-5 md:py-6 shadow-gold md:group-hover:shadow-gold-intense transition-all"
+                        onClick={() => trackClubView(club.slug, club.name)}
                       >
                         <Link to={buildLanguageAwarePath(`/invite/${club.slug}`, language)}>
                           Get Invitation

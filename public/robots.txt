@@ -24,6 +24,9 @@ Allow: /
 User-agent: Google-Extended
 Allow: /
 
+User-agent: Applebot-Extended
+Allow: /
+
 # Allow social media crawlers
 User-agent: Twitterbot
 Allow: /
@@ -34,7 +37,10 @@ Allow: /
 # Block admin and utility routes
 User-agent: *
 Disallow: /seed-data
+Disallow: /admin
+Disallow: /generate-articles
+Disallow: /auth
 Allow: /
 
 # Sitemap location
-Sitemap: https://lovable.dev/sitemap.xml
+Sitemap: https://www.weedmadrid.com/sitemap.xml
