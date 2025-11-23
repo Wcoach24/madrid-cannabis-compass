@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { MapPin, Star, Languages, Globe, Instagram, Mail, Phone, ChevronLeft, Building, Clock, UserPlus } from "lucide-react";
+import { MapPin, Star, Languages, Instagram, Building, Clock, ChevronLeft, UserPlus } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ClubCard from "@/components/ClubCard";
@@ -212,13 +212,26 @@ const ClubDetail = () => {
               )}
             </div>
 
-            {club.rating_editorial && (
-              <div className="flex items-center gap-2 mb-6">
-                <Star className="w-5 h-5 fill-gold text-gold" />
-                <span className="text-lg font-semibold">{club.rating_editorial.toFixed(1)}</span>
-                <span className="text-muted-foreground">/ 5.0</span>
-              </div>
-            )}
+            <div className="flex items-center gap-4 mb-6">
+              {club.rating_editorial && (
+                <div className="flex items-center gap-2">
+                  <Star className="w-5 h-5 fill-gold text-gold" />
+                  <span className="text-lg font-semibold">{club.rating_editorial.toFixed(1)}</span>
+                  <span className="text-muted-foreground">/ 5.0</span>
+                </div>
+              )}
+              {club.instagram_url && (
+                <a 
+                  href={club.instagram_url} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-primary hover:text-primary/80 transition-colors"
+                  aria-label="Instagram"
+                >
+                  <Instagram className="w-5 h-5" />
+                </a>
+              )}
+            </div>
           </div>
         </section>
 
@@ -407,58 +420,6 @@ const ClubDetail = () => {
                     </div>
                   </CardContent>
                 </Card>
-
-                {(club.website_url || club.instagram_url || club.email || club.whatsapp_number) && (
-                  <Card>
-                    <CardContent className="p-6">
-                      <h3 className="font-semibold mb-4">{t("club.contact")}</h3>
-                      <div className="space-y-3">
-                        {club.website_url && (
-                          <a 
-                            href={club.website_url} 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            className="flex items-center gap-2 text-sm text-primary hover:underline"
-                          >
-                            <Globe className="w-4 h-4" />
-                            {t("club.website")}
-                          </a>
-                        )}
-                        {club.instagram_url && (
-                          <a 
-                            href={club.instagram_url} 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            className="flex items-center gap-2 text-sm text-primary hover:underline"
-                          >
-                            <Instagram className="w-4 h-4" />
-                            {t("club.instagram")}
-                          </a>
-                        )}
-                        {club.email && (
-                          <a 
-                            href={`mailto:${club.email}`}
-                            className="flex items-center gap-2 text-sm text-primary hover:underline"
-                          >
-                            <Mail className="w-4 h-4" />
-                            {t("club.email")}
-                          </a>
-                        )}
-                        {club.whatsapp_number && (
-                          <a 
-                            href={`https://wa.me/${club.whatsapp_number}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center gap-2 text-sm text-primary hover:underline"
-                          >
-                            <Phone className="w-4 h-4" />
-                            {t("club.whatsapp")}
-                          </a>
-                        )}
-                      </div>
-                    </CardContent>
-                  </Card>
-                )}
 
                 <Card className="bg-muted/50">
                   <CardContent className="p-6">
