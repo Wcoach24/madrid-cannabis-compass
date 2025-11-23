@@ -384,7 +384,6 @@ const ClubDetail = () => {
                       <MapPin className="w-5 h-5 mt-0.5 text-primary" />
                       <div>
                         <p className="font-medium">{t("club.location")}</p>
-                        <p className="text-sm text-muted-foreground">{club.address}</p>
                         <p className="text-sm text-muted-foreground">{club.district}, {club.city}</p>
                       </div>
                     </div>
