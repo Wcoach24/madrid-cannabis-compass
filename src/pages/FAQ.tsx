@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SEOHead from "@/components/SEOHead";
+import OrganizationSchema from "@/components/OrganizationSchema";
 import { HelpCircle } from "lucide-react";
 import { useLanguage } from "@/hooks/useLanguage";
 import { buildLanguageAwarePath } from "@/lib/languageUtils";
@@ -53,6 +54,7 @@ const FAQ = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <OrganizationSchema />
       <SEOHead
         title={t("faq.title") + " | Madrid Cannabis Clubs"}
         description={t("faq.subtitle")}
