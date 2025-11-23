@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Badge } from "@/components/ui/badge";
 import { Search, Calendar, Mail, PartyPopper, Shield, Clock, CheckCircle } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -16,6 +17,7 @@ import { useLanguage } from "@/hooks/useLanguage";
 import { buildLanguageAwarePath } from "@/lib/languageUtils";
 import { generateHreflangLinks, BASE_URL } from "@/lib/hreflangUtils";
 import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
+import { isOpenNow, Timetable } from "@/lib/timetableUtils";
 
 const Index = () => {
   const { language, t } = useLanguage();
@@ -119,7 +121,7 @@ const Index = () => {
   const fetchFeaturedClubs = async () => {
     const { data, error } = await supabase
       .from("clubs")
-      .select("*")
+      .select("slug, name, summary, district, rating_editorial, is_tourist_friendly, is_verified, languages, main_image_url, timetable")
       .eq("status", "active")
       .eq("is_featured", true)
       .order("rating_editorial", { ascending: false })
@@ -334,17 +336,17 @@ const Index = () => {
                 <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground font-luxury">{t("home.featured.subtitle")}</p>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 max-w-7xl mx-auto mb-6 md:mb-8">{featuredClubs.map((club, index) => (
-                  <div key={club.id} className="card-snoop group relative overflow-hidden rounded-2xl cursor-pointer">
-                    {/* VIP Badge for top clubs */}
-                    {index === 0 && (
-                      <div className="absolute top-3 right-3 md:top-4 md:right-4 z-20 bg-gradient-to-r from-primary to-weed-gold-dark text-black text-xs font-bold px-3 py-1.5 md:px-4 md:py-2 rounded-full shadow-gold-intense">
-                        VIP
-                      </div>
-                    )}
-                    {index === 1 && (
-                      <div className="absolute top-3 right-3 md:top-4 md:right-4 z-20 bg-gradient-to-r from-primary to-weed-gold-dark text-black text-xs font-bold px-3 py-1.5 md:px-4 md:py-2 rounded-full shadow-gold">
-                        PREMIUM
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 max-w-7xl mx-auto mb-6 md:mb-8">{featuredClubs.map((club, index) => {
+                  const clubIsOpen = club.timetable ? isOpenNow(club.timetable as Timetable) : false;
+                  
+                  return (
+                  <div key={club.slug} className="card-snoop group relative overflow-hidden rounded-2xl cursor-pointer">
+                    {/* OPEN NOW Badge */}
+                    {clubIsOpen && (
+                      <div className="absolute top-3 right-3 md:top-4 md:right-4 z-20">
+                        <Badge className="bg-green-500 text-white hover:bg-green-600 text-xs font-bold px-3 py-1.5 md:px-4 md:py-2 shadow-lg">
+                          {t("clubcard.open_now")}
+                        </Badge>
                       </div>
                     )}
                     
@@ -393,7 +395,8 @@ const Index = () => {
                       </Button>
                     </div>
                   </div>
-                ))}
+                );
+              })}
               </div>
 
               <div className="text-center">
