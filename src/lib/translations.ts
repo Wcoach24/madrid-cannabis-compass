@@ -265,6 +265,7 @@ export const translations: Record<Language, Record<string, string>> = {
     // Club card
     "clubcard.verified": "Verified",
     "clubcard.touristfriendly": "Tourist Friendly",
+    "clubcard.open_now": "Open Now",
   },
   es: {
     // Navigation
@@ -525,6 +526,7 @@ export const translations: Record<Language, Record<string, string>> = {
     // Club card
     "clubcard.verified": "Verificado",
     "clubcard.touristfriendly": "Turista Amigable",
+    "clubcard.open_now": "Abierto Ahora",
   },
 };
 

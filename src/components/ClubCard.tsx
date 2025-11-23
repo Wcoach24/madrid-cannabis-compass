@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { MapPin, Star, Languages } from "lucide-react";
 import { useLanguage } from "@/hooks/useLanguage";
 import { buildLanguageAwarePath } from "@/lib/languageUtils";
+import { isOpenNow, Timetable } from "@/lib/timetableUtils";
 
 interface ClubCardProps {
   slug: string;
@@ -15,6 +16,7 @@ interface ClubCardProps {
   is_verified: boolean;
   languages?: string[];
   main_image_url?: string;
+  timetable?: Timetable | null;
 }
 
 const ClubCard = ({
@@ -27,8 +29,10 @@ const ClubCard = ({
   is_verified,
   languages,
   main_image_url,
+  timetable,
 }: ClubCardProps) => {
   const { language, t } = useLanguage();
+  const clubIsOpen = timetable ? isOpenNow(timetable) : false;
   
   return (
     <Link to={buildLanguageAwarePath(`/club/${slug}`, language)}>
@@ -43,15 +47,22 @@ const ClubCard = ({
           </div>
         )}
         <CardContent className="p-6">
-          <div className="flex items-start justify-between mb-3">
+          <div className="flex items-start justify-between mb-3 gap-2">
             <h3 className="text-xl font-semibold text-foreground line-clamp-1">
               {name}
             </h3>
-            {is_verified && (
-              <Badge variant="secondary" className="ml-2 shrink-0">
-                {t("clubcard.verified")}
-              </Badge>
-            )}
+            <div className="flex gap-2 shrink-0">
+              {clubIsOpen && (
+                <Badge className="bg-green-500 text-white hover:bg-green-600">
+                  {t("clubcard.open_now")}
+                </Badge>
+              )}
+              {is_verified && (
+                <Badge variant="secondary">
+                  {t("clubcard.verified")}
+                </Badge>
+              )}
+            </div>
           </div>
           
           <div className="flex items-center text-sm text-muted-foreground mb-3">

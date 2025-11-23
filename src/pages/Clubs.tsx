@@ -33,7 +33,7 @@ const Clubs = () => {
     
     let query = supabase
       .from("clubs")
-      .select("*")
+      .select("slug, name, summary, district, rating_editorial, is_tourist_friendly, is_verified, languages, main_image_url, timetable, description, is_featured")
       .eq("status", "active")
       .order("is_featured", { ascending: false })
       .order("rating_editorial", { ascending: false, nullsFirst: false });
@@ -184,6 +184,7 @@ const Clubs = () => {
                     is_verified={club.is_verified}
                     languages={club.languages}
                     main_image_url={club.main_image_url}
+                    timetable={club.timetable as any}
                   />
                 ))}
               </div>
