@@ -15,6 +15,7 @@ interface SEOHeadProps {
   hreflangLinks?: HreflangLink[];
   ogLocale?: string;
   ogLocaleAlternate?: string[];
+  speakableSelectors?: string[]; // CSS selectors for content readable by voice assistants
 }
 
 const SEOHead = ({ 
@@ -26,7 +27,8 @@ const SEOHead = ({
   structuredData,
   hreflangLinks,
   ogLocale = "en_US",
-  ogLocaleAlternate = []
+  ogLocaleAlternate = [],
+  speakableSelectors = []
 }: SEOHeadProps) => {
   useEffect(() => {
     // Update title
@@ -114,14 +116,29 @@ const SEOHead = ({
 
       // Add new structured data
       const dataArray = Array.isArray(structuredData) ? structuredData : [structuredData];
-      dataArray.forEach((data) => {
+      
+      // Add SpeakableSpecification if selectors provided
+      const enrichedData = dataArray.map((data: any) => {
+        if (speakableSelectors.length > 0 && (data['@type'] === 'Article' || data['@type'] === 'BlogPosting' || data['@type'] === 'NewsArticle')) {
+          return {
+            ...data,
+            speakable: {
+              "@type": "SpeakableSpecification",
+              "cssSelector": speakableSelectors
+            }
+          };
+        }
+        return data;
+      });
+      
+      enrichedData.forEach((data) => {
         const scriptElement = document.createElement('script');
         scriptElement.setAttribute('type', 'application/ld+json');
         scriptElement.textContent = JSON.stringify(data);
         document.head.appendChild(scriptElement);
       });
     }
-  }, [title, description, canonical, ogImage, keywords, structuredData, hreflangLinks, ogLocale, ogLocaleAlternate]);
+  }, [title, description, canonical, ogImage, keywords, structuredData, hreflangLinks, ogLocale, ogLocaleAlternate, speakableSelectors]);
 
   return null;
 };

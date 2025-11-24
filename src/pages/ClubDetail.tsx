@@ -125,10 +125,39 @@ const ClubDetail = () => {
     "description": club.description,
     "url": `${BASE_URL}/club/${club.slug}`,
     "image": club.main_image_url || club.gallery_image_urls?.[0],
+    "publicAccess": false, // Members only
+    "containedInPlace": {
+      "@type": "City",
+      "name": "Madrid",
+      "addressCountry": "ES"
+    },
+    "amenityFeature": [
+      {
+        "@type": "LocationFeatureSpecification",
+        "name": "Cannabis Social Club",
+        "value": true
+      },
+      ...(club.is_tourist_friendly ? [{
+        "@type": "LocationFeatureSpecification",
+        "name": "Tourist Friendly",
+        "value": true
+      }] : []),
+      ...(club.is_verified ? [{
+        "@type": "LocationFeatureSpecification",
+        "name": "Verified Club",
+        "value": true
+      }] : []),
+      ...(club.languages && club.languages.length > 0 ? [{
+        "@type": "LocationFeatureSpecification",
+        "name": "Languages Spoken",
+        "value": club.languages.join(", ")
+      }] : [])
+    ],
     "address": {
       "@type": "PostalAddress",
       "streetAddress": club.address,
       "addressLocality": club.city,
+      "addressRegion": club.district,
       "postalCode": club.postal_code,
       "addressCountry": club.country
     },
@@ -137,7 +166,8 @@ const ClubDetail = () => {
         "@type": "GeoCoordinates",
         "latitude": club.latitude,
         "longitude": club.longitude
-      }
+      },
+      "geoRadius": "500"
     } : {}),
     ...(club.rating_editorial ? {
       "aggregateRating": {

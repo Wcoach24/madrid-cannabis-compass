@@ -118,6 +118,10 @@ const GuideDetail = () => {
                          article.category.toLowerCase().includes("how-to") ||
                          article.slug.includes("how-to");
 
+  // Use NewsArticle for time-sensitive content, BlogPosting for evergreen
+  const isTimeSensitive = article.title.includes('2025') || article.category === 'legal';
+  const articleType = isTimeSensitive ? 'NewsArticle' : 'BlogPosting';
+
   // HowTo Schema for step-by-step guides
   const howToSchema = isHowToArticle ? {
     "@context": "https://schema.org",
@@ -183,7 +187,7 @@ const GuideDetail = () => {
   // BlogPosting Schema - More specific than Article for SEO
   const blogPostingSchema = {
     "@context": "https://schema.org",
-    "@type": "BlogPosting",
+    "@type": articleType,
     "headline": article.title,
     "alternativeHeadline": article.subtitle,
     "description": article.excerpt || article.seo_description,
@@ -195,6 +199,7 @@ const GuideDetail = () => {
     },
     "datePublished": article.published_at,
     "dateModified": article.updated_at,
+    "isAccessibleForFree": true,
     "inLanguage": language,
     "author": {
       "@type": "Person",
@@ -303,6 +308,7 @@ const GuideDetail = () => {
         ogLocale={language === "es" ? "es_ES" : "en_US"}
         ogLocaleAlternate={language === "es" ? ["en_US"] : ["es_ES"]}
         structuredData={allSchemas}
+        speakableSelectors={["h1", "article .text-muted-foreground", ".markdown-content > p:first-of-type", ".markdown-content h2"]}
       />
       <Header />
       
