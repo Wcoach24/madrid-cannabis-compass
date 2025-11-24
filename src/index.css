@@ -184,10 +184,22 @@ All colors MUST be HSL.
     .smoke-particle {
       position: absolute;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(212, 175, 55, 0.25) 0%, transparent 70%);
-      filter: blur(25px);
-      opacity: 0;
-      animation: float 20s infinite ease-in-out;
+      background: radial-gradient(circle, rgba(212, 175, 55, 0.3) 0%, transparent 70%);
+      filter: blur(40px);
+      animation: smoothDrift 25s infinite ease-in-out, gentleSway 8s infinite ease-in-out;
+    }
+
+    .ambient-glow {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        ellipse at 50% 50%,
+        rgba(212, 175, 55, 0.15) 0%,
+        rgba(160, 81, 149, 0.1) 50%,
+        transparent 80%
+      );
+      animation: breathe 8s infinite ease-in-out;
+      pointer-events: none;
     }
 
     .smoke-1 {
@@ -272,20 +284,38 @@ All colors MUST be HSL.
     }
   }
 
-  @keyframes float {
-    0%, 100% {
+  @keyframes smoothDrift {
+    0% {
       transform: translate(0, 0) scale(1);
       opacity: 0;
     }
-    10% {
-      opacity: 0.4;
+    5% {
+      opacity: 0.35;
+    }
+    95% {
+      opacity: 0.35;
+    }
+    100% {
+      transform: translate(30px, -120px) scale(1.1);
+      opacity: 0;
+    }
+  }
+
+  @keyframes gentleSway {
+    0%, 100% {
+      transform: translateX(0);
     }
     50% {
-      transform: translate(50px, -100px) scale(1.2);
-      opacity: 0.6;
+      transform: translateX(20px);
     }
-    90% {
-      opacity: 0.35;
+  }
+
+  @keyframes breathe {
+    0%, 100% {
+      opacity: 0.3;
+    }
+    50% {
+      opacity: 0.5;
     }
   }
   
