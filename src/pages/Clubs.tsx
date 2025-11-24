@@ -33,7 +33,7 @@ const Clubs = () => {
     
     let query = supabase
       .from("clubs")
-      .select("slug, name, summary, district, rating_editorial, is_tourist_friendly, is_verified, languages, main_image_url, timetable, description, is_featured")
+      .select("id, slug, name, summary, district, rating_editorial, is_tourist_friendly, is_verified, languages, main_image_url, timetable, description, is_featured")
       .eq("status", "active")
       .order("is_featured", { ascending: false })
       .order("rating_editorial", { ascending: false, nullsFirst: false });
@@ -46,7 +46,13 @@ const Clubs = () => {
       query = query.eq("is_tourist_friendly", true);
     }
 
-    const { data } = await query;
+    const { data, error } = await query;
+
+    if (error) {
+      console.error("Error fetching clubs:", error);
+      setLoading(false);
+      return;
+    }
 
     if (data) {
       let filtered = data;
