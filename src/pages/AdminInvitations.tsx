@@ -26,7 +26,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, Check, X, TrendingUp } from "lucide-react";
+import { Loader2, Check, X, TrendingUp, Mail } from "lucide-react";
 
 type InvitationRequest = {
   id: number;
@@ -71,6 +71,7 @@ const AdminInvitations = () => {
   const [selectedRequest, setSelectedRequest] = useState<InvitationRequest | null>(null);
   const [actualCount, setActualCount] = useState<number>(1);
   const [processingId, setProcessingId] = useState<number | null>(null);
+  const [sendingReminderId, setSendingReminderId] = useState<number | null>(null);
 
   useEffect(() => {
     if (!authLoading && !isAdmin) {
@@ -170,6 +171,31 @@ const AdminInvitations = () => {
     setSelectedRequest(request);
     setActualCount(request.visitor_count);
     setAttendanceDialogOpen(true);
+  };
+
+  const handleSendReminder = async (request: InvitationRequest) => {
+    try {
+      setSendingReminderId(request.id);
+      const { error } = await supabase.functions.invoke("send-reminder", {
+        body: { requestId: request.id },
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Reminder sent",
+        description: `Reminder email sent to ${request.email}`,
+      });
+    } catch (error: any) {
+      console.error("Error sending reminder:", error);
+      toast({
+        title: "Error",
+        description: error.message || "Failed to send reminder",
+        variant: "destructive",
+      });
+    } finally {
+      setSendingReminderId(null);
+    }
   };
 
   const filteredRequests = requests.filter((req) => {
@@ -389,9 +415,34 @@ const AdminInvitations = () => {
                           </Button>
                         </div>
                       )}
-                      {request.attendance_marked_at && (
+                      {request.attendance_marked_at && !request.attended && (
+                        <div className="flex gap-2">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => handleSendReminder(request)}
+                            disabled={sendingReminderId === request.id}
+                          >
+                            {sendingReminderId === request.id ? (
+                              <>
+                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                Sending...
+                              </>
+                            ) : (
+                              <>
+                                <Mail className="mr-2 h-4 w-4" />
+                                Send Reminder
+                              </>
+                            )}
+                          </Button>
+                          <span className="text-xs text-muted-foreground self-center">
+                            No-show on {new Date(request.attendance_marked_at).toLocaleDateString()}
+                          </span>
+                        </div>
+                      )}
+                      {request.attendance_marked_at && request.attended && (
                         <span className="text-xs text-muted-foreground">
-                          Marked {new Date(request.attendance_marked_at).toLocaleDateString()}
+                          Attended {new Date(request.attendance_marked_at).toLocaleDateString()}
                         </span>
                       )}
                     </TableCell>
