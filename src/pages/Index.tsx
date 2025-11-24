@@ -165,7 +165,12 @@ const Index = () => {
       
       <main className="flex-1">
         {/* Hero Section - Dark Luxury with Smoke Animation */}
-        <section className="relative py-20 md:py-32 overflow-hidden hero-gradient-bg">
+        <section className="relative py-20 md:py-32 overflow-hidden" style={{
+          backgroundImage: 'url(/images/hero-custom-bg.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat'
+        }}>
           {/* Animated Smoke/Haze Particles */}
           <div className="absolute inset-0">
             <div className="smoke-particle smoke-1"></div>
@@ -179,7 +184,7 @@ const Index = () => {
           <div className="ambient-glow"></div>
           
           {/* Dark Overlay for Readability */}
-          <div className="absolute inset-0 bg-black/70"></div>
+          <div className="absolute inset-0 bg-black/50"></div>
           
           <div className="container mx-auto px-4 relative z-10">
             <div className="max-w-4xl mx-auto text-center">
