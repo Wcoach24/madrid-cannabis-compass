@@ -1,9 +1,7 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.81.0";
 import { Resend } from "https://esm.sh/resend@2.0.0";
-import * as React from "https://esm.sh/react@18.2.0";
-import { renderAsync } from "https://esm.sh/@react-email/components@0.0.15";
-import { ReminderEmail } from "./_templates/reminder-email.tsx";
+import { generateReminderEmailHTML } from "./_templates/reminder-email.tsx";
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 
@@ -69,16 +67,14 @@ const handler = async (req: Request): Promise<Response> => {
     const clubName = club.name;
     const visitorName = invitation.visitor_names[0] || "Friend";
 
-    // Render the email template
-    const html = await renderAsync(
-      React.createElement(ReminderEmail, {
-        visitorName,
-        clubName,
-        visitDate: invitation.visit_date,
-        invitationCode: invitation.invitation_code || "",
-        language: invitation.language || "en",
-      })
-    );
+    // Generate the email HTML
+    const html = generateReminderEmailHTML({
+      visitorName,
+      clubName,
+      visitDate: invitation.visit_date,
+      invitationCode: invitation.invitation_code || "",
+      language: invitation.language || "en",
+    });
 
     // Send the email
     const { data: emailData, error: emailError } = await resend.emails.send({
@@ -97,6 +93,15 @@ const handler = async (req: Request): Promise<Response> => {
     }
 
     console.log("Reminder email sent successfully:", emailData);
+
+    // Reset attendance_marked_at to allow re-marking attendance
+    await supabase
+      .from("invitation_requests")
+      .update({ 
+        attendance_marked_at: null,
+        attendance_marked_by: null
+      })
+      .eq("id", requestId);
 
     // Log the reminder in the audit log
     await supabase.from("invitation_audit_log").insert({

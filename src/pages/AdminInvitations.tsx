@@ -186,6 +186,9 @@ const AdminInvitations = () => {
         title: "Reminder sent",
         description: `Reminder email sent to ${request.email}`,
       });
+      
+      // Refresh requests to show attendance buttons again
+      fetchRequests();
     } catch (error: any) {
       console.error("Error sending reminder:", error);
       toast({
