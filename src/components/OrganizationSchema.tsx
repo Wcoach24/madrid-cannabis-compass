@@ -22,7 +22,8 @@ const OrganizationSchema = () => {
         "name": "Weed Madrid Team"
       },
       "sameAs": [
-        `${BASE_URL}`,
+        `${BASE_URL}/guides`,
+        `${BASE_URL}/clubs`,
         `${BASE_URL}/about.txt`,
         `${BASE_URL}/api.txt`
       ],
