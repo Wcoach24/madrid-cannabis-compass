@@ -29,6 +29,12 @@ const FAQ = () => {
       .eq("language", language)
       .order("priority", { ascending: true });
 
+    if (error) {
+      console.error("Error fetching FAQs:", error);
+      setLoading(false);
+      return;
+    }
+
     if (data) {
       setFaqs(data);
     }
