@@ -171,8 +171,11 @@ const Index = () => {
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat'
         }}>
-          {/* Animated Smoke/Haze Particles */}
-          <div className="absolute inset-0">
+          {/* Dark Overlay for Background - Layer 1 */}
+          <div className="absolute inset-0 bg-black/50 z-[1]"></div>
+          
+          {/* Animated Smoke/Haze Particles - Layer 2 */}
+          <div className="absolute inset-0 z-[2]">
             <div className="smoke-particle smoke-1"></div>
             <div className="smoke-particle smoke-2"></div>
             <div className="smoke-particle smoke-3"></div>
@@ -180,11 +183,8 @@ const Index = () => {
             <div className="smoke-particle smoke-5"></div>
           </div>
           
-          {/* Ambient Glow Layer */}
-          <div className="ambient-glow"></div>
-          
-          {/* Dark Overlay for Readability */}
-          <div className="absolute inset-0 bg-black/50"></div>
+          {/* Ambient Glow Layer - Layer 3 */}
+          <div className="ambient-glow z-[3]"></div>
           
           <div className="container mx-auto px-4 relative z-10">
             <div className="max-w-4xl mx-auto text-center">
