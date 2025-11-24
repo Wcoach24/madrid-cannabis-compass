@@ -19,6 +19,7 @@ import GenerateArticles from "./pages/GenerateArticles";
 import Auth from "./pages/Auth";
 import AdminInvitations from "./pages/AdminInvitations";
 import AdminClubs from "./pages/AdminClubs";
+import AdminGuides from "./pages/AdminGuides";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -47,6 +48,7 @@ const App = () => (
             <Route path="/auth" element={<Auth />} />
             <Route path="/admin/invitations" element={<AdminInvitations />} />
             <Route path="/admin/clubs" element={<AdminClubs />} />
+            <Route path="/admin/guides" element={<AdminGuides />} />
             
             {/* Language-prefixed routes */}
             <Route path="/:lang" element={<Index />} />
@@ -60,6 +62,7 @@ const App = () => (
             <Route path="/:lang/auth" element={<Auth />} />
             <Route path="/:lang/admin/invitations" element={<AdminInvitations />} />
             <Route path="/:lang/admin/clubs" element={<AdminClubs />} />
+            <Route path="/:lang/admin/guides" element={<AdminGuides />} />
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
