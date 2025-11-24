@@ -51,7 +51,19 @@ const clubSchema = z.object({
   whatsapp_number: z.string().optional().nullable(),
   website_url: z.string().url().optional().or(z.literal('')).nullable(),
   instagram_url: z.string().url().optional().or(z.literal('')).nullable(),
-  main_image_url: z.string().url().optional().or(z.literal('')).nullable(),
+  main_image_url: z.string()
+    .refine((val) => {
+      if (!val || val === '') return true;
+      if (val.startsWith('/')) return true;
+      try {
+        new URL(val);
+        return true;
+      } catch {
+        return false;
+      }
+    }, { message: 'Must be a valid URL or relative path (e.g., /images/clubs/club.jpg)' })
+    .optional()
+    .nullable(),
   status: z.enum(['active', 'inactive']).default('active'),
   is_verified: z.boolean().default(false),
   is_featured: z.boolean().default(false),
@@ -303,7 +315,7 @@ export default function ClubFormDialog({ open, onOpenChange, clubId, onSuccess }
                     <FormItem>
                       <FormLabel>Main Image URL</FormLabel>
                       <FormControl>
-                        <Input {...field} value={field.value || ''} placeholder="https://..." type="url" />
+                        <Input {...field} value={field.value || ''} placeholder="/images/clubs/club-name.jpg or https://..." />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
