@@ -173,10 +173,10 @@ const Index = () => {
             <div className="smoke-particle smoke-3"></div>
             <div className="smoke-particle smoke-4"></div>
             <div className="smoke-particle smoke-5"></div>
-            <div className="smoke-particle smoke-6"></div>
-            <div className="smoke-particle smoke-7"></div>
-            <div className="smoke-particle smoke-8"></div>
           </div>
+          
+          {/* Ambient Glow Layer */}
+          <div className="ambient-glow"></div>
           
           {/* Dark Overlay for Readability */}
           <div className="absolute inset-0 bg-black/70"></div>
