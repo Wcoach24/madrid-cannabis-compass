@@ -17,6 +17,7 @@ import InvitationForm from "./pages/InvitationForm";
 import SeedData from "./pages/SeedData";
 import GenerateArticles from "./pages/GenerateArticles";
 import Auth from "./pages/Auth";
+import AdminDashboard from "./pages/AdminDashboard";
 import AdminInvitations from "./pages/AdminInvitations";
 import AdminClubs from "./pages/AdminClubs";
 import AdminGuides from "./pages/AdminGuides";
@@ -46,6 +47,7 @@ const App = () => (
             <Route path="/seed-data" element={<SeedData />} />
             <Route path="/generate-articles" element={<GenerateArticles />} />
             <Route path="/auth" element={<Auth />} />
+            <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/admin/invitations" element={<AdminInvitations />} />
             <Route path="/admin/clubs" element={<AdminClubs />} />
             <Route path="/admin/guides" element={<AdminGuides />} />
@@ -60,6 +62,7 @@ const App = () => (
             <Route path="/:lang/guide/:slug" element={<GuideDetail />} />
             <Route path="/:lang/contact" element={<Contact />} />
             <Route path="/:lang/auth" element={<Auth />} />
+            <Route path="/:lang/admin" element={<AdminDashboard />} />
             <Route path="/:lang/admin/invitations" element={<AdminInvitations />} />
             <Route path="/:lang/admin/clubs" element={<AdminClubs />} />
             <Route path="/:lang/admin/guides" element={<AdminGuides />} />
