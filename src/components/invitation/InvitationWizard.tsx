@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { format } from "date-fns";
 import { supabase } from "@/integrations/supabase/client";
 import { invitationRequestSchema } from "@/lib/invitationValidation";
 import { toast } from "sonner";
@@ -99,7 +100,7 @@ export function InvitationWizard({ clubName, clubSlug, language }: InvitationWiz
       const validatedData = invitationRequestSchema.parse({
         club_slug: clubSlug,
         language,
-        visit_date: formData.visitDate.toISOString().split('T')[0],
+        visit_date: format(formData.visitDate, 'yyyy-MM-dd'),
         email: formData.email.trim(),
         phone: formData.phone.trim(),
         visitor_count: formData.visitorCount,
