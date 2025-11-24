@@ -35,7 +35,7 @@ const handler = async (req: Request): Promise<Response> => {
     // Fetch the invitation request details
     const { data: invitation, error: invitationError } = await supabase
       .from("invitation_requests")
-      .select("*, clubs(name)")
+      .select("*")
       .eq("id", requestId)
       .single();
 
@@ -53,8 +53,20 @@ const handler = async (req: Request): Promise<Response> => {
       throw new Error("Cannot send reminder for already attended invitation");
     }
 
-    // Get club name
-    const clubName = invitation.clubs?.name || "the club";
+    // Fetch club details using club_slug
+    const { data: club, error: clubError } = await supabase
+      .from("clubs")
+      .select("name")
+      .eq("slug", invitation.club_slug)
+      .single();
+
+    if (clubError || !club) {
+      console.error("Error fetching club:", clubError);
+      throw new Error("Club not found");
+    }
+
+    // Get club name and visitor name
+    const clubName = club.name;
     const visitorName = invitation.visitor_names[0] || "Friend";
 
     // Render the email template
