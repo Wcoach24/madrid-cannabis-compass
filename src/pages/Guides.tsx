@@ -28,6 +28,12 @@ const Guides = () => {
       .eq("language", language)
       .order("published_at", { ascending: false });
 
+    if (error) {
+      console.error("Error fetching articles:", error);
+      setLoading(false);
+      return;
+    }
+
     if (data) {
       setArticles(data);
     }
