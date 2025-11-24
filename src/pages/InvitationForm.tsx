@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/hooks/useLanguage";
 import { t } from "@/lib/translations";
-import { generateHreflangLinks } from "@/lib/hreflangUtils";
+import { generateHreflangLinks, BASE_URL } from "@/lib/hreflangUtils";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SEOHead from "@/components/SEOHead";
@@ -28,7 +28,30 @@ export default function InvitationForm() {
     },
   });
 
-  const hreflangLinks = generateHreflangLinks("https://lovable.dev", `/invite/${slug}`);
+  const hreflangLinks = generateHreflangLinks(BASE_URL, `/invite/${slug}`);
+
+  // Service structured data for invitation facilitation
+  const serviceSchema = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": `${club.name} Cannabis Club Membership Invitation`,
+    "provider": {
+      "@type": "Organization",
+      "name": "Weed Madrid"
+    },
+    "areaServed": {
+      "@type": "City",
+      "name": "Madrid",
+      "addressCountry": "ES"
+    },
+    "serviceType": "Cannabis Social Club Invitation Facilitation",
+    "description": `Request your invitation to ${club.name}, a verified cannabis social club in ${club.district}, Madrid. Fast approval process for tourists and residents.`,
+    "isAccessibleForFree": true,
+    "availableChannel": {
+      "@type": "ServiceChannel",
+      "serviceUrl": `${BASE_URL}/invite/${slug}`
+    }
+  };
 
   if (isLoading) {
     return (
@@ -64,6 +87,7 @@ export default function InvitationForm() {
         description={pageDescription}
         canonical={`/invite/${slug}`}
         hreflangLinks={hreflangLinks}
+        structuredData={serviceSchema}
       />
       <div className="min-h-screen flex flex-col bg-background">
         <Header />
