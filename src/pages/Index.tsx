@@ -498,30 +498,6 @@ const Index = () => {
           </div>
         </section>
 
-        {/* As Seen On Section */}
-        <section className="py-12 md:py-16 bg-background">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-10">
-              <h3 className="font-display text-2xl md:text-3xl font-bold text-muted-foreground mb-2">As Seen On</h3>
-            </div>
-            
-            <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12 max-w-5xl mx-auto">
-              {/* Placeholder logos - replace with actual media outlet logos */}
-              {['TripAdvisor', 'Lonely Planet', 'Forbes Travel', 'Vice', 'High Times', 'Leafly'].map((outlet, index) => (
-                <div
-                  key={index}
-                  className="group relative px-6 py-4 rounded-lg transition-all hover:scale-110"
-                >
-                  <span className="text-2xl font-bold text-muted-foreground/40 group-hover:text-primary transition-colors duration-300 filter grayscale group-hover:grayscale-0">
-                    {outlet}
-                  </span>
-                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl bg-primary/20 rounded-lg -z-10"></div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
         {/* Essential Guides - Simplified */}
         <section className="py-12 md:py-16 bg-muted/30">
           <div className="container mx-auto px-4">
