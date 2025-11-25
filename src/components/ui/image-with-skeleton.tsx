@@ -24,8 +24,8 @@ export function ImageWithSkeleton({
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   
-  // Auto-generate WebP path if not provided
-  const finalWebpSrc = webpSrc || (src ? src.replace(/\.(jpe?g|png)$/i, '.webp') : undefined);
+  // Only use WebP if explicitly provided
+  const finalWebpSrc = webpSrc;
 
   const aspectClasses = {
     video: "aspect-video",

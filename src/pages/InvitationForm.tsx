@@ -30,29 +30,6 @@ export default function InvitationForm() {
 
   const hreflangLinks = generateHreflangLinks(BASE_URL, `/invite/${slug}`);
 
-  // Service structured data for invitation facilitation
-  const serviceSchema = {
-    "@context": "https://schema.org",
-    "@type": "Service",
-    "name": `${club.name} Cannabis Club Membership Invitation`,
-    "provider": {
-      "@type": "Organization",
-      "name": "Weed Madrid"
-    },
-    "areaServed": {
-      "@type": "City",
-      "name": "Madrid",
-      "addressCountry": "ES"
-    },
-    "serviceType": "Cannabis Social Club Invitation Facilitation",
-    "description": `Request your invitation to ${club.name}, a verified cannabis social club in ${club.district}, Madrid. Fast approval process for tourists and residents.`,
-    "isAccessibleForFree": true,
-    "availableChannel": {
-      "@type": "ServiceChannel",
-      "serviceUrl": `${BASE_URL}/invite/${slug}`
-    }
-  };
-
   if (isLoading) {
     return (
       <div className="min-h-screen bg-background flex flex-col">
@@ -76,6 +53,29 @@ export default function InvitationForm() {
       </div>
     );
   }
+
+  // Service structured data for invitation facilitation
+  const serviceSchema = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": `${club.name} Cannabis Club Membership Invitation`,
+    "provider": {
+      "@type": "Organization",
+      "name": "Weed Madrid"
+    },
+    "areaServed": {
+      "@type": "City",
+      "name": "Madrid",
+      "addressCountry": "ES"
+    },
+    "serviceType": "Cannabis Social Club Invitation Facilitation",
+    "description": `Request your invitation to ${club.name}, a verified cannabis social club in ${club.district}, Madrid. Fast approval process for tourists and residents.`,
+    "isAccessibleForFree": true,
+    "availableChannel": {
+      "@type": "ServiceChannel",
+      "serviceUrl": `${BASE_URL}/invite/${slug}`
+    }
+  };
 
   const pageTitle = `${t("invitation.title", language)} - ${club.name}`;
   const pageDescription = t("invitation.seo.description", language);
