@@ -2,12 +2,16 @@ import { useState, ImgHTMLAttributes } from "react";
 import { Skeleton } from "./skeleton";
 import { cn } from "@/lib/utils";
 
-interface ImageWithSkeletonProps extends ImgHTMLAttributes<HTMLImageElement> {
+interface ImageWithSkeletonProps extends Omit<ImgHTMLAttributes<HTMLImageElement>, 'src'> {
+  src: string;
+  webpSrc?: string;
   aspectRatio?: "video" | "square" | "portrait";
   skeletonClassName?: string;
 }
 
 export function ImageWithSkeleton({
+  src,
+  webpSrc,
   className,
   aspectRatio = "video",
   skeletonClassName,
@@ -19,6 +23,9 @@ export function ImageWithSkeleton({
 }: ImageWithSkeletonProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
+  
+  // Auto-generate WebP path if not provided
+  const finalWebpSrc = webpSrc || (src ? src.replace(/\.(jpe?g|png)$/i, '.webp') : undefined);
 
   const aspectClasses = {
     video: "aspect-video",
@@ -52,18 +59,24 @@ export function ImageWithSkeleton({
           <span>{alt || "Image unavailable"}</span>
         </div>
       ) : (
-        <img
-          {...props}
-          alt={alt}
-          loading={loading}
-          onLoad={handleLoad}
-          onError={handleError}
-          className={cn(
-            "w-full h-full object-cover transition-opacity duration-300",
-            isLoading ? "opacity-0" : "opacity-100",
-            className
+        <picture>
+          {finalWebpSrc && (
+            <source srcSet={finalWebpSrc} type="image/webp" />
           )}
-        />
+          <img
+            {...props}
+            src={src}
+            alt={alt}
+            loading={loading}
+            onLoad={handleLoad}
+            onError={handleError}
+            className={cn(
+              "w-full h-full object-cover transition-opacity duration-300",
+              isLoading ? "opacity-0" : "opacity-100",
+              className
+            )}
+          />
+        </picture>
       )}
     </div>
   );
