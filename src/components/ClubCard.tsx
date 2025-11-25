@@ -5,6 +5,7 @@ import { MapPin, Star, Languages } from "lucide-react";
 import { useLanguage } from "@/hooks/useLanguage";
 import { buildLanguageAwarePath } from "@/lib/languageUtils";
 import { isOpenNow, Timetable } from "@/lib/timetableUtils";
+import { ImageWithSkeleton } from "@/components/ui/image-with-skeleton";
 
 interface ClubCardProps {
   slug: string;
@@ -38,13 +39,13 @@ const ClubCard = ({
     <Link to={buildLanguageAwarePath(`/club/${slug}`, language)}>
       <Card className="h-full overflow-hidden transition-all hover:shadow-lg hover:-translate-y-1 duration-300 bg-gradient-to-b from-card to-muted/20">
         {main_image_url && (
-          <div className="aspect-video w-full overflow-hidden bg-muted">
-            <img
-              src={main_image_url}
-              alt={`${name} - Cannabis social club in ${district}, Madrid. ${is_tourist_friendly ? 'Tourist friendly' : ''} ${is_verified ? 'verified' : ''} cannabis club`}
-              className="w-full h-full object-cover transition-transform hover:scale-105 duration-300"
-            />
-          </div>
+          <ImageWithSkeleton
+            src={main_image_url}
+            alt={`${name} - Cannabis social club in ${district}, Madrid. ${is_tourist_friendly ? 'Tourist friendly' : ''} ${is_verified ? 'verified' : ''} cannabis club`}
+            aspectRatio="video"
+            className="transition-transform hover:scale-105 duration-300"
+            loading="lazy"
+          />
         )}
         <CardContent className="p-6">
           <div className="flex items-start justify-between mb-3 gap-2">

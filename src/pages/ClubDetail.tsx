@@ -14,6 +14,7 @@ import { useLanguage } from "@/hooks/useLanguage";
 import { buildLanguageAwarePath, removeLanguageFromPath } from "@/lib/languageUtils";
 import { generateHreflangLinks, BASE_URL } from "@/lib/hreflangUtils";
 import { Timetable, isOpenNow, getDaysInOrder, getCurrentDay, formatTime } from "@/lib/timetableUtils";
+import { ImageWithSkeleton } from "@/components/ui/image-with-skeleton";
 
 const ClubDetail = () => {
   const { slug } = useParams();
@@ -258,11 +259,12 @@ const ClubDetail = () => {
       
       <main className="flex-1">
         {club.main_image_url && (
-          <div className="w-full h-64 md:h-96 overflow-hidden">
-            <img 
-              src={club.main_image_url} 
+          <div className="w-full h-64 md:h-96">
+            <ImageWithSkeleton
+              src={club.main_image_url}
               alt={`${club.name} cannabis social club - Interior view of ${club.district} district club in Madrid, Spain`}
-              className="w-full h-full object-cover"
+              aspectRatio="video"
+              className="h-64 md:h-96"
               loading="eager"
             />
           </div>

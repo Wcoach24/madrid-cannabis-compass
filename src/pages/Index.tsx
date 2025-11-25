@@ -36,42 +36,42 @@ const Index = () => {
     {
       name: "Mike Thompson",
       city: "USA",
-      photo: "https://i.pravatar.cc/150?img=12",
+      initials: "MT",
       quote: "Amazing experience! Got my invitation within 24 hours and the club was exactly as described. Professional, clean, and welcoming to tourists.",
       rating: 5
     },
     {
       name: "Sarah Johnson",
       city: "London",
-      photo: "https://i.pravatar.cc/150?img=5",
+      initials: "SJ",
       quote: "Best cannabis club experience in Madrid. The team helped me through the entire process. Highly recommend for international visitors!",
       rating: 5
     },
     {
       name: "Lucas Müller",
       city: "Germany",
-      photo: "https://i.pravatar.cc/150?img=33",
+      initials: "LM",
       quote: "Safe, legal, and professional. Everything was transparent and the club atmosphere was fantastic. Will definitely visit again!",
       rating: 5
     },
     {
       name: "Emma Dubois",
       city: "France",
-      photo: "https://i.pravatar.cc/150?img=9",
+      initials: "ED",
       quote: "The invitation process was super easy. Great selection of clubs and very tourist-friendly. Made my Madrid trip unforgettable!",
       rating: 5
     },
     {
       name: "James Wilson",
       city: "Australia",
-      photo: "https://i.pravatar.cc/150?img=15",
+      initials: "JW",
       quote: "Couldn't believe how smooth the whole process was. From getting the invitation to enjoying the club - everything was perfect!",
       rating: 5
     },
     {
       name: "Sophie Martin",
       city: "Canada",
-      photo: "https://i.pravatar.cc/150?img=20",
+      initials: "SM",
       quote: "As a tourist, I was nervous about the legalities. This service made everything clear and easy. The club was top-notch!",
       rating: 5
     }
@@ -443,11 +443,11 @@ const Index = () => {
                   </div>
 
                   <div className="flex items-center gap-3 md:gap-4">
-                    <img 
-                      src={testimonials[currentTestimonial].photo} 
-                      alt={testimonials[currentTestimonial].name}
-                      className="w-14 h-14 md:w-16 md:h-16 rounded-full border-2 border-primary shadow-gold"
-                    />
+                    <div className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-primary/20 border-2 border-primary shadow-gold flex items-center justify-center">
+                      <span className="text-xl md:text-2xl font-bold text-primary">
+                        {testimonials[currentTestimonial].initials}
+                      </span>
+                    </div>
                     <div>
                       <h4 className="font-display text-lg md:text-xl text-foreground">
                         {testimonials[currentTestimonial].name}

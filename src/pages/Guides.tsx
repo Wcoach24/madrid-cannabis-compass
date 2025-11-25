@@ -10,6 +10,7 @@ import { BookOpen, Calendar, User } from "lucide-react";
 import { useLanguage } from "@/hooks/useLanguage";
 import { buildLanguageAwarePath } from "@/lib/languageUtils";
 import { generateHreflangLinks, BASE_URL } from "@/lib/hreflangUtils";
+import { ImageWithSkeleton } from "@/components/ui/image-with-skeleton";
 
 const Guides = () => {
   const { language, t } = useLanguage();
@@ -118,14 +119,13 @@ const Guides = () => {
                   <Link key={article.id} to={buildLanguageAwarePath(`/guide/${article.slug}`, language)}>
                     <Card className="h-full overflow-hidden hover:shadow-lg transition-all hover:-translate-y-1 duration-300">
                       {article.cover_image_url && (
-                        <div className="aspect-video w-full overflow-hidden bg-muted">
-                          <img
-                            src={article.cover_image_url}
-                            alt={`${article.title} - Cannabis guide for Madrid covering ${article.category}`}
-                            className="w-full h-full object-cover transition-transform hover:scale-105 duration-300"
-                            loading="lazy"
-                          />
-                        </div>
+                        <ImageWithSkeleton
+                          src={article.cover_image_url}
+                          alt={`${article.title} - Cannabis guide for Madrid covering ${article.category}`}
+                          aspectRatio="video"
+                          className="transition-transform hover:scale-105 duration-300"
+                          loading="lazy"
+                        />
                       )}
                       <CardContent className="p-6">
                         <Badge variant="secondary" className="mb-3">
