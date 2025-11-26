@@ -55,7 +55,7 @@ const Header = () => {
             <LanguageSelect />
             <Sheet>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon">
+                <Button variant="ghost" size="icon" aria-label="Open navigation menu">
                   <Menu className="h-6 w-6" />
                 </Button>
               </SheetTrigger>

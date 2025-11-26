@@ -407,9 +407,9 @@ const Index = () => {
                       </span>
                     </div>
                     <div>
-                      <h4 className="font-display text-lg md:text-xl text-foreground">
+                      <p className="font-display text-lg md:text-xl text-foreground font-semibold">
                         {testimonials[currentTestimonial].name}
-                      </h4>
+                      </p>
                       <p className="text-sm md:text-base text-muted-foreground">{testimonials[currentTestimonial].city}</p>
                       <div className="flex items-center gap-1 mt-1">
                         {[...Array(testimonials[currentTestimonial].rating)].map((_, i) => (
@@ -438,15 +438,15 @@ const Index = () => {
               </div>
 
               {/* Dots Indicator */}
-              <div className="flex justify-center gap-2 mt-6 md:mt-8">
+              <div className="flex justify-center gap-3 mt-6 md:mt-8">
                 {testimonials.map((_, index) => (
                   <button
                     key={index}
                     onClick={() => setCurrentTestimonial(index)}
-                    className={`h-3 rounded-full transition-all touch-manipulation ${
+                    className={`h-11 min-h-[44px] rounded-full transition-all touch-manipulation ${
                       index === currentTestimonial 
-                        ? 'bg-primary w-8 shadow-gold' 
-                        : 'bg-muted-foreground/30 hover:bg-muted-foreground/50 w-3'
+                        ? 'bg-primary w-16 min-w-[44px] shadow-gold' 
+                        : 'bg-muted-foreground/30 hover:bg-muted-foreground/50 w-11 min-w-[44px]'
                     }`}
                     aria-label={`Go to testimonial ${index + 1}`}
                   />
