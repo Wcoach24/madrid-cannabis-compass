@@ -248,17 +248,6 @@ const Index = () => {
                 </div>
               </div>
 
-              {/* Social Proof Counter */}
-              <div className="text-center animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-900 px-4">
-                <div className="inline-flex items-center gap-2 glass-effect px-6 md:px-8 py-3 md:py-4 rounded-full border border-primary/20">
-                  <div className="flex -space-x-2 md:-space-x-3">
-                    <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-primary/20 border-2 border-primary"></div>
-                    <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-primary/30 border-2 border-primary"></div>
-                    <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-primary/40 border-2 border-primary"></div>
-                  </div>
-                  <span className="text-foreground font-semibold text-sm md:text-base lg:text-lg">Join 5,000+ Members</span>
-                </div>
-              </div>
             </div>
           </div>
         </section>
