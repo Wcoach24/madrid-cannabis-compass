@@ -320,11 +320,18 @@ const Index = () => {
                     
                     {/* Club Image with zoom effect */}
                     <div className="relative h-56 md:h-64 overflow-hidden">
-                      <img 
-                        src={club.main_image_url || "/placeholder.svg"} 
-                        alt={club.name}
-                        className="w-full h-full object-cover transition-transform duration-500 md:group-hover:scale-110"
-                      />
+                      <picture translate="no">
+                        <source 
+                          srcSet={club.main_image_url?.replace(/\.(jpg|jpeg|png)$/i, '.webp')} 
+                          type="image/webp" 
+                        />
+                        <img 
+                          src={club.main_image_url || "/placeholder.svg"} 
+                          alt={club.name}
+                          className="w-full h-full object-cover transition-transform duration-500 md:group-hover:scale-110"
+                          translate="no"
+                        />
+                      </picture>
                       {/* Dark gradient overlay */}
                       <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent opacity-80 md:group-hover:opacity-90 transition-opacity"></div>
                       
