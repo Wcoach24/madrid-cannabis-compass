@@ -156,7 +156,7 @@ const Index = () => {
           <div className="container mx-auto px-4 relative z-10">
             <div className="max-w-4xl mx-auto text-center">
               <div className="mb-6 md:mb-8 animate-in fade-in slide-in-from-bottom-4 duration-1000">
-                <picture>
+                <picture translate="no">
                   <source srcSet={logoWeedMadridWebp} type="image/webp" />
                   <img 
                     src={logoWeedMadrid} 
@@ -164,6 +164,7 @@ const Index = () => {
                     className="w-24 h-24 md:w-32 md:h-32 lg:w-40 lg:h-40 mx-auto mb-4 md:mb-6 drop-shadow-2xl rounded-2xl"
                     width="160"
                     height="160"
+                    translate="no"
                   />
                 </picture>
               </div>

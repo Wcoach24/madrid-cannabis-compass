@@ -21,11 +21,11 @@ const Header = () => {
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header translate="no" className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
           <Link to={buildLanguageAwarePath("/", language)} className="flex items-center space-x-2">
-            <picture>
+            <picture translate="no">
               <source srcSet={logoWeedMadridWebp} type="image/webp" />
               <img 
                 src={logoWeedMadrid} 
@@ -33,6 +33,7 @@ const Header = () => {
                 className="h-10 w-10 md:h-12 md:w-12 object-contain"
                 width="48"
                 height="48"
+                translate="no"
               />
             </picture>
             <span className="font-display text-xl md:text-2xl font-bold text-gradient-primary">
