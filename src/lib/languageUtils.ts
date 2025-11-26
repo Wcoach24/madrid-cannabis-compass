@@ -3,6 +3,9 @@ import { Language } from "@/lib/translations";
 export const SUPPORTED_LANGUAGES: Language[] = ["en", "es"];
 export const DEFAULT_LANGUAGE: Language = "en";
 
+// Default club for all invitation requests
+export const DEFAULT_INVITATION_CLUB_SLUG = "chamberi-club-social-madrid";
+
 export const getLanguageFromPath = (pathname: string): Language => {
   const pathParts = pathname.split("/").filter(Boolean);
   const firstPart = pathParts[0];

@@ -1,17 +1,27 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/hooks/useLanguage";
 import { t } from "@/lib/translations";
 import { generateHreflangLinks, BASE_URL } from "@/lib/hreflangUtils";
+import { buildLanguageAwarePath, DEFAULT_INVITATION_CLUB_SLUG } from "@/lib/languageUtils";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SEOHead from "@/components/SEOHead";
 import { InvitationWizard } from "@/components/invitation/InvitationWizard";
+import { useEffect } from "react";
 
 export default function InvitationForm() {
   const { language } = useLanguage();
   const { slug } = useParams<{ slug: string }>();
+  const navigate = useNavigate();
+
+  // Redirect old URLs to the centralized club for backward compatibility
+  useEffect(() => {
+    if (slug && slug !== DEFAULT_INVITATION_CLUB_SLUG) {
+      navigate(buildLanguageAwarePath(`/invite/${DEFAULT_INVITATION_CLUB_SLUG}`, language), { replace: true });
+    }
+  }, [slug, language, navigate]);
 
   const { data: club, isLoading } = useQuery({
     queryKey: ["club", slug],

@@ -16,7 +16,7 @@ import SEOHead from "@/components/SEOHead";
 
 import OrganizationSchema from "@/components/OrganizationSchema";
 import { useLanguage } from "@/hooks/useLanguage";
-import { buildLanguageAwarePath } from "@/lib/languageUtils";
+import { buildLanguageAwarePath, DEFAULT_INVITATION_CLUB_SLUG } from "@/lib/languageUtils";
 import { generateHreflangLinks, BASE_URL } from "@/lib/hreflangUtils";
 import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
 import { isOpenNow, Timetable } from "@/lib/timetableUtils";
@@ -365,7 +365,7 @@ const Index = () => {
                         className="w-full text-base md:text-lg py-5 md:py-6 shadow-gold md:group-hover:shadow-gold-intense transition-all"
                         onClick={() => trackClubView(club.slug, club.name)}
                       >
-                        <Link to={buildLanguageAwarePath(`/invite/${club.slug}`, language)}>
+                        <Link to={buildLanguageAwarePath(`/invite/${DEFAULT_INVITATION_CLUB_SLUG}`, language)}>
                           Get Invitation
                         </Link>
                       </Button>
