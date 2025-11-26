@@ -12,7 +12,7 @@ import ClubCard from "@/components/ClubCard";
 import QuickClubFinder from "@/components/QuickClubFinder";
 import logoWeedMadrid from "@/assets/logo-weed-madrid.png";
 import SEOHead from "@/components/SEOHead";
-import StatsCounter from "@/components/StatsCounter";
+
 import OrganizationSchema from "@/components/OrganizationSchema";
 import { useLanguage } from "@/hooks/useLanguage";
 import { buildLanguageAwarePath } from "@/lib/languageUtils";
@@ -26,11 +26,7 @@ const Index = () => {
   const navigate = useNavigate();
   const [featuredClubs, setFeaturedClubs] = useState<any[]>([]);
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
-  const [statsVisible, setStatsVisible] = useState(false);
-  const [memberCount, setMemberCount] = useState(0);
-  const [clubCount, setClubCount] = useState(0);
   const [finderDialogOpen, setFinderDialogOpen] = useState(false);
-  const statsRef = useRef<HTMLDivElement>(null);
 
   const testimonials = [
     {
@@ -85,40 +81,10 @@ const Index = () => {
       setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
     }, 5000);
     
-    // Stats counter animation
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting && !statsVisible) {
-          setStatsVisible(true);
-          animateCount(0, 5000, setMemberCount, 2000);
-          animateCount(0, 24, setClubCount, 2000);
-        }
-      },
-      { threshold: 0.5 }
-    );
-    
-    if (statsRef.current) {
-      observer.observe(statsRef.current);
-    }
-    
     return () => {
       clearInterval(interval);
-      if (statsRef.current) {
-        observer.unobserve(statsRef.current);
-      }
     };
-  }, [statsVisible]);
-
-  const animateCount = (start: number, end: number, setter: (value: number) => void, duration: number) => {
-    const startTime = Date.now();
-    const timer = setInterval(() => {
-      const elapsed = Date.now() - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      const current = Math.floor(start + (end - start) * progress);
-      setter(current);
-      if (progress === 1) clearInterval(timer);
-    }, 16);
-  };
+  }, []);
 
   const fetchFeaturedClubs = async () => {
     const { data, error } = await supabase
@@ -321,9 +287,6 @@ const Index = () => {
             </div>
           </div>
         </section>
-
-        {/* Stats Counter */}
-        <StatsCounter ref={statsRef} memberCount={memberCount} clubCount={clubCount} />
 
         {/* Featured Clubs - Luxury Photo Cards */}
         {featuredClubs.length > 0 && (
