@@ -9,27 +9,12 @@ import { buildLanguageAwarePath } from "@/lib/languageUtils";
 import { toast } from "sonner";
 
 const DISTRICTS = [
+  "Atocha",
   "Centro",
-  "Arganzuela",
-  "Retiro",
-  "Salamanca",
-  "Chamartín",
-  "Tetuán",
   "Chamberí",
-  "Fuencarral-El Pardo",
-  "Moncloa-Aravaca",
-  "Latina",
-  "Carabanchel",
-  "Usera",
-  "Puente de Vallecas",
-  "Moratalaz",
-  "Ciudad Lineal",
-  "Hortaleza",
-  "Villaverde",
-  "Villa de Vallecas",
-  "Vicálvaro",
-  "San Blas-Canillejas",
-  "Barajas"
+  "Malasaña",
+  "Retiro",
+  "Tetuán"
 ];
 
 interface QuickClubFinderProps {
