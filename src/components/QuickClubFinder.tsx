@@ -51,13 +51,15 @@ export default function QuickClubFinder({ onClose }: QuickClubFinderProps) {
       if (data) {
         toast.success(t("quickfinder.success").replace("{club}", data.name));
         onClose?.();
-        navigate(buildLanguageAwarePath(`/club/${data.slug}`, language));
+        setTimeout(() => {
+          navigate(buildLanguageAwarePath(`/club/${data.slug}`, language));
+        }, 250);
       } else {
         toast.info(t("quickfinder.noclubs"));
+        onClose?.();
         setTimeout(() => {
-          onClose?.();
           navigate(buildLanguageAwarePath(`/clubs?district=${selectedDistrict}`, language));
-        }, 2000);
+        }, 2250);
       }
     } catch (error) {
       console.error("Error finding club:", error);
