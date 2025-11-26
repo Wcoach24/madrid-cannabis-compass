@@ -31,6 +31,8 @@ const Header = () => {
                 src={logoWeedMadrid} 
                 alt="Weed Madrid Logo - Cannabis Clubs Directory" 
                 className="h-10 w-10 md:h-12 md:w-12 object-contain"
+                width="48"
+                height="48"
               />
             </picture>
             <span className="font-display text-xl md:text-2xl font-bold text-gradient-primary">

@@ -162,6 +162,8 @@ const Index = () => {
                     src={logoWeedMadrid} 
                     alt="Weed Madrid - Madrid's trusted cannabis club directory and invitation guide for legal cannabis social clubs" 
                     className="w-24 h-24 md:w-32 md:h-32 lg:w-40 lg:h-40 mx-auto mb-4 md:mb-6 drop-shadow-2xl rounded-2xl"
+                    width="160"
+                    height="160"
                   />
                 </picture>
               </div>
