@@ -250,7 +250,7 @@ export const translations: Record<Language, Record<string, string>> = {
     
     // Footer
     "footer.about": "About Weed Madrid",
-    "footer.about.desc": "Your trusted guide to cannabis clubs in Madrid. Fast invitations for tourists.",
+    "footer.about.desc": "Your trusted guide to cannabis clubs in Madrid. Safe invitations for tourists.",
     "footer.resources": "Resources",
     "footer.legal": "Legal",
     "footer.contact": "Contact",
@@ -511,7 +511,7 @@ export const translations: Record<Language, Record<string, string>> = {
     
     // Footer
     "footer.about": "Acerca de Weed Madrid",
-    "footer.about.desc": "Tu guía de confianza para clubes de cannabis en Madrid. Invitaciones rápidas para turistas.",
+    "footer.about.desc": "Tu guía de confianza para clubes de cannabis en Madrid. Invitaciones seguras para turistas.",
     "footer.resources": "Recursos",
     "footer.legal": "Legal",
     "footer.contact": "Contacto",
