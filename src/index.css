@@ -111,6 +111,21 @@ All colors MUST be HSL.
     font-weight: 300;
   }
   
+  /* Prevent auto-translate from breaking visibility */
+  #root {
+    visibility: visible !important;
+    display: block !important;
+  }
+
+  picture, img {
+    visibility: visible !important;
+  }
+
+  /* Prevent font elements injected by translation from breaking layout */
+  picture font, img font {
+    display: contents;
+  }
+  
   /* Display font for headlines - Bebas Neue */
   h1, h2, h3 {
     font-family: 'Bebas Neue', 'Impact', -apple-system, sans-serif;

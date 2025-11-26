@@ -59,7 +59,7 @@ export function ImageWithSkeleton({
           <span>{alt || "Image unavailable"}</span>
         </div>
       ) : (
-        <picture>
+        <picture translate="no">
           {finalWebpSrc && (
             <source srcSet={finalWebpSrc} type="image/webp" />
           )}
@@ -68,6 +68,7 @@ export function ImageWithSkeleton({
             src={src}
             alt={alt}
             loading={loading}
+            translate="no"
             onLoad={handleLoad}
             onError={handleError}
             className={cn(
