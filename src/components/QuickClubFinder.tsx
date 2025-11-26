@@ -7,6 +7,7 @@ import { MapPin, Search, Loader2 } from "lucide-react";
 import { useLanguage } from "@/hooks/useLanguage";
 import { buildLanguageAwarePath } from "@/lib/languageUtils";
 import { toast } from "sonner";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const DISTRICTS = [
   "Atocha",
@@ -24,8 +25,11 @@ interface QuickClubFinderProps {
 export default function QuickClubFinder({ onClose }: QuickClubFinderProps) {
   const { language, t } = useLanguage();
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
   const [selectedDistrict, setSelectedDistrict] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
+  
+  const navigationDelay = isMobile ? 400 : 250;
 
   const findBestClub = async () => {
     if (!selectedDistrict) {
@@ -51,12 +55,16 @@ export default function QuickClubFinder({ onClose }: QuickClubFinderProps) {
       if (data) {
         toast.success(t("quickfinder.success").replace("{club}", data.name));
         onClose?.();
+        // Clear body overflow lock before navigation
+        document.body.style.overflow = '';
         setTimeout(() => {
           navigate(buildLanguageAwarePath(`/club/${data.slug}`, language));
-        }, 250);
+        }, navigationDelay);
       } else {
         toast.info(t("quickfinder.noclubs"));
         onClose?.();
+        // Clear body overflow lock before navigation
+        document.body.style.overflow = '';
         setTimeout(() => {
           navigate(buildLanguageAwarePath(`/clubs?district=${selectedDistrict}`, language));
         }, 2250);
@@ -71,7 +79,11 @@ export default function QuickClubFinder({ onClose }: QuickClubFinderProps) {
 
   const browseAll = () => {
     onClose?.();
-    navigate(buildLanguageAwarePath("/clubs", language));
+    // Clear body overflow lock before navigation
+    document.body.style.overflow = '';
+    setTimeout(() => {
+      navigate(buildLanguageAwarePath("/clubs", language));
+    }, navigationDelay);
   };
 
   return (
