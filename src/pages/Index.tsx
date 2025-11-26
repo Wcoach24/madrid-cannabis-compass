@@ -10,6 +10,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ClubCard from "@/components/ClubCard";
 import QuickClubFinder from "@/components/QuickClubFinder";
+import logoWeedMadridWebp from "@/assets/logo-weed-madrid.webp";
 import logoWeedMadrid from "@/assets/logo-weed-madrid.png";
 import SEOHead from "@/components/SEOHead";
 
@@ -132,7 +133,7 @@ const Index = () => {
       <main className="flex-1">
         {/* Hero Section - Dark Luxury with Smoke Animation */}
         <section className="relative py-20 md:py-32 overflow-hidden" style={{
-          backgroundImage: 'url(/images/hero-custom-bg.png)',
+          backgroundImage: 'image-set(url(/images/hero-custom-bg.webp) type("image/webp"), url(/images/hero-custom-bg.png) type("image/png"))',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat'
@@ -155,11 +156,14 @@ const Index = () => {
           <div className="container mx-auto px-4 relative z-10">
             <div className="max-w-4xl mx-auto text-center">
               <div className="mb-6 md:mb-8 animate-in fade-in slide-in-from-bottom-4 duration-1000">
-                <img 
-                  src={logoWeedMadrid} 
-                  alt="Weed Madrid - Madrid's trusted cannabis club directory and invitation guide for legal cannabis social clubs" 
-                  className="w-24 h-24 md:w-32 md:h-32 lg:w-40 lg:h-40 mx-auto mb-4 md:mb-6 drop-shadow-2xl rounded-2xl"
-                />
+                <picture>
+                  <source srcSet={logoWeedMadridWebp} type="image/webp" />
+                  <img 
+                    src={logoWeedMadrid} 
+                    alt="Weed Madrid - Madrid's trusted cannabis club directory and invitation guide for legal cannabis social clubs" 
+                    className="w-24 h-24 md:w-32 md:h-32 lg:w-40 lg:h-40 mx-auto mb-4 md:mb-6 drop-shadow-2xl rounded-2xl"
+                  />
+                </picture>
               </div>
               
               <h1 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 md:mb-6 leading-tight text-gradient-logo animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-150">

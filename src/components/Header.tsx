@@ -6,6 +6,7 @@ import NavLink from "./NavLink";
 import LanguageSelect from "./LanguageSelect";
 import { useLanguage } from "@/hooks/useLanguage";
 import { buildLanguageAwarePath } from "@/lib/languageUtils";
+import logoWeedMadridWebp from "@/assets/logo-weed-madrid.webp";
 import logoWeedMadrid from "@/assets/logo-weed-madrid.png";
 
 const Header = () => {
@@ -24,11 +25,14 @@ const Header = () => {
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
           <Link to={buildLanguageAwarePath("/", language)} className="flex items-center space-x-2">
-            <img 
-              src={logoWeedMadrid} 
-              alt="Weed Madrid Logo - Cannabis Clubs Directory" 
-              className="h-10 w-10 md:h-12 md:w-12 object-contain"
-            />
+            <picture>
+              <source srcSet={logoWeedMadridWebp} type="image/webp" />
+              <img 
+                src={logoWeedMadrid} 
+                alt="Weed Madrid Logo - Cannabis Clubs Directory" 
+                className="h-10 w-10 md:h-12 md:w-12 object-contain"
+              />
+            </picture>
             <span className="font-display text-xl md:text-2xl font-bold text-gradient-primary">
               Weed Madrid
             </span>
