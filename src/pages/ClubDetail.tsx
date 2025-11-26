@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -19,6 +19,7 @@ import { ImageWithSkeleton } from "@/components/ui/image-with-skeleton";
 const ClubDetail = () => {
   const { slug } = useParams();
   const { language, t } = useLanguage();
+  const navigate = useNavigate();
   const [club, setClub] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [relatedClubs, setRelatedClubs] = useState<any[]>([]);
@@ -292,11 +293,18 @@ const ClubDetail = () => {
               </BreadcrumbList>
             </Breadcrumb>
 
-            <Button variant="outline" size="sm" asChild className="mb-4">
-              <Link to={buildLanguageAwarePath("/clubs", language)}>
-                <ChevronLeft className="w-4 h-4 mr-2" />
-                {t("club.backtoclubs")}
-              </Link>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="mb-4"
+              onClick={() => {
+                // Clear any residual dialog body locks before navigation
+                document.body.style.overflow = '';
+                navigate(buildLanguageAwarePath("/clubs", language));
+              }}
+            >
+              <ChevronLeft className="w-4 h-4 mr-2" />
+              {t("club.backtoclubs")}
             </Button>
 
             <div className="flex flex-wrap items-center gap-3 mb-6">
