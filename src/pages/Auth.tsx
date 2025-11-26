@@ -23,7 +23,6 @@ const Auth = () => {
   const { language, t } = useLanguage();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -67,62 +66,29 @@ const Auth = () => {
       // Validate input
       authSchema.parse({ email, password });
 
-      if (isLogin) {
-        // Login
-        const { error } = await supabase.auth.signInWithPassword({
-          email: email.trim(),
-          password,
-        });
+      // Login
+      const { error } = await supabase.auth.signInWithPassword({
+        email: email.trim(),
+        password,
+      });
 
-        if (error) {
-          if (error.message.includes("Invalid login credentials")) {
-            toast({
-              title: t("auth.error.invalid"),
-              variant: "destructive",
-            });
-          } else {
-            toast({
-              title: t("auth.error.generic"),
-              description: error.message,
-              variant: "destructive",
-            });
-          }
+      if (error) {
+        if (error.message.includes("Invalid login credentials")) {
+          toast({
+            title: t("auth.error.invalid"),
+            variant: "destructive",
+          });
         } else {
           toast({
-            title: t("auth.success.login"),
+            title: t("auth.error.generic"),
+            description: error.message,
+            variant: "destructive",
           });
         }
       } else {
-        // Signup
-        const redirectUrl = `${window.location.origin}${buildLanguageAwarePath("/", language)}`;
-        
-        const { error } = await supabase.auth.signUp({
-          email: email.trim(),
-          password,
-          options: {
-            emailRedirectTo: redirectUrl,
-          },
+        toast({
+          title: t("auth.success.login"),
         });
-
-        if (error) {
-          if (error.message.includes("User already registered")) {
-            toast({
-              title: t("auth.error.exists"),
-              variant: "destructive",
-            });
-          } else {
-            toast({
-              title: t("auth.error.generic"),
-              description: error.message,
-              variant: "destructive",
-            });
-          }
-        } else {
-          toast({
-            title: t("auth.success.signup"),
-          });
-          setIsLogin(true);
-        }
       }
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -149,16 +115,16 @@ const Auth = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <SEOHead
-        title={t(isLogin ? "auth.title" : "auth.signup.title")}
-        description={t(isLogin ? "auth.subtitle" : "auth.signup.subtitle")}
+        title={t("auth.title")}
+        description={t("auth.subtitle")}
       />
       <Header />
       
       <main className="flex-1 flex items-center justify-center py-12 px-4">
         <Card className="w-full max-w-md">
           <CardHeader>
-            <CardTitle>{t(isLogin ? "auth.title" : "auth.signup.title")}</CardTitle>
-            <CardDescription>{t(isLogin ? "auth.subtitle" : "auth.signup.subtitle")}</CardDescription>
+            <CardTitle>{t("auth.title")}</CardTitle>
+            <CardDescription>{t("auth.subtitle")}</CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -190,17 +156,7 @@ const Auth = () => {
               </div>
 
               <Button type="submit" className="w-full" disabled={loading}>
-                {loading ? "..." : t(isLogin ? "auth.login" : "auth.signup")}
-              </Button>
-
-              <Button
-                type="button"
-                variant="link"
-                className="w-full"
-                onClick={() => setIsLogin(!isLogin)}
-                disabled={loading}
-              >
-                {t(isLogin ? "auth.toggle.signup" : "auth.toggle.login")}
+                {loading ? "..." : t("auth.login")}
               </Button>
             </form>
           </CardContent>
