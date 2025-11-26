@@ -41,6 +41,7 @@ const ClubCard = ({
         {main_image_url && (
           <ImageWithSkeleton
             src={main_image_url}
+            webpSrc={main_image_url.replace(/\.(jpg|jpeg|png)$/i, '.webp')}
             alt={`${name} - Cannabis social club in ${district}, Madrid. ${is_tourist_friendly ? 'Tourist friendly' : ''} ${is_verified ? 'verified' : ''} cannabis club`}
             aspectRatio="video"
             className="transition-transform hover:scale-105 duration-300"
