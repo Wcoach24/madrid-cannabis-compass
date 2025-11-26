@@ -125,6 +125,12 @@ All colors MUST be HSL.
   picture font, img font {
     display: contents;
   }
+
+  /* Prevent Chrome translate font injection from breaking any component */
+  [translate="no"] font,
+  .notranslate font {
+    display: contents !important;
+  }
   
   /* Display font for headlines - Bebas Neue */
   h1, h2, h3 {
