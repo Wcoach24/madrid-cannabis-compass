@@ -5,7 +5,7 @@ import { useLocation } from 'react-router-dom';
 // IMPORTANT: Replace 'G-XXXXXXXXXX' with your actual GA4 Measurement ID
 // Find your ID at: https://analytics.google.com/analytics/web/ → Admin → Data Streams
 // Or set as environment variable for production deployments
-const GA_MEASUREMENT_ID = 'G-XXXXXXXXXX'; // TODO: Replace with actual GA4 ID
+const GA_MEASUREMENT_ID = 'G-7QZTYWQP9F';
 
 // Declare gtag function for TypeScript
 declare global {
@@ -24,7 +24,7 @@ export const Analytics = () => {
 
   useEffect(() => {
     // Only load in production
-    if (import.meta.env.PROD && GA_MEASUREMENT_ID !== 'G-XXXXXXXXXX') {
+    if (import.meta.env.PROD) {
       // Load Google Analytics script
       const script1 = document.createElement('script');
       script1.async = true;
@@ -48,7 +48,7 @@ export const Analytics = () => {
 
   // Track page views on route change
   useEffect(() => {
-    if (import.meta.env.PROD && window.gtag && GA_MEASUREMENT_ID !== 'G-XXXXXXXXXX') {
+    if (import.meta.env.PROD && window.gtag) {
       window.gtag('config', GA_MEASUREMENT_ID, {
         page_path: location.pathname + location.search,
       });
@@ -60,7 +60,7 @@ export const Analytics = () => {
 
 // Custom event tracking functions
 export const trackEvent = (eventName: string, eventParams?: Record<string, unknown>) => {
-  if (import.meta.env.PROD && window.gtag && GA_MEASUREMENT_ID !== 'G-XXXXXXXXXX') {
+  if (import.meta.env.PROD && window.gtag) {
     window.gtag('event', eventName, eventParams);
   }
 };
