@@ -17,6 +17,7 @@ const Header = () => {
     { name: t("nav.clubs"), href: buildLanguageAwarePath("/clubs", language) },
     { name: t("nav.guides"), href: buildLanguageAwarePath("/guides", language) },
     { name: t("nav.faq"), href: buildLanguageAwarePath("/faq", language) },
+    { name: "Legal", href: buildLanguageAwarePath("/legal", language) },
     { name: t("nav.contact"), href: buildLanguageAwarePath("/contact", language) },
   ];
 

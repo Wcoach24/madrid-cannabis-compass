@@ -14,6 +14,9 @@ import Guides from "./pages/Guides";
 import GuideDetail from "./pages/GuideDetail";
 import Contact from "./pages/Contact";
 import InvitationForm from "./pages/InvitationForm";
+import Legal from "./pages/Legal";
+import HowItWorks from "./pages/HowItWorks";
+import Safety from "./pages/Safety";
 import SeedData from "./pages/SeedData";
 import GenerateArticles from "./pages/GenerateArticles";
 import Auth from "./pages/Auth";
@@ -44,6 +47,9 @@ const App = () => (
             <Route path="/guides" element={<Guides />} />
             <Route path="/guide/:slug" element={<GuideDetail />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/legal" element={<Legal />} />
+            <Route path="/how-it-works" element={<HowItWorks />} />
+            <Route path="/safety" element={<Safety />} />
             <Route path="/seed-data" element={<SeedData />} />
             <Route path="/generate-articles" element={<GenerateArticles />} />
             <Route path="/auth" element={<Auth />} />
@@ -61,6 +67,9 @@ const App = () => (
             <Route path="/:lang/guides" element={<Guides />} />
             <Route path="/:lang/guide/:slug" element={<GuideDetail />} />
             <Route path="/:lang/contact" element={<Contact />} />
+            <Route path="/:lang/legal" element={<Legal />} />
+            <Route path="/:lang/how-it-works" element={<HowItWorks />} />
+            <Route path="/:lang/safety" element={<Safety />} />
             <Route path="/:lang/auth" element={<Auth />} />
             <Route path="/:lang/admin" element={<AdminDashboard />} />
             <Route path="/:lang/admin/invitations" element={<AdminInvitations />} />
