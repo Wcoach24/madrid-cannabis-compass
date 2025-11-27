@@ -36,6 +36,16 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
+                <Link to={buildLanguageAwarePath("/how-it-works", language)} className="text-muted-foreground hover:text-foreground transition-colors">
+                  How It Works
+                </Link>
+              </li>
+              <li>
+                <Link to={buildLanguageAwarePath("/safety", language)} className="text-muted-foreground hover:text-foreground transition-colors">
+                  Safety
+                </Link>
+              </li>
+              <li>
                 <a 
                   href="https://www.weedmadrid.com/api/rss" 
                   target="_blank" 
@@ -52,6 +62,11 @@ const Footer = () => {
           <div className="space-y-3">
             <h3 className="font-semibold text-foreground">{t("footer.legal")}</h3>
             <ul className="space-y-2 text-sm">
+              <li>
+                <Link to={buildLanguageAwarePath("/legal", language)} className="text-muted-foreground hover:text-foreground transition-colors">
+                  Legal Framework
+                </Link>
+              </li>
               <li>
                 <Link to={buildLanguageAwarePath("/privacy", language)} className="text-muted-foreground hover:text-foreground transition-colors">
                   {t("footer.privacy")}
