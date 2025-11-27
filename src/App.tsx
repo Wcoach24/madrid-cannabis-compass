@@ -24,6 +24,8 @@ import AdminDashboard from "./pages/AdminDashboard";
 import AdminInvitations from "./pages/AdminInvitations";
 import AdminClubs from "./pages/AdminClubs";
 import AdminGuides from "./pages/AdminGuides";
+import Districts from "./pages/Districts";
+import District from "./pages/District";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -57,6 +59,8 @@ const App = () => (
             <Route path="/admin/invitations" element={<AdminInvitations />} />
             <Route path="/admin/clubs" element={<AdminClubs />} />
             <Route path="/admin/guides" element={<AdminGuides />} />
+            <Route path="/districts" element={<Districts />} />
+            <Route path="/district/:district" element={<District />} />
             
             {/* Language-prefixed routes */}
             <Route path="/:lang" element={<Index />} />
@@ -75,6 +79,8 @@ const App = () => (
             <Route path="/:lang/admin/invitations" element={<AdminInvitations />} />
             <Route path="/:lang/admin/clubs" element={<AdminClubs />} />
             <Route path="/:lang/admin/guides" element={<AdminGuides />} />
+            <Route path="/:lang/districts" element={<Districts />} />
+            <Route path="/:lang/district/:district" element={<District />} />
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
