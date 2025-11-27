@@ -21,6 +21,11 @@ const Footer = () => {
             <h3 className="font-semibold text-foreground">{t("footer.resources")}</h3>
             <ul className="space-y-2 text-sm">
               <li>
+                <Link to={buildLanguageAwarePath("/knowledge", language)} className="text-muted-foreground hover:text-foreground transition-colors">
+                  {t("nav.knowledge")}
+                </Link>
+              </li>
+              <li>
                 <Link to={buildLanguageAwarePath("/guides", language)} className="text-muted-foreground hover:text-foreground transition-colors">
                   {t("footer.guides")}
                 </Link>

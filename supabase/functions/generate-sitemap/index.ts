@@ -89,9 +89,21 @@ Deno.serve(async (req) => {
       { path: '/', priority: '1.0', changefreq: 'weekly' },
       { path: '/clubs', priority: '0.9', changefreq: 'daily' },
       { path: '/guides', priority: '0.9', changefreq: 'weekly' },
+      { path: '/knowledge', priority: '0.9', changefreq: 'weekly' },
       { path: '/faq', priority: '0.8', changefreq: 'monthly' },
+      { path: '/legal', priority: '0.8', changefreq: 'monthly' },
+      { path: '/how-it-works', priority: '0.8', changefreq: 'monthly' },
+      { path: '/safety', priority: '0.8', changefreq: 'monthly' },
+      { path: '/districts', priority: '0.8', changefreq: 'weekly' },
       { path: '/contact', priority: '0.7', changefreq: 'monthly' },
     ];
+
+    const districts = ['centro', 'chamberi', 'salamanca', 'retiro', 'tetuan', 'chamartin', 'moncloa-aravaca'];
+
+    // Add district pages
+    districts.forEach(district => {
+      staticPages.push({ path: `/district/${district}`, priority: '0.7', changefreq: 'weekly' });
+    });
 
     staticPages.forEach(page => {
       sitemap += `

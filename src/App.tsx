@@ -26,6 +26,7 @@ import AdminClubs from "./pages/AdminClubs";
 import AdminGuides from "./pages/AdminGuides";
 import Districts from "./pages/Districts";
 import District from "./pages/District";
+import Knowledge from "./pages/Knowledge";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -61,6 +62,7 @@ const App = () => (
             <Route path="/admin/guides" element={<AdminGuides />} />
             <Route path="/districts" element={<Districts />} />
             <Route path="/district/:district" element={<District />} />
+            <Route path="/knowledge" element={<Knowledge />} />
             
             {/* Language-prefixed routes */}
             <Route path="/:lang" element={<Index />} />
@@ -81,6 +83,7 @@ const App = () => (
             <Route path="/:lang/admin/guides" element={<AdminGuides />} />
             <Route path="/:lang/districts" element={<Districts />} />
             <Route path="/:lang/district/:district" element={<District />} />
+            <Route path="/:lang/knowledge" element={<Knowledge />} />
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

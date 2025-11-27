@@ -13,6 +13,7 @@ export const translations: Record<Language, Record<string, string>> = {
     "nav.guides": "Guides",
     "nav.faq": "FAQ",
     "nav.contact": "Contact",
+    "nav.knowledge": "Knowledge",
     
     // Homepage
     "home.title": "Weed Madrid - Cannabis Clubs & Invitations",
@@ -368,6 +369,30 @@ export const translations: Record<Language, Record<string, string>> = {
     "safety.cta.button.clubs": "Browse Clubs",
     "safety.cta.button.process": "Learn the Process",
 
+    // Knowledge Hub
+    "knowledge.title": "Cannabis Knowledge Center",
+    "knowledge.subtitle": "Comprehensive educational resources about cannabis clubs, legality, and safe consumption in Madrid",
+    "knowledge.pillar.title": "Essential Guides",
+    "knowledge.pillar.read": "Read Guide",
+    "knowledge.pillar.legal.title": "Legal Framework",
+    "knowledge.pillar.legal.desc": "Understanding Spanish cannabis law and how social clubs operate",
+    "knowledge.pillar.howitworks.title": "How It Works",
+    "knowledge.pillar.howitworks.desc": "Step-by-step guide to joining a cannabis club",
+    "knowledge.pillar.safety.title": "Safety Guidelines",
+    "knowledge.pillar.safety.desc": "Harm reduction and responsible consumption practices",
+    "knowledge.guides.title": "In-Depth Articles & Guides",
+    "knowledge.guides.viewall": "View All Guides",
+    "knowledge.faq.title": "Frequently Asked Questions",
+    "knowledge.faq.basics": "Basics & Getting Started",
+    "knowledge.faq.membership": "Membership & Invitations",
+    "knowledge.faq.legal": "Legal Questions",
+    "knowledge.faq.safety": "Safety & Health",
+    "knowledge.faq.viewall": "View All FAQs",
+    "knowledge.districts.title": "Clubs by District",
+    "knowledge.districts.viewall": "View All Districts",
+    "knowledge.cta.title": "Ready to Explore Cannabis Clubs?",
+    "knowledge.cta.desc": "Browse verified clubs or contact us with any questions",
+
     // Footer
     "footer.about": "About Weed Madrid",
     "footer.about.desc": "Your trusted guide to cannabis clubs in Madrid. Safe invitations for tourists.",
@@ -394,6 +419,7 @@ export const translations: Record<Language, Record<string, string>> = {
     "nav.guides": "Guías",
     "nav.faq": "Preguntas",
     "nav.contact": "Contacto",
+    "nav.knowledge": "Conocimiento",
     
     // Homepage
     "home.title": "Weed Madrid - Invitaciones a Clubes de Cannabis",
@@ -854,6 +880,30 @@ export const translations: Record<Language, Record<string, string>> = {
     "districts.tetuan.vibe": "Sin pretensiones y genuino. Experiencia local de Madrid.",
     "districts.tetuan.what_to_expect": "Los clubes en Tetuán ofrecen una experiencia más auténtica y local. Están menos orientados a turistas y se enfocan en servir a miembros del barrio. La atmósfera es sin pretensiones y amigable. Los precios pueden ser más competitivos. Algo de habilidad en español es útil pero no requerido. Genial para aquellos que buscan una experiencia local genuina.",
     "districts.tetuan.tips": "Más orientado a locales que distritos turísticos|Precios competitivos|Español básico útil|Sensación tradicional de barrio madrileño|Buenos enlaces de transporte al norte de Madrid",
+
+    // Knowledge Hub
+    "knowledge.title": "Centro de Conocimiento sobre Cannabis",
+    "knowledge.subtitle": "Recursos educativos completos sobre clubes de cannabis, legalidad y consumo seguro en Madrid",
+    "knowledge.pillar.title": "Guías Esenciales",
+    "knowledge.pillar.read": "Leer Guía",
+    "knowledge.pillar.legal.title": "Marco Legal",
+    "knowledge.pillar.legal.desc": "Entendiendo la ley española de cannabis y cómo operan los clubes sociales",
+    "knowledge.pillar.howitworks.title": "Cómo Funciona",
+    "knowledge.pillar.howitworks.desc": "Guía paso a paso para unirse a un club de cannabis",
+    "knowledge.pillar.safety.title": "Directrices de Seguridad",
+    "knowledge.pillar.safety.desc": "Reducción de daños y prácticas de consumo responsable",
+    "knowledge.guides.title": "Artículos y Guías Detalladas",
+    "knowledge.guides.viewall": "Ver Todas las Guías",
+    "knowledge.faq.title": "Preguntas Frecuentes",
+    "knowledge.faq.basics": "Básicos y Primeros Pasos",
+    "knowledge.faq.membership": "Membresía e Invitaciones",
+    "knowledge.faq.legal": "Preguntas Legales",
+    "knowledge.faq.safety": "Seguridad y Salud",
+    "knowledge.faq.viewall": "Ver Todas las Preguntas",
+    "knowledge.districts.title": "Clubes por Distrito",
+    "knowledge.districts.viewall": "Ver Todos los Distritos",
+    "knowledge.cta.title": "¿Listo para Explorar Clubes de Cannabis?",
+    "knowledge.cta.desc": "Explora clubes verificados o contáctanos con cualquier pregunta",
 
     // Footer
     "footer.about": "Acerca de Weed Madrid",

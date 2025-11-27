@@ -100,22 +100,55 @@ const FAQ = () => {
                   <p className="text-muted-foreground">{t("faq.nofound")}</p>
                 </div>
               ) : (
-                <Accordion type="single" collapsible className="space-y-4">
-                  {faqs.map((faq, index) => (
-                    <AccordionItem 
-                      key={faq.id} 
-                      value={`item-${index}`}
-                      className="bg-card border border-border rounded-lg px-6"
-                    >
-                      <AccordionTrigger className="text-left hover:no-underline">
-                        <span className="text-lg font-medium pr-4">{faq.question}</span>
-                      </AccordionTrigger>
-                      <AccordionContent className="text-muted-foreground prose prose-sm max-w-none">
-                        <ReactMarkdown>{faq.answer_markdown}</ReactMarkdown>
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
+                <div className="space-y-8">
+                  {/* Group FAQs by category */}
+                  {["basics", "membership", "law", "safety", "medical"].map((category) => {
+                    const categoryFaqs = faqs.filter(faq => faq.category === category);
+                    if (categoryFaqs.length === 0) return null;
+                    
+                    return (
+                      <div key={category} id={category} className="scroll-mt-24">
+                        <h2 className="text-2xl font-bold mb-4 capitalize">{category}</h2>
+                        <Accordion type="single" collapsible className="space-y-4">
+                          {categoryFaqs.map((faq, index) => (
+                            <AccordionItem 
+                              key={faq.id} 
+                              value={`${category}-${index}`}
+                              className="bg-card border border-border rounded-lg px-6"
+                            >
+                              <AccordionTrigger className="text-left hover:no-underline">
+                                <span className="text-lg font-medium pr-4">{faq.question}</span>
+                              </AccordionTrigger>
+                              <AccordionContent className="text-muted-foreground prose prose-sm max-w-none">
+                                <ReactMarkdown>{faq.answer_markdown}</ReactMarkdown>
+                              </AccordionContent>
+                            </AccordionItem>
+                          ))}
+                        </Accordion>
+                      </div>
+                    );
+                  })}
+                  
+                  {/* Show all FAQs without categories if none have categories */}
+                  {faqs.filter(faq => !faq.category).length > 0 && (
+                    <Accordion type="single" collapsible className="space-y-4">
+                      {faqs.filter(faq => !faq.category).map((faq, index) => (
+                        <AccordionItem 
+                          key={faq.id} 
+                          value={`item-${index}`}
+                          className="bg-card border border-border rounded-lg px-6"
+                        >
+                          <AccordionTrigger className="text-left hover:no-underline">
+                            <span className="text-lg font-medium pr-4">{faq.question}</span>
+                          </AccordionTrigger>
+                          <AccordionContent className="text-muted-foreground prose prose-sm max-w-none">
+                            <ReactMarkdown>{faq.answer_markdown}</ReactMarkdown>
+                          </AccordionContent>
+                        </AccordionItem>
+                      ))}
+                    </Accordion>
+                  )}
+                </div>
               )}
             </div>
           </div>
