@@ -394,6 +394,8 @@ export const translations: Record<Language, Record<string, string>> = {
     "knowledge.cta.desc": "Browse verified clubs or contact us with any questions",
 
     // Footer
+    "footer.organization": "Weed Madrid Educational Project",
+    "footer.organization.tagline": "Educational Project",
     "footer.about": "About Weed Madrid",
     "footer.about.desc": "Your trusted guide to cannabis clubs in Madrid. Safe invitations for tourists.",
     "footer.resources": "Resources",
@@ -404,7 +406,7 @@ export const translations: Record<Language, Record<string, string>> = {
     "footer.privacy": "Privacy Policy",
     "footer.terms": "Terms of Use",
     "footer.getintouch": "Get in Touch",
-    "footer.copyright": "Weed Madrid. Information for educational purposes only.",
+    "footer.copyright": "© Weed Madrid Educational Project. Information for educational purposes only.",
     "footer.disclaimer": "This site provides information about private cannabis associations in Madrid. We do not promote illegal activity.",
     
     // Club card
@@ -906,6 +908,8 @@ export const translations: Record<Language, Record<string, string>> = {
     "knowledge.cta.desc": "Explora clubes verificados o contáctanos con cualquier pregunta",
 
     // Footer
+    "footer.organization": "Weed Madrid Proyecto Educativo",
+    "footer.organization.tagline": "Proyecto Educativo",
     "footer.about": "Acerca de Weed Madrid",
     "footer.about.desc": "Tu guía de confianza para clubes de cannabis en Madrid. Invitaciones seguras para turistas.",
     "footer.resources": "Recursos",
@@ -916,7 +920,7 @@ export const translations: Record<Language, Record<string, string>> = {
     "footer.privacy": "Política de Privacidad",
     "footer.terms": "Términos de Uso",
     "footer.getintouch": "Ponte en Contacto",
-    "footer.copyright": "Weed Madrid. Información con fines educativos únicamente.",
+    "footer.copyright": "© Weed Madrid Proyecto Educativo. Información con fines educativos únicamente.",
     "footer.disclaimer": "Este sitio proporciona información sobre asociaciones privadas de cannabis en Madrid. No promovemos actividades ilegales.",
     
     // Club card

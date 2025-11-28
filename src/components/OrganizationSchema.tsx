@@ -10,8 +10,8 @@ const OrganizationSchema = () => {
     const schema = {
       "@context": "https://schema.org",
       "@type": "Organization",
-      "name": "Weed Madrid",
-      "alternateName": "WeedMadrid.com",
+      "name": "Weed Madrid Educational Project",
+      "alternateName": ["Weed Madrid", "WeedMadrid.com"],
       "url": BASE_URL,
       "logo": `${BASE_URL}/logo.png`,
       "description": "Expert cannabis club directory and invitation service for Madrid, Spain. Connecting tourists and locals with verified cannabis social clubs through comprehensive guides and real-time information.",
