@@ -16,8 +16,8 @@ export const translations: Record<Language, Record<string, string>> = {
     "nav.knowledge": "Knowledge",
     
     // Homepage
-    "home.title": "Weed Madrid - Cannabis Clubs & Invitations",
-    "home.subtitle": "Get access to the best cannabis clubs in Madrid - Fast, legal, safe",
+    "home.title": "Madrid Cannabis Clubs - Your Educational Guide",
+    "home.subtitle": "Learn about Spanish cannabis law, explore verified clubs, and understand safe membership practices",
     "home.search.placeholder": "Search clubs by name or district...",
     "home.search.button": "Search Clubs",
     "home.features.legal": "Legal & Safe",
@@ -424,8 +424,8 @@ export const translations: Record<Language, Record<string, string>> = {
     "nav.knowledge": "Conocimiento",
     
     // Homepage
-    "home.title": "Weed Madrid - Invitaciones a Clubes de Cannabis",
-    "home.subtitle": "Accede a los mejores clubes de cannabis en Madrid - Rápido, legal, seguro",
+    "home.title": "Clubes de Cannabis en Madrid - Tu Guía Educativa",
+    "home.subtitle": "Aprende sobre la legislación española del cannabis, explora clubes verificados y entiende las prácticas seguras de membresía",
     "home.search.placeholder": "Buscar clubes por nombre o distrito...",
     "home.search.button": "Buscar Clubes",
     "home.features.legal": "Legal y Seguro",
