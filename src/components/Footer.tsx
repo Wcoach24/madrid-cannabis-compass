@@ -11,7 +11,13 @@ const Footer = () => {
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="space-y-3">
-            <h3 className="font-semibold text-foreground">{t("footer.about")}</h3>
+            <div className="flex items-center gap-2 mb-4">
+              <img src="/logo.png" alt="Weed Madrid" className="h-8 w-8" />
+              <div className="flex flex-col">
+                <span className="font-bold text-foreground">Weed Madrid</span>
+                <span className="text-sm font-medium text-primary">{t("footer.organization.tagline")}</span>
+              </div>
+            </div>
             <p className="text-sm text-muted-foreground">
               {t("footer.about.desc")}
             </p>
