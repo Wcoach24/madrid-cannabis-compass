@@ -160,12 +160,24 @@ Return ONLY a JSON object with these fields:
               { role: "system", content: "You are a professional translator. Return only valid JSON." },
               { role: "user", content: translationPrompt }
             ],
-            temperature: 0.7,
           }),
         });
 
+        if (!aiResponse.ok) {
+          throw new Error(`AI API error: ${aiResponse.status}`);
+        }
+
         const aiData = await aiResponse.json();
-        const translatedContent = JSON.parse(aiData.choices[0].message.content);
+        let contentText = aiData.choices?.[0]?.message?.content;
+        
+        if (!contentText) {
+          throw new Error('No content in AI response');
+        }
+
+        // Remove markdown code blocks if present
+        contentText = contentText.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+        
+        const translatedContent = JSON.parse(contentText);
 
         // Insert Spanish translation
         const { data: insertedArticle, error: insertError } = await supabase
@@ -259,12 +271,24 @@ Return ONLY a JSON object with these fields:
                 { role: "system", content: "You are an expert SEO content writer. Return only valid JSON." },
                 { role: "user", content: articlePrompt }
               ],
-              temperature: 0.8,
             }),
           });
 
+          if (!aiResponse.ok) {
+            throw new Error(`AI API error: ${aiResponse.status}`);
+          }
+
           const aiData = await aiResponse.json();
-          const articleContent = JSON.parse(aiData.choices[0].message.content);
+          let contentText = aiData.choices?.[0]?.message?.content;
+          
+          if (!contentText) {
+            throw new Error('No content in AI response');
+          }
+
+          // Remove markdown code blocks if present
+          contentText = contentText.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+          
+          const articleContent = JSON.parse(contentText);
 
           // Insert article
           const { data: insertedArticle, error: insertError } = await supabase
@@ -350,8 +374,21 @@ Return ONLY a JSON object:
             }),
           });
 
+          if (!aiResponse.ok) {
+            throw new Error(`AI API error: ${aiResponse.status}`);
+          }
+
           const aiData = await aiResponse.json();
-          const faqContent = JSON.parse(aiData.choices[0].message.content);
+          let contentText = aiData.choices?.[0]?.message?.content;
+          
+          if (!contentText) {
+            throw new Error('No content in AI response');
+          }
+
+          // Remove markdown code blocks if present
+          contentText = contentText.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+          
+          const faqContent = JSON.parse(contentText);
 
           // Insert FAQ
           const { error: insertError } = await supabase
