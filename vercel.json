@@ -1,6 +1,14 @@
 {
   "rewrites": [
     {
+      "source": "/api/generate-sitemap",
+      "destination": "https://sdpmwelfkseuhlhgatsc.supabase.co/functions/v1/generate-sitemap"
+    },
+    {
+      "source": "/api/rss",
+      "destination": "https://sdpmwelfkseuhlhgatsc.supabase.co/functions/v1/generate-rss"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
