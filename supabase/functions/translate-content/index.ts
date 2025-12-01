@@ -133,7 +133,19 @@ Answer: ${source.answer_markdown}`;
         is_featured: source.is_featured,
       };
     } else if (contentType === 'faq') {
-      const faqData = JSON.parse(translatedContent);
+      // Clean the response - remove markdown code blocks if present
+      let cleanedContent = translatedContent.trim();
+      if (cleanedContent.startsWith('```json')) {
+        cleanedContent = cleanedContent.slice(7);
+      } else if (cleanedContent.startsWith('```')) {
+        cleanedContent = cleanedContent.slice(3);
+      }
+      if (cleanedContent.endsWith('```')) {
+        cleanedContent = cleanedContent.slice(0, -3);
+      }
+      cleanedContent = cleanedContent.trim();
+      
+      const faqData = JSON.parse(cleanedContent);
       insertData = {
         ...insertData,
         question: faqData.question,
