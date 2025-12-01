@@ -11,6 +11,7 @@ import { useLanguage } from "@/hooks/useLanguage";
 import { buildLanguageAwarePath } from "@/lib/languageUtils";
 import { generateHreflangLinks, BASE_URL } from "@/lib/hreflangUtils";
 import { ImageWithSkeleton } from "@/components/ui/image-with-skeleton";
+import { generateBreadcrumbSchema } from "@/lib/schemaUtils";
 
 const Guides = () => {
   const { language, t } = useLanguage();
@@ -44,6 +45,12 @@ const Guides = () => {
 
   const hreflangLinks = generateHreflangLinks(BASE_URL, "/guides");
 
+  // Breadcrumb schema
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: t("nav.home"), url: BASE_URL },
+    { name: t("guides.title"), url: `${BASE_URL}${buildLanguageAwarePath("/guides", language)}` }
+  ]);
+
   // ItemList schema for the articles directory
   const itemListSchema = {
     "@context": "https://schema.org",
@@ -74,6 +81,21 @@ const Guides = () => {
     }))
   };
 
+  // Get proper locale for OG tags
+  const getOgLocale = () => {
+    switch (language) {
+      case 'es': return 'es_ES';
+      case 'de': return 'de_DE';
+      case 'fr': return 'fr_FR';
+      default: return 'en_US';
+    }
+  };
+
+  const getOgLocaleAlternates = () => {
+    const locales = ['en_US', 'es_ES', 'de_DE', 'fr_FR'];
+    return locales.filter(l => l !== getOgLocale());
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <SEOHead
@@ -82,9 +104,9 @@ const Guides = () => {
         canonical={`${BASE_URL}${buildLanguageAwarePath("/guides", language)}`}
         keywords="cannabis guides madrid, cannabis social club guide, cannabis law spain, how to join cannabis club, cannabis tourism madrid"
         hreflangLinks={hreflangLinks}
-        ogLocale={language === "es" ? "es_ES" : "en_US"}
-        ogLocaleAlternate={language === "es" ? ["en_US"] : ["es_ES"]}
-        structuredData={[itemListSchema]}
+        ogLocale={getOgLocale()}
+        ogLocaleAlternate={getOgLocaleAlternates()}
+        structuredData={[breadcrumbSchema, itemListSchema]}
       />
       <Header />
       
