@@ -14,6 +14,7 @@ import SEOHead from "@/components/SEOHead";
 import { useLanguage } from "@/hooks/useLanguage";
 import { buildLanguageAwarePath } from "@/lib/languageUtils";
 import { generateHreflangLinks, BASE_URL } from "@/lib/hreflangUtils";
+import { generateBreadcrumbSchema } from "@/lib/schemaUtils";
 
 const Clubs = () => {
   const { language, t } = useLanguage();
@@ -85,6 +86,11 @@ const Clubs = () => {
 
   const hreflangLinks = generateHreflangLinks(BASE_URL, "/clubs");
 
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: "Home", url: BASE_URL },
+    { name: "Clubs", url: `${BASE_URL}/clubs` }
+  ]);
+
   // ItemList schema for the clubs directory
   const itemListSchema = {
     "@context": "https://schema.org",
@@ -131,7 +137,7 @@ const Clubs = () => {
         hreflangLinks={hreflangLinks}
         ogLocale={language === "es" ? "es_ES" : "en_US"}
         ogLocaleAlternate={language === "es" ? ["en_US"] : ["es_ES"]}
-        structuredData={[itemListSchema]}
+        structuredData={[breadcrumbSchema, itemListSchema]}
       />
       <Header />
       

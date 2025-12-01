@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useLanguage } from "@/hooks/useLanguage";
 import { buildLanguageAwarePath } from "@/lib/languageUtils";
 import { generateHreflangLinks, BASE_URL } from "@/lib/hreflangUtils";
+import { generateBreadcrumbSchema } from "@/lib/schemaUtils";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SEOHead from "@/components/SEOHead";
@@ -51,6 +52,12 @@ const ClubsNearMe = () => {
   const { t, language } = useLanguage();
   const hreflangLinks = generateHreflangLinks(BASE_URL, "/clubs/near-me");
 
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: "Home", url: BASE_URL },
+    { name: "Clubs", url: `${BASE_URL}/clubs` },
+    { name: "Near Me", url: `${BASE_URL}/clubs/near-me` }
+  ]);
+
   const schemaData = {
     "@context": "https://schema.org",
     "@type": "ItemList",
@@ -77,7 +84,7 @@ const ClubsNearMe = () => {
         canonical={`${BASE_URL}${buildLanguageAwarePath("/clubs/near-me", language)}`}
         keywords="cannabis club near me madrid, weed club near me, cannabis clubs by district madrid, find cannabis club madrid"
         hreflangLinks={hreflangLinks}
-        structuredData={[schemaData]}
+        structuredData={[breadcrumbSchema, schemaData]}
       />
       
       <Header />
