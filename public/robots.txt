@@ -2,7 +2,7 @@
 # WEED MADRID - ROBOTS.TXT (SEO OPTIMIZED)
 # ============================================
 # Enhanced for maximum search engine and AI crawler visibility
-# Last updated: 2025-11-23
+# Last updated: 2025-12-01
 
 # ============================================
 # MAJOR SEARCH ENGINES (Priority Crawlers)
@@ -176,8 +176,9 @@ User-agent: *
 Disallow: /seed-data
 Disallow: /admin
 Disallow: /generate-articles
+Disallow: /bulk-generate
+Disallow: /translate-content
 Disallow: /auth
-Disallow: /api/
 Disallow: /*.json$
 
 # Dynamic parameters (avoid duplicate content)
@@ -192,18 +193,17 @@ Allow: /
 # SITEMAPS (Critical for SEO Discovery)
 # ============================================
 
-# Main XML Sitemap (Dynamic - Auto-updates)
-Sitemap: https://www.weedmadrid.com/sitemap.xml
-
-# Dynamic Sitemap via Edge Function (Real-time)
+# Dynamic Sitemap via Edge Function (Real-time - Primary)
 Sitemap: https://www.weedmadrid.com/api/generate-sitemap
+
+# Static XML Sitemap (Fallback)
+Sitemap: https://www.weedmadrid.com/sitemap.xml
 
 # ============================================
 # RSS FEED (Content Discovery & Syndication)
 # ============================================
 
 # RSS Feed for articles (50 most recent)
-# Add to HTML: <link rel="alternate" type="application/rss+xml" href="https://www.weedmadrid.com/api/rss" />
 # RSS URL: https://www.weedmadrid.com/api/rss
 
 # ============================================
@@ -231,11 +231,13 @@ Visit-time: 0000-2359
 # ✓ Duplicate content prevention via parameter blocking
 # ✓ Dynamic sitemap integration for real-time updates
 #
-# Coverage: 40+ unique URLs across 2 languages (EN/ES)
-# - 5 core pages × 2 languages = 10 URLs
-# - 9+ clubs × 2 languages = 18+ URLs  
-# - 5+ guides × 2 languages = 10+ URLs
-# - Plus featured articles with Google News tags
+# Coverage: 100+ unique URLs across 4 languages (EN/ES/DE/FR)
+# - Core pages × 4 languages
+# - 15+ clubs × 4 languages  
+# - 8+ guides × 4 languages
+# - 30+ FAQ entries × 4 languages
+# - District pages (Centro, Chamberi, Malasana, Retiro)
+# - Near Me landing pages
 #
 # All content includes full hreflang, image sitemaps, and structured data
 # ============================================
