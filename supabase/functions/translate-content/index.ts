@@ -105,23 +105,26 @@ Answer: ${source.answer_markdown}`;
     const aiData = await aiResponse.json();
     const translatedContent = aiData.choices[0].message.content;
 
-    // Insert translated content into database
-    let insertData: any = {
+    // Build data for upsert
+    let upsertData: any = {
       language: targetLanguage,
       status: 'published',
       published_at: new Date().toISOString(),
     };
 
+    let slug = '';
+
     if (contentType === 'article') {
-      // Generate slug for target language
-      const slug = source.slug.replace(/^(es|en|de|fr)-/, '') + `-${targetLanguage}`;
+      // Generate slug for target language - use base slug without language suffix
+      const baseSlug = source.slug.replace(/-(en|es|de|fr)$/, '');
+      slug = `${baseSlug}-${targetLanguage}`;
       
-      insertData = {
-        ...insertData,
+      upsertData = {
+        ...upsertData,
         title: translatedContent.split('\n')[0].replace('# ', ''),
         slug,
         body_markdown: translatedContent,
-        excerpt: source.excerpt, // Will be translated in body
+        excerpt: source.excerpt,
         subtitle: source.subtitle,
         category: source.category,
         author_name: source.author_name,
@@ -146,34 +149,71 @@ Answer: ${source.answer_markdown}`;
       cleanedContent = cleanedContent.trim();
       
       const faqData = JSON.parse(cleanedContent);
-      insertData = {
-        ...insertData,
+      const baseSlug = source.slug.replace(/-(en|es|de|fr)$/, '');
+      slug = `${baseSlug}-${targetLanguage}`;
+      
+      upsertData = {
+        ...upsertData,
         question: faqData.question,
         answer_markdown: faqData.answer,
         category: source.category,
         priority: source.priority,
-        slug: source.slug + `-${targetLanguage}`,
+        slug,
       };
     }
 
-    // Insert into database
-    const insertResponse = await fetch(`${supabaseUrl}/rest/v1/${tableName}`, {
-      method: 'POST',
+    // Check if translation already exists
+    const checkResponse = await fetch(`${supabaseUrl}/rest/v1/${tableName}?slug=eq.${slug}&select=id`, {
       headers: {
         'apikey': supabaseKey,
         'Authorization': `Bearer ${supabaseKey}`,
-        'Content-Type': 'application/json',
-        'Prefer': 'return=representation',
       },
-      body: JSON.stringify(insertData),
     });
+    
+    const existingData = await checkResponse.json();
+    let resultData: any;
 
-    if (!insertResponse.ok) {
-      const errorText = await insertResponse.text();
-      throw new Error(`Database insert error: ${insertResponse.status} - ${errorText}`);
+    if (existingData && existingData.length > 0) {
+      // Update existing record
+      const updateResponse = await fetch(`${supabaseUrl}/rest/v1/${tableName}?id=eq.${existingData[0].id}`, {
+        method: 'PATCH',
+        headers: {
+          'apikey': supabaseKey,
+          'Authorization': `Bearer ${supabaseKey}`,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=representation',
+        },
+        body: JSON.stringify(upsertData),
+      });
+
+      if (!updateResponse.ok) {
+        const errorText = await updateResponse.text();
+        throw new Error(`Database update error: ${updateResponse.status} - ${errorText}`);
+      }
+
+      resultData = await updateResponse.json();
+      console.log(`Updated existing ${contentType} translation: ${slug}`);
+    } else {
+      // Insert new record
+      const insertResponse = await fetch(`${supabaseUrl}/rest/v1/${tableName}`, {
+        method: 'POST',
+        headers: {
+          'apikey': supabaseKey,
+          'Authorization': `Bearer ${supabaseKey}`,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=representation',
+        },
+        body: JSON.stringify(upsertData),
+      });
+
+      if (!insertResponse.ok) {
+        const errorText = await insertResponse.text();
+        throw new Error(`Database insert error: ${insertResponse.status} - ${errorText}`);
+      }
+
+      resultData = await insertResponse.json();
+      console.log(`Inserted new ${contentType} translation: ${slug}`);
     }
-
-    const insertedData = await insertResponse.json();
 
     return new Response(
       JSON.stringify({
@@ -181,7 +221,7 @@ Answer: ${source.answer_markdown}`;
         contentType,
         sourceId: contentId,
         targetLanguage,
-        insertedId: insertedData[0]?.id,
+        insertedId: resultData[0]?.id,
         message: `Successfully translated ${contentType} to ${targetLanguage}`,
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
