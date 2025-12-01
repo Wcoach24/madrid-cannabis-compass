@@ -127,8 +127,8 @@ const Knowledge = () => {
         canonical={`${BASE_URL}${buildLanguageAwarePath("/knowledge", language)}`}
         keywords="cannabis knowledge, madrid cannabis guide, cannabis education, cannabis social clubs information"
         hreflangLinks={hreflangLinks}
-        ogLocale={language === "es" ? "es_ES" : "en_US"}
-        ogLocaleAlternate={language === "es" ? ["en_US"] : ["es_ES"]}
+        ogLocale={language === "es" ? "es_ES" : language === "de" ? "de_DE" : language === "fr" ? "fr_FR" : "en_US"}
+        ogLocaleAlternate={["en_US", "es_ES", "de_DE", "fr_FR"].filter(l => l !== (language === "es" ? "es_ES" : language === "de" ? "de_DE" : language === "fr" ? "fr_FR" : "en_US"))}
         structuredData={[breadcrumbSchema, collectionSchema]}
       />
       <Header />

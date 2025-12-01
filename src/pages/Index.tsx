@@ -112,8 +112,8 @@ const Index = () => {
         canonical={`${BASE_URL}${buildLanguageAwarePath("/", language)}`}
         keywords="weed madrid, cannabis club madrid, weed club madrid, cannabis madrid, join cannabis club madrid, tourist cannabis madrid"
         hreflangLinks={hreflangLinks}
-        ogLocale={language === "es" ? "es_ES" : "en_US"}
-        ogLocaleAlternate={language === "es" ? ["en_US"] : ["es_ES"]}
+        ogLocale={language === "es" ? "es_ES" : language === "de" ? "de_DE" : language === "fr" ? "fr_FR" : "en_US"}
+        ogLocaleAlternate={["en_US", "es_ES", "de_DE", "fr_FR"].filter(l => l !== (language === "es" ? "es_ES" : language === "de" ? "de_DE" : language === "fr" ? "fr_FR" : "en_US"))}
         structuredData={{
           "@context": "https://schema.org",
           "@type": "WebSite",
