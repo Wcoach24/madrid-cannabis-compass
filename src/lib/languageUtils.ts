@@ -1,6 +1,6 @@
 import { Language } from "@/lib/translations";
 
-export const SUPPORTED_LANGUAGES: Language[] = ["en", "es"];
+export const SUPPORTED_LANGUAGES: Language[] = ["en", "es", "de", "fr"];
 export const DEFAULT_LANGUAGE: Language = "en";
 
 // Default club for all invitation requests
