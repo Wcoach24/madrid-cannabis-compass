@@ -161,6 +161,59 @@ export const translations: Record<Language, Record<string, string>> = {
     "faq.contact.desc": "Can't find what you're looking for? Contact us and we'll help you out.",
     "faq.contact.button": "Contact Us",
     
+    // FAQ Categories
+    "faq.category.basics": "Basics",
+    "faq.category.membership": "Membership",
+    "faq.category.law": "Legal",
+    "faq.category.safety": "Safety",
+    "faq.category.medical": "Medical",
+    
+    // FAQ - Basics
+    "faq.basics.q1": "What is a cannabis social club?",
+    "faq.basics.a1": "A cannabis social club (CSC) is a private, non-profit cultural association where members can legally consume cannabis in a safe, controlled environment. These clubs operate under Spanish association law and are not commercial businesses. They exist to provide members with a responsible alternative to the illegal market.",
+    "faq.basics.q2": "Can tourists join cannabis clubs in Madrid?",
+    "faq.basics.a2": "Yes, tourists over 18 can join cannabis clubs in Madrid. You'll need to go through an invitation process, provide valid ID, and comply with club rules. Many clubs are tourist-friendly and have English-speaking staff. The process typically takes 24-48 hours.",
+    "faq.basics.q3": "Are there cannabis clubs near Puerta del Sol?",
+    "faq.basics.a3": "You won't find public addresses near Puerta del Sol — private associations operate discreetly and share locations only with verified members. Use our district pages like /clubs?district=centro to find clubs in the Centro area, then request an invitation through our form.",
+    "faq.basics.q4": "Where is the closest cannabis club to Gran Vía?",
+    "faq.basics.a4": "Associations don't publish exact addresses publicly for legal and privacy reasons. They share meeting details only with verified members. Consult our district overview for Centro and Gran Vía-adjacent options, then submit an invitation request noting your preferred area.",
+    
+    // FAQ - Membership
+    "faq.membership.q1": "How much does club membership cost?",
+    "faq.membership.a1": "Membership fees vary by club, typically ranging from €20-50 for annual membership. Some clubs also have a one-time registration fee. Fees support the club's operations as a non-profit association. Contact specific clubs for exact pricing.",
+    "faq.membership.q2": "What documents do I need to join?",
+    "faq.membership.a2": "You need a valid government-issued ID (passport or national ID card) proving you're 18 or older. Some clubs may also ask for proof of address or a referral from an existing member. Always bring your original ID, not copies.",
+    "faq.membership.q3": "How long does the membership process take?",
+    "faq.membership.a3": "The invitation review process typically takes 24-48 hours. Once approved, you'll receive an invitation code via email. You can then visit the club, complete registration on-site, and become a member the same day.",
+    "faq.membership.q4": "Can I bring guests to a cannabis club?",
+    "faq.membership.a4": "Most clubs allow members to bring guests, but they must also go through the membership process. You can include multiple visitors in your invitation request. Each person must be 18+ and have valid ID.",
+    
+    // FAQ - Law
+    "faq.law.q1": "Are cannabis social clubs legal in Spain?",
+    "faq.law.a1": "Cannabis social clubs operate in a legal gray area. They are not explicitly legal, but are tolerated when operating as genuine private, non-profit associations following strict guidelines set by Spanish courts. The key is that all activities occur in private among consenting adult members.",
+    "faq.law.q2": "Can I smoke cannabis in public in Madrid?",
+    "faq.law.a2": "No. Public consumption of cannabis remains illegal throughout Spain. Cannabis can only be legally consumed in private spaces, such as within the private premises of a cannabis social club or your private residence. Public consumption can result in fines from €600-€30,000.",
+    "faq.law.q3": "What happens if I'm caught with cannabis in Madrid?",
+    "faq.law.a3": "Possession of small amounts for personal use (typically under 100 grams) in private spaces is decriminalized — not legal, but not a crime. However, public possession, public consumption, or larger quantities can result in fines or, in serious cases, criminal charges.",
+    "faq.law.q4": "Why don't clubs publish their addresses?",
+    "faq.law.a4": "Cannabis clubs must operate as private associations to remain legal. Publishing locations publicly would contradict the principle of private, member-only access and could create legal problems. Clubs share addresses only with approved members through private communication.",
+    
+    // FAQ - Safety
+    "faq.safety.q1": "Are cannabis clubs safe to visit?",
+    "faq.safety.a1": "Verified cannabis clubs prioritize member safety. They operate in private, controlled environments with security measures. Our listed clubs are vetted for legitimacy. Always verify you're visiting a registered association and never buy cannabis from street dealers.",
+    "faq.safety.q2": "What should I do if I feel unwell at a club?",
+    "faq.safety.a2": "Inform club staff immediately — they're trained to help. Find a quiet space, stay hydrated, and don't panic. Effects will pass with time. If symptoms are severe, seek medical attention. Spanish emergency services number is 112.",
+    "faq.safety.q3": "Can I take cannabis products outside the club?",
+    "faq.safety.a3": "No. Cannabis should be consumed only within the club premises. Taking products outside exposes you to legal risk for public possession. Respect club rules and Spanish law by consuming only within the private space of the association.",
+    
+    // FAQ - Medical
+    "faq.medical.q1": "Are there medical cannabis clubs in Madrid?",
+    "faq.medical.a1": "Some clubs cater specifically to medical users, offering strains and products suited for therapeutic purposes. However, Spain doesn't have a formal medical cannabis program. Clubs operate as cultural associations, not medical dispensaries.",
+    "faq.medical.q2": "Can I use cannabis if I'm on medication?",
+    "faq.medical.a2": "Cannabis can interact with certain medications, including blood thinners, sedatives, and some antidepressants. Always consult your doctor before using cannabis if you take regular medication. Club staff cannot provide medical advice.",
+    "faq.medical.q3": "Is cannabis safe during pregnancy?",
+    "faq.medical.a3": "No. Avoid cannabis if you're pregnant or breastfeeding. THC can cross the placental barrier and pass into breast milk, potentially affecting fetal or infant development. Medical professionals strongly advise against cannabis use during pregnancy.",
+    
     // Contact page
     "contact.title": "Get in Touch",
     "contact.subtitle": "Questions, club submissions, or partnership inquiries",
@@ -568,6 +621,59 @@ export const translations: Record<Language, Record<string, string>> = {
     "faq.contact.title": "¿Aún Tienes Preguntas?",
     "faq.contact.desc": "¿No encuentras lo que buscas? Contáctanos y te ayudaremos.",
     "faq.contact.button": "Contáctanos",
+    
+    // FAQ Categories
+    "faq.category.basics": "Básico",
+    "faq.category.membership": "Membresía",
+    "faq.category.law": "Legal",
+    "faq.category.safety": "Seguridad",
+    "faq.category.medical": "Médico",
+    
+    // FAQ - Basics
+    "faq.basics.q1": "¿Qué es un club social de cannabis?",
+    "faq.basics.a1": "Un club social de cannabis (CSC) es una asociación cultural privada sin ánimo de lucro donde los socios pueden consumir cannabis legalmente en un entorno seguro y controlado. Estos clubes operan bajo la ley española de asociaciones y no son negocios comerciales.",
+    "faq.basics.q2": "¿Pueden los turistas unirse a clubes de cannabis en Madrid?",
+    "faq.basics.a2": "Sí, los turistas mayores de 18 años pueden unirse a clubes de cannabis en Madrid. Necesitarás pasar por un proceso de invitación, proporcionar identificación válida y cumplir con las normas del club. El proceso típicamente toma 24-48 horas.",
+    "faq.basics.q3": "¿Hay clubes de cannabis cerca de Puerta del Sol?",
+    "faq.basics.a3": "No encontrarás direcciones públicas cerca de Puerta del Sol — las asociaciones privadas operan discretamente y comparten ubicaciones solo con socios verificados. Usa nuestras páginas de distrito para encontrar clubes en la zona Centro y solicita una invitación.",
+    "faq.basics.q4": "¿Dónde está el club de cannabis más cercano a Gran Vía?",
+    "faq.basics.a4": "Las asociaciones no publican direcciones exactas públicamente por razones legales y de privacidad. Comparten detalles solo con socios verificados. Consulta nuestra guía del distrito Centro y envía una solicitud de invitación indicando tu zona preferida.",
+    
+    // FAQ - Membership
+    "faq.membership.q1": "¿Cuánto cuesta la membresía del club?",
+    "faq.membership.a1": "Las cuotas de membresía varían según el club, típicamente entre €20-50 para membresía anual. Algunos clubes también tienen una cuota de registro única. Las cuotas apoyan las operaciones del club como asociación sin ánimo de lucro.",
+    "faq.membership.q2": "¿Qué documentos necesito para unirme?",
+    "faq.membership.a2": "Necesitas un documento de identidad válido (pasaporte o DNI) que demuestre que tienes 18 años o más. Algunos clubes también pueden pedir comprobante de domicilio. Siempre trae tu identificación original, no copias.",
+    "faq.membership.q3": "¿Cuánto tiempo toma el proceso de membresía?",
+    "faq.membership.a3": "El proceso de revisión de invitación típicamente toma 24-48 horas. Una vez aprobado, recibirás un código de invitación por correo electrónico. Luego puedes visitar el club, completar el registro y convertirte en socio el mismo día.",
+    "faq.membership.q4": "¿Puedo llevar invitados a un club de cannabis?",
+    "faq.membership.a4": "La mayoría de los clubes permiten que los socios traigan invitados, pero también deben pasar por el proceso de membresía. Puedes incluir múltiples visitantes en tu solicitud de invitación. Cada persona debe tener 18+ años e identificación válida.",
+    
+    // FAQ - Law
+    "faq.law.q1": "¿Son legales los clubes sociales de cannabis en España?",
+    "faq.law.a1": "Los clubes sociales de cannabis operan en una zona gris legal. No son explícitamente legales, pero son tolerados cuando operan como asociaciones privadas genuinas sin ánimo de lucro siguiendo directrices estrictas. La clave es que todas las actividades ocurren en privado entre adultos consentientes.",
+    "faq.law.q2": "¿Puedo fumar cannabis en público en Madrid?",
+    "faq.law.a2": "No. El consumo público de cannabis sigue siendo ilegal en toda España. El cannabis solo puede consumirse legalmente en espacios privados, como dentro de las instalaciones privadas de un club o tu residencia privada. El consumo público puede resultar en multas de €600-€30.000.",
+    "faq.law.q3": "¿Qué pasa si me pillan con cannabis en Madrid?",
+    "faq.law.a3": "La posesión de pequeñas cantidades para uso personal (típicamente menos de 100 gramos) en espacios privados está despenalizada — no es legal, pero no es un crimen. Sin embargo, la posesión pública o cantidades mayores pueden resultar en multas o cargos penales.",
+    "faq.law.q4": "¿Por qué los clubes no publican sus direcciones?",
+    "faq.law.a4": "Los clubes de cannabis deben operar como asociaciones privadas para seguir siendo legales. Publicar ubicaciones contradice el principio de acceso privado solo para socios y podría crear problemas legales. Los clubes comparten direcciones solo con socios aprobados.",
+    
+    // FAQ - Safety
+    "faq.safety.q1": "¿Es seguro visitar clubes de cannabis?",
+    "faq.safety.a1": "Los clubes de cannabis verificados priorizan la seguridad de los socios. Operan en entornos privados y controlados con medidas de seguridad. Nuestros clubes listados están verificados por legitimidad. Nunca compres cannabis de vendedores callejeros.",
+    "faq.safety.q2": "¿Qué debo hacer si me siento mal en un club?",
+    "faq.safety.a2": "Informa al personal del club inmediatamente — están entrenados para ayudar. Encuentra un espacio tranquilo, mantente hidratado y no entres en pánico. Los efectos pasarán con el tiempo. Si los síntomas son severos, busca atención médica. El número de emergencias en España es 112.",
+    "faq.safety.q3": "¿Puedo llevar productos de cannabis fuera del club?",
+    "faq.safety.a3": "No. El cannabis debe consumirse solo dentro de las instalaciones del club. Llevar productos afuera te expone a riesgo legal por posesión pública. Respeta las normas del club y la ley española consumiendo solo dentro del espacio privado.",
+    
+    // FAQ - Medical
+    "faq.medical.q1": "¿Hay clubes de cannabis medicinal en Madrid?",
+    "faq.medical.a1": "Algunos clubes atienden específicamente a usuarios medicinales, ofreciendo variedades para propósitos terapéuticos. Sin embargo, España no tiene un programa formal de cannabis medicinal. Los clubes operan como asociaciones culturales, no dispensarios médicos.",
+    "faq.medical.q2": "¿Puedo usar cannabis si tomo medicamentos?",
+    "faq.medical.a2": "El cannabis puede interactuar con ciertos medicamentos, incluyendo anticoagulantes, sedantes y algunos antidepresivos. Siempre consulta a tu médico antes de usar cannabis si tomas medicación regular. El personal del club no puede dar consejos médicos.",
+    "faq.medical.q3": "¿Es seguro el cannabis durante el embarazo?",
+    "faq.medical.a3": "No. Evita el cannabis si estás embarazada o amamantando. El THC puede cruzar la barrera placentaria y pasar a la leche materna, afectando potencialmente el desarrollo del feto o bebé. Los profesionales médicos desaconsejan fuertemente el uso de cannabis durante el embarazo.",
     
     // Contact page
     "contact.title": "Ponte en Contacto",
@@ -1084,6 +1190,59 @@ export const translations: Record<Language, Record<string, string>> = {
     "faq.contact.desc": "Können Sie nicht finden, wonach Sie suchen? Kontaktieren Sie uns und wir helfen Ihnen weiter.",
     "faq.contact.button": "Kontaktieren Sie Uns",
     
+    // FAQ Categories
+    "faq.category.basics": "Grundlagen",
+    "faq.category.membership": "Mitgliedschaft",
+    "faq.category.law": "Rechtliches",
+    "faq.category.safety": "Sicherheit",
+    "faq.category.medical": "Medizinisch",
+    
+    // FAQ - Basics
+    "faq.basics.q1": "Was ist ein Cannabis Social Club?",
+    "faq.basics.a1": "Ein Cannabis Social Club (CSC) ist ein privater, gemeinnütziger Kulturverein, in dem Mitglieder Cannabis legal in einer sicheren, kontrollierten Umgebung konsumieren können. Diese Clubs arbeiten nach spanischem Vereinsrecht und sind keine kommerziellen Unternehmen.",
+    "faq.basics.q2": "Können Touristen Cannabis Clubs in Madrid beitreten?",
+    "faq.basics.a2": "Ja, Touristen über 18 können Cannabis Clubs in Madrid beitreten. Sie müssen einen Einladungsprozess durchlaufen, einen gültigen Ausweis vorlegen und die Clubregeln befolgen. Der Prozess dauert typischerweise 24-48 Stunden.",
+    "faq.basics.q3": "Gibt es Cannabis Clubs in der Nähe von Puerta del Sol?",
+    "faq.basics.a3": "Sie werden keine öffentlichen Adressen in der Nähe von Puerta del Sol finden — private Vereine arbeiten diskret und teilen Standorte nur mit verifizierten Mitgliedern. Nutzen Sie unsere Bezirksseiten für den Centro-Bereich und fordern Sie eine Einladung an.",
+    "faq.basics.q4": "Wo ist der nächste Cannabis Club zur Gran Vía?",
+    "faq.basics.a4": "Vereine veröffentlichen keine genauen Adressen öffentlich aus rechtlichen und Datenschutzgründen. Sie teilen Details nur mit verifizierten Mitgliedern. Konsultieren Sie unsere Bezirksübersicht für Centro und reichen Sie eine Einladungsanfrage ein.",
+    
+    // FAQ - Membership
+    "faq.membership.q1": "Wie viel kostet die Club-Mitgliedschaft?",
+    "faq.membership.a1": "Mitgliedsbeiträge variieren je nach Club, typischerweise zwischen €20-50 für eine Jahresmitgliedschaft. Einige Clubs haben auch eine einmalige Registrierungsgebühr. Die Gebühren unterstützen den Betrieb des Clubs als gemeinnütziger Verein.",
+    "faq.membership.q2": "Welche Dokumente brauche ich zum Beitritt?",
+    "faq.membership.a2": "Sie benötigen einen gültigen amtlichen Ausweis (Reisepass oder Personalausweis), der belegt, dass Sie 18 Jahre oder älter sind. Einige Clubs können auch einen Adressnachweis verlangen. Bringen Sie immer Ihr Originaldokument mit, keine Kopien.",
+    "faq.membership.q3": "Wie lange dauert der Mitgliedschaftsprozess?",
+    "faq.membership.a3": "Der Einladungsprüfungsprozess dauert typischerweise 24-48 Stunden. Nach der Genehmigung erhalten Sie einen Einladungscode per E-Mail. Sie können dann den Club besuchen, die Registrierung vor Ort abschließen und am selben Tag Mitglied werden.",
+    "faq.membership.q4": "Kann ich Gäste in einen Cannabis Club mitbringen?",
+    "faq.membership.a4": "Die meisten Clubs erlauben Mitgliedern, Gäste mitzubringen, aber sie müssen ebenfalls den Mitgliedschaftsprozess durchlaufen. Sie können mehrere Besucher in Ihre Einladungsanfrage aufnehmen. Jede Person muss 18+ sein und einen gültigen Ausweis haben.",
+    
+    // FAQ - Law
+    "faq.law.q1": "Sind Cannabis Social Clubs in Spanien legal?",
+    "faq.law.a1": "Cannabis Social Clubs operieren in einer rechtlichen Grauzone. Sie sind nicht ausdrücklich legal, werden aber toleriert, wenn sie als echte private, gemeinnützige Vereine nach strengen Richtlinien arbeiten. Der Schlüssel ist, dass alle Aktivitäten privat zwischen einwilligenden Erwachsenen stattfinden.",
+    "faq.law.q2": "Kann ich in Madrid öffentlich Cannabis rauchen?",
+    "faq.law.a2": "Nein. Öffentlicher Cannabiskonsum bleibt in ganz Spanien illegal. Cannabis darf nur in privaten Räumen konsumiert werden, wie in den privaten Räumlichkeiten eines Cannabis Clubs oder Ihrer privaten Wohnung. Öffentlicher Konsum kann zu Geldstrafen von €600-€30.000 führen.",
+    "faq.law.q3": "Was passiert, wenn ich mit Cannabis in Madrid erwischt werde?",
+    "faq.law.a3": "Der Besitz kleiner Mengen für den persönlichen Gebrauch (typischerweise unter 100 Gramm) in privaten Räumen ist entkriminalisiert — nicht legal, aber kein Verbrechen. Öffentlicher Besitz oder größere Mengen können jedoch zu Geldstrafen oder strafrechtlicher Verfolgung führen.",
+    "faq.law.q4": "Warum veröffentlichen Clubs ihre Adressen nicht?",
+    "faq.law.a4": "Cannabis Clubs müssen als private Vereine arbeiten, um legal zu bleiben. Das öffentliche Veröffentlichen von Standorten würde dem Prinzip des privaten, nur für Mitglieder zugänglichen Zugangs widersprechen. Clubs teilen Adressen nur mit genehmigten Mitgliedern.",
+    
+    // FAQ - Safety
+    "faq.safety.q1": "Ist es sicher, Cannabis Clubs zu besuchen?",
+    "faq.safety.a1": "Verifizierte Cannabis Clubs priorisieren die Sicherheit der Mitglieder. Sie arbeiten in privaten, kontrollierten Umgebungen mit Sicherheitsmaßnahmen. Unsere gelisteten Clubs sind auf Legitimität geprüft. Kaufen Sie niemals Cannabis von Straßenhändlern.",
+    "faq.safety.q2": "Was soll ich tun, wenn ich mich im Club unwohl fühle?",
+    "faq.safety.a2": "Informieren Sie sofort das Club-Personal — sie sind geschult zu helfen. Finden Sie einen ruhigen Ort, bleiben Sie hydratisiert und keine Panik. Die Wirkungen werden mit der Zeit nachlassen. Bei schweren Symptomen suchen Sie medizinische Hilfe. Die spanische Notrufnummer ist 112.",
+    "faq.safety.q3": "Kann ich Cannabis-Produkte außerhalb des Clubs mitnehmen?",
+    "faq.safety.a3": "Nein. Cannabis sollte nur innerhalb der Club-Räumlichkeiten konsumiert werden. Das Mitnehmen von Produkten nach draußen setzt Sie einem rechtlichen Risiko wegen öffentlichen Besitzes aus. Respektieren Sie die Clubregeln und das spanische Recht.",
+    
+    // FAQ - Medical
+    "faq.medical.q1": "Gibt es medizinische Cannabis Clubs in Madrid?",
+    "faq.medical.a1": "Einige Clubs richten sich speziell an medizinische Nutzer und bieten Sorten für therapeutische Zwecke an. Spanien hat jedoch kein formelles medizinisches Cannabis-Programm. Clubs arbeiten als Kulturvereine, nicht als medizinische Dispensarien.",
+    "faq.medical.q2": "Kann ich Cannabis verwenden, wenn ich Medikamente nehme?",
+    "faq.medical.a2": "Cannabis kann mit bestimmten Medikamenten interagieren, einschließlich Blutverdünnern, Beruhigungsmitteln und einigen Antidepressiva. Konsultieren Sie immer Ihren Arzt, bevor Sie Cannabis verwenden, wenn Sie regelmäßig Medikamente einnehmen.",
+    "faq.medical.q3": "Ist Cannabis während der Schwangerschaft sicher?",
+    "faq.medical.a3": "Nein. Vermeiden Sie Cannabis, wenn Sie schwanger sind oder stillen. THC kann die Plazentaschranke überwinden und in die Muttermilch übergehen, was die Entwicklung des Fötus oder Säuglings beeinträchtigen kann. Mediziner raten dringend von Cannabis während der Schwangerschaft ab.",
+    
     // Contact page
     "contact.title": "Kontakt Aufnehmen",
     "contact.subtitle": "Fragen, Club-Einreichungen oder Partnerschaftsanfragen",
@@ -1509,6 +1668,59 @@ export const translations: Record<Language, Record<string, string>> = {
     "faq.contact.title": "Vous Avez Encore des Questions ?",
     "faq.contact.desc": "Vous ne trouvez pas ce que vous cherchez ? Contactez-nous et nous vous aiderons.",
     "faq.contact.button": "Nous Contacter",
+    
+    // FAQ Categories
+    "faq.category.basics": "Bases",
+    "faq.category.membership": "Adhésion",
+    "faq.category.law": "Juridique",
+    "faq.category.safety": "Sécurité",
+    "faq.category.medical": "Médical",
+    
+    // FAQ - Basics
+    "faq.basics.q1": "Qu'est-ce qu'un club social de cannabis ?",
+    "faq.basics.a1": "Un club social de cannabis (CSC) est une association culturelle privée à but non lucratif où les membres peuvent consommer légalement du cannabis dans un environnement sûr et contrôlé. Ces clubs fonctionnent selon le droit espagnol des associations et ne sont pas des entreprises commerciales.",
+    "faq.basics.q2": "Les touristes peuvent-ils rejoindre des clubs de cannabis à Madrid ?",
+    "faq.basics.a2": "Oui, les touristes de plus de 18 ans peuvent rejoindre des clubs de cannabis à Madrid. Vous devrez passer par un processus d'invitation, fournir une pièce d'identité valide et respecter les règles du club. Le processus prend généralement 24-48 heures.",
+    "faq.basics.q3": "Y a-t-il des clubs de cannabis près de Puerta del Sol ?",
+    "faq.basics.a3": "Vous ne trouverez pas d'adresses publiques près de Puerta del Sol — les associations privées opèrent discrètement et ne partagent les emplacements qu'avec les membres vérifiés. Utilisez nos pages de quartier pour la zone Centro et demandez une invitation.",
+    "faq.basics.q4": "Où est le club de cannabis le plus proche de Gran Vía ?",
+    "faq.basics.a4": "Les associations ne publient pas d'adresses exactes publiquement pour des raisons légales et de confidentialité. Elles partagent les détails uniquement avec les membres vérifiés. Consultez notre aperçu du quartier Centro et soumettez une demande d'invitation.",
+    
+    // FAQ - Membership
+    "faq.membership.q1": "Combien coûte l'adhésion au club ?",
+    "faq.membership.a1": "Les frais d'adhésion varient selon le club, généralement entre 20-50€ pour une adhésion annuelle. Certains clubs ont également des frais d'inscription uniques. Les frais soutiennent le fonctionnement du club en tant qu'association à but non lucratif.",
+    "faq.membership.q2": "Quels documents dois-je fournir pour adhérer ?",
+    "faq.membership.a2": "Vous avez besoin d'une pièce d'identité valide délivrée par le gouvernement (passeport ou carte d'identité) prouvant que vous avez 18 ans ou plus. Certains clubs peuvent également demander un justificatif de domicile. Apportez toujours votre document original, pas de copies.",
+    "faq.membership.q3": "Combien de temps prend le processus d'adhésion ?",
+    "faq.membership.a3": "Le processus d'examen de l'invitation prend généralement 24-48 heures. Une fois approuvé, vous recevrez un code d'invitation par e-mail. Vous pouvez ensuite visiter le club, compléter l'inscription sur place et devenir membre le même jour.",
+    "faq.membership.q4": "Puis-je amener des invités dans un club de cannabis ?",
+    "faq.membership.a4": "La plupart des clubs permettent aux membres d'amener des invités, mais ils doivent également passer par le processus d'adhésion. Vous pouvez inclure plusieurs visiteurs dans votre demande d'invitation. Chaque personne doit avoir 18+ ans et une pièce d'identité valide.",
+    
+    // FAQ - Law
+    "faq.law.q1": "Les clubs sociaux de cannabis sont-ils légaux en Espagne ?",
+    "faq.law.a1": "Les clubs sociaux de cannabis opèrent dans une zone grise juridique. Ils ne sont pas explicitement légaux, mais sont tolérés lorsqu'ils fonctionnent comme de véritables associations privées à but non lucratif suivant des directives strictes. La clé est que toutes les activités se déroulent en privé entre adultes consentants.",
+    "faq.law.q2": "Puis-je fumer du cannabis en public à Madrid ?",
+    "faq.law.a2": "Non. La consommation publique de cannabis reste illégale dans toute l'Espagne. Le cannabis ne peut être consommé légalement que dans des espaces privés, comme dans les locaux privés d'un club ou votre résidence privée. La consommation publique peut entraîner des amendes de 600€-30.000€.",
+    "faq.law.q3": "Que se passe-t-il si je suis pris avec du cannabis à Madrid ?",
+    "faq.law.a3": "La possession de petites quantités pour usage personnel (généralement moins de 100 grammes) dans des espaces privés est décriminalisée — pas légale, mais pas un crime. Cependant, la possession publique ou de plus grandes quantités peuvent entraîner des amendes ou des poursuites pénales.",
+    "faq.law.q4": "Pourquoi les clubs ne publient-ils pas leurs adresses ?",
+    "faq.law.a4": "Les clubs de cannabis doivent fonctionner comme des associations privées pour rester légaux. Publier les emplacements publiquement contredirait le principe d'accès privé réservé aux membres. Les clubs ne partagent les adresses qu'avec les membres approuvés.",
+    
+    // FAQ - Safety
+    "faq.safety.q1": "Est-il sûr de visiter des clubs de cannabis ?",
+    "faq.safety.a1": "Les clubs de cannabis vérifiés priorisent la sécurité des membres. Ils opèrent dans des environnements privés et contrôlés avec des mesures de sécurité. Nos clubs répertoriés sont vérifiés pour leur légitimité. N'achetez jamais de cannabis à des vendeurs de rue.",
+    "faq.safety.q2": "Que dois-je faire si je me sens mal dans un club ?",
+    "faq.safety.a2": "Informez immédiatement le personnel du club — ils sont formés pour aider. Trouvez un espace calme, restez hydraté et ne paniquez pas. Les effets passeront avec le temps. Si les symptômes sont graves, consultez un médecin. Le numéro d'urgence espagnol est le 112.",
+    "faq.safety.q3": "Puis-je emporter des produits de cannabis hors du club ?",
+    "faq.safety.a3": "Non. Le cannabis ne doit être consommé que dans les locaux du club. Emporter des produits à l'extérieur vous expose à un risque juridique pour possession publique. Respectez les règles du club et la loi espagnole.",
+    
+    // FAQ - Medical
+    "faq.medical.q1": "Y a-t-il des clubs de cannabis médical à Madrid ?",
+    "faq.medical.a1": "Certains clubs s'adressent spécifiquement aux utilisateurs médicaux, offrant des variétés à des fins thérapeutiques. Cependant, l'Espagne n'a pas de programme formel de cannabis médical. Les clubs fonctionnent comme des associations culturelles, pas des dispensaires médicaux.",
+    "faq.medical.q2": "Puis-je utiliser du cannabis si je prends des médicaments ?",
+    "faq.medical.a2": "Le cannabis peut interagir avec certains médicaments, y compris les anticoagulants, les sédatifs et certains antidépresseurs. Consultez toujours votre médecin avant d'utiliser du cannabis si vous prenez des médicaments régulièrement.",
+    "faq.medical.q3": "Le cannabis est-il sûr pendant la grossesse ?",
+    "faq.medical.a3": "Non. Évitez le cannabis si vous êtes enceinte ou allaitez. Le THC peut traverser la barrière placentaire et passer dans le lait maternel, affectant potentiellement le développement du fœtus ou du nourrisson. Les professionnels de santé déconseillent fortement le cannabis pendant la grossesse.",
     
     // Contact page
     "contact.title": "Prendre Contact",
