@@ -16,7 +16,7 @@ export const translations: Record<Language, Record<string, string>> = {
     "nav.knowledge": "Knowledge",
     
     // Homepage
-    "home.title": "Madrid Cannabis Clubs - Your Educational Guide",
+    "home.title": "Madrid Cannabis Clubs | Your Educational Guide 2025",
     "home.subtitle": "Learn about Spanish cannabis law, explore verified clubs, and understand safe membership practices",
     "home.search.placeholder": "Search clubs by name or district...",
     "home.search.button": "Search Clubs",
