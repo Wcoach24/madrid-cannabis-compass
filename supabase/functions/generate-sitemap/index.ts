@@ -29,8 +29,13 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseKey = Deno.env.get('SUPABASE_PUBLISHABLE_KEY')!;
+    const supabaseUrl = Deno.env.get('SUPABASE_URL') || 'https://sdpmwelfkseuhlhgatsc.supabase.co';
+    const supabaseKey = Deno.env.get('SUPABASE_ANON_KEY') || Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
+    
+    if (!supabaseKey) {
+      throw new Error('Missing Supabase key - ensure SUPABASE_ANON_KEY or SUPABASE_SERVICE_ROLE_KEY is set');
+    }
+    
     const supabase = createClient(supabaseUrl, supabaseKey);
 
     const baseUrl = 'https://www.weedmadrid.com';
