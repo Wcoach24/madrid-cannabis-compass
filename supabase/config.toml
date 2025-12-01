@@ -29,3 +29,6 @@ verify_jwt = true
 
 [functions.send-reminder]
 verify_jwt = true
+
+[functions.bulk-content-generation]
+verify_jwt = false

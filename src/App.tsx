@@ -29,6 +29,7 @@ import District from "./pages/District";
 import Knowledge from "./pages/Knowledge";
 import ClubsNearMe from "./pages/ClubsNearMe";
 import ClubsDistrict from "./pages/ClubsDistrict";
+import BulkGenerate from "./pages/BulkGenerate";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -67,6 +68,7 @@ const App = () => (
             <Route path="/knowledge" element={<Knowledge />} />
             <Route path="/clubs/near-me" element={<ClubsNearMe />} />
             <Route path="/clubs/:district" element={<ClubsDistrict />} />
+            <Route path="/bulk-generate" element={<BulkGenerate />} />
             
             {/* Language-prefixed routes */}
             <Route path="/:lang" element={<Index />} />
