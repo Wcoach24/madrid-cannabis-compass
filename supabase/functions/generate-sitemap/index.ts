@@ -66,7 +66,15 @@ Deno.serve(async (req) => {
     <xhtml:link rel="alternate" hreflang="en-GB" href="${baseUrl}${path}"/>
     <xhtml:link rel="alternate" hreflang="es" href="${baseUrl}/es${path}"/>
     <xhtml:link rel="alternate" hreflang="es-ES" href="${baseUrl}/es${path}"/>
-    <xhtml:link rel="alternate" hreflang="es-MX" href="${baseUrl}/es${path}"/>`;
+    <xhtml:link rel="alternate" hreflang="es-MX" href="${baseUrl}/es${path}"/>
+    <xhtml:link rel="alternate" hreflang="de" href="${baseUrl}/de${path}"/>
+    <xhtml:link rel="alternate" hreflang="de-DE" href="${baseUrl}/de${path}"/>
+    <xhtml:link rel="alternate" hreflang="de-AT" href="${baseUrl}/de${path}"/>
+    <xhtml:link rel="alternate" hreflang="de-CH" href="${baseUrl}/de${path}"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="${baseUrl}/fr${path}"/>
+    <xhtml:link rel="alternate" hreflang="fr-FR" href="${baseUrl}/fr${path}"/>
+    <xhtml:link rel="alternate" hreflang="fr-BE" href="${baseUrl}/fr${path}"/>
+    <xhtml:link rel="alternate" hreflang="fr-CH" href="${baseUrl}/fr${path}"/>`;
     };
 
     const addImageTags = (images: string[]) => {
@@ -99,26 +107,28 @@ Deno.serve(async (req) => {
     ];
 
     const districts = ['centro', 'chamberi', 'salamanca', 'retiro', 'tetuan', 'chamartin', 'moncloa-aravaca'];
-
+    
+    // Add "Near Me" pages
+    staticPages.push({ path: '/clubs/near-me', priority: '0.8', changefreq: 'weekly' });
+    
     // Add district pages
     districts.forEach(district => {
       staticPages.push({ path: `/district/${district}`, priority: '0.7', changefreq: 'weekly' });
+      staticPages.push({ path: `/clubs/${district}`, priority: '0.7', changefreq: 'weekly' });
     });
 
+    const languages = ['', '/es', '/de', '/fr'];
+    
     staticPages.forEach(page => {
-      sitemap += `
+      languages.forEach(lang => {
+        sitemap += `
   <url>
-    <loc>${baseUrl}${page.path}</loc>${addHreflangLinks(page.path)}
-    <changefreq>${page.changefreq}</changefreq>
-    <priority>${page.priority}</priority>
-    <lastmod>${new Date().toISOString()}</lastmod>
-  </url>
-  <url>
-    <loc>${baseUrl}/es${page.path}</loc>${addHreflangLinks(page.path)}
+    <loc>${baseUrl}${lang}${page.path}</loc>${addHreflangLinks(page.path)}
     <changefreq>${page.changefreq}</changefreq>
     <priority>${page.priority}</priority>
     <lastmod>${new Date().toISOString()}</lastmod>
   </url>`;
+      });
     });
 
     // Add club URLs with images and dynamic priority
@@ -135,23 +145,16 @@ Deno.serve(async (req) => {
         const priority = calculatePriority(club.is_featured, club.rating_editorial);
         const lastmod = new Date(club.updated_at).toISOString();
 
-        // English version
-        sitemap += `
+        // All language versions
+        languages.forEach(lang => {
+          sitemap += `
   <url>
-    <loc>${baseUrl}${clubPath}</loc>${addHreflangLinks(clubPath)}
+    <loc>${baseUrl}${lang}${clubPath}</loc>${addHreflangLinks(clubPath)}
     <lastmod>${lastmod}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>${priority}</priority>${images.length > 0 ? addImageTags(images) : ''}
   </url>`;
-
-        // Spanish version
-        sitemap += `
-  <url>
-    <loc>${baseUrl}/es${clubPath}</loc>${addHreflangLinks(clubPath)}
-    <lastmod>${lastmod}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>${priority}</priority>${images.length > 0 ? addImageTags(images) : ''}
-  </url>`;
+        });
       });
     }
 
@@ -172,44 +175,28 @@ Deno.serve(async (req) => {
         const lastmod = new Date(article.updated_at).toISOString();
         const changefreq = isRecent ? 'daily' : 'weekly';
 
-        // Add news sitemap tags for recent articles
-        const newsTag = isRecent ? `
+        // All language versions with news tags for recent articles
+        const languageCodes = { '': 'en', '/es': 'es', '/de': 'de', '/fr': 'fr' };
+        
+        languages.forEach(lang => {
+          const newsTag = isRecent ? `
     <news:news>
       <news:publication>
         <news:name>Weed Madrid</news:name>
-        <news:language>en</news:language>
+        <news:language>${languageCodes[lang as keyof typeof languageCodes]}</news:language>
       </news:publication>
       <news:publication_date>${publishDate.toISOString()}</news:publication_date>
       <news:title>${article.slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}</news:title>
     </news:news>` : '';
 
-        // English version
-        sitemap += `
+          sitemap += `
   <url>
-    <loc>${baseUrl}${articlePath}</loc>${addHreflangLinks(articlePath)}
+    <loc>${baseUrl}${lang}${articlePath}</loc>${addHreflangLinks(articlePath)}
     <lastmod>${lastmod}</lastmod>
     <changefreq>${changefreq}</changefreq>
     <priority>${priority}</priority>${images.length > 0 ? addImageTags(images) : ''}${newsTag}
   </url>`;
-
-        // Spanish version
-        const newsTagEs = isRecent ? `
-    <news:news>
-      <news:publication>
-        <news:name>Weed Madrid</news:name>
-        <news:language>es</news:language>
-      </news:publication>
-      <news:publication_date>${publishDate.toISOString()}</news:publication_date>
-      <news:title>${article.slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}</news:title>
-    </news:news>` : '';
-
-        sitemap += `
-  <url>
-    <loc>${baseUrl}/es${articlePath}</loc>${addHreflangLinks(articlePath)}
-    <lastmod>${lastmod}</lastmod>
-    <changefreq>${changefreq}</changefreq>
-    <priority>${priority}</priority>${images.length > 0 ? addImageTags(images) : ''}${newsTagEs}
-  </url>`;
+        });
       });
     }
 
