@@ -6,6 +6,8 @@ import SEOHead from "@/components/SEOHead";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { MapPin, Train, Coffee, Users } from "lucide-react";
 import { buildLanguageAwarePath } from "@/lib/languageUtils";
+import { generateHreflangLinks, BASE_URL } from "@/lib/hreflangUtils";
+import { generateBreadcrumbSchema } from "@/lib/schemaUtils";
 
 const DISTRICTS = [
   { slug: "centro", icon: MapPin },
@@ -19,6 +21,12 @@ const DISTRICTS = [
 
 const Districts = () => {
   const { t, language } = useLanguage();
+  const hreflangLinks = generateHreflangLinks(BASE_URL, "/districts");
+
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: t("nav.home"), url: BASE_URL },
+    { name: t("districts.hero.title"), url: `${BASE_URL}${buildLanguageAwarePath("/districts", language)}` }
+  ]);
 
   const schemaData = {
     "@context": "https://schema.org",
@@ -39,8 +47,11 @@ const Districts = () => {
       <SEOHead
         title={t("districts.meta.title")}
         description={t("districts.meta.description")}
-        canonical={`https://www.weedmadrid.com${buildLanguageAwarePath("/districts", language)}`}
-        structuredData={[schemaData]}
+        canonical={`${BASE_URL}${buildLanguageAwarePath("/districts", language)}`}
+        hreflangLinks={hreflangLinks}
+        ogLocale={language === "es" ? "es_ES" : language === "de" ? "de_DE" : language === "fr" ? "fr_FR" : "en_US"}
+        ogLocaleAlternate={["en_US", "es_ES", "de_DE", "fr_FR"].filter(l => l !== (language === "es" ? "es_ES" : language === "de" ? "de_DE" : language === "fr" ? "fr_FR" : "en_US"))}
+        structuredData={[breadcrumbSchema, schemaData]}
       />
       
       <Header />

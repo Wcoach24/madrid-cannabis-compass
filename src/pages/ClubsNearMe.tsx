@@ -84,6 +84,8 @@ const ClubsNearMe = () => {
         canonical={`${BASE_URL}${buildLanguageAwarePath("/clubs/near-me", language)}`}
         keywords="cannabis club near me madrid, weed club near me, cannabis clubs by district madrid, find cannabis club madrid"
         hreflangLinks={hreflangLinks}
+        ogLocale={language === "es" ? "es_ES" : language === "de" ? "de_DE" : language === "fr" ? "fr_FR" : "en_US"}
+        ogLocaleAlternate={["en_US", "es_ES", "de_DE", "fr_FR"].filter(l => l !== (language === "es" ? "es_ES" : language === "de" ? "de_DE" : language === "fr" ? "fr_FR" : "en_US"))}
         structuredData={[breadcrumbSchema, schemaData]}
       />
       
