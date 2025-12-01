@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { Languages, CheckCircle2, XCircle, Loader2 } from "lucide-react";
+import { Languages, CheckCircle2, XCircle, Loader2, RefreshCw } from "lucide-react";
 
 interface TranslationItem {
   id: number;
@@ -14,14 +14,18 @@ interface TranslationItem {
   status: 'pending' | 'translating' | 'success' | 'error';
   targetLanguages: ('de' | 'fr')[];
   completedLanguages: string[];
+  failedLanguages: string[];
   error?: string;
 }
+
+const MAX_RETRIES = 3;
 
 const TranslateContent = () => {
   const { toast } = useToast();
   const [articles, setArticles] = useState<TranslationItem[]>([]);
   const [faqs, setFaqs] = useState<TranslationItem[]>([]);
   const [isTranslating, setIsTranslating] = useState(false);
+  const [isRetrying, setIsRetrying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [totalItems, setTotalItems] = useState(0);
   const [completedItems, setCompletedItems] = useState(0);
@@ -31,7 +35,6 @@ const TranslateContent = () => {
   }, []);
 
   const fetchSourceContent = async () => {
-    // Fetch English articles
     const { data: articleData } = await supabase
       .from('articles')
       .select('id, title, language')
@@ -46,10 +49,10 @@ const TranslateContent = () => {
         status: 'pending',
         targetLanguages: ['de', 'fr'],
         completedLanguages: [],
+        failedLanguages: [],
       })));
     }
 
-    // Fetch English FAQs
     const { data: faqData } = await supabase
       .from('faq')
       .select('id, question, language')
@@ -63,6 +66,7 @@ const TranslateContent = () => {
         status: 'pending',
         targetLanguages: ['de', 'fr'],
         completedLanguages: [],
+        failedLanguages: [],
       })));
     }
 
@@ -72,7 +76,8 @@ const TranslateContent = () => {
 
   const translateItem = async (
     item: TranslationItem,
-    targetLanguage: 'de' | 'fr'
+    targetLanguage: 'de' | 'fr',
+    retryCount = 0
   ): Promise<boolean> => {
     try {
       const response = await supabase.functions.invoke('translate-content', {
@@ -84,12 +89,52 @@ const TranslateContent = () => {
         },
       });
 
-      if (response.error) throw response.error;
+      if (response.error) {
+        // Retry logic with exponential backoff
+        if (retryCount < MAX_RETRIES) {
+          const delay = Math.pow(2, retryCount) * 1000; // 1s, 2s, 4s
+          console.log(`Retrying ${item.type} ${item.id} to ${targetLanguage} (attempt ${retryCount + 1}/${MAX_RETRIES}) after ${delay}ms`);
+          await new Promise(resolve => setTimeout(resolve, delay));
+          return translateItem(item, targetLanguage, retryCount + 1);
+        }
+        throw response.error;
+      }
       return true;
     } catch (error: any) {
       console.error(`Translation error for ${item.type} ${item.id} to ${targetLanguage}:`, error);
       return false;
     }
+  };
+
+  const updateItemStatus = (
+    items: TranslationItem[],
+    setItems: React.Dispatch<React.SetStateAction<TranslationItem[]>>,
+    itemId: number,
+    lang: string,
+    success: boolean
+  ) => {
+    setItems(prev => prev.map(item => {
+      if (item.id === itemId) {
+        const newCompleted = success 
+          ? [...item.completedLanguages.filter(l => l !== lang), lang]
+          : item.completedLanguages;
+        const newFailed = success
+          ? item.failedLanguages.filter(l => l !== lang)
+          : [...item.failedLanguages.filter(l => l !== lang), lang];
+        
+        const allDone = newCompleted.length === item.targetLanguages.length;
+        const hasFailures = newFailed.length > 0;
+        
+        return {
+          ...item,
+          status: allDone ? 'success' : hasFailures ? 'error' : 'translating',
+          completedLanguages: newCompleted,
+          failedLanguages: newFailed,
+          error: hasFailures ? `Failed: ${newFailed.join(', ')}` : undefined,
+        };
+      }
+      return item;
+    }));
   };
 
   const startTranslation = async () => {
@@ -105,28 +150,11 @@ const TranslateContent = () => {
 
       for (const lang of article.targetLanguages) {
         const success = await translateItem(article, lang);
+        updateItemStatus(articles, setArticles, article.id, lang, success);
         
-        setArticles(prev => prev.map(a => {
-          if (a.id === article.id) {
-            const newCompleted = success 
-              ? [...a.completedLanguages, lang]
-              : a.completedLanguages;
-            const allDone = newCompleted.length === a.targetLanguages.length;
-            return {
-              ...a,
-              status: allDone ? 'success' : 'translating',
-              completedLanguages: newCompleted,
-              error: success ? undefined : `Failed to translate to ${lang}`,
-            };
-          }
-          return a;
-        }));
-
         completed++;
         setCompletedItems(completed);
         setProgress((completed / totalItems) * 100);
-
-        // Add small delay to avoid rate limiting
         await new Promise(resolve => setTimeout(resolve, 1000));
       }
     }
@@ -139,35 +167,81 @@ const TranslateContent = () => {
 
       for (const lang of faq.targetLanguages) {
         const success = await translateItem(faq, lang);
+        updateItemStatus(faqs, setFaqs, faq.id, lang, success);
         
-        setFaqs(prev => prev.map(f => {
-          if (f.id === faq.id) {
-            const newCompleted = success 
-              ? [...f.completedLanguages, lang]
-              : f.completedLanguages;
-            const allDone = newCompleted.length === f.targetLanguages.length;
-            return {
-              ...f,
-              status: allDone ? 'success' : 'translating',
-              completedLanguages: newCompleted,
-              error: success ? undefined : `Failed to translate to ${lang}`,
-            };
-          }
-          return f;
-        }));
-
         completed++;
         setCompletedItems(completed);
         setProgress((completed / totalItems) * 100);
-
         await new Promise(resolve => setTimeout(resolve, 1000));
       }
     }
 
     setIsTranslating(false);
+    
+    const failedCount = [...articles, ...faqs].filter(i => i.failedLanguages.length > 0).length;
     toast({
-      title: "Translation Complete",
-      description: `Translated ${completedItems} items across German and French`,
+      title: failedCount > 0 ? "Translation Completed with Errors" : "Translation Complete",
+      description: failedCount > 0 
+        ? `${failedCount} items failed. Click "Retry Failed" to try again.`
+        : `Successfully translated all content to German and French`,
+      variant: failedCount > 0 ? "destructive" : "default",
+    });
+  };
+
+  const retryFailed = async () => {
+    setIsRetrying(true);
+    
+    const failedArticles = articles.filter(a => a.failedLanguages.length > 0);
+    const failedFaqs = faqs.filter(f => f.failedLanguages.length > 0);
+    
+    const totalRetries = failedArticles.reduce((sum, a) => sum + a.failedLanguages.length, 0) +
+                         failedFaqs.reduce((sum, f) => sum + f.failedLanguages.length, 0);
+    
+    let retried = 0;
+    let successCount = 0;
+
+    // Retry failed articles
+    for (const article of failedArticles) {
+      setArticles(prev => prev.map(a => 
+        a.id === article.id ? { ...a, status: 'translating' } : a
+      ));
+
+      for (const lang of [...article.failedLanguages] as ('de' | 'fr')[]) {
+        const success = await translateItem(article, lang);
+        updateItemStatus(articles, setArticles, article.id, lang, success);
+        if (success) successCount++;
+        
+        retried++;
+        setProgress((retried / totalRetries) * 100);
+        await new Promise(resolve => setTimeout(resolve, 1500)); // Longer delay for retries
+      }
+    }
+
+    // Retry failed FAQs
+    for (const faq of failedFaqs) {
+      setFaqs(prev => prev.map(f => 
+        f.id === faq.id ? { ...f, status: 'translating' } : f
+      ));
+
+      for (const lang of [...faq.failedLanguages] as ('de' | 'fr')[]) {
+        const success = await translateItem(faq, lang);
+        updateItemStatus(faqs, setFaqs, faq.id, lang, success);
+        if (success) successCount++;
+        
+        retried++;
+        setProgress((retried / totalRetries) * 100);
+        await new Promise(resolve => setTimeout(resolve, 1500));
+      }
+    }
+
+    setIsRetrying(false);
+    setProgress(0);
+    
+    const remainingFailed = [...articles, ...faqs].filter(i => i.failedLanguages.length > 0).length;
+    toast({
+      title: remainingFailed > 0 ? "Retry Completed with Errors" : "Retry Successful",
+      description: `${successCount}/${totalRetries} retries succeeded.${remainingFailed > 0 ? ` ${remainingFailed} items still failing.` : ''}`,
+      variant: remainingFailed > 0 ? "destructive" : "default",
     });
   };
 
@@ -183,6 +257,9 @@ const TranslateContent = () => {
         return null;
     }
   };
+
+  const failedCount = [...articles, ...faqs].filter(i => i.failedLanguages.length > 0).length;
+  const totalFailedTranslations = [...articles, ...faqs].reduce((sum, i) => sum + i.failedLanguages.length, 0);
 
   return (
     <div className="min-h-screen bg-background p-8">
@@ -209,28 +286,54 @@ const TranslateContent = () => {
                 <p className="font-semibold mt-2">
                   Total: {totalItems} translations
                 </p>
-              </div>
-              <Button
-                onClick={startTranslation}
-                disabled={isTranslating}
-                size="lg"
-              >
-                {isTranslating ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Translating...
-                  </>
-                ) : (
-                  'Start Translation'
+                {failedCount > 0 && (
+                  <p className="text-sm text-destructive mt-1">
+                    {totalFailedTranslations} failed translations in {failedCount} items
+                  </p>
                 )}
-              </Button>
+              </div>
+              <div className="flex gap-2">
+                {failedCount > 0 && !isTranslating && (
+                  <Button
+                    onClick={retryFailed}
+                    disabled={isRetrying}
+                    variant="outline"
+                  >
+                    {isRetrying ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Retrying...
+                      </>
+                    ) : (
+                      <>
+                        <RefreshCw className="mr-2 h-4 w-4" />
+                        Retry Failed ({totalFailedTranslations})
+                      </>
+                    )}
+                  </Button>
+                )}
+                <Button
+                  onClick={startTranslation}
+                  disabled={isTranslating || isRetrying}
+                  size="lg"
+                >
+                  {isTranslating ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Translating...
+                    </>
+                  ) : (
+                    'Start Translation'
+                  )}
+                </Button>
+              </div>
             </div>
 
-            {isTranslating && (
+            {(isTranslating || isRetrying) && (
               <div className="space-y-2">
                 <Progress value={progress} className="h-2" />
                 <p className="text-sm text-muted-foreground text-center">
-                  {completedItems} / {totalItems} completed ({Math.round(progress)}%)
+                  {isRetrying ? 'Retrying failed items...' : `${completedItems} / ${totalItems} completed`} ({Math.round(progress)}%)
                 </p>
               </div>
             )}
@@ -253,8 +356,13 @@ const TranslateContent = () => {
                     <p className="font-medium text-sm">{article.title}</p>
                     <div className="flex gap-2 mt-1">
                       {article.completedLanguages.map(lang => (
-                        <Badge key={lang} variant="outline" className="text-xs">
+                        <Badge key={lang} variant="outline" className="text-xs text-green-600">
                           {lang.toUpperCase()} ✓
+                        </Badge>
+                      ))}
+                      {article.failedLanguages.map(lang => (
+                        <Badge key={lang} variant="destructive" className="text-xs">
+                          {lang.toUpperCase()} ✗
                         </Badge>
                       ))}
                     </div>
@@ -282,8 +390,13 @@ const TranslateContent = () => {
                     <p className="font-medium text-sm line-clamp-1">{faq.title}</p>
                     <div className="flex gap-2 mt-1">
                       {faq.completedLanguages.map(lang => (
-                        <Badge key={lang} variant="outline" className="text-xs">
+                        <Badge key={lang} variant="outline" className="text-xs text-green-600">
                           {lang.toUpperCase()} ✓
+                        </Badge>
+                      ))}
+                      {faq.failedLanguages.map(lang => (
+                        <Badge key={lang} variant="destructive" className="text-xs">
+                          {lang.toUpperCase()} ✗
                         </Badge>
                       ))}
                     </div>
