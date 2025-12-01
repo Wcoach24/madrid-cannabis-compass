@@ -1,6 +1,4 @@
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import Header from "@/components/Header";
@@ -12,36 +10,32 @@ import { useLanguage } from "@/hooks/useLanguage";
 import { buildLanguageAwarePath } from "@/lib/languageUtils";
 import { generateHreflangLinks, BASE_URL } from "@/lib/hreflangUtils";
 import { generateBreadcrumbSchema, generateFAQPageSchema } from "@/lib/schemaUtils";
-import ReactMarkdown from "react-markdown";
+
+const FAQ_CATEGORIES = ["basics", "membership", "law", "safety", "medical"] as const;
+
+const FAQ_STRUCTURE = {
+  basics: ["q1", "q2", "q3", "q4"],
+  membership: ["q1", "q2", "q3", "q4"],
+  law: ["q1", "q2", "q3", "q4"],
+  safety: ["q1", "q2", "q3"],
+  medical: ["q1", "q2", "q3"],
+} as const;
 
 const FAQ = () => {
   const { language, t } = useLanguage();
-  const [faqs, setFaqs] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchFAQs();
-  }, [language]);
+  // Build FAQ data from translations
+  const faqData = FAQ_CATEGORIES.map(category => ({
+    category,
+    categoryName: t(`faq.category.${category}`),
+    questions: FAQ_STRUCTURE[category].map(qKey => ({
+      question: t(`faq.${category}.${qKey}`),
+      answer: t(`faq.${category}.${qKey.replace('q', 'a')}`),
+    })),
+  }));
 
-  const fetchFAQs = async () => {
-    const { data, error } = await supabase
-      .from("faq")
-      .select("*")
-      .eq("language", language)
-      .order("priority", { ascending: true });
-
-    if (error) {
-      console.error("Error fetching FAQs:", error);
-      setLoading(false);
-      return;
-    }
-
-    if (data) {
-      setFaqs(data);
-    }
-    
-    setLoading(false);
-  };
+  // Flatten for schema
+  const allFaqs = faqData.flatMap(cat => cat.questions);
 
   const hreflangLinks = generateHreflangLinks(BASE_URL, "/faq");
 
@@ -50,12 +44,7 @@ const FAQ = () => {
     { name: "FAQ", url: `${BASE_URL}/faq` }
   ]);
 
-  const faqSchema = faqs.length > 0 ? generateFAQPageSchema(
-    faqs.map(faq => ({
-      question: faq.question,
-      answer: faq.answer_markdown
-    }))
-  ) : null;
+  const faqSchema = generateFAQPageSchema(allFaqs);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -66,9 +55,9 @@ const FAQ = () => {
         canonical={`${BASE_URL}${buildLanguageAwarePath("/faq", language)}`}
         keywords="cannabis club faq, madrid cannabis questions, join cannabis club, cannabis legal spain"
         hreflangLinks={hreflangLinks}
-        ogLocale={language === "es" ? "es_ES" : "en_US"}
-        ogLocaleAlternate={language === "es" ? ["en_US"] : ["es_ES"]}
-        structuredData={faqSchema ? [breadcrumbSchema, faqSchema] : [breadcrumbSchema]}
+        ogLocale={language === "es" ? "es_ES" : language === "de" ? "de_DE" : language === "fr" ? "fr_FR" : "en_US"}
+        ogLocaleAlternate={language === "es" ? ["en_US", "de_DE", "fr_FR"] : language === "de" ? ["en_US", "es_ES", "fr_FR"] : language === "fr" ? ["en_US", "es_ES", "de_DE"] : ["es_ES", "de_DE", "fr_FR"]}
+        structuredData={[breadcrumbSchema, faqSchema]}
       />
       <Header />
       
@@ -90,65 +79,29 @@ const FAQ = () => {
         <section className="py-16">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto">
-              {loading ? (
-                <div className="text-center py-12">
-                  <p className="text-muted-foreground">{t("faq.loading")}</p>
-                </div>
-              ) : faqs.length === 0 ? (
-                <div className="text-center py-12">
-                  <p className="text-muted-foreground">{t("faq.nofound")}</p>
-                </div>
-              ) : (
-                <div className="space-y-8">
-                  {/* Group FAQs by category */}
-                  {["basics", "membership", "law", "safety", "medical"].map((category) => {
-                    const categoryFaqs = faqs.filter(faq => faq.category === category);
-                    if (categoryFaqs.length === 0) return null;
-                    
-                    return (
-                      <div key={category} id={category} className="scroll-mt-24">
-                        <h2 className="text-2xl font-bold mb-4 capitalize">{category}</h2>
-                        <Accordion type="single" collapsible className="space-y-4">
-                          {categoryFaqs.map((faq, index) => (
-                            <AccordionItem 
-                              key={faq.id} 
-                              value={`${category}-${index}`}
-                              className="bg-card border border-border rounded-lg px-6"
-                            >
-                              <AccordionTrigger className="text-left hover:no-underline">
-                                <span className="text-lg font-medium pr-4">{faq.question}</span>
-                              </AccordionTrigger>
-                              <AccordionContent className="text-muted-foreground prose prose-sm max-w-none">
-                                <ReactMarkdown>{faq.answer_markdown}</ReactMarkdown>
-                              </AccordionContent>
-                            </AccordionItem>
-                          ))}
-                        </Accordion>
-                      </div>
-                    );
-                  })}
-                  
-                  {/* Show all FAQs without categories if none have categories */}
-                  {faqs.filter(faq => !faq.category).length > 0 && (
+              <div className="space-y-8">
+                {faqData.map(({ category, categoryName, questions }) => (
+                  <div key={category} id={category} className="scroll-mt-24">
+                    <h2 className="text-2xl font-bold mb-4">{categoryName}</h2>
                     <Accordion type="single" collapsible className="space-y-4">
-                      {faqs.filter(faq => !faq.category).map((faq, index) => (
+                      {questions.map((faq, index) => (
                         <AccordionItem 
-                          key={faq.id} 
-                          value={`item-${index}`}
+                          key={`${category}-${index}`} 
+                          value={`${category}-${index}`}
                           className="bg-card border border-border rounded-lg px-6"
                         >
                           <AccordionTrigger className="text-left hover:no-underline">
                             <span className="text-lg font-medium pr-4">{faq.question}</span>
                           </AccordionTrigger>
                           <AccordionContent className="text-muted-foreground prose prose-sm max-w-none">
-                            <ReactMarkdown>{faq.answer_markdown}</ReactMarkdown>
+                            <p>{faq.answer}</p>
                           </AccordionContent>
                         </AccordionItem>
                       ))}
                     </Accordion>
-                  )}
-                </div>
-              )}
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </section>
