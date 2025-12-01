@@ -16,7 +16,7 @@ export const translations: Record<Language, Record<string, string>> = {
     "nav.knowledge": "Knowledge",
     
     // Homepage
-    "home.title": "Madrid Cannabis Clubs | Your Educational Guide 2025",
+    "home.title": "Best Cannabis Clubs Madrid 2025 | Legal Access Near You",
     "home.subtitle": "Learn about Spanish cannabis law, explore verified clubs, and understand safe membership practices",
     "home.search.placeholder": "Search clubs by name or district...",
     "home.search.button": "Search Clubs",
@@ -47,7 +47,7 @@ export const translations: Record<Language, Record<string, string>> = {
     "home.guides.legal.desc": "What tourists need to know",
     
     // Clubs page
-    "clubs.title": "Cannabis Clubs in Madrid",
+    "clubs.title": "Best Cannabis Clubs Madrid 2025 | Verified Directory",
     "clubs.subtitle": "Browse verified cannabis social clubs and private associations",
     "clubs.search.placeholder": "Search by name or location...",
     "clubs.search.button": "Search",
@@ -116,7 +116,7 @@ export const translations: Record<Language, Record<string, string>> = {
     "club.related.title": "Related Clubs in",
     
     // Guides page
-    "guides.title": "Cannabis Culture & Legal Guides",
+    "guides.title": "Cannabis Club Guides Madrid 2025 | Legal & Culture",
     "guides.subtitle": "Expert guides on cannabis clubs, legality, and culture in Madrid",
     "guides.loading": "Loading articles...",
     "guides.nofound": "No articles found",
@@ -151,7 +151,7 @@ export const translations: Record<Language, Record<string, string>> = {
     "auth.success.login": "Successfully logged in!",
     
     // FAQ page
-    "faq.title": "Frequently Asked Questions",
+    "faq.title": "Cannabis Club FAQ Madrid 2025 | Common Questions",
     "faq.subtitle": "Common questions about cannabis clubs, membership, and legality in Madrid",
     "faq.loading": "Loading FAQs...",
     "faq.nofound": "No FAQs available at the moment.",
