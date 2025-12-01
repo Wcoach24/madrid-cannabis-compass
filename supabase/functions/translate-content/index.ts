@@ -105,11 +105,9 @@ Answer: ${source.answer_markdown}`;
     const aiData = await aiResponse.json();
     const translatedContent = aiData.choices[0].message.content;
 
-    // Build data for upsert
+    // Build data for upsert - only language as base (status/published_at only for articles)
     let upsertData: any = {
       language: targetLanguage,
-      status: 'published',
-      published_at: new Date().toISOString(),
     };
 
     let slug = '';
@@ -121,6 +119,8 @@ Answer: ${source.answer_markdown}`;
       
       upsertData = {
         ...upsertData,
+        status: 'published',
+        published_at: new Date().toISOString(),
         title: translatedContent.split('\n')[0].replace('# ', ''),
         slug,
         body_markdown: translatedContent,
@@ -152,8 +152,9 @@ Answer: ${source.answer_markdown}`;
       const baseSlug = source.slug.replace(/-(en|es|de|fr)$/, '');
       slug = `${baseSlug}-${targetLanguage}`;
       
+      // FAQ table doesn't have status or published_at columns
       upsertData = {
-        ...upsertData,
+        language: targetLanguage,
         question: faqData.question,
         answer_markdown: faqData.answer,
         category: source.category,
