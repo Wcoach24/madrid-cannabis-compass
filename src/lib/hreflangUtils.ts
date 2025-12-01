@@ -52,6 +52,38 @@ export const generateHreflangLinks = (
         href: `${baseUrl}${langPath}`,
       });
     }
+    
+    // Add regional variants for German
+    if (lang === "de") {
+      links.push({
+        lang: "de-DE",
+        href: `${baseUrl}${langPath}`,
+      });
+      links.push({
+        lang: "de-AT",
+        href: `${baseUrl}${langPath}`,
+      });
+      links.push({
+        lang: "de-CH",
+        href: `${baseUrl}${langPath}`,
+      });
+    }
+    
+    // Add regional variants for French
+    if (lang === "fr") {
+      links.push({
+        lang: "fr-FR",
+        href: `${baseUrl}${langPath}`,
+      });
+      links.push({
+        lang: "fr-BE",
+        href: `${baseUrl}${langPath}`,
+      });
+      links.push({
+        lang: "fr-CH",
+        href: `${baseUrl}${langPath}`,
+      });
+    }
   });
   
   return links;
