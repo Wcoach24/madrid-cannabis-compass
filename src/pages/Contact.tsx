@@ -16,6 +16,7 @@ import { Mail } from "lucide-react";
 import { useLanguage } from "@/hooks/useLanguage";
 import { buildLanguageAwarePath } from "@/lib/languageUtils";
 import { generateHreflangLinks, BASE_URL } from "@/lib/hreflangUtils";
+import { generateBreadcrumbSchema } from "@/lib/schemaUtils";
 
 const contactSchema = z.object({
   type: z.string().min(1, "Please select a submission type"),
@@ -77,6 +78,11 @@ const Contact = () => {
 
   const hreflangLinks = generateHreflangLinks(BASE_URL, "/contact");
 
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: "Home", url: BASE_URL },
+    { name: "Contact", url: `${BASE_URL}/contact` }
+  ]);
+
   // ContactPage schema for better GEO/SEO
   const contactPageSchema = {
     "@context": "https://schema.org",
@@ -108,7 +114,7 @@ const Contact = () => {
         hreflangLinks={hreflangLinks}
         ogLocale={language === "es" ? "es_ES" : "en_US"}
         ogLocaleAlternate={language === "es" ? ["en_US"] : ["es_ES"]}
-        structuredData={[contactPageSchema]}
+        structuredData={[breadcrumbSchema, contactPageSchema]}
       />
       <Header />
       

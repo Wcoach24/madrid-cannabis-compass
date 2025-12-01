@@ -10,37 +10,27 @@ import { Shield, Heart, AlertTriangle, Phone, Brain, Users } from "lucide-react"
 import { useLanguage } from "@/hooks/useLanguage";
 import { buildLanguageAwarePath } from "@/lib/languageUtils";
 import { generateHreflangLinks, BASE_URL } from "@/lib/hreflangUtils";
+import { generateBreadcrumbSchema, generateFAQPageSchema, generateArticleSchema } from "@/lib/schemaUtils";
 
 const Safety = () => {
   const { language, t } = useLanguage();
 
   const hreflangLinks = generateHreflangLinks(BASE_URL, "/safety");
 
-  const articleSchema = {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    "headline": t("safety.title"),
-    "description": t("safety.subtitle"),
-    "inLanguage": language,
-    "author": {
-      "@type": "Organization",
-      "name": "Weed Madrid"
-    },
-    "publisher": {
-      "@type": "Organization",
-      "name": "Weed Madrid",
-      "logo": {
-        "@type": "ImageObject",
-        "url": `${BASE_URL}/logo.png`
-      }
-    },
-    "datePublished": "2024-01-01",
-    "dateModified": new Date().toISOString(),
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id": `${BASE_URL}${buildLanguageAwarePath("/safety", language)}`
-    }
-  };
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: "Home", url: BASE_URL },
+    { name: "Safety", url: `${BASE_URL}/safety` }
+  ]);
+
+  const articleSchema = generateArticleSchema({
+    headline: t("safety.title"),
+    description: t("safety.subtitle"),
+    author: "Weed Madrid",
+    publishedDate: "2024-01-01",
+    modifiedDate: new Date().toISOString(),
+    url: `${BASE_URL}${buildLanguageAwarePath("/safety", language)}`,
+    language
+  });
 
   const faqs = [
     {
@@ -65,23 +55,11 @@ const Safety = () => {
     }
   ];
 
-  const faqSchema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "inLanguage": language,
-    "mainEntity": faqs.map(faq => ({
-      "@type": "Question",
-      "name": faq.question,
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": faq.answer
-      }
-    }))
-  };
+  const faqSchema = generateFAQPageSchema(faqs);
 
   const combinedSchema = {
     "@context": "https://schema.org",
-    "@graph": [articleSchema, faqSchema]
+    "@graph": [breadcrumbSchema, articleSchema, faqSchema]
   };
 
   return (

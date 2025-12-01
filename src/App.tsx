@@ -30,6 +30,7 @@ import Knowledge from "./pages/Knowledge";
 import ClubsNearMe from "./pages/ClubsNearMe";
 import ClubsDistrict from "./pages/ClubsDistrict";
 import BulkGenerate from "./pages/BulkGenerate";
+import TranslateContent from "./pages/TranslateContent";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -69,6 +70,7 @@ const App = () => (
             <Route path="/clubs/near-me" element={<ClubsNearMe />} />
             <Route path="/clubs/:district" element={<ClubsDistrict />} />
             <Route path="/bulk-generate" element={<BulkGenerate />} />
+            <Route path="/translate-content" element={<TranslateContent />} />
             
             {/* Language-prefixed routes */}
             <Route path="/:lang" element={<Index />} />

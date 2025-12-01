@@ -19,6 +19,7 @@ import {
 import { useLanguage } from "@/hooks/useLanguage";
 import { buildLanguageAwarePath } from "@/lib/languageUtils";
 import { generateHreflangLinks, BASE_URL } from "@/lib/hreflangUtils";
+import { generateBreadcrumbSchema } from "@/lib/schemaUtils";
 
 interface Article {
   slug: string;
@@ -52,6 +53,11 @@ const Knowledge = () => {
   };
 
   const hreflangLinks = generateHreflangLinks(BASE_URL, "/knowledge");
+
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: "Home", url: BASE_URL },
+    { name: "Knowledge Hub", url: `${BASE_URL}/knowledge` }
+  ]);
 
   const pillarPages = [
     {
@@ -123,7 +129,7 @@ const Knowledge = () => {
         hreflangLinks={hreflangLinks}
         ogLocale={language === "es" ? "es_ES" : "en_US"}
         ogLocaleAlternate={language === "es" ? ["en_US"] : ["es_ES"]}
-        structuredData={collectionSchema}
+        structuredData={[breadcrumbSchema, collectionSchema]}
       />
       <Header />
       

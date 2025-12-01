@@ -11,6 +11,7 @@ import { HelpCircle } from "lucide-react";
 import { useLanguage } from "@/hooks/useLanguage";
 import { buildLanguageAwarePath } from "@/lib/languageUtils";
 import { generateHreflangLinks, BASE_URL } from "@/lib/hreflangUtils";
+import { generateBreadcrumbSchema, generateFAQPageSchema } from "@/lib/schemaUtils";
 import ReactMarkdown from "react-markdown";
 
 const FAQ = () => {
@@ -44,19 +45,17 @@ const FAQ = () => {
 
   const hreflangLinks = generateHreflangLinks(BASE_URL, "/faq");
 
-  const faqSchema = faqs.length > 0 ? {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "inLanguage": language,
-    "mainEntity": faqs.map(faq => ({
-      "@type": "Question",
-      "name": faq.question,
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": faq.answer_markdown
-      }
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: "Home", url: BASE_URL },
+    { name: "FAQ", url: `${BASE_URL}/faq` }
+  ]);
+
+  const faqSchema = faqs.length > 0 ? generateFAQPageSchema(
+    faqs.map(faq => ({
+      question: faq.question,
+      answer: faq.answer_markdown
     }))
-  } : null;
+  ) : null;
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -69,7 +68,7 @@ const FAQ = () => {
         hreflangLinks={hreflangLinks}
         ogLocale={language === "es" ? "es_ES" : "en_US"}
         ogLocaleAlternate={language === "es" ? ["en_US"] : ["es_ES"]}
-        structuredData={faqSchema}
+        structuredData={faqSchema ? [breadcrumbSchema, faqSchema] : [breadcrumbSchema]}
       />
       <Header />
       
