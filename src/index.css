@@ -2,6 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Font-display swap for non-blocking text rendering */
+@font-face {
+  font-family: 'Bebas Neue';
+  font-display: swap;
+  src: local('Bebas Neue');
+}
+@font-face {
+  font-family: 'Playfair Display';
+  font-display: swap;
+  src: local('Playfair Display');
+}
+@font-face {
+  font-family: 'Inter';
+  font-display: swap;
+  src: local('Inter');
+}
+
 /* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
 All colors MUST be HSL.
 */

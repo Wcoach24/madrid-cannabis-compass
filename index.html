@@ -1,6 +1,12 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <!-- CRITICAL: Preconnects MUST be first for effectiveness -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://sdpmwelfkseuhlhgatsc.supabase.co" crossorigin>
+    <link rel="preconnect" href="https://www.googletagmanager.com">
+    
     <meta charset="UTF-8" />
     <!-- Favicon - Complete Setup for Google & All Browsers -->
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
@@ -10,24 +16,36 @@
     <link rel="manifest" href="/manifest.json" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
-    <!-- Preconnect & DNS Prefetch for Performance -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://sdpmwelfkseuhlhgatsc.supabase.co">
-    <link rel="dns-prefetch" href="https://www.googletagmanager.com">
+    <!-- DNS Prefetch for non-critical resources -->
     <link rel="dns-prefetch" href="https://www.google-analytics.com">
     <link rel="dns-prefetch" href="https://lovable.dev">
     
-    <!-- Preload critical hero images -->
+    <!-- Critical CSS - Inlined for immediate hero rendering -->
+    <style>
+      html { font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+      body { margin: 0; background: #0a0a0a; color: #fafafa; }
+      #root { min-height: 100vh; }
+      .font-display { font-family: 'Bebas Neue', Impact, sans-serif; }
+      .text-gradient-logo { 
+        background: linear-gradient(135deg, #d4af37 0%, #ffd700 50%, #d4af37 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+    </style>
+    
+    <!-- Non-blocking Google Fonts loading -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap">
+    </noscript>
+    
+    <!-- Preload critical hero image -->
     <link rel="preload" as="image" href="/images/hero-custom-bg.webp" type="image/webp" fetchpriority="high">
-    <link rel="preload" as="image" href="/src/assets/logo-weed-madrid.webp" type="image/webp" fetchpriority="high">
     
     <!-- Prefetch next likely navigation -->
     <link rel="prefetch" href="/clubs" as="document">
     <link rel="prefetch" href="/guides" as="document">
-    
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     
     <title>Best Cannabis Clubs Madrid 2025 | Legal Access Near You | Weed Madrid</title>
     <meta name="description" content="Find the best cannabis clubs in Madrid 2025. Legal, verified clubs with tourist-friendly access. Same-day invitations. Complete guide to Madrid's cannabis scene." />
