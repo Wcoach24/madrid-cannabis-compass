@@ -10,6 +10,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ClubCard from "@/components/ClubCard";
 import QuickClubFinder from "@/components/QuickClubFinder";
+import QuickAnswerBox from "@/components/QuickAnswerBox";
 import logoWeedMadridWebp from "@/assets/logo-weed-madrid.webp";
 import logoWeedMadrid from "@/assets/logo-weed-madrid.png";
 import SEOHead from "@/components/SEOHead";
@@ -221,6 +222,27 @@ const Index = () => {
                 </div>
               </div>
 
+            </div>
+          </div>
+        </section>
+
+        {/* Quick Answer Box (GEO/LLM Optimization) */}
+        <section className="py-8 bg-muted/30 border-b">
+          <div className="container mx-auto px-4">
+            <div className="max-w-3xl mx-auto">
+              <QuickAnswerBox
+                answer={t("home.quickanswer.text")}
+                highlights={[
+                  t("home.quickanswer.highlight1"),
+                  t("home.quickanswer.highlight2"),
+                  t("home.quickanswer.highlight3")
+                ]}
+                badges={[
+                  { label: t("home.features.legal"), icon: "check" },
+                  { label: t("home.features.verified"), icon: "check" },
+                  { label: "Same-Day Access", icon: "check" }
+                ]}
+              />
             </div>
           </div>
         </section>

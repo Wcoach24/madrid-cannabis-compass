@@ -9,7 +9,7 @@ import { HelpCircle } from "lucide-react";
 import { useLanguage } from "@/hooks/useLanguage";
 import { buildLanguageAwarePath } from "@/lib/languageUtils";
 import { generateHreflangLinks, BASE_URL } from "@/lib/hreflangUtils";
-import { generateBreadcrumbSchema, generateFAQPageSchema } from "@/lib/schemaUtils";
+import { generateBreadcrumbSchema, generateFAQPageSchema, generateSpeakableSchema } from "@/lib/schemaUtils";
 
 const FAQ_CATEGORIES = ["basics", "membership", "law", "safety", "medical"] as const;
 
@@ -45,6 +45,10 @@ const FAQ = () => {
   ]);
 
   const faqSchema = generateFAQPageSchema(allFaqs);
+  const speakableSchema = generateSpeakableSchema(
+    `${BASE_URL}${buildLanguageAwarePath("/faq", language)}`,
+    ["h1", "h2", ".accordion-content p"]
+  );
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -57,7 +61,7 @@ const FAQ = () => {
         hreflangLinks={hreflangLinks}
         ogLocale={language === "es" ? "es_ES" : language === "de" ? "de_DE" : language === "fr" ? "fr_FR" : "en_US"}
         ogLocaleAlternate={language === "es" ? ["en_US", "de_DE", "fr_FR"] : language === "de" ? ["en_US", "es_ES", "fr_FR"] : language === "fr" ? ["en_US", "es_ES", "de_DE"] : ["es_ES", "de_DE", "fr_FR"]}
-        structuredData={[breadcrumbSchema, faqSchema]}
+        structuredData={[breadcrumbSchema, faqSchema, speakableSchema]}
       />
       <Header />
       

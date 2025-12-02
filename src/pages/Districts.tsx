@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { MapPin, Train, Coffee, Users } from "lucide-react";
 import { buildLanguageAwarePath } from "@/lib/languageUtils";
 import { generateHreflangLinks, BASE_URL } from "@/lib/hreflangUtils";
-import { generateBreadcrumbSchema } from "@/lib/schemaUtils";
+import { generateBreadcrumbSchema, generateSpeakableSchema } from "@/lib/schemaUtils";
 
 const DISTRICTS = [
   { slug: "centro", icon: MapPin },
@@ -42,6 +42,11 @@ const Districts = () => {
     })),
   };
 
+  const speakableSchema = generateSpeakableSchema(
+    `${BASE_URL}${buildLanguageAwarePath("/districts", language)}`,
+    ["h1", "h2", "[data-speakable='true']"]
+  );
+
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <SEOHead
@@ -51,7 +56,7 @@ const Districts = () => {
         hreflangLinks={hreflangLinks}
         ogLocale={language === "es" ? "es_ES" : language === "de" ? "de_DE" : language === "fr" ? "fr_FR" : "en_US"}
         ogLocaleAlternate={["en_US", "es_ES", "de_DE", "fr_FR"].filter(l => l !== (language === "es" ? "es_ES" : language === "de" ? "de_DE" : language === "fr" ? "fr_FR" : "en_US"))}
-        structuredData={[breadcrumbSchema, schemaData]}
+        structuredData={[breadcrumbSchema, schemaData, speakableSchema]}
       />
       
       <Header />

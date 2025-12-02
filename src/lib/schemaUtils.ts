@@ -6,6 +6,26 @@ export interface BreadcrumbItem {
   url: string;
 }
 
+/**
+ * Generate Speakable Schema for voice search optimization
+ * Helps Google Assistant and other voice assistants identify
+ * the most relevant content to read aloud
+ */
+export const generateSpeakableSchema = (
+  url: string,
+  cssSelectors: string[] = ["h1", "[data-speakable='true']", "[data-answer='true']"]
+) => {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "url": url,
+    "speakable": {
+      "@type": "SpeakableSpecification",
+      "cssSelector": cssSelectors
+    }
+  };
+};
+
 export const generateBreadcrumbSchema = (items: BreadcrumbItem[]) => {
   return {
     "@context": "https://schema.org",
