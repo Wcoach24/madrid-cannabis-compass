@@ -2,9 +2,6 @@ import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
 // Google Analytics 4 Configuration
-// IMPORTANT: Replace 'G-XXXXXXXXXX' with your actual GA4 Measurement ID
-// Find your ID at: https://analytics.google.com/analytics/web/ → Admin → Data Streams
-// Or set as environment variable for production deployments
 const GA_MEASUREMENT_ID = 'G-7QZTYWQP9F';
 
 // Declare gtag function for TypeScript
@@ -25,24 +22,37 @@ export const Analytics = () => {
   useEffect(() => {
     // Only load in production
     if (import.meta.env.PROD) {
-      // Load Google Analytics script
-      const script1 = document.createElement('script');
-      script1.async = true;
-      script1.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
-      document.head.appendChild(script1);
+      const loadGA = () => {
+        // Check if already loaded
+        if (window.gtag) return;
+        
+        // Load Google Analytics script
+        const script1 = document.createElement('script');
+        script1.async = true;
+        script1.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
+        document.head.appendChild(script1);
 
-      // Initialize gtag
-      const script2 = document.createElement('script');
-      script2.innerHTML = `
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', '${GA_MEASUREMENT_ID}', {
-          page_path: window.location.pathname,
-          cookie_flags: 'SameSite=None;Secure'
-        });
-      `;
-      document.head.appendChild(script2);
+        // Initialize gtag
+        const script2 = document.createElement('script');
+        script2.innerHTML = `
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', '${GA_MEASUREMENT_ID}', {
+            page_path: window.location.pathname,
+            cookie_flags: 'SameSite=None;Secure'
+          });
+        `;
+        document.head.appendChild(script2);
+      };
+
+      // Defer GA loading until browser is idle (doesn't block rendering)
+      if ('requestIdleCallback' in window) {
+        (window as Window & { requestIdleCallback: (cb: () => void, opts?: { timeout: number }) => number }).requestIdleCallback(loadGA, { timeout: 3000 });
+      } else {
+        // Fallback: load after 2 seconds
+        setTimeout(loadGA, 2000);
+      }
     }
   }, []);
 
