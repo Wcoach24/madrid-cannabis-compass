@@ -19,7 +19,7 @@ import {
 import { useLanguage } from "@/hooks/useLanguage";
 import { buildLanguageAwarePath } from "@/lib/languageUtils";
 import { generateHreflangLinks, BASE_URL } from "@/lib/hreflangUtils";
-import { generateBreadcrumbSchema } from "@/lib/schemaUtils";
+import { generateBreadcrumbSchema, generateSpeakableSchema } from "@/lib/schemaUtils";
 
 interface Article {
   slug: string;
@@ -118,6 +118,11 @@ const Knowledge = () => {
     ]
   };
 
+  const speakableSchema = generateSpeakableSchema(
+    `${BASE_URL}${buildLanguageAwarePath("/knowledge", language)}`,
+    ["h1", "h2", "[data-speakable='true']"]
+  );
+
   return (
     <div className="min-h-screen flex flex-col">
       <OrganizationSchema />
@@ -129,7 +134,7 @@ const Knowledge = () => {
         hreflangLinks={hreflangLinks}
         ogLocale={language === "es" ? "es_ES" : language === "de" ? "de_DE" : language === "fr" ? "fr_FR" : "en_US"}
         ogLocaleAlternate={["en_US", "es_ES", "de_DE", "fr_FR"].filter(l => l !== (language === "es" ? "es_ES" : language === "de" ? "de_DE" : language === "fr" ? "fr_FR" : "en_US"))}
-        structuredData={[breadcrumbSchema, collectionSchema]}
+        structuredData={[breadcrumbSchema, collectionSchema, speakableSchema]}
       />
       <Header />
       

@@ -48,6 +48,12 @@ export const translations: Record<Language, Record<string, string>> = {
     "home.guides.legal.title": "Legal Status in Spain",
     "home.guides.legal.desc": "What tourists need to know",
     
+    // Quick Answer Box (GEO/LLM)
+    "home.quickanswer.text": "Madrid has 9+ verified cannabis social clubs where tourists can legally visit with a membership invitation. Clubs are private non-profit associations operating under Spanish law. Same-day access is available with proper ID.",
+    "home.quickanswer.highlight1": "9+ verified clubs across Madrid districts",
+    "home.quickanswer.highlight2": "Tourist-friendly with English-speaking staff",
+    "home.quickanswer.highlight3": "Invitation approval within 24 hours",
+    
     // Clubs page
     "clubs.title": "Best Cannabis Clubs Madrid 2025 | Verified Directory",
     "clubs.subtitle": "Browse verified cannabis social clubs and private associations",
@@ -508,6 +514,12 @@ export const translations: Record<Language, Record<string, string>> = {
     "home.guides.join.desc": "Proceso paso a paso de invitación",
     "home.guides.legal.title": "Estado Legal en España",
     "home.guides.legal.desc": "Lo que los turistas necesitan saber",
+    
+    // Quick Answer Box (GEO/LLM)
+    "home.quickanswer.text": "Madrid tiene más de 9 clubes de cannabis verificados donde los turistas pueden visitar legalmente con una invitación de membresía. Los clubes son asociaciones privadas sin ánimo de lucro que operan bajo la ley española. El acceso en el mismo día está disponible con identificación válida.",
+    "home.quickanswer.highlight1": "Más de 9 clubes verificados en distritos de Madrid",
+    "home.quickanswer.highlight2": "Amigables para turistas con personal que habla inglés",
+    "home.quickanswer.highlight3": "Aprobación de invitación en 24 horas",
     
     // Clubs page
     "clubs.title": "Clubes de Cannabis en Madrid",
@@ -1077,6 +1089,12 @@ export const translations: Record<Language, Record<string, string>> = {
     "home.guides.legal.title": "Rechtlicher Status in Spanien",
     "home.guides.legal.desc": "Was Touristen wissen müssen",
     
+    // Quick Answer Box (GEO/LLM)
+    "home.quickanswer.text": "Madrid hat über 9 verifizierte Cannabis Social Clubs, die Touristen legal mit einer Mitgliedseinladung besuchen können. Die Clubs sind private gemeinnützige Vereine nach spanischem Recht. Zugang am selben Tag ist mit gültigem Ausweis möglich.",
+    "home.quickanswer.highlight1": "Über 9 verifizierte Clubs in Madrids Bezirken",
+    "home.quickanswer.highlight2": "Touristenfreundlich mit englischsprachigem Personal",
+    "home.quickanswer.highlight3": "Einladungsgenehmigung innerhalb von 24 Stunden",
+    
     // Clubs page
     "clubs.title": "Beste Cannabis Clubs Madrid 2025 | Verifiziertes Verzeichnis",
     "clubs.subtitle": "Durchsuchen Sie verifizierte Cannabis Social Clubs und private Vereine",
@@ -1555,6 +1573,12 @@ export const translations: Record<Language, Record<string, string>> = {
     "home.guides.join.desc": "Processus d'invitation étape par étape",
     "home.guides.legal.title": "Statut Légal en Espagne",
     "home.guides.legal.desc": "Ce que les touristes doivent savoir",
+    
+    // Quick Answer Box (GEO/LLM)
+    "home.quickanswer.text": "Madrid compte plus de 9 clubs de cannabis vérifiés où les touristes peuvent légalement se rendre avec une invitation de membre. Les clubs sont des associations privées à but non lucratif opérant selon la loi espagnole. L'accès le jour même est possible avec une pièce d'identité valide.",
+    "home.quickanswer.highlight1": "Plus de 9 clubs vérifiés dans les quartiers de Madrid",
+    "home.quickanswer.highlight2": "Accueillant pour les touristes avec personnel anglophone",
+    "home.quickanswer.highlight3": "Approbation de l'invitation sous 24 heures",
     
     // Clubs page
     "clubs.title": "Meilleurs Clubs de Cannabis Madrid 2025 | Annuaire Vérifié",
