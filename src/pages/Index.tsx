@@ -27,6 +27,7 @@ const Index = () => {
   const { language, t } = useLanguage();
   const navigate = useNavigate();
   const [featuredClubs, setFeaturedClubs] = useState<any[]>([]);
+  const [clubsLoading, setClubsLoading] = useState(true);
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
   const [finderDialogOpen, setFinderDialogOpen] = useState(false);
 
@@ -76,7 +77,10 @@ const Index = () => {
   ];
 
   useEffect(() => {
-    fetchFeaturedClubs();
+    // Defer Supabase fetch to after first paint for better LCP
+    const timer = setTimeout(() => {
+      fetchFeaturedClubs();
+    }, 100);
     
     // Testimonial carousel
     const interval = setInterval(() => {
@@ -84,6 +88,7 @@ const Index = () => {
     }, 5000);
     
     return () => {
+      clearTimeout(timer);
       clearInterval(interval);
     };
   }, []);
@@ -100,6 +105,7 @@ const Index = () => {
     if (data) {
       setFeaturedClubs(data);
     }
+    setClubsLoading(false);
   };
 
   const hreflangLinks = generateHreflangLinks(BASE_URL, "/");
@@ -178,7 +184,7 @@ const Index = () => {
                 {t("home.subtitle")}
               </p>
               
-              <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center mb-8 md:mb-12 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-500 px-4">
+              <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center mb-8 md:mb-12 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-500 px-4" style={{ minHeight: '56px' }}>
                 <Dialog open={finderDialogOpen} onOpenChange={setFinderDialogOpen}>
                   <DialogTrigger asChild>
                     <Button 
