@@ -109,7 +109,8 @@ const ClubsDistrict = () => {
     "aggregateRating": club.rating_editorial ? {
       "@type": "AggregateRating",
       "ratingValue": club.rating_editorial,
-      "bestRating": "5"
+      "bestRating": "5",
+      "ratingCount": "1"
     } : undefined,
     "priceRange": "€€"
   })) || [];
