@@ -2,9 +2,9 @@ import { toast } from "sonner";
 
 // Shopify Configuration
 const SHOPIFY_API_VERSION = '2025-07';
-const SHOPIFY_STORE_PERMANENT_DOMAIN = 'q26mcm-3n.myshopify.com';
+const SHOPIFY_STORE_PERMANENT_DOMAIN = 'madrid-cannabis-compass-obp3v.myshopify.com';
 const SHOPIFY_STOREFRONT_URL = `https://${SHOPIFY_STORE_PERMANENT_DOMAIN}/api/${SHOPIFY_API_VERSION}/graphql.json`;
-const SHOPIFY_STOREFRONT_TOKEN = '4bbeb8ad98a0fefe9ef6b3b2dc6ce50d';
+const SHOPIFY_STOREFRONT_TOKEN = 'ceb666bbf9696ceebacd2b54a2dc4a00';
 
 // Types
 export interface ShopifyProduct {
