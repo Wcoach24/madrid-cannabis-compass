@@ -31,6 +31,7 @@ import ClubsNearMe from "./pages/ClubsNearMe";
 import ClubsDistrict from "./pages/ClubsDistrict";
 import BulkGenerate from "./pages/BulkGenerate";
 import TranslateContent from "./pages/TranslateContent";
+import Shop from "./pages/Shop";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -71,6 +72,7 @@ const App = () => (
             <Route path="/clubs/:district" element={<ClubsDistrict />} />
             <Route path="/bulk-generate" element={<BulkGenerate />} />
             <Route path="/translate-content" element={<TranslateContent />} />
+            <Route path="/shop" element={<Shop />} />
             
             {/* Language-prefixed routes */}
             <Route path="/:lang" element={<Index />} />
@@ -94,6 +96,7 @@ const App = () => (
             <Route path="/:lang/knowledge" element={<Knowledge />} />
             <Route path="/:lang/clubs/near-me" element={<ClubsNearMe />} />
             <Route path="/:lang/clubs/:district" element={<ClubsDistrict />} />
+            <Route path="/:lang/shop" element={<Shop />} />
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

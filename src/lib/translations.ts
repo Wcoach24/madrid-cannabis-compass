@@ -16,6 +16,15 @@ export const translations: Record<Language, Record<string, string>> = {
     "nav.faq": "FAQ",
     "nav.contact": "Contact",
     "nav.knowledge": "Knowledge",
+    "nav.shop": "Shop",
+    
+    // Shop
+    "shop.title": "Weed Madrid Shop",
+    "shop.subtitle": "Official Weed Madrid merchandise and accessories",
+    "shop.description": "Shop official Weed Madrid merchandise and cannabis accessories. Premium rolling trays, grinders, and branded items.",
+    "shop.addtocart": "Add to Cart",
+    "shop.noproducts": "No products available",
+    "shop.noproducts.desc": "Check back soon for new merchandise",
     
     // Homepage
     "home.title": "Best Cannabis Clubs Madrid 2025 | Legal Access Near You",
@@ -483,6 +492,15 @@ export const translations: Record<Language, Record<string, string>> = {
     "nav.faq": "Preguntas",
     "nav.contact": "Contacto",
     "nav.knowledge": "Conocimiento",
+    "nav.shop": "Tienda",
+    
+    // Shop
+    "shop.title": "Tienda Weed Madrid",
+    "shop.subtitle": "Merchandising oficial y accesorios de Weed Madrid",
+    "shop.description": "Compra merchandising oficial de Weed Madrid y accesorios de cannabis. Bandejas de liar premium, grinders y artículos de marca.",
+    "shop.addtocart": "Añadir al Carrito",
+    "shop.noproducts": "No hay productos disponibles",
+    "shop.noproducts.desc": "Vuelve pronto para ver nuevo merchandising",
     
     // Homepage
     "home.title": "Clubes de Cannabis en Madrid - Tu Guía Educativa",
@@ -1057,6 +1075,15 @@ export const translations: Record<Language, Record<string, string>> = {
     "nav.faq": "FAQ",
     "nav.contact": "Kontakt",
     "nav.knowledge": "Wissen",
+    "nav.shop": "Shop",
+    
+    // Shop
+    "shop.title": "Weed Madrid Shop",
+    "shop.subtitle": "Offizielles Weed Madrid Merchandise und Zubehör",
+    "shop.description": "Kaufen Sie offizielles Weed Madrid Merchandise und Cannabis-Zubehör. Premium Rolling Trays, Grinder und Markenartikel.",
+    "shop.addtocart": "In den Warenkorb",
+    "shop.noproducts": "Keine Produkte verfügbar",
+    "shop.noproducts.desc": "Schauen Sie bald wieder vorbei für neue Artikel",
     
     // Homepage
     "home.title": "Beste Cannabis Clubs Madrid 2025 | Legaler Zugang in Ihrer Nähe",
@@ -1542,6 +1569,15 @@ export const translations: Record<Language, Record<string, string>> = {
     "nav.faq": "FAQ",
     "nav.contact": "Contact",
     "nav.knowledge": "Connaissances",
+    "nav.shop": "Boutique",
+    
+    // Shop
+    "shop.title": "Boutique Weed Madrid",
+    "shop.subtitle": "Merchandise officiel et accessoires Weed Madrid",
+    "shop.description": "Achetez le merchandise officiel Weed Madrid et les accessoires de cannabis. Plateaux à rouler premium, grinders et articles de marque.",
+    "shop.addtocart": "Ajouter au Panier",
+    "shop.noproducts": "Aucun produit disponible",
+    "shop.noproducts.desc": "Revenez bientôt pour de nouveaux articles",
     
     // Homepage
     "home.title": "Meilleurs Clubs de Cannabis Madrid 2025 | Accès Légal Près de Vous",
