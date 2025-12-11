@@ -4,6 +4,7 @@ import { Menu } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import NavLink from "./NavLink";
 import LanguageSelect from "./LanguageSelect";
+import { CartDrawer } from "./CartDrawer";
 import { useLanguage } from "@/hooks/useLanguage";
 import { buildLanguageAwarePath } from "@/lib/languageUtils";
 import logoWeedMadridWebp from "@/assets/logo-weed-madrid.webp";
@@ -18,6 +19,7 @@ const Header = () => {
     { name: t("nav.guides"), href: buildLanguageAwarePath("/guides", language) },
     { name: t("nav.knowledge"), href: buildLanguageAwarePath("/knowledge", language) },
     { name: t("nav.faq"), href: buildLanguageAwarePath("/faq", language) },
+    { name: t("nav.shop"), href: buildLanguageAwarePath("/shop", language) },
     { name: "Legal", href: buildLanguageAwarePath("/legal", language) },
     { name: t("nav.contact"), href: buildLanguageAwarePath("/contact", language) },
   ];
@@ -51,11 +53,13 @@ const Header = () => {
               </NavLink>
             ))}
             <LanguageSelect />
+            <CartDrawer />
           </nav>
 
           {/* Mobile Navigation */}
           <div className="flex items-center gap-2 md:hidden">
             <LanguageSelect />
+            <CartDrawer />
             <Sheet>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="icon" aria-label="Open navigation menu">
