@@ -63,6 +63,29 @@ export const translations: Record<Language, Record<string, string>> = {
     "home.quickanswer.highlight2": "Tourist-friendly with English-speaking staff",
     "home.quickanswer.highlight3": "Invitation approval within 24 hours",
     
+    // Quick Stats
+    "home.stats.clubs": "15+",
+    "home.stats.clubs.label": "Verified Clubs",
+    "home.stats.tourists": "10,000+",
+    "home.stats.tourists.label": "Tourists Helped",
+    "home.stats.approval": "24h",
+    "home.stats.approval.label": "Fast Approval",
+    "home.stats.legal": "100%",
+    "home.stats.legal.label": "Legal & Safe",
+    
+    // Homepage FAQ (Long-tail SEO)
+    "home.faq.title": "Common Questions About Cannabis Clubs Madrid",
+    "home.faq.subtitle": "Quick answers to the most searched questions",
+    "home.faq.q1": "¿Cómo entrar a un club cannábico en Madrid?",
+    "home.faq.a1": "To enter a cannabis club in Madrid, you need an invitation from an existing member or through our invitation system. Fill out our quick form, receive your code within 24 hours, then present it with valid ID at the club entrance.",
+    "home.faq.q2": "Cuota membresía weed club Madrid - ¿Cuánto cuesta?",
+    "home.faq.a2": "Membership fees at Madrid cannabis clubs typically range from €20-€50 per year. This covers your association membership. There's no obligation to purchase anything beyond the membership fee.",
+    "home.faq.q3": "¿Es legal fumar marihuana en Madrid 2025?",
+    "home.faq.a3": "Cannabis consumption is only legal in private spaces in Spain. Cannabis social clubs operate as private non-profit associations where members can consume legally. Public consumption remains illegal with fines up to €30,000.",
+    "home.faq.q4": "Cannabis clubs cerca de Sol y Gran Vía - ¿Dónde están?",
+    "home.faq.a4": "We have several verified clubs in Madrid's Centro district, near Puerta del Sol and Gran Vía. These are popular with tourists due to central location and English-speaking staff. Browse our directory to find clubs by district.",
+    "home.faq.viewall": "View All FAQ",
+    
     // Clubs page
     "clubs.title": "Best Cannabis Clubs Madrid 2025 | Verified Directory",
     "clubs.subtitle": "Browse verified cannabis social clubs and private associations",
@@ -646,6 +669,29 @@ export const translations: Record<Language, Record<string, string>> = {
     "home.quickanswer.highlight1": "Más de 9 clubes verificados en distritos de Madrid",
     "home.quickanswer.highlight2": "Amigables para turistas con personal que habla inglés",
     "home.quickanswer.highlight3": "Aprobación de invitación en 24 horas",
+    
+    // Quick Stats
+    "home.stats.clubs": "15+",
+    "home.stats.clubs.label": "Clubes Verificados",
+    "home.stats.tourists": "10.000+",
+    "home.stats.tourists.label": "Turistas Ayudados",
+    "home.stats.approval": "24h",
+    "home.stats.approval.label": "Aprobación Rápida",
+    "home.stats.legal": "100%",
+    "home.stats.legal.label": "Legal y Seguro",
+    
+    // Homepage FAQ (Long-tail SEO)
+    "home.faq.title": "Preguntas Frecuentes Sobre Clubes de Cannabis Madrid",
+    "home.faq.subtitle": "Respuestas rápidas a las preguntas más buscadas",
+    "home.faq.q1": "¿Cómo entrar a un club cannábico en Madrid?",
+    "home.faq.a1": "Para entrar a un club de cannabis en Madrid, necesitas una invitación de un miembro existente o a través de nuestro sistema. Completa nuestro formulario rápido, recibe tu código en 24 horas, y preséntalo con tu ID en la entrada del club.",
+    "home.faq.q2": "Cuota membresía weed club Madrid - ¿Cuánto cuesta?",
+    "home.faq.a2": "Las cuotas de membresía en los clubes de cannabis de Madrid típicamente van de €20-€50 al año. Esto cubre tu membresía a la asociación. No hay obligación de comprar nada más allá de la cuota.",
+    "home.faq.q3": "¿Es legal fumar marihuana en Madrid 2025?",
+    "home.faq.a3": "El consumo de cannabis solo es legal en espacios privados en España. Los clubes sociales de cannabis operan como asociaciones privadas sin ánimo de lucro donde los miembros pueden consumir legalmente. El consumo público sigue siendo ilegal con multas hasta €30.000.",
+    "home.faq.q4": "Cannabis clubs cerca de Sol y Gran Vía - ¿Dónde están?",
+    "home.faq.a4": "Tenemos varios clubes verificados en el distrito Centro de Madrid, cerca de Puerta del Sol y Gran Vía. Son populares entre turistas por su ubicación céntrica y personal que habla inglés. Explora nuestro directorio para encontrar clubes por distrito.",
+    "home.faq.viewall": "Ver Todas las Preguntas",
     
     // Clubs page
     "clubs.title": "Clubes de Cannabis en Madrid",
@@ -1249,6 +1295,29 @@ export const translations: Record<Language, Record<string, string>> = {
     "home.quickanswer.highlight2": "Touristenfreundlich mit englischsprachigem Personal",
     "home.quickanswer.highlight3": "Einladungsgenehmigung innerhalb von 24 Stunden",
     
+    // Quick Stats
+    "home.stats.clubs": "15+",
+    "home.stats.clubs.label": "Verifizierte Clubs",
+    "home.stats.tourists": "10.000+",
+    "home.stats.tourists.label": "Touristen Geholfen",
+    "home.stats.approval": "24h",
+    "home.stats.approval.label": "Schnelle Genehmigung",
+    "home.stats.legal": "100%",
+    "home.stats.legal.label": "Legal & Sicher",
+    
+    // Homepage FAQ (Long-tail SEO)
+    "home.faq.title": "Häufige Fragen zu Cannabis Clubs Madrid",
+    "home.faq.subtitle": "Schnelle Antworten auf die meistgesuchten Fragen",
+    "home.faq.q1": "Wie betritt man einen Cannabis Club in Madrid?",
+    "home.faq.a1": "Um einen Cannabis Club in Madrid zu betreten, benötigst du eine Einladung von einem bestehenden Mitglied oder über unser System. Fülle unser kurzes Formular aus, erhalte deinen Code innerhalb von 24 Stunden und zeige ihn mit gültigem Ausweis am Eingang.",
+    "home.faq.q2": "Mitgliedsbeitrag Weed Club Madrid - Was kostet es?",
+    "home.faq.a2": "Die Mitgliedsbeiträge in Madrider Cannabis Clubs liegen typischerweise zwischen €20-€50 pro Jahr. Dies deckt deine Vereinsmitgliedschaft ab. Es besteht keine Verpflichtung, etwas über den Beitrag hinaus zu kaufen.",
+    "home.faq.q3": "Ist Cannabis rauchen in Madrid 2025 legal?",
+    "home.faq.a3": "Der Konsum von Cannabis ist in Spanien nur in privaten Räumen legal. Cannabis Social Clubs operieren als private gemeinnützige Vereine, in denen Mitglieder legal konsumieren können. Öffentlicher Konsum bleibt illegal mit Strafen bis zu €30.000.",
+    "home.faq.q4": "Cannabis Clubs in der Nähe von Sol und Gran Vía - Wo sind sie?",
+    "home.faq.a4": "Wir haben mehrere verifizierte Clubs im Centro-Bezirk von Madrid, nahe Puerta del Sol und Gran Vía. Diese sind bei Touristen wegen der zentralen Lage und englischsprachigem Personal beliebt. Durchsuche unser Verzeichnis nach Bezirk.",
+    "home.faq.viewall": "Alle FAQ Anzeigen",
+    
     // Clubs page
     "clubs.title": "Beste Cannabis Clubs Madrid 2025 | Verifiziertes Verzeichnis",
     "clubs.subtitle": "Durchsuchen Sie verifizierte Cannabis Social Clubs und private Vereine",
@@ -1761,6 +1830,29 @@ export const translations: Record<Language, Record<string, string>> = {
     "home.quickanswer.highlight1": "Plus de 9 clubs vérifiés dans les quartiers de Madrid",
     "home.quickanswer.highlight2": "Accueillant pour les touristes avec personnel anglophone",
     "home.quickanswer.highlight3": "Approbation de l'invitation sous 24 heures",
+    
+    // Quick Stats
+    "home.stats.clubs": "15+",
+    "home.stats.clubs.label": "Clubs Vérifiés",
+    "home.stats.tourists": "10 000+",
+    "home.stats.tourists.label": "Touristes Aidés",
+    "home.stats.approval": "24h",
+    "home.stats.approval.label": "Approbation Rapide",
+    "home.stats.legal": "100%",
+    "home.stats.legal.label": "Légal & Sûr",
+    
+    // Homepage FAQ (Long-tail SEO)
+    "home.faq.title": "Questions Fréquentes sur les Clubs de Cannabis Madrid",
+    "home.faq.subtitle": "Réponses rapides aux questions les plus recherchées",
+    "home.faq.q1": "Comment entrer dans un club de cannabis à Madrid?",
+    "home.faq.a1": "Pour entrer dans un club de cannabis à Madrid, vous avez besoin d'une invitation d'un membre existant ou via notre système. Remplissez notre formulaire rapide, recevez votre code sous 24 heures, puis présentez-le avec une pièce d'identité à l'entrée.",
+    "home.faq.q2": "Cotisation club de cannabis Madrid - Combien ça coûte?",
+    "home.faq.a2": "Les cotisations dans les clubs de cannabis de Madrid vont généralement de 20€ à 50€ par an. Cela couvre votre adhésion à l'association. Il n'y a aucune obligation d'achat au-delà de la cotisation.",
+    "home.faq.q3": "Est-il légal de fumer du cannabis à Madrid en 2025?",
+    "home.faq.a3": "La consommation de cannabis n'est légale qu'en espaces privés en Espagne. Les clubs sociaux de cannabis fonctionnent comme des associations privées à but non lucratif où les membres peuvent consommer légalement. La consommation publique reste illégale avec des amendes jusqu'à 30 000€.",
+    "home.faq.q4": "Clubs de cannabis près de Sol et Gran Vía - Où sont-ils?",
+    "home.faq.a4": "Nous avons plusieurs clubs vérifiés dans le quartier Centro de Madrid, près de Puerta del Sol et Gran Vía. Ils sont populaires auprès des touristes grâce à leur emplacement central et leur personnel anglophone. Parcourez notre annuaire par quartier.",
+    "home.faq.viewall": "Voir Toutes les FAQ",
     
     // Clubs page
     "clubs.title": "Meilleurs Clubs de Cannabis Madrid 2025 | Annuaire Vérifié",
