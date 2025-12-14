@@ -479,6 +479,7 @@ export const translations: Record<Language, Record<string, string>> = {
     "footer.copyright": "© Weed Madrid Educational Project. Information for educational purposes only.",
     "footer.disclaimer": "This site provides information about private cannabis associations in Madrid. We do not promote illegal activity.",
     "footer.aboutus": "About Us",
+    "footer.avoidscams": "Avoid Scams",
     
     // Club card
     "clubcard.verified": "Verified",
@@ -1167,11 +1168,30 @@ export const translations: Record<Language, Record<string, string>> = {
     "footer.getintouch": "Ponte en Contacto",
     "footer.copyright": "© Weed Madrid Proyecto Educativo. Información con fines educativos únicamente.",
     "footer.disclaimer": "Este sitio proporciona información sobre asociaciones privadas de cannabis en Madrid. No promovemos actividades ilegales.",
+    "footer.aboutus": "Sobre Nosotros",
+    "footer.avoidscams": "Evita Estafas",
     
     // Club card
     "clubcard.verified": "Verificado",
     "clubcard.touristfriendly": "Turista Amigable",
     "clubcard.open_now": "Abierto Ahora",
+    
+    // 5-Step Process
+    "process.badge": "Proceso Simple de 5 Pasos",
+    "process.title": "Cómo Obtener Tu Invitación",
+    "process.subtitle": "Desde el primer clic hasta la visita al club en solo 5 pasos",
+    "process.stepLabel": "Paso",
+    "process.step1.title": "Explora Clubes",
+    "process.step1.description": "Descubre nuestro directorio verificado de clubes cannábicos en Madrid",
+    "process.step2.title": "Solicita Invitación",
+    "process.step2.description": "Completa un formulario rápido de 2 minutos con tus datos",
+    "process.step3.title": "Recibe el Código",
+    "process.step3.description": "Obtén tu código de invitación por email en 24 horas",
+    "process.step4.title": "Visita el Club",
+    "process.step4.description": "Muestra tu código e ID en la puerta para entrar",
+    "process.step5.title": "Disfruta con Seguridad",
+    "process.step5.description": "Experimenta la cultura cannábica de Madrid de forma responsable",
+    "process.timeEstimate": "Tiempo total: 2 minutos para solicitar, 24 horas para aprobación",
   },
   
   de: {
@@ -1661,11 +1681,30 @@ export const translations: Record<Language, Record<string, string>> = {
     "footer.getintouch": "Kontakt Aufnehmen",
     "footer.copyright": "© Weed Madrid Bildungsprojekt. Informationen nur zu Bildungszwecken.",
     "footer.disclaimer": "Diese Seite bietet Informationen über private Cannabis-Vereine in Madrid. Wir fördern keine illegalen Aktivitäten.",
+    "footer.aboutus": "Über Uns",
+    "footer.avoidscams": "Betrug Vermeiden",
     
     // Club card
     "clubcard.verified": "Verifiziert",
     "clubcard.touristfriendly": "Touristenfreundlich",
     "clubcard.open_now": "Jetzt Geöffnet",
+    
+    // 5-Step Process
+    "process.badge": "Einfacher 5-Schritte-Prozess",
+    "process.title": "So Bekommst Du Deine Einladung",
+    "process.subtitle": "Vom ersten Klick bis zum Clubbesuch in nur 5 Schritten",
+    "process.stepLabel": "Schritt",
+    "process.step1.title": "Clubs Durchsuchen",
+    "process.step1.description": "Entdecke unser verifiziertes Verzeichnis von Cannabis-Clubs in Madrid",
+    "process.step2.title": "Einladung Anfordern",
+    "process.step2.description": "Fülle ein schnelles 2-Minuten-Formular mit deinen Daten aus",
+    "process.step3.title": "Code Erhalten",
+    "process.step3.description": "Erhalte deinen Einladungscode per E-Mail innerhalb von 24 Stunden",
+    "process.step4.title": "Club Besuchen",
+    "process.step4.description": "Zeige deinen Code und Ausweis an der Tür vor",
+    "process.step5.title": "Sicher Genießen",
+    "process.step5.description": "Erlebe Madrids Cannabis-Kultur verantwortungsvoll",
+    "process.timeEstimate": "Gesamtzeit: 2 Minuten Antrag, 24 Stunden Genehmigung",
   },
   
   fr: {
@@ -2155,11 +2194,30 @@ export const translations: Record<Language, Record<string, string>> = {
     "footer.getintouch": "Prendre Contact",
     "footer.copyright": "© Weed Madrid Projet Éducatif. Informations à des fins éducatives uniquement.",
     "footer.disclaimer": "Ce site fournit des informations sur les associations privées de cannabis à Madrid. Nous ne promouvons pas d'activités illégales.",
+    "footer.aboutus": "À Propos",
+    "footer.avoidscams": "Éviter les Arnaques",
     
     // Club card
     "clubcard.verified": "Vérifié",
     "clubcard.touristfriendly": "Accueillant pour Touristes",
     "clubcard.open_now": "Ouvert Maintenant",
+    
+    // 5-Step Process
+    "process.badge": "Processus Simple en 5 Étapes",
+    "process.title": "Comment Obtenir Votre Invitation",
+    "process.subtitle": "Du premier clic à la visite du club en seulement 5 étapes",
+    "process.stepLabel": "Étape",
+    "process.step1.title": "Parcourir les Clubs",
+    "process.step1.description": "Explorez notre annuaire vérifié de clubs de cannabis à Madrid",
+    "process.step2.title": "Demander une Invitation",
+    "process.step2.description": "Remplissez un formulaire rapide de 2 minutes avec vos coordonnées",
+    "process.step3.title": "Recevoir le Code",
+    "process.step3.description": "Recevez votre code d'invitation par email sous 24 heures",
+    "process.step4.title": "Visiter le Club",
+    "process.step4.description": "Présentez votre code et pièce d'identité à l'entrée",
+    "process.step5.title": "Profiter en Sécurité",
+    "process.step5.description": "Découvrez la culture cannabis de Madrid de manière responsable",
+    "process.timeEstimate": "Temps total: 2 minutes pour postuler, 24 heures pour l'approbation",
   },
 };
 

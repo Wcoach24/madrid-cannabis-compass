@@ -88,6 +88,11 @@ const Footer = () => {
                   {t("footer.terms")}
                 </Link>
               </li>
+              <li>
+                <Link to={buildLanguageAwarePath("/safety/scams", language)} className="text-muted-foreground hover:text-foreground transition-colors">
+                  {t("footer.avoidscams")}
+                </Link>
+              </li>
             </ul>
           </div>
           
