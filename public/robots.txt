@@ -1,178 +1,38 @@
 # ============================================
-# WEED MADRID - ROBOTS.TXT (SEO OPTIMIZED)
+# WEED MADRID - CLEANED ROBOTS.TXT
 # ============================================
-# Enhanced for maximum search engine and AI crawler visibility
-# Last updated: 2025-12-01
+# Removes unsupported directives (Host, Crawl-delay, Request-rate, Visit-time)
+# Last updated: 2025-12-14
 
 # ============================================
-# MAJOR SEARCH ENGINES (Priority Crawlers)
+# GOOGLE & MAJOR SEARCH ENGINES
 # ============================================
-
-# Google (Primary - Highest Priority)
+# Grant full access to all Google crawlers
 User-agent: Googlebot
 Allow: /
-Crawl-delay: 0
 
-# Google Images (Essential for club photo rankings)
 User-agent: Googlebot-Image
 Allow: /
-Crawl-delay: 0
 
-# Google Mobile (Mobile-first indexing)
 User-agent: Googlebot-Mobile
 Allow: /
-Crawl-delay: 0
 
-# Bing/Microsoft
-User-agent: Bingbot
-Allow: /
-Crawl-delay: 1
-
-# Bing Mobile
-User-agent: msnbot-mobile
-Allow: /
-Crawl-delay: 1
-
-# Yahoo (uses Bing results but has own crawler)
-User-agent: Slurp
-Allow: /
-Crawl-delay: 1
-
-# DuckDuckGo
-User-agent: DuckDuckBot
-Allow: /
-Crawl-delay: 1
-
-# Yandex (Russian search engine - Spanish speakers)
-User-agent: Yandex
-Allow: /
-Crawl-delay: 2
-
-# Baidu (Chinese search engine - tourists)
-User-agent: Baiduspider
-Allow: /
-Crawl-delay: 2
-
-# ============================================
-# AI CRAWLERS (GEO OPTIMIZATION)
-# ============================================
-
-# OpenAI GPT (ChatGPT, SearchGPT)
-User-agent: GPTBot
-Allow: /
-Crawl-delay: 1
-
-User-agent: ChatGPT-User
-Allow: /
-
-# Anthropic Claude (Claude AI)
-User-agent: ClaudeBot
-Allow: /
-Crawl-delay: 1
-
-User-agent: anthropic-ai
-Allow: /
-
-# Google Gemini Extended
 User-agent: Google-Extended
 Allow: /
-Crawl-delay: 0
 
-# Perplexity AI
-User-agent: PerplexityBot
-Allow: /
-Crawl-delay: 1
-
-# Apple Intelligence
-User-agent: Applebot
-Allow: /
-Crawl-delay: 1
-
-User-agent: Applebot-Extended
+# Grant full access to other major engines
+User-agent: Bingbot
 Allow: /
 
-# Meta AI
-User-agent: FacebookBot
+User-agent: Slurp
 Allow: /
-Crawl-delay: 1
-
-# Cohere AI
-User-agent: cohere-ai
-Allow: /
-Crawl-delay: 1
-
-# Common Crawl (AI training data)
-User-agent: CCBot
-Allow: /
-Crawl-delay: 2
 
 # ============================================
-# SOCIAL MEDIA CRAWLERS (Open Graph Preview)
+# GENERIC CRAWLERS AND DISALLOWED PATHS
 # ============================================
-
-User-agent: Twitterbot
-Allow: /
-Crawl-delay: 0
-
-User-agent: facebookexternalhit
-Allow: /
-Crawl-delay: 0
-
-User-agent: LinkedInBot
-Allow: /
-Crawl-delay: 1
-
-User-agent: WhatsApp
-Allow: /
-
-User-agent: TelegramBot
-Allow: /
-
-User-agent: Discordbot
-Allow: /
-
-User-agent: Slackbot
-Allow: /
-
-User-agent: redditbot
-Allow: /
-Crawl-delay: 1
-
-# ============================================
-# SEO TOOLS & ANALYTICS CRAWLERS
-# ============================================
-
-# Ahrefs (SEO tool)
-User-agent: AhrefsBot
-Allow: /
-Crawl-delay: 2
-
-# Semrush (SEO tool)
-User-agent: SemrushBot
-Allow: /
-Crawl-delay: 2
-
-# Moz (SEO tool)
-User-agent: rogerbot
-Allow: /
-Crawl-delay: 2
-
-# Majestic (SEO tool)
-User-agent: MJ12bot
-Allow: /
-Crawl-delay: 2
-
-# Screaming Frog (SEO crawler)
-User-agent: Screaming Frog SEO Spider
-Allow: /
-Crawl-delay: 5
-
-# ============================================
-# DISALLOWED PATHS (Admin & Utility)
-# ============================================
-
 User-agent: *
-# Admin and utility routes
+
+# Admin and utility routes (Disallow is case-sensitive)
 Disallow: /seed-data
 Disallow: /admin
 Disallow: /generate-articles
@@ -186,58 +46,11 @@ Disallow: /*?*sort=
 Disallow: /*?*filter=
 Disallow: /*?*page=
 
-# Allow everything else
+# Allow everything else for generic crawlers
 Allow: /
 
 # ============================================
 # SITEMAPS (Critical for SEO Discovery)
 # ============================================
-
-# Dynamic Sitemap via Edge Function (Real-time - Primary)
 Sitemap: https://www.weedmadrid.com/api/generate-sitemap
-
-# Static XML Sitemap (Fallback)
 Sitemap: https://www.weedmadrid.com/sitemap.xml
-
-# ============================================
-# RSS FEED (Content Discovery & Syndication)
-# ============================================
-
-# RSS Feed for articles (50 most recent)
-# RSS URL: https://www.weedmadrid.com/api/rss
-
-# ============================================
-# ADDITIONAL SEO DIRECTIVES
-# ============================================
-
-# Host directive (preferred domain)
-Host: https://www.weedmadrid.com
-
-# Request rate (for polite crawlers)
-Request-rate: 1/1s
-
-# Visit time (preferred crawl hours - UTC)
-Visit-time: 0000-2359
-
-# ============================================
-# NOTES FOR SEO/GEO OPTIMIZATION
-# ============================================
-# 
-# This robots.txt is optimized for:
-# ✓ Maximum search engine visibility (Google, Bing, etc.)
-# ✓ AI crawler access for GEO (ChatGPT, Claude, Gemini, Perplexity)
-# ✓ Social media preview generation (Open Graph)
-# ✓ SEO tool auditing (Ahrefs, Semrush, Moz)
-# ✓ Duplicate content prevention via parameter blocking
-# ✓ Dynamic sitemap integration for real-time updates
-#
-# Coverage: 100+ unique URLs across 4 languages (EN/ES/DE/FR)
-# - Core pages × 4 languages
-# - 15+ clubs × 4 languages  
-# - 8+ guides × 4 languages
-# - 30+ FAQ entries × 4 languages
-# - District pages (Centro, Chamberi, Malasana, Retiro)
-# - Near Me landing pages
-#
-# All content includes full hreflang, image sitemaps, and structured data
-# ============================================
