@@ -44,7 +44,7 @@ const Shop = () => {
       selectedOptions: variant.selectedOptions || []
     });
 
-    toast.success("Added to cart!", {
+    toast.success(t("shop.addedtocart"), {
       description: product.node.title,
     });
   };

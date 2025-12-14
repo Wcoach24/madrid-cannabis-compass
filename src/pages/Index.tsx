@@ -227,7 +227,7 @@ const Index = () => {
                 </div>
                 <div className="flex items-center gap-2 md:gap-3 glass-effect px-4 md:px-6 py-2 md:py-3 rounded-full border-2 border-primary/30 hover:border-primary/60 transition-all hover:shadow-gold text-sm md:text-base">
                   <Clock className="w-5 h-5 md:w-6 md:h-6 text-primary flex-shrink-0" />
-                  <span className="text-foreground font-medium">Same-Day Access</span>
+                  <span className="text-foreground font-medium">{t("home.features.sameday")}</span>
                 </div>
               </div>
 
@@ -334,7 +334,7 @@ const Index = () => {
               <Button asChild size="lg" variant="gold" className="text-base md:text-lg px-8 md:px-10 py-6 md:py-7 h-auto md:text-xl shadow-gold-intense hover:shadow-gold-intense hover:scale-105 w-full sm:w-auto">
                 <Link to={buildLanguageAwarePath("/clubs", language)}>
                   <Mail className="w-5 h-5 md:w-6 md:h-6 mr-2 md:mr-3" />
-                  Get Your Invitation Now
+                  {t("home.cta.invitation")}
                 </Link>
               </Button>
             </div>
@@ -400,7 +400,7 @@ const Index = () => {
                         <p className="text-muted-foreground text-xs md:text-sm mb-1">📍 {club.district}</p>
                         {club.is_tourist_friendly && (
                           <span className="inline-block text-xs bg-primary/20 text-primary px-2 md:px-3 py-0.5 md:py-1 rounded-full border border-primary/30">
-                            Tourist Friendly
+                            {t("home.features.tourist")}
                           </span>
                         )}
                       </div>
@@ -415,7 +415,7 @@ const Index = () => {
                         onClick={() => trackClubView(club.slug, club.name)}
                       >
                         <Link to={buildLanguageAwarePath(`/invite/${DEFAULT_INVITATION_CLUB_SLUG}`, language)}>
-                          Get Invitation
+                          {t("home.featured.getinvitation")}
                         </Link>
                       </Button>
                     </div>
@@ -442,8 +442,8 @@ const Index = () => {
           
           <div className="container mx-auto px-4 relative z-10">
             <div className="text-center mb-8 md:mb-12 px-4">
-              <h2 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 md:mb-4 text-gradient-gold">What Our Members Say</h2>
-              <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground font-luxury">Real experiences from real travelers</p>
+              <h2 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 md:mb-4 text-gradient-gold">{t("home.testimonials.title")}</h2>
+              <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground font-luxury">{t("home.testimonials.subtitle")}</p>
             </div>
 
             <div className="max-w-4xl mx-auto px-4">
