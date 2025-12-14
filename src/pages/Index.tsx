@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
-import { Search, Calendar, Mail, PartyPopper, Shield, Clock, CheckCircle } from "lucide-react";
+import { Search, Calendar, Mail, PartyPopper, Shield, Clock, CheckCircle, Users, Star, Zap, HelpCircle } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ClubCard from "@/components/ClubCard";
@@ -235,6 +235,41 @@ const Index = () => {
           </div>
         </section>
 
+        {/* Quick Stats Section - Trust Signals */}
+        <section className="py-10 md:py-14 bg-black border-y border-primary/20">
+          <div className="container mx-auto px-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 max-w-5xl mx-auto">
+              <div className="text-center">
+                <div className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center mx-auto mb-3">
+                  <Users className="w-7 h-7 md:w-8 md:h-8 text-primary" />
+                </div>
+                <p className="text-2xl md:text-3xl font-bold text-foreground mb-1">{t("home.stats.clubs")}</p>
+                <p className="text-sm md:text-base text-muted-foreground">{t("home.stats.clubs.label")}</p>
+              </div>
+              <div className="text-center">
+                <div className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center mx-auto mb-3">
+                  <Star className="w-7 h-7 md:w-8 md:h-8 text-primary" />
+                </div>
+                <p className="text-2xl md:text-3xl font-bold text-foreground mb-1">{t("home.stats.tourists")}</p>
+                <p className="text-sm md:text-base text-muted-foreground">{t("home.stats.tourists.label")}</p>
+              </div>
+              <div className="text-center">
+                <div className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center mx-auto mb-3">
+                  <Zap className="w-7 h-7 md:w-8 md:h-8 text-primary" />
+                </div>
+                <p className="text-2xl md:text-3xl font-bold text-foreground mb-1">{t("home.stats.approval")}</p>
+                <p className="text-sm md:text-base text-muted-foreground">{t("home.stats.approval.label")}</p>
+              </div>
+              <div className="text-center">
+                <div className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center mx-auto mb-3">
+                  <Shield className="w-7 h-7 md:w-8 md:h-8 text-primary" />
+                </div>
+                <p className="text-2xl md:text-3xl font-bold text-foreground mb-1">{t("home.stats.legal")}</p>
+                <p className="text-sm md:text-base text-muted-foreground">{t("home.stats.legal.label")}</p>
+              </div>
+            </div>
+          </div>
+        </section>
 
         {/* How It Works - Dark Luxury with Gold Pattern */}
         <section className="relative py-16 md:py-20 bg-black overflow-hidden">
@@ -473,6 +508,46 @@ const Index = () => {
                     aria-label={`Go to testimonial ${index + 1}`}
                   />
                 ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Long-Tail SEO FAQ Section */}
+        <section className="py-12 md:py-16 bg-background">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto">
+              <div className="text-center mb-10">
+                <HelpCircle className="w-10 h-10 text-primary mx-auto mb-4" />
+                <h2 className="font-display text-2xl md:text-3xl font-bold mb-3">{t("home.faq.title")}</h2>
+                <p className="text-muted-foreground">{t("home.faq.subtitle")}</p>
+              </div>
+              
+              <div className="grid gap-4 md:gap-6">
+                <div className="card-snoop p-5 md:p-6 rounded-xl">
+                  <h3 className="font-semibold text-lg mb-2">{t("home.faq.q1")}</h3>
+                  <p className="text-muted-foreground">{t("home.faq.a1")}</p>
+                </div>
+                <div className="card-snoop p-5 md:p-6 rounded-xl">
+                  <h3 className="font-semibold text-lg mb-2">{t("home.faq.q2")}</h3>
+                  <p className="text-muted-foreground">{t("home.faq.a2")}</p>
+                </div>
+                <div className="card-snoop p-5 md:p-6 rounded-xl">
+                  <h3 className="font-semibold text-lg mb-2">{t("home.faq.q3")}</h3>
+                  <p className="text-muted-foreground">{t("home.faq.a3")}</p>
+                </div>
+                <div className="card-snoop p-5 md:p-6 rounded-xl">
+                  <h3 className="font-semibold text-lg mb-2">{t("home.faq.q4")}</h3>
+                  <p className="text-muted-foreground">{t("home.faq.a4")}</p>
+                </div>
+              </div>
+              
+              <div className="text-center mt-8">
+                <Button asChild variant="outline" size="lg">
+                  <Link to={buildLanguageAwarePath("/faq", language)}>
+                    {t("home.faq.viewall")}
+                  </Link>
+                </Button>
               </div>
             </div>
           </div>
