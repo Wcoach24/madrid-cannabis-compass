@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/hooks/useLanguage";
 import { buildLanguageAwarePath } from "@/lib/languageUtils";
-import { Rss } from "lucide-react";
+import { Rss, Phone, MessageCircle } from "lucide-react";
 
 const Footer = () => {
   const { language, t } = useLanguage();
@@ -97,6 +97,31 @@ const Footer = () => {
               <li>
                 <Link to={buildLanguageAwarePath("/contact", language)} className="text-muted-foreground hover:text-foreground transition-colors">
                   {t("footer.getintouch")}
+                </Link>
+              </li>
+              <li>
+                <a 
+                  href="tel:+34632332050" 
+                  className="text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-1"
+                >
+                  <Phone className="w-3 h-3" />
+                  +34 632 332 050
+                </a>
+              </li>
+              <li>
+                <a 
+                  href="https://wa.me/34632332050" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-1"
+                >
+                  <MessageCircle className="w-3 h-3" />
+                  WhatsApp
+                </a>
+              </li>
+              <li>
+                <Link to={buildLanguageAwarePath("/about", language)} className="text-muted-foreground hover:text-foreground transition-colors">
+                  {t("footer.aboutus")}
                 </Link>
               </li>
             </ul>

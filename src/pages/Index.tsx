@@ -10,6 +10,8 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ClubCard from "@/components/ClubCard";
 import QuickClubFinder from "@/components/QuickClubFinder";
+import AgeGate from "@/components/AgeGate";
+import FiveStepProcess from "@/components/FiveStepProcess";
 
 import logoWeedMadridWebp from "@/assets/logo-weed-madrid.webp";
 import logoWeedMadrid from "@/assets/logo-weed-madrid.png";
@@ -135,6 +137,7 @@ const Index = () => {
           }
         }}
       />
+      <AgeGate />
       <Header />
       
       <main className="flex-1">
