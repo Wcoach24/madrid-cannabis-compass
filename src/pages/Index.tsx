@@ -306,6 +306,9 @@ const Index = () => {
           </div>
         </section>
 
+        {/* 5-Step Process Section */}
+        <FiveStepProcess />
+
         {/* Featured Clubs - Luxury Photo Cards */}
         {featuredClubs.length > 0 && (
           <section className="py-16 md:py-20 bg-background">

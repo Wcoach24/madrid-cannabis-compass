@@ -16,35 +16,88 @@ const DISTRICTS = [
     name: "Centro",
     description: "Near Puerta del Sol, Gran Vía, and Plaza Mayor",
     clubCount: 3,
-    keywords: "puerta del sol, gran via, centro madrid"
+    keywords: "puerta del sol, gran via, centro madrid",
+    landmark: "Puerta del Sol"
+  },
+  {
+    slug: "sol",
+    name: "Puerta del Sol",
+    description: "Heart of Madrid, 5 min walk from main tourist attractions",
+    clubCount: 2,
+    keywords: "puerta del sol, weed near sol, cannabis sol madrid",
+    landmark: "Puerta del Sol"
+  },
+  {
+    slug: "gran-via",
+    name: "Gran Vía",
+    description: "Famous shopping street, nightlife hub near major hotels",
+    clubCount: 2,
+    keywords: "gran via madrid, weed gran via, cannabis club gran via",
+    landmark: "Gran Vía"
   },
   {
     slug: "chamberi",
     name: "Chamberí",
     description: "Near Plaza de Chamberí and Bravo Murillo",
     clubCount: 2,
-    keywords: "chamberi, bravo murillo"
+    keywords: "chamberi, bravo murillo",
+    landmark: "Plaza de Chamberí"
   },
   {
     slug: "malasana",
     name: "Malasaña",
     description: "Trendy neighborhood with vibrant nightlife",
     clubCount: 2,
-    keywords: "malasana, hipster madrid, plaza dos de mayo"
+    keywords: "malasana, hipster madrid, plaza dos de mayo",
+    landmark: "Plaza Dos de Mayo"
   },
   {
     slug: "retiro",
     name: "Retiro",
     description: "Near Retiro Park and upscale shopping",
     clubCount: 1,
-    keywords: "retiro park, retiro madrid"
+    keywords: "retiro park, retiro madrid",
+    landmark: "Retiro Park"
+  },
+  {
+    slug: "atocha",
+    name: "Atocha",
+    description: "Near Atocha train station, convenient for travelers",
+    clubCount: 1,
+    keywords: "atocha station, weed near atocha, cannabis atocha madrid",
+    landmark: "Atocha Station"
+  },
+  {
+    slug: "latina",
+    name: "La Latina",
+    description: "Historic tapas district with local atmosphere",
+    clubCount: 1,
+    keywords: "la latina madrid, weed latina, cannabis club latina",
+    landmark: "La Latina"
+  },
+  {
+    slug: "salamanca",
+    name: "Salamanca",
+    description: "Upscale shopping district, luxury area",
+    clubCount: 1,
+    keywords: "salamanca madrid, cannabis club salamanca, weed salamanca",
+    landmark: "Barrio Salamanca"
+  },
+  {
+    slug: "tetuan",
+    name: "Tetuán",
+    description: "Diverse neighborhood north of city center",
+    clubCount: 1,
+    keywords: "tetuan madrid, cannabis tetuan, weed club tetuan",
+    landmark: "Tetuán"
   },
   {
     slug: "all",
     name: "All Districts",
-    description: "Browse all cannabis clubs in Madrid",
-    clubCount: 9,
-    keywords: "all cannabis clubs madrid"
+    description: "Browse all 15+ cannabis clubs in Madrid",
+    clubCount: 15,
+    keywords: "all cannabis clubs madrid",
+    landmark: "Madrid"
   }
 ];
 
