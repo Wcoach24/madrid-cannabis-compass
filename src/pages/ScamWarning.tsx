@@ -1,5 +1,6 @@
 import { useLanguage } from "@/hooks/useLanguage";
 import Header from "@/components/Header";
+import { buildLanguageAwarePath } from "@/lib/languageUtils";
 import Footer from "@/components/Footer";
 import SEOHead from "@/components/SEOHead";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -227,12 +228,12 @@ const ScamWarning = () => {
                     </p>
                     <div className="flex flex-wrap gap-4">
                       <Button asChild>
-                        <Link to="/clubs">
+                        <Link to={buildLanguageAwarePath("/clubs", language)}>
                           {t('scams.safe.cta.clubs')}
                         </Link>
                       </Button>
                       <Button variant="outline" asChild>
-                        <Link to="/how-it-works">
+                        <Link to={buildLanguageAwarePath("/how-it-works", language)}>
                           {t('scams.safe.cta.howto')}
                         </Link>
                       </Button>
