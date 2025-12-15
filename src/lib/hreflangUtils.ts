@@ -84,6 +84,18 @@ export const generateHreflangLinks = (
         href: `${baseUrl}${langPath}`,
       });
     }
+    
+    // Add regional variants for Italian
+    if (lang === "it") {
+      links.push({
+        lang: "it-IT",
+        href: `${baseUrl}${langPath}`,
+      });
+      links.push({
+        lang: "it-CH",
+        href: `${baseUrl}${langPath}`,
+      });
+    }
   });
   
   return links;

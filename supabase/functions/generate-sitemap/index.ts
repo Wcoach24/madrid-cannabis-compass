@@ -79,7 +79,10 @@ Deno.serve(async (req) => {
     <xhtml:link rel="alternate" hreflang="fr" href="${baseUrl}/fr${path}"/>
     <xhtml:link rel="alternate" hreflang="fr-FR" href="${baseUrl}/fr${path}"/>
     <xhtml:link rel="alternate" hreflang="fr-BE" href="${baseUrl}/fr${path}"/>
-    <xhtml:link rel="alternate" hreflang="fr-CH" href="${baseUrl}/fr${path}"/>`;
+    <xhtml:link rel="alternate" hreflang="fr-CH" href="${baseUrl}/fr${path}"/>
+    <xhtml:link rel="alternate" hreflang="it" href="${baseUrl}/it${path}"/>
+    <xhtml:link rel="alternate" hreflang="it-IT" href="${baseUrl}/it${path}"/>
+    <xhtml:link rel="alternate" hreflang="it-CH" href="${baseUrl}/it${path}"/>`;
     };
 
     const addImageTags = (images: string[]) => {
@@ -122,7 +125,7 @@ Deno.serve(async (req) => {
       staticPages.push({ path: `/clubs/${district}`, priority: '0.7', changefreq: 'weekly' });
     });
 
-    const languages = ['', '/es', '/de', '/fr'];
+    const languages = ['', '/es', '/de', '/fr', '/it'];
     
     staticPages.forEach(page => {
       languages.forEach(lang => {
@@ -181,7 +184,7 @@ Deno.serve(async (req) => {
         const changefreq = isRecent ? 'daily' : 'weekly';
 
         // All language versions with news tags for recent articles
-        const languageCodes = { '': 'en', '/es': 'es', '/de': 'de', '/fr': 'fr' };
+        const languageCodes = { '': 'en', '/es': 'es', '/de': 'de', '/fr': 'fr', '/it': 'it' };
         
         languages.forEach(lang => {
           const newsTag = isRecent ? `

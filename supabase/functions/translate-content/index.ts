@@ -114,7 +114,7 @@ Answer: ${source.answer_markdown}`;
 
     if (contentType === 'article') {
       // Generate slug for target language - use base slug without language suffix
-      const baseSlug = source.slug.replace(/-(en|es|de|fr)$/, '');
+      const baseSlug = source.slug.replace(/-(en|es|de|fr|it)$/, '');
       slug = `${baseSlug}-${targetLanguage}`;
       
       upsertData = {
@@ -149,7 +149,7 @@ Answer: ${source.answer_markdown}`;
       cleanedContent = cleanedContent.trim();
       
       const faqData = JSON.parse(cleanedContent);
-      const baseSlug = source.slug.replace(/-(en|es|de|fr)$/, '');
+      const baseSlug = source.slug.replace(/-(en|es|de|fr|it)$/, '');
       slug = `${baseSlug}-${targetLanguage}`;
       
       // FAQ table doesn't have status or published_at columns
