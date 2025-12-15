@@ -93,6 +93,7 @@ export type Database = {
           district: string
           email: string | null
           gallery_image_urls: string[] | null
+          google_place_id: string | null
           id: number
           instagram_url: string | null
           is_featured: boolean | null
@@ -128,6 +129,7 @@ export type Database = {
           district: string
           email?: string | null
           gallery_image_urls?: string[] | null
+          google_place_id?: string | null
           id?: number
           instagram_url?: string | null
           is_featured?: boolean | null
@@ -163,6 +165,7 @@ export type Database = {
           district?: string
           email?: string | null
           gallery_image_urls?: string[] | null
+          google_place_id?: string | null
           id?: number
           instagram_url?: string | null
           is_featured?: boolean | null

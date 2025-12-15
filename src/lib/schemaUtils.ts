@@ -53,6 +53,7 @@ export const generateLocalBusinessSchema = (club: {
   openingHours?: any;
   imageUrl?: string;
   website?: string;
+  googlePlaceId?: string;
 }) => {
   const schema: any = {
     "@context": "https://schema.org",
@@ -86,6 +87,13 @@ export const generateLocalBusinessSchema = (club: {
 
   if (club.website) {
     schema.url = club.website;
+  }
+
+  // Add Google Place ID for enhanced local SEO
+  if (club.googlePlaceId) {
+    schema.sameAs = [
+      `https://www.google.com/maps/place/?q=place_id:${club.googlePlaceId}`
+    ];
   }
 
   if (club.openingHours) {
