@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { CheckCircle2, ArrowLeft, Building2 } from "lucide-react";
+import { CheckCircle2, ArrowLeft, Building2, AlertTriangle } from "lucide-react";
 import { Link } from "react-router-dom";
 import { buildLanguageAwarePath } from "@/lib/languageUtils";
 import { Language } from "@/lib/translations";
@@ -18,6 +18,7 @@ export function SuccessCelebration({ visitorName, clubName, clubSlug, language }
       en: {
         title: "Request Sent Successfully!",
         message: "We've received your invitation request and will review it shortly.",
+        spamWarning: "Don't see the email? Check your spam/junk folder!",
         nextSteps: "What happens next?",
         step1: "We'll review your request within 24 hours",
         step2: "You'll receive an email with the decision",
@@ -28,12 +29,46 @@ export function SuccessCelebration({ visitorName, clubName, clubSlug, language }
       es: {
         title: "¡Solicitud Enviada con Éxito!",
         message: "Hemos recibido tu solicitud de invitación y la revisaremos en breve.",
+        spamWarning: "¿No ves el correo? ¡Revisa tu carpeta de spam/correo no deseado!",
         nextSteps: "¿Qué sigue ahora?",
         step1: "Revisaremos tu solicitud en 24 horas",
         step2: "Recibirás un correo con la decisión",
         step3: "Si se aprueba, recibirás instrucciones para visitar el club",
         returnToClub: "Volver a Detalles del Club",
         browseClubs: "Explorar Otros Clubes"
+      },
+      de: {
+        title: "Anfrage erfolgreich gesendet!",
+        message: "Wir haben Ihre Einladungsanfrage erhalten und werden sie in Kürze prüfen.",
+        spamWarning: "E-Mail nicht gefunden? Überprüfen Sie Ihren Spam-Ordner!",
+        nextSteps: "Was passiert als nächstes?",
+        step1: "Wir prüfen Ihre Anfrage innerhalb von 24 Stunden",
+        step2: "Sie erhalten eine E-Mail mit der Entscheidung",
+        step3: "Bei Genehmigung erhalten Sie Anweisungen für den Clubbesuch",
+        returnToClub: "Zurück zu Club-Details",
+        browseClubs: "Andere Clubs durchsuchen"
+      },
+      fr: {
+        title: "Demande envoyée avec succès !",
+        message: "Nous avons reçu votre demande d'invitation et l'examinerons sous peu.",
+        spamWarning: "Vous ne voyez pas l'e-mail ? Vérifiez votre dossier spam !",
+        nextSteps: "Que se passe-t-il ensuite ?",
+        step1: "Nous examinerons votre demande dans les 24 heures",
+        step2: "Vous recevrez un e-mail avec la décision",
+        step3: "Si approuvé, vous recevrez des instructions pour visiter le club",
+        returnToClub: "Retour aux détails du club",
+        browseClubs: "Parcourir d'autres clubs"
+      },
+      it: {
+        title: "Richiesta inviata con successo!",
+        message: "Abbiamo ricevuto la tua richiesta di invito e la esamineremo a breve.",
+        spamWarning: "Non vedi l'email? Controlla la cartella spam!",
+        nextSteps: "Cosa succede dopo?",
+        step1: "Esamineremo la tua richiesta entro 24 ore",
+        step2: "Riceverai un'email con la decisione",
+        step3: "Se approvato, riceverai istruzioni per visitare il club",
+        returnToClub: "Torna ai dettagli del club",
+        browseClubs: "Sfoglia altri club"
       }
     };
     return translations[language]?.[key] || translations.en[key];
@@ -50,12 +85,20 @@ export function SuccessCelebration({ visitorName, clubName, clubSlug, language }
         </div>
 
         {/* Main Message */}
-        <div className="space-y-4 mb-8">
+        <div className="space-y-4 mb-6">
           <h1 className="text-4xl font-bold">
             {t("title")}
           </h1>
           <p className="text-xl text-muted-foreground">
             Thanks, {visitorName}! {t("message")}
+          </p>
+        </div>
+
+        {/* Spam Warning */}
+        <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-lg p-4 mb-8 flex items-start gap-3">
+          <AlertTriangle className="w-5 h-5 text-amber-600 dark:text-amber-500 flex-shrink-0 mt-0.5" />
+          <p className="text-amber-800 dark:text-amber-200 text-sm font-medium text-left">
+            {t("spamWarning")}
           </p>
         </div>
 
