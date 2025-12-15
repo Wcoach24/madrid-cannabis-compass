@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
-export type Language = "en" | "es" | "de" | "fr";
+export type Language = "en" | "es" | "de" | "fr" | "it";
 
 interface LanguageContextType {
   language: Language;
@@ -11,7 +11,7 @@ interface LanguageContextType {
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
-const SUPPORTED_LANGUAGES: Language[] = ["en", "es", "de", "fr"];
+const SUPPORTED_LANGUAGES: Language[] = ["en", "es", "de", "fr", "it"];
 const DEFAULT_LANGUAGE: Language = "en";
 const STORAGE_KEY = "preferred-language";
 
@@ -33,6 +33,9 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
     }
     if (browserLang === "fr" || navigator.language.toLowerCase().startsWith("fr-")) {
       return "fr";
+    }
+    if (browserLang === "it" || navigator.language.toLowerCase().startsWith("it-")) {
+      return "it";
     }
     if (browserLang === "es" || navigator.language.toLowerCase().startsWith("es-")) {
       return "es";
