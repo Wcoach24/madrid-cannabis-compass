@@ -12,7 +12,7 @@ interface TranslationItem {
   type: 'article' | 'faq';
   title: string;
   status: 'pending' | 'translating' | 'success' | 'error';
-  targetLanguages: ('de' | 'fr')[];
+  targetLanguages: ('de' | 'fr' | 'it')[];
   completedLanguages: string[];
   failedLanguages: string[];
   error?: string;
@@ -41,13 +41,13 @@ const TranslateContent = () => {
       .eq('language', 'en')
       .eq('status', 'published');
 
-    if (articleData) {
+  if (articleData) {
       setArticles(articleData.map(a => ({
         id: a.id,
         type: 'article',
         title: a.title,
         status: 'pending',
-        targetLanguages: ['de', 'fr'],
+        targetLanguages: ['de', 'fr', 'it'],
         completedLanguages: [],
         failedLanguages: [],
       })));
@@ -64,19 +64,19 @@ const TranslateContent = () => {
         type: 'faq',
         title: f.question,
         status: 'pending',
-        targetLanguages: ['de', 'fr'],
+        targetLanguages: ['de', 'fr', 'it'],
         completedLanguages: [],
         failedLanguages: [],
       })));
     }
 
-    const total = (articleData?.length || 0) * 2 + (faqData?.length || 0) * 2;
+    const total = (articleData?.length || 0) * 3 + (faqData?.length || 0) * 3;
     setTotalItems(total);
   };
 
   const translateItem = async (
     item: TranslationItem,
-    targetLanguage: 'de' | 'fr',
+    targetLanguage: 'de' | 'fr' | 'it',
     retryCount = 0
   ): Promise<boolean> => {
     try {
@@ -183,7 +183,7 @@ const TranslateContent = () => {
       title: failedCount > 0 ? "Translation Completed with Errors" : "Translation Complete",
       description: failedCount > 0 
         ? `${failedCount} items failed. Click "Retry Failed" to try again.`
-        : `Successfully translated all content to German and French`,
+        : `Successfully translated all content to German, French, and Italian`,
       variant: failedCount > 0 ? "destructive" : "default",
     });
   };
@@ -206,7 +206,7 @@ const TranslateContent = () => {
         a.id === article.id ? { ...a, status: 'translating' } : a
       ));
 
-      for (const lang of [...article.failedLanguages] as ('de' | 'fr')[]) {
+      for (const lang of [...article.failedLanguages] as ('de' | 'fr' | 'it')[]) {
         const success = await translateItem(article, lang);
         updateItemStatus(articles, setArticles, article.id, lang, success);
         if (success) successCount++;
@@ -223,7 +223,7 @@ const TranslateContent = () => {
         f.id === faq.id ? { ...f, status: 'translating' } : f
       ));
 
-      for (const lang of [...faq.failedLanguages] as ('de' | 'fr')[]) {
+      for (const lang of [...faq.failedLanguages] as ('de' | 'fr' | 'it')[]) {
         const success = await translateItem(faq, lang);
         updateItemStatus(faqs, setFaqs, faq.id, lang, success);
         if (success) successCount++;
@@ -271,17 +271,17 @@ const TranslateContent = () => {
               Content Translation System
             </CardTitle>
             <CardDescription>
-              Translate all English content to German and French automatically
+              Translate all English content to German, French, and Italian automatically
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-muted-foreground">
-                  {articles.length} articles × 2 languages = {articles.length * 2} translations
+              <p className="text-sm text-muted-foreground">
+                  {articles.length} articles × 3 languages = {articles.length * 3} translations
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  {faqs.length} FAQs × 2 languages = {faqs.length * 2} translations
+                  {faqs.length} FAQs × 3 languages = {faqs.length * 3} translations
                 </p>
                 <p className="font-semibold mt-2">
                   Total: {totalItems} translations
