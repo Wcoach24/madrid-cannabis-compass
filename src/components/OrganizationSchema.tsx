@@ -25,7 +25,8 @@ const OrganizationSchema = () => {
         `${BASE_URL}/guides`,
         `${BASE_URL}/clubs`,
         `${BASE_URL}/about.txt`,
-        `${BASE_URL}/api.txt`
+        `${BASE_URL}/api.txt`,
+        "https://www.google.com/maps/place/?q=place_id:ChIJ7Z2SYXEpQg0R0_RjmwNLhGA"
       ],
       "contactPoint": {
         "@type": "ContactPoint",

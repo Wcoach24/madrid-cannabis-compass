@@ -10,6 +10,28 @@
       ]
     }
   ],
+  "redirects": [
+    {
+      "source": "/club/chamberi-club-social-madrid",
+      "destination": "/club/vallehermoso-club-social-madrid",
+      "permanent": true
+    },
+    {
+      "source": "/es/club/chamberi-club-social-madrid",
+      "destination": "/es/club/vallehermoso-club-social-madrid",
+      "permanent": true
+    },
+    {
+      "source": "/de/club/chamberi-club-social-madrid",
+      "destination": "/de/club/vallehermoso-club-social-madrid",
+      "permanent": true
+    },
+    {
+      "source": "/fr/club/chamberi-club-social-madrid",
+      "destination": "/fr/club/vallehermoso-club-social-madrid",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/api/generate-sitemap",

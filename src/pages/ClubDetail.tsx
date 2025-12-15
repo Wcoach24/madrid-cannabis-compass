@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { MapPin, Star, Languages, Instagram, Building, Clock, ChevronLeft, UserPlus } from "lucide-react";
+import { MapPin, Star, Languages, Instagram, Building, Clock, ChevronLeft, UserPlus, ExternalLink } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ClubCard from "@/components/ClubCard";
@@ -225,6 +225,10 @@ const ClubDetail = () => {
         "@type": "Language",
         "name": lang
       }))
+    } : {}),
+    // Google Place ID for local SEO
+    ...(club.google_place_id ? {
+      "sameAs": [`https://www.google.com/maps/place/?q=place_id:${club.google_place_id}`]
     } : {})
   };
 
@@ -523,6 +527,19 @@ const ClubDetail = () => {
                         <p className="text-sm text-muted-foreground">Private Association</p>
                       </div>
                     </div>
+
+                    {/* View on Google Maps button */}
+                    {club.google_place_id && (
+                      <a
+                        href={`https://www.google.com/maps/place/?q=place_id:${club.google_place_id}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 w-full justify-center mt-4 py-2 px-4 bg-primary/10 hover:bg-primary/20 text-primary rounded-lg transition-colors text-sm font-medium"
+                      >
+                        <ExternalLink className="w-4 h-4" />
+                        {t("club.viewongoogle")}
+                      </a>
+                    )}
                   </CardContent>
                 </Card>
 
