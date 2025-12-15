@@ -528,18 +528,6 @@ const ClubDetail = () => {
                       </div>
                     </div>
 
-                    {/* View on Google Maps button */}
-                    {club.google_place_id && (
-                      <a
-                        href={`https://www.google.com/maps/place/?q=place_id:${club.google_place_id}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-2 w-full justify-center mt-4 py-2 px-4 bg-primary/10 hover:bg-primary/20 text-primary rounded-lg transition-colors text-sm font-medium"
-                      >
-                        <ExternalLink className="w-4 h-4" />
-                        {t("club.viewongoogle")}
-                      </a>
-                    )}
                   </CardContent>
                 </Card>
 
