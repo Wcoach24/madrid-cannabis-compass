@@ -312,6 +312,73 @@ serve(async (req) => {
         emailSentAt = null as any;
       } else {
         console.log('Email sent successfully');
+        
+        // Send admin notification email
+        try {
+          const adminEmailHtml = `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>New Invitation Request</title>
+</head>
+<body style="margin: 0; padding: 20px; background-color: #f5f5f5; font-family: Arial, sans-serif;">
+  <div style="max-width: 600px; margin: 0 auto; background: white; border-radius: 8px; padding: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+    <h1 style="color: #1a1a1a; margin: 0 0 20px; font-size: 24px;">🌿 New Invitation Request</h1>
+    
+    <div style="background: #f8f8f8; border-radius: 8px; padding: 20px; margin-bottom: 20px;">
+      <h2 style="color: #d4af37; margin: 0 0 15px; font-size: 18px;">Invitation Code: ${invitationCode}</h2>
+      <p style="margin: 5px 0; color: #333;"><strong>Club:</strong> ${club.name}</p>
+      <p style="margin: 5px 0; color: #333;"><strong>Visit Date:</strong> ${new Date(requestBody.visit_date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
+    </div>
+    
+    <div style="margin-bottom: 20px;">
+      <h3 style="color: #1a1a1a; margin: 0 0 10px; font-size: 16px;">👥 Visitor Details</h3>
+      <p style="margin: 5px 0; color: #333;"><strong>Names:</strong> ${requestBody.visitor_names.join(', ')}</p>
+      <p style="margin: 5px 0; color: #333;"><strong>Count:</strong> ${requestBody.visitor_count} person(s)</p>
+    </div>
+    
+    <div style="margin-bottom: 20px;">
+      <h3 style="color: #1a1a1a; margin: 0 0 10px; font-size: 16px;">📧 Contact Information</h3>
+      <p style="margin: 5px 0; color: #333;"><strong>Email:</strong> ${requestBody.email}</p>
+      <p style="margin: 5px 0; color: #333;"><strong>Phone:</strong> ${requestBody.phone}</p>
+      <p style="margin: 5px 0; color: #333;"><strong>Language:</strong> ${requestBody.language.toUpperCase()}</p>
+    </div>
+    
+    ${requestBody.notes ? `
+    <div style="margin-bottom: 20px;">
+      <h3 style="color: #1a1a1a; margin: 0 0 10px; font-size: 16px;">📝 Notes</h3>
+      <p style="margin: 5px 0; color: #333;">${requestBody.notes}</p>
+    </div>
+    ` : ''}
+    
+    <div style="border-top: 1px solid #eee; padding-top: 15px; margin-top: 20px;">
+      <p style="margin: 0; color: #888; font-size: 12px;">
+        Submitted: ${new Date().toLocaleString('en-US', { dateStyle: 'full', timeStyle: 'short' })} | IP: ${ipAddress}
+      </p>
+    </div>
+  </div>
+</body>
+</html>`;
+
+          await fetch('https://api.resend.com/emails', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${resendApiKey}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              from: 'Weed Madrid <invitations@weedmadrid.com>',
+              to: ['royaaltrade@gmail.com'],
+              subject: `New Invitation: ${invitationCode} - ${requestBody.visitor_names[0] || 'Guest'}`,
+              html: adminEmailHtml,
+            }),
+          });
+          console.log('Admin notification sent to royaaltrade@gmail.com');
+        } catch (adminEmailError) {
+          console.error('Failed to send admin notification:', adminEmailError);
+          // Don't fail the request if admin email fails
+        }
       }
     } catch (emailError: any) {
       console.error('Error sending email:', emailError);
