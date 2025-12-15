@@ -4,7 +4,7 @@ export const SUPPORTED_LANGUAGES: Language[] = ["en", "es", "de", "fr", "it"];
 export const DEFAULT_LANGUAGE: Language = "en";
 
 // Default club for all invitation requests
-export const DEFAULT_INVITATION_CLUB_SLUG = "chamberi-club-social-madrid";
+export const DEFAULT_INVITATION_CLUB_SLUG = "vallehermoso-club-social-madrid";
 
 export const getLanguageFromPath = (pathname: string): Language => {
   const pathParts = pathname.split("/").filter(Boolean);
