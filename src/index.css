@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Block browser auto-translate - site has native multilingual support */
+.notranslate {
+  transform: none !important;
+}
+html.notranslate {
+  translate: none;
+}
+
 /* Font-display swap for non-blocking text rendering */
 @font-face {
   font-family: 'Bebas Neue';
