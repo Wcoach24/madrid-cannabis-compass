@@ -92,6 +92,11 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const pathLang = getLanguageFromPath();
     setLanguageState(pathLang);
+    
+    // Update HTML lang attribute and ensure translate is blocked
+    document.documentElement.lang = pathLang;
+    document.documentElement.setAttribute('translate', 'no');
+    document.documentElement.classList.add('notranslate');
   }, [location.pathname]);
 
   const setLanguage = (lang: Language) => {
