@@ -10,6 +10,24 @@ html.notranslate {
   translate: none;
 }
 
+/* Dynamic viewport height fallback for mobile browsers */
+@supports (height: 100dvh) {
+  :root {
+    --vh-full: 100dvh;
+    --vh-90: 90dvh;
+    --vh-85: 85dvh;
+    --vh-80: 80dvh;
+  }
+}
+@supports not (height: 100dvh) {
+  :root {
+    --vh-full: 100vh;
+    --vh-90: 90vh;
+    --vh-85: 85vh;
+    --vh-80: 80vh;
+  }
+}
+
 /* Font-display swap for non-blocking text rendering */
 @font-face {
   font-family: 'Bebas Neue';
