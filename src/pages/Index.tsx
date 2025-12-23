@@ -197,7 +197,7 @@ const Index = () => {
                       {t("home.search.button")}
                     </Button>
                   </DialogTrigger>
-                  <DialogContent className="w-[calc(100%-2rem)] max-w-md mx-auto p-4 sm:p-6">
+                  <DialogContent className="sm:max-w-md">
                     <QuickClubFinder onClose={() => setFinderDialogOpen(false)} />
                   </DialogContent>
                 </Dialog>
