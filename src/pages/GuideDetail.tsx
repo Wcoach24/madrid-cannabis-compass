@@ -358,6 +358,12 @@ const GuideDetail = () => {
                   <Calendar className="w-4 h-4" />
                   <span>{t("guide.publishedon")} {new Date(article.published_at).toLocaleDateString(language)}</span>
                 </div>
+                {article.updated_at && new Date(article.updated_at) > new Date(article.published_at) && (
+                  <div className="flex items-center gap-2 font-medium text-primary">
+                    <Calendar className="w-4 h-4" />
+                    <span>{t("guide.updatedon")} {new Date(article.updated_at).toLocaleDateString(language)}</span>
+                  </div>
+                )}
               </div>
             </header>
 
