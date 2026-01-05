@@ -34,6 +34,7 @@ import TranslateContent from "./pages/TranslateContent";
 import Shop from "./pages/Shop";
 import About from "./pages/About";
 import ScamWarning from "./pages/ScamWarning";
+import CannabisClubMadrid from "./pages/CannabisClubMadrid";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -77,6 +78,7 @@ const App = () => (
             <Route path="/shop" element={<Shop />} />
             <Route path="/about" element={<About />} />
             <Route path="/safety/scams" element={<ScamWarning />} />
+            <Route path="/cannabis-club-madrid" element={<CannabisClubMadrid />} />
             
             {/* Language-prefixed routes */}
             <Route path="/:lang" element={<Index />} />
@@ -103,6 +105,7 @@ const App = () => (
             <Route path="/:lang/shop" element={<Shop />} />
             <Route path="/:lang/about" element={<About />} />
             <Route path="/:lang/safety/scams" element={<ScamWarning />} />
+            <Route path="/:lang/club-cannabis-madrid" element={<CannabisClubMadrid />} />
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
