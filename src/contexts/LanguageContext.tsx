@@ -62,7 +62,18 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   const [language, setLanguageState] = useState<Language>(getLanguageFromPath);
 
   // Automatic language detection and redirection on first visit
+  // IMPORTANT: Skip redirect for bots/crawlers to prevent SEO issues
   useEffect(() => {
+    // Check if this is a bot/crawler - don't redirect them
+    const isBot = /bot|crawl|spider|google|bing|yandex|baidu|duckduck|slurp|facebook|twitter|linkedin/i.test(
+      navigator.userAgent
+    );
+    
+    if (isBot) {
+      // Bots should see the page as-is, no redirect
+      return;
+    }
+
     const pathLang = getLanguageFromPath();
     const detectedLang = detectBrowserLanguage();
     const hasStoredPreference = localStorage.getItem(STORAGE_KEY);

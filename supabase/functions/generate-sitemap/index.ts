@@ -21,6 +21,7 @@ interface ArticleData {
   cover_image_url: string | null;
   is_featured: boolean | null;
   category: string;
+  language: string;
 }
 
 Deno.serve(async (req) => {
@@ -48,10 +49,10 @@ Deno.serve(async (req) => {
       .order('is_featured', { ascending: false })
       .order('rating_editorial', { ascending: false });
 
-    // Fetch articles with additional metadata
+    // Fetch articles with additional metadata INCLUDING language
     const { data: articles } = await supabase
       .from('articles')
-      .select('slug, updated_at, published_at, cover_image_url, is_featured, category')
+      .select('slug, updated_at, published_at, cover_image_url, is_featured, category, language')
       .eq('status', 'published')
       .order('is_featured', { ascending: false })
       .order('published_at', { ascending: false });
@@ -167,9 +168,13 @@ Deno.serve(async (req) => {
     }
 
     // Add article URLs with images, news tags, and dynamic priority
+    // CRITICAL FIX: Only include articles in their actual language to prevent phantom URLs
     if (articles && articles.length > 0) {
       const now = new Date();
       const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+
+      // Group articles by language
+      const languageMap: Record<string, string> = { 'en': '', 'es': '/es', 'de': '/de', 'fr': '/fr', 'it': '/it' };
 
       articles.forEach((article: ArticleData) => {
         const articlePath = `/guide/${article.slug}`;
@@ -183,28 +188,25 @@ Deno.serve(async (req) => {
         const lastmod = new Date(article.updated_at).toISOString();
         const changefreq = isRecent ? 'daily' : 'weekly';
 
-        // All language versions with news tags for recent articles
-        const languageCodes = { '': 'en', '/es': 'es', '/de': 'de', '/fr': 'fr', '/it': 'it' };
-        
-        languages.forEach(lang => {
-          const newsTag = isRecent ? `
+        // Only generate URL for the article's actual language (prevents phantom URLs)
+        const langPrefix = languageMap[article.language] ?? '';
+        const newsTag = isRecent ? `
     <news:news>
       <news:publication>
         <news:name>Weed Madrid</news:name>
-        <news:language>${languageCodes[lang as keyof typeof languageCodes]}</news:language>
+        <news:language>${article.language}</news:language>
       </news:publication>
       <news:publication_date>${publishDate.toISOString()}</news:publication_date>
       <news:title>${article.slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}</news:title>
     </news:news>` : '';
 
-          sitemap += `
+        sitemap += `
   <url>
-    <loc>${baseUrl}${lang}${articlePath}</loc>${addHreflangLinks(articlePath)}
+    <loc>${baseUrl}${langPrefix}${articlePath}</loc>${addHreflangLinks(articlePath)}
     <lastmod>${lastmod}</lastmod>
     <changefreq>${changefreq}</changefreq>
     <priority>${priority}</priority>${images.length > 0 ? addImageTags(images) : ''}${newsTag}
   </url>`;
-        });
       });
     }
 

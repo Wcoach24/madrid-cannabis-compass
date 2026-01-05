@@ -1,4 +1,5 @@
 {
+  "trailingSlash": false,
   "headers": [
     {
       "source": "/(.*)",
@@ -11,6 +12,11 @@
     }
   ],
   "redirects": [
+    {
+      "source": "/:path+/",
+      "destination": "/:path+",
+      "permanent": true
+    },
     {
       "source": "/club/chamberi-club-social-madrid",
       "destination": "/club/vallehermoso-club-social-madrid",
