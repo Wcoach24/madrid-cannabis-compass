@@ -15,6 +15,7 @@ import { buildLanguageAwarePath, removeLanguageFromPath, DEFAULT_INVITATION_CLUB
 import { generateHreflangLinks, BASE_URL } from "@/lib/hreflangUtils";
 import { Timetable, isOpenNow, getDaysInOrder, getCurrentDay, formatTime } from "@/lib/timetableUtils";
 import { ImageWithSkeleton } from "@/components/ui/image-with-skeleton";
+import { ClubGallery } from "@/components/ClubGallery";
 
 const ClubDetail = () => {
   const { slug } = useParams();
@@ -126,7 +127,9 @@ const ClubDetail = () => {
     "name": club.name,
     "description": club.description,
     "url": `${BASE_URL}/club/${club.slug}`,
-    "image": club.main_image_url || club.gallery_image_urls?.[0],
+    "image": club.gallery_image_urls?.length 
+      ? [club.main_image_url, ...club.gallery_image_urls].filter(Boolean)
+      : club.main_image_url,
     "publicAccess": false, // Members only
     "containedInPlace": {
       "@type": "City",
@@ -264,15 +267,11 @@ const ClubDetail = () => {
       
       <main className="flex-1">
         {club.main_image_url && (
-          <div className="w-full h-64 md:h-96">
-            <ImageWithSkeleton
-              src={club.main_image_url}
-              alt={`${club.name} cannabis social club - Interior view of ${club.district} district club in Madrid, Spain`}
-              aspectRatio="video"
-              className="h-64 md:h-96"
-              loading="eager"
-            />
-          </div>
+          <ClubGallery
+            mainImage={club.main_image_url}
+            galleryImages={club.gallery_image_urls || []}
+            clubName={club.name}
+          />
         )}
 
         <section className="py-8 border-b">
