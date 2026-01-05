@@ -8,22 +8,33 @@ import Footer from "@/components/Footer";
 import SEOHead from "@/components/SEOHead";
 import OrganizationSchema from "@/components/OrganizationSchema";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
-import { Calendar, User, ChevronLeft } from "lucide-react";
+import { Calendar, User, ChevronLeft, MapPin, Star, ArrowRight, BookOpen } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import ReactMarkdown from "react-markdown";
 import { useLanguage } from "@/hooks/useLanguage";
 import { buildLanguageAwarePath, removeLanguageFromPath } from "@/lib/languageUtils";
 import { generateHreflangLinks, BASE_URL } from "@/lib/hreflangUtils";
 
+interface FeaturedClub {
+  id: number;
+  name: string;
+  slug: string;
+  district: string;
+  rating_editorial: number | null;
+  is_verified: boolean | null;
+}
+
 const GuideDetail = () => {
   const { slug } = useParams();
   const { language, t } = useLanguage();
   const [article, setArticle] = useState<any>(null);
   const [relatedArticles, setRelatedArticles] = useState<any[]>([]);
+  const [featuredClubs, setFeaturedClubs] = useState<FeaturedClub[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchArticle();
+    fetchFeaturedClubs();
   }, [slug, language]);
 
   const fetchArticle = async () => {
@@ -54,6 +65,23 @@ const GuideDetail = () => {
 
     if (data) setRelatedArticles(data);
   };
+
+  const fetchFeaturedClubs = async () => {
+    const { data } = await supabase
+      .from("clubs")
+      .select("id, name, slug, district, rating_editorial, is_verified")
+      .eq("status", "active")
+      .eq("is_featured", true)
+      .order("rating_editorial", { ascending: false })
+      .limit(4);
+
+    if (data) setFeaturedClubs(data);
+  };
+
+  const pillarPagePath = language === "es" ? "/club-cannabis-madrid" : "/cannabis-club-madrid";
+  const pillarPageTitle = language === "es" 
+    ? "Guía Completa: Club de Cannabis Madrid 2026" 
+    : "Complete Guide: Cannabis Club Madrid 2026";
 
   if (loading) {
     return (
@@ -390,8 +418,86 @@ const GuideDetail = () => {
                 </CardContent>
               </Card>
             )}
+
+            {/* Pillar Page Link - Internal SEO */}
+            <div className="mb-12 p-6 bg-gradient-to-r from-primary/10 to-accent/10 rounded-xl border border-primary/20">
+              <div className="flex items-start gap-4">
+                <BookOpen className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
+                <div>
+                  <h3 className="font-semibold text-lg mb-2">
+                    {language === "es" ? "Lectura Recomendada" : "Recommended Reading"}
+                  </h3>
+                  <Link 
+                    to={buildLanguageAwarePath(pillarPagePath, language)}
+                    className="text-primary hover:text-primary/80 underline underline-offset-4 font-medium flex items-center gap-2"
+                  >
+                    {pillarPageTitle}
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+                  <p className="text-sm text-muted-foreground mt-2">
+                    {language === "es" 
+                      ? "Todo lo que necesitas saber sobre los clubs de cannabis en Madrid en una guía completa."
+                      : "Everything you need to know about cannabis clubs in Madrid in one comprehensive guide."}
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </article>
+
+        {/* Featured Clubs Section - Internal Links */}
+        {featuredClubs.length > 0 && (
+          <section className="py-12 bg-background border-t border-border">
+            <div className="container mx-auto px-4 max-w-6xl">
+              <h2 className="text-2xl font-bold mb-6">
+                {language === "es" ? "Clubs Destacados en Madrid" : "Featured Clubs in Madrid"}
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {featuredClubs.map((club) => (
+                  <Link 
+                    key={club.id} 
+                    to={buildLanguageAwarePath(`/club/${club.slug}`, language)}
+                    className="group"
+                  >
+                    <Card className="h-full hover:shadow-lg hover:border-primary/50 transition-all">
+                      <CardContent className="p-4">
+                        <div className="flex items-start justify-between mb-2">
+                          <h3 className="font-semibold text-sm group-hover:text-primary transition-colors line-clamp-1">
+                            {club.name}
+                          </h3>
+                          {club.is_verified && (
+                            <Badge variant="secondary" className="text-xs shrink-0 ml-2">
+                              {language === "es" ? "Verificado" : "Verified"}
+                            </Badge>
+                          )}
+                        </div>
+                        <div className="flex items-center text-xs text-muted-foreground mb-2">
+                          <MapPin className="w-3 h-3 mr-1" />
+                          {club.district}
+                        </div>
+                        {club.rating_editorial && (
+                          <div className="flex items-center text-xs">
+                            <Star className="w-3 h-3 mr-1 fill-gold text-gold" />
+                            <span className="font-medium">{club.rating_editorial.toFixed(1)}</span>
+                          </div>
+                        )}
+                      </CardContent>
+                    </Card>
+                  </Link>
+                ))}
+              </div>
+              <div className="text-center mt-6">
+                <Link 
+                  to={buildLanguageAwarePath("/clubs", language)}
+                  className="text-primary hover:text-primary/80 underline underline-offset-4 inline-flex items-center gap-2"
+                >
+                  {language === "es" ? "Ver todos los clubs" : "View all clubs"}
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </div>
+            </div>
+          </section>
+        )}
 
         {relatedArticles.length > 0 && (
           <section className="py-12 bg-muted/30">
