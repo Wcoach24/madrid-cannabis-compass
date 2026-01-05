@@ -52,5 +52,5 @@ Allow: /
 # ============================================
 # SITEMAPS (Critical for SEO Discovery)
 # ============================================
+# Single primary sitemap (dynamically generated)
 Sitemap: https://www.weedmadrid.com/api/generate-sitemap
-Sitemap: https://www.weedmadrid.com/sitemap.xml
