@@ -11,6 +11,7 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbP
 import { Calendar, User, ChevronLeft, MapPin, Star, ArrowRight, BookOpen } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { useLanguage } from "@/hooks/useLanguage";
 import { buildLanguageAwarePath, removeLanguageFromPath } from "@/lib/languageUtils";
 import { generateHreflangLinks, BASE_URL } from "@/lib/hreflangUtils";
@@ -407,7 +408,7 @@ const GuideDetail = () => {
             )}
 
             <div className="prose prose-lg max-w-none mb-12">
-              <ReactMarkdown>{article.body_markdown}</ReactMarkdown>
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>{article.body_markdown}</ReactMarkdown>
             </div>
 
             {article.author_bio && (
