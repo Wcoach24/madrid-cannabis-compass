@@ -182,6 +182,16 @@ All colors MUST be HSL.
     text-transform: uppercase;
   }
   
+  /* Override for article/prose content - readable sentence case */
+  .prose h1, .prose h2, .prose h3, .prose h4,
+  article h1, article h2, article h3, article h4,
+  [class*="markdown"] h1, [class*="markdown"] h2, [class*="markdown"] h3, [class*="markdown"] h4 {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    text-transform: none;
+    letter-spacing: normal;
+    font-weight: 700;
+  }
+  
   /* Luxury serif for subheadlines */
   .font-luxury {
     font-family: 'Playfair Display', 'Georgia', serif;
