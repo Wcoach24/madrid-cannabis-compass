@@ -551,32 +551,51 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Essential Guides - Simplified */}
+        {/* Essential Guides - Hub Links for SEO */}
         <section className="py-12 md:py-16 bg-muted/30">
           <div className="container mx-auto px-4">
             <div className="text-center mb-8">
               <h2 className="font-display text-2xl md:text-3xl font-bold mb-6">{t("home.guides.title")}</h2>
               
+              {/* Primary Pillar Page Link */}
+              <div className="mb-8">
+                <Link 
+                  to={buildLanguageAwarePath(language === "es" ? "/club-cannabis-madrid" : "/cannabis-club-madrid", language)}
+                  className="inline-flex items-center gap-2 text-xl font-semibold text-primary hover:text-primary/80 underline underline-offset-4 transition-colors"
+                >
+                  {language === "es" ? "Guía Completa: Club de Cannabis Madrid 2026" : "Complete Guide: Cannabis Club Madrid 2026"}
+                </Link>
+              </div>
+              
               <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-3xl mx-auto">
                 <Link 
-                  to={buildLanguageAwarePath("/guides", language)}
+                  to={buildLanguageAwarePath(language === "es" ? "/guide/mejores-clubs-cannabis-madrid-2025" : "/guide/best-cannabis-clubs-madrid-2025", language)}
                   className="text-lg text-primary hover:text-primary/80 underline underline-offset-4 transition-colors"
                 >
                   {t("home.guides.best.title")}
                 </Link>
                 <span className="hidden sm:inline text-muted-foreground">•</span>
                 <Link 
-                  to={buildLanguageAwarePath("/guides", language)}
+                  to={buildLanguageAwarePath(language === "es" ? "/guide/como-unirse-club-cannabis-madrid" : "/guide/how-to-join-cannabis-club-madrid", language)}
                   className="text-lg text-primary hover:text-primary/80 underline underline-offset-4 transition-colors"
                 >
                   {t("home.guides.join.title")}
                 </Link>
                 <span className="hidden sm:inline text-muted-foreground">•</span>
                 <Link 
-                  to={buildLanguageAwarePath("/guides", language)}
+                  to={buildLanguageAwarePath(language === "es" ? "/guide/leyes-cannabis-espana-2025" : "/guide/cannabis-laws-spain-2025", language)}
                   className="text-lg text-primary hover:text-primary/80 underline underline-offset-4 transition-colors"
                 >
                   {t("home.guides.legal.title")}
+                </Link>
+              </div>
+              
+              <div className="mt-6">
+                <Link 
+                  to={buildLanguageAwarePath("/guides", language)}
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  {t("home.faq.viewall")} →
                 </Link>
               </div>
             </div>
