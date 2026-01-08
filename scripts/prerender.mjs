@@ -1,16 +1,11 @@
 #!/usr/bin/env node
 /**
- * Static Site Generator (SSG) Prerender Script
+ * Robust SSG Prerender Script
  * 
- * This script prerenders all public routes to static HTML files,
- * ensuring that crawlers see proper SEO metadata in View Source.
+ * Prerenders ALL public routes to static HTML with correct SEO metadata.
+ * Each generated file is validated before saving.
  * 
  * Usage: node scripts/prerender.mjs
- * 
- * Requirements:
- * - Run `npm run build` first
- * - puppeteer must be installed
- * - VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in .env
  */
 
 import puppeteer from 'puppeteer';
@@ -18,6 +13,7 @@ import { createServer } from 'http';
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
+import { getAllPaths } from './routes-inventory.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -25,158 +21,27 @@ const ROOT_DIR = join(__dirname, '..');
 const DIST_DIR = join(ROOT_DIR, 'dist');
 const BASE_URL = 'https://www.weedmadrid.com';
 
-// Load env vars
-import { config } from 'dotenv';
-config({ path: join(ROOT_DIR, '.env') });
+// Validation thresholds
+const MIN_TITLE_LENGTH = 10;
+const MIN_CONTENT_LENGTH = 1000;
+const MAX_RETRIES = 2;
 
-const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
-const SUPABASE_ANON_KEY = process.env.VITE_SUPABASE_ANON_KEY;
+// Track validation results
+const validationResults = {
+  success: [],
+  warnings: [],
+  errors: [],
+};
 
-if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
-  console.error('❌ Missing VITE_SUPABASE_URL or VITE_SUPABASE_ANON_KEY in .env');
-  process.exit(1);
-}
-
-// Languages to prerender
-const LANGUAGES = ['en', 'es', 'de', 'fr', 'it'];
-
-// Static routes (without language prefix)
-const STATIC_ROUTES = [
-  '/',
-  '/clubs',
-  '/guides',
-  '/faq',
-  '/how-it-works',
-  '/districts',
-  '/legal',
-  '/safety',
-  '/about',
-  '/contact',
-  '/knowledge',
-  '/cannabis-club-madrid',
-  '/club-cannabis-madrid', // Spanish pillar page
-];
-
-// Fetch dynamic routes from Supabase
-async function fetchDynamicRoutes() {
-  console.log('📡 Fetching routes from Supabase...');
-  
-  const routes = {
-    clubs: [],
-    articles: {},
-    districts: [],
-  };
-
-  // Fetch active clubs
-  const clubsRes = await fetch(`${SUPABASE_URL}/rest/v1/clubs?status=eq.active&select=slug`, {
-    headers: {
-      'apikey': SUPABASE_ANON_KEY,
-      'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-    },
-  });
-  
-  if (clubsRes.ok) {
-    const clubs = await clubsRes.json();
-    routes.clubs = clubs.map(c => c.slug);
-    console.log(`  ✓ Found ${routes.clubs.length} clubs`);
-  }
-
-  // Fetch published articles per language
-  for (const lang of LANGUAGES) {
-    const articlesRes = await fetch(
-      `${SUPABASE_URL}/rest/v1/articles?status=eq.published&language=eq.${lang}&select=slug`,
-      {
-        headers: {
-          'apikey': SUPABASE_ANON_KEY,
-          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-        },
-      }
-    );
-    
-    if (articlesRes.ok) {
-      const articles = await articlesRes.json();
-      routes.articles[lang] = articles.map(a => a.slug);
-      console.log(`  ✓ Found ${articles.length} articles for ${lang}`);
-    }
-  }
-
-  // Get unique districts from clubs
-  const districtsRes = await fetch(`${SUPABASE_URL}/rest/v1/clubs?status=eq.active&select=district`, {
-    headers: {
-      'apikey': SUPABASE_ANON_KEY,
-      'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-    },
-  });
-  
-  if (districtsRes.ok) {
-    const clubsWithDistricts = await districtsRes.json();
-    const uniqueDistricts = [...new Set(clubsWithDistricts.map(c => c.district))];
-    routes.districts = uniqueDistricts.map(d => d.toLowerCase().replace(/\s+/g, '-'));
-    console.log(`  ✓ Found ${routes.districts.length} districts`);
-  }
-
-  return routes;
-}
-
-// Build all URLs to prerender
-function buildAllUrls(dynamicRoutes) {
-  const urls = [];
-  
-  // Static routes for all languages
-  for (const route of STATIC_ROUTES) {
-    // English (default) - no prefix
-    urls.push(route);
-    
-    // Other languages with prefix
-    for (const lang of LANGUAGES) {
-      if (lang !== 'en') {
-        urls.push(`/${lang}${route === '/' ? '' : route}`);
-      }
-    }
-  }
-
-  // Club pages (language-agnostic content)
-  for (const slug of dynamicRoutes.clubs) {
-    urls.push(`/club/${slug}`);
-    for (const lang of LANGUAGES) {
-      if (lang !== 'en') {
-        urls.push(`/${lang}/club/${slug}`);
-      }
-    }
-  }
-
-  // Article/guide pages (language-specific content)
-  for (const lang of LANGUAGES) {
-    const articles = dynamicRoutes.articles[lang] || [];
-    for (const slug of articles) {
-      if (lang === 'en') {
-        urls.push(`/guide/${slug}`);
-      } else {
-        urls.push(`/${lang}/guide/${slug}`);
-      }
-    }
-  }
-
-  // District pages
-  for (const district of dynamicRoutes.districts) {
-    urls.push(`/district/${district}`);
-    for (const lang of LANGUAGES) {
-      if (lang !== 'en') {
-        urls.push(`/${lang}/district/${district}`);
-      }
-    }
-  }
-
-  return [...new Set(urls)]; // Remove duplicates
-}
-
-// Simple static file server for dist/
+/**
+ * Simple static file server for dist/
+ */
 function createStaticServer(port) {
   return new Promise((resolve) => {
     const server = createServer((req, res) => {
       let filePath = join(DIST_DIR, req.url === '/' ? 'index.html' : req.url);
       
-      // SPA fallback - serve index.html for all routes
+      // SPA fallback - serve index.html for routes without file extension
       if (!existsSync(filePath) || !filePath.includes('.')) {
         filePath = join(DIST_DIR, 'index.html');
       }
@@ -191,8 +56,11 @@ function createStaticServer(port) {
           'json': 'application/json',
           'png': 'image/png',
           'jpg': 'image/jpeg',
+          'jpeg': 'image/jpeg',
           'svg': 'image/svg+xml',
           'webp': 'image/webp',
+          'woff2': 'font/woff2',
+          'woff': 'font/woff',
         };
         res.writeHead(200, { 'Content-Type': contentTypes[ext] || 'text/plain' });
         res.end(content);
@@ -209,55 +77,157 @@ function createStaticServer(port) {
   });
 }
 
-// Prerender a single route
-async function prerenderRoute(browser, url, serverPort) {
+/**
+ * Validate that HTML has proper SEO metadata
+ */
+function validateHtml(html, url) {
+  const issues = [];
+  const fullUrl = `${BASE_URL}${url === '/' ? '' : url}`;
+
+  // Extract SEO elements
+  const titleMatch = html.match(/<title>([^<]*)<\/title>/i);
+  const canonicalMatch = html.match(/<link[^>]*rel="canonical"[^>]*href="([^"]*)"[^>]*>/i);
+  const ogUrlMatch = html.match(/<meta[^>]*property="og:url"[^>]*content="([^"]*)"[^>]*>/i);
+  const h1Match = html.match(/<h1[^>]*>([^<]*)<\/h1>/i);
+
+  const title = titleMatch ? titleMatch[1] : '';
+  const canonical = canonicalMatch ? canonicalMatch[1] : '';
+  const ogUrl = ogUrlMatch ? ogUrlMatch[1] : '';
+
+  // Title validation
+  if (!title || title.length < MIN_TITLE_LENGTH) {
+    issues.push(`Title too short or missing: "${title}"`);
+  }
+
+  // For non-home pages, canonical should not be home
+  if (url !== '/' && url !== '') {
+    if (canonical === BASE_URL || canonical === `${BASE_URL}/`) {
+      issues.push(`Canonical pointing to home instead of page`);
+    }
+  }
+
+  // og:url should match canonical
+  if (canonical && ogUrl && canonical !== ogUrl) {
+    issues.push(`og:url doesn't match canonical`);
+  }
+
+  // H1 should exist
+  if (!h1Match) {
+    issues.push(`Missing H1 tag`);
+  }
+
+  // Content length check (rough indicator of proper render)
+  if (html.length < MIN_CONTENT_LENGTH) {
+    issues.push(`HTML content too short (${html.length} chars)`);
+  }
+
+  // Check for empty root (SPA shell)
+  if (html.includes('<div id="root"></div>') || html.includes('<div id="root"> </div>')) {
+    issues.push(`Contains empty #root (SPA shell)`);
+  }
+
+  return issues;
+}
+
+/**
+ * Fix SEO metadata in HTML to use production URLs
+ */
+function fixSeoMetadata(html, url) {
+  const fullUrl = `${BASE_URL}${url === '/' ? '' : url}`;
+
+  // Fix canonical - always use full production URL
+  html = html.replace(
+    /<link[^>]*rel="canonical"[^>]*href="[^"]*"[^>]*>/gi,
+    `<link rel="canonical" href="${fullUrl}">`
+  );
+
+  // Fix og:url - must match canonical exactly
+  html = html.replace(
+    /<meta[^>]*property="og:url"[^>]*content="[^"]*"[^>]*>/gi,
+    `<meta property="og:url" content="${fullUrl}">`
+  );
+
+  // Fix any localhost references
+  html = html.replace(/http:\/\/localhost:\d+/g, BASE_URL);
+
+  // Ensure proper doctype
+  if (!html.startsWith('<!DOCTYPE') && !html.startsWith('<!doctype')) {
+    html = '<!DOCTYPE html>' + html;
+  }
+
+  return html;
+}
+
+/**
+ * Prerender a single route with retries and validation
+ */
+async function prerenderRoute(browser, url, serverPort, retryCount = 0) {
   const page = await browser.newPage();
   
+  // Set viewport for consistent rendering
+  await page.setViewport({ width: 1280, height: 800 });
+  
+  // Set user agent
+  await page.setUserAgent('Mozilla/5.0 (compatible; PrerenderBot/1.0)');
+
   try {
     // Navigate to the route
     await page.goto(`http://localhost:${serverPort}${url}`, {
       waitUntil: 'networkidle0',
-      timeout: 30000,
+      timeout: 45000,
     });
 
-    // Wait for React to hydrate and SEOHead to update
+    // Wait for hydration indicator
     await page.waitForFunction(() => {
-      // Check if title has been updated from default
-      const title = document.title;
-      return title && !title.includes('Vite') && document.querySelector('h1');
-    }, { timeout: 10000 }).catch(() => {
-      console.warn(`  ⚠ Timeout waiting for hydration on ${url}`);
+      // Check multiple indicators of complete render
+      const hasTitle = document.title && document.title.length > 10;
+      const hasH1 = !!document.querySelector('h1');
+      const hasContent = document.body.innerText.length > 100;
+      const isHydrated = document.documentElement.getAttribute('data-hydrated') === 'true' 
+        || document.querySelector('[data-hydrated="true"]')
+        || (hasTitle && hasH1 && hasContent);
+      return isHydrated;
+    }, { timeout: 15000 }).catch(() => {
+      console.warn(`  ⚠ Timeout waiting for full render on ${url}`);
     });
 
-    // Additional wait for any async data loading
-    await new Promise(r => setTimeout(r, 500));
+    // Extra wait for async data and SEOHead updates
+    await new Promise(r => setTimeout(r, 1000));
 
-    // Get the fully rendered HTML
+    // Get rendered HTML
     let html = await page.content();
 
-    // Fix canonical, og:url to use production BASE_URL
-    const fullUrl = `${BASE_URL}${url}`;
-    
-    // Ensure canonical is correct (not homepage unless it IS homepage)
-    if (url !== '/') {
-      html = html.replace(
-        /<link rel="canonical" href="[^"]*">/g,
-        `<link rel="canonical" href="${fullUrl}">`
-      );
+    // Fix SEO metadata
+    html = fixSeoMetadata(html, url);
+
+    // Validate
+    const issues = validateHtml(html, url);
+
+    if (issues.length > 0 && retryCount < MAX_RETRIES) {
+      console.log(`  ⚠ Validation issues, retrying... (${retryCount + 1}/${MAX_RETRIES})`);
+      await page.close();
+      await new Promise(r => setTimeout(r, 2000));
+      return prerenderRoute(browser, url, serverPort, retryCount + 1);
     }
-    
-    // Fix og:url
-    html = html.replace(
-      /<meta property="og:url" content="[^"]*">/g,
-      `<meta property="og:url" content="${fullUrl}">`
-    );
 
-    // Remove the static hero placeholder that was in index.html
-    html = html.replace(/<section class="static-hero">[\s\S]*?<\/section>\s*<main style="padding:2rem[\s\S]*?<\/main>\s*<footer style="padding:1rem[\s\S]*?<\/footer>/g, '');
+    if (issues.length > 0) {
+      validationResults.warnings.push({ url, issues });
+    } else {
+      validationResults.success.push(url);
+    }
 
-    return html;
+    return { html, issues };
+  } catch (error) {
+    if (retryCount < MAX_RETRIES) {
+      console.log(`  ⚠ Error, retrying... (${retryCount + 1}/${MAX_RETRIES})`);
+      await page.close();
+      await new Promise(r => setTimeout(r, 2000));
+      return prerenderRoute(browser, url, serverPort, retryCount + 1);
+    }
+    validationResults.errors.push({ url, error: error.message });
+    throw error;
   } finally {
-    await page.close();
+    await page.close().catch(() => {});
   }
 }
 
@@ -278,22 +248,50 @@ function saveHtml(url, html) {
   return outputPath;
 }
 
-// Main execution
+/**
+ * Print validation summary
+ */
+function printSummary() {
+  console.log('\n' + '='.repeat(60));
+  console.log('📊 PRERENDER SUMMARY');
+  console.log('='.repeat(60));
+  console.log(`✅ Success: ${validationResults.success.length}`);
+  console.log(`⚠️  Warnings: ${validationResults.warnings.length}`);
+  console.log(`❌ Errors: ${validationResults.errors.length}`);
+  
+  if (validationResults.warnings.length > 0) {
+    console.log('\n⚠️  Pages with warnings:');
+    validationResults.warnings.forEach(({ url, issues }) => {
+      console.log(`   ${url}`);
+      issues.forEach(i => console.log(`      - ${i}`));
+    });
+  }
+  
+  if (validationResults.errors.length > 0) {
+    console.log('\n❌ Failed pages:');
+    validationResults.errors.forEach(({ url, error }) => {
+      console.log(`   ${url}: ${error}`);
+    });
+  }
+  
+  console.log('='.repeat(60) + '\n');
+}
+
+/**
+ * Main execution
+ */
 async function main() {
-  console.log('\n🚀 Starting SSG Prerender...\n');
+  console.log('\n🚀 Starting Robust SSG Prerender...\n');
 
   // Verify dist exists
   if (!existsSync(DIST_DIR)) {
-    console.error('❌ dist/ directory not found. Run `npm run build` first.');
+    console.error('❌ dist/ directory not found. Run `vite build` first.');
     process.exit(1);
   }
 
-  // Fetch dynamic routes
-  const dynamicRoutes = await fetchDynamicRoutes();
-  
-  // Build all URLs
-  const urls = buildAllUrls(dynamicRoutes);
-  console.log(`\n📄 Total routes to prerender: ${urls.length}\n`);
+  // Get all URLs from routes inventory
+  const urls = await getAllPaths();
+  console.log(`📄 Total routes to prerender: ${urls.length}\n`);
 
   // Start static server
   const PORT = 3456;
@@ -303,25 +301,25 @@ async function main() {
   console.log('🎭 Launching Puppeteer...\n');
   const browser = await puppeteer.launch({
     headless: 'new',
-    args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
   });
-
-  let successCount = 0;
-  let errorCount = 0;
 
   // Prerender each route
   for (let i = 0; i < urls.length; i++) {
     const url = urls[i];
-    process.stdout.write(`[${i + 1}/${urls.length}] Rendering ${url}...`);
+    process.stdout.write(`[${i + 1}/${urls.length}] ${url}...`);
     
     try {
-      const html = await prerenderRoute(browser, url, PORT);
-      const outputPath = saveHtml(url, html);
-      console.log(` ✓`);
-      successCount++;
+      const { html, issues } = await prerenderRoute(browser, url, PORT);
+      saveHtml(url, html);
+      
+      if (issues.length > 0) {
+        console.log(` ⚠️ (${issues.length} warnings)`);
+      } else {
+        console.log(` ✅`);
+      }
     } catch (error) {
       console.log(` ❌ ${error.message}`);
-      errorCount++;
     }
   }
 
@@ -329,10 +327,20 @@ async function main() {
   await browser.close();
   server.close();
 
-  console.log(`\n✅ Prerendering complete!`);
-  console.log(`   Success: ${successCount}`);
-  console.log(`   Errors: ${errorCount}`);
-  console.log(`\n📁 Output: ${DIST_DIR}\n`);
+  // Print summary
+  printSummary();
+
+  // Exit with error if critical failures
+  if (validationResults.errors.length > 0) {
+    console.log('❌ Prerender completed with errors\n');
+    process.exit(1);
+  }
+
+  console.log('✅ Prerender completed successfully!\n');
+  console.log(`📁 Output: ${DIST_DIR}\n`);
 }
 
-main().catch(console.error);
+main().catch(err => {
+  console.error('Fatal error:', err);
+  process.exit(1);
+});
