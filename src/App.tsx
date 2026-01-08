@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -39,27 +40,30 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
-// Mark document as hydrated when React takes over
-if (typeof document !== 'undefined') {
-  document.addEventListener('DOMContentLoaded', () => {
-    // Set hydration marker after a short delay to ensure React has rendered
-    setTimeout(() => {
-      document.documentElement.setAttribute('data-hydrated', 'true');
-    }, 100);
-  });
+/**
+ * Hook to mark document as hydrated for SSG prerender detection
+ */
+function useHydrationMarker() {
+  useEffect(() => {
+    // Mark as hydrated immediately when React mounts
+    document.documentElement.setAttribute('data-hydrated', 'true');
+  }, []);
 }
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Analytics />
-        <ScrollToTop />
-        <LanguageProvider>
-          <Routes>
-            {/* Default English routes */}
+const App = () => {
+  useHydrationMarker();
+  
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Analytics />
+          <ScrollToTop />
+          <LanguageProvider>
+            <Routes>
+              {/* Default English routes */}
             <Route path="/" element={<Index />} />
             <Route path="/clubs" element={<Clubs />} />
             <Route path="/club/:slug" element={<ClubDetail />} />
@@ -124,6 +128,7 @@ const App = () => (
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
-);
+  );
+};
 
 export default App;

@@ -38,6 +38,7 @@ export const STATIC_ROUTES = [
   '/shop',
   '/cannabis-club-madrid',
   '/safety/scams',
+  '/clubs/near-me',
 ];
 
 // Routes that should NOT be indexed (noindex)
