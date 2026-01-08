@@ -11,7 +11,7 @@
 import puppeteer from 'puppeteer';
 import { createServer } from 'http';
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'fs';
-import { join, dirname } from 'path';
+import { join, dirname, extname } from 'path';
 import { fileURLToPath } from 'url';
 import { getAllPaths } from './routes-inventory.mjs';
 

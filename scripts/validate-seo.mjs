@@ -16,11 +16,12 @@ const ROOT_DIR = join(__dirname, '..');
 const DIST_DIR = join(ROOT_DIR, 'dist');
 const BASE_URL = 'https://www.weedmadrid.com';
 
-// Default/fallback values that indicate SEO was NOT properly set
-const FALLBACK_INDICATORS = [
-  'Best Cannabis Clubs Madrid 2025 | Legal Access Near You | Weed Madrid', // Default home title
-  'content="https://www.weedmadrid.com">', // og:url pointing to home (not specific page)
-];
+const HOME_TITLE = 'Best Cannabis Clubs Madrid 2025 | Legal Access Near You | Weed Madrid';
+const HOME_TITLE_PREFIX = 'Best Cannabis Clubs Madrid 2025 | Legal Access Near You';
+const HOME_DESCRIPTION = 'Find the best cannabis clubs in Madrid 2025. Legal, verified clubs with tourist-friendly access. Same-day invitations. Complete guide to Madrid\'s cannabis scene.';
+
+// Routes that are allowed to use the "home" title/description patterns
+const HOME_PATHS = new Set(['/', '/es', '/de', '/fr', '/it']);
 
 let errors = 0;
 let warnings = 0;
@@ -37,33 +38,52 @@ function validateHtmlFile(filePath, urlPath) {
   const h1Match = html.match(/<h1[^>]*>([^<]*)<\/h1>/i);
   const descriptionMatch = html.match(/<meta[^>]*name="description"[^>]*content="([^"]*)"[^>]*>/i);
 
-  const title = titleMatch ? titleMatch[1] : '';
-  const canonical = canonicalMatch ? canonicalMatch[1] : '';
-  const ogUrl = ogUrlMatch ? ogUrlMatch[1] : '';
-  const h1 = h1Match ? h1Match[1] : '';
-  const description = descriptionMatch ? descriptionMatch[1] : '';
+  const title = titleMatch ? titleMatch[1].trim() : '';
+  const canonical = canonicalMatch ? canonicalMatch[1].trim() : '';
+  const ogUrl = ogUrlMatch ? ogUrlMatch[1].trim() : '';
+  const h1 = h1Match ? h1Match[1].trim() : '';
+  const description = descriptionMatch ? descriptionMatch[1].trim() : '';
 
-  // Expected canonical URL
   const expectedCanonical = `${BASE_URL}${urlPath === '/' ? '' : urlPath}`;
+  const isHomeLike = HOME_PATHS.has(urlPath);
 
-  // Validation rules
+  // --- Strict rules (fail build) ---
+
+  // 1) Title must exist
   if (!title || title.length < 10) {
     issues.push(`❌ Missing or too short <title> (got: "${title}")`);
   }
 
+  // 2) Canonical MUST exist and MUST be exact
   if (!canonical) {
     issues.push(`❌ Missing canonical link`);
-  } else if (urlPath !== '/' && canonical === BASE_URL) {
-    issues.push(`❌ Canonical pointing to home instead of page: ${canonical}`);
-  } else if (!canonical.includes(urlPath.replace(/\/$/, '')) && urlPath !== '/') {
-    issues.push(`⚠️ Canonical may be incorrect: ${canonical} (expected to contain ${urlPath})`);
+  } else if (canonical !== expectedCanonical) {
+    issues.push(`❌ Canonical mismatch: ${canonical} (expected exactly ${expectedCanonical})`);
   }
 
+  // 3) og:url MUST exist and MUST match canonical exactly
   if (!ogUrl) {
     issues.push(`❌ Missing og:url`);
   } else if (canonical && ogUrl !== canonical) {
-    issues.push(`⚠️ og:url (${ogUrl}) doesn't match canonical (${canonical})`);
+    issues.push(`❌ og:url (${ogUrl}) must match canonical exactly (${canonical})`);
   }
+
+  // 4) For non-home routes, forbid any "home fallback" smell
+  if (!isHomeLike) {
+    if (title === HOME_TITLE || title.startsWith(HOME_TITLE_PREFIX)) {
+      issues.push(`❌ <title> looks like HOME fallback (got: "${title}")`);
+    }
+
+    if (canonical === BASE_URL || canonical === `${BASE_URL}/`) {
+      issues.push(`❌ Canonical must not point to HOME on internal pages (${canonical})`);
+    }
+
+    if (description && description === HOME_DESCRIPTION) {
+      issues.push(`❌ Meta description looks like HOME fallback`);
+    }
+  }
+
+  // --- Warnings (don’t fail build) ---
 
   if (!h1) {
     issues.push(`⚠️ Missing <h1> tag`);
@@ -73,16 +93,6 @@ function validateHtmlFile(filePath, urlPath) {
     issues.push(`⚠️ Missing or too short meta description`);
   }
 
-  // Check for fallback indicators (means SEOHead didn't update properly)
-  if (urlPath !== '/') {
-    for (const indicator of FALLBACK_INDICATORS) {
-      if (html.includes(indicator)) {
-        issues.push(`❌ Contains fallback/home content: "${indicator.substring(0, 50)}..."`);
-      }
-    }
-  }
-
-  // Check for JSON-LD
   if (!html.includes('application/ld+json')) {
     issues.push(`⚠️ Missing JSON-LD structured data`);
   }
