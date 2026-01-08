@@ -15,7 +15,7 @@ interface SEOHeadProps {
   hreflangLinks?: HreflangLink[];
   ogLocale?: string;
   ogLocaleAlternate?: string[];
-  speakableSelectors?: string[]; // CSS selectors for content readable by voice assistants
+  speakableSelectors?: string[];
 }
 
 const SEOHead = ({ 
@@ -32,7 +32,6 @@ const SEOHead = ({
 }: SEOHeadProps) => {
   useEffect(() => {
     // SSG/SEO signal: mark NOT ready while head is being updated
-    // (Puppeteer must wait for this to become "true" before capturing HTML)
     document.documentElement.setAttribute('data-seo-ready', 'false');
 
     // Update title
@@ -57,7 +56,7 @@ const SEOHead = ({
     updateMetaTag('og:locale', ogLocale, 'property');
     if (ogImage) updateMetaTag('og:image', ogImage, 'property');
 
-    // CRITICAL: Set og:url to canonical URL (must match exact page URL)
+    // CRITICAL: Set og:url to canonical URL
     if (canonical) {
       updateMetaTag('og:url', canonical, 'property');
     }
@@ -79,7 +78,7 @@ const SEOHead = ({
     updateMetaTag('twitter:description', description);
     if (ogImage) updateMetaTag('twitter:image', ogImage);
 
-    // Update canonical link - MUST be exact page URL, never homepage for internal pages
+    // Update canonical link
     if (canonical) {
       let linkElement = document.querySelector('link[rel="canonical"]');
       if (!linkElement) {
@@ -103,11 +102,9 @@ const SEOHead = ({
 
     // Update hreflang links
     if (hreflangLinks && hreflangLinks.length > 0) {
-      // Remove existing hreflang links
       const existingHreflangs = document.querySelectorAll('link[rel="alternate"][hreflang]');
       existingHreflangs.forEach(link => link.remove());
 
-      // Add new hreflang links
       hreflangLinks.forEach(({ lang, href }) => {
         const linkElement = document.createElement('link');
         linkElement.setAttribute('rel', 'alternate');
@@ -117,16 +114,13 @@ const SEOHead = ({
       });
     }
 
-    // Add structured data (support both single object and array of objects)
+    // Add structured data
     if (structuredData) {
-      // Remove existing structured data scripts
       const existingScripts = document.querySelectorAll('script[type="application/ld+json"]');
       existingScripts.forEach(script => script.remove());
 
-      // Add new structured data
       const dataArray = Array.isArray(structuredData) ? structuredData : [structuredData];
 
-      // Add SpeakableSpecification if selectors provided
       const enrichedData = dataArray.map((data: any) => {
         if (
           speakableSelectors.length > 0 &&
@@ -151,9 +145,13 @@ const SEOHead = ({
       });
     }
 
-    // SSG/SEO signal: mark ready ONLY AFTER all head updates are complete
-    // IMPORTANT: must run after title/canonical/og:url/description/JSON-LD updates.
-    document.documentElement.setAttribute('data-seo-ready', 'true');
+    // CRITICAL: Use double requestAnimationFrame to ensure DOM is fully painted
+    // before signaling SEO ready. This guarantees title/canonical/og:url are in DOM.
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        document.documentElement.setAttribute('data-seo-ready', 'true');
+      });
+    });
   }, [title, description, canonical, ogImage, keywords, structuredData, hreflangLinks, ogLocale, ogLocaleAlternate, speakableSelectors]);
 
   return null;
