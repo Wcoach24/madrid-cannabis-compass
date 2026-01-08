@@ -1,9 +1,9 @@
 {
   "trailingSlash": false,
+  "buildCommand": "npx vite build && node scripts/prerender.mjs && node scripts/validate-seo.mjs",
+  "outputDirectory": "dist",
   "headers": [
     {
-      "source": "/(.*)",
-      "headers": [
         {
           "key": "Link",
           "value": "<https://sdpmwelfkseuhlhgatsc.supabase.co>; rel=preconnect; crossorigin, <https://fonts.googleapis.com>; rel=preconnect, <https://fonts.gstatic.com>; rel=preconnect; crossorigin"

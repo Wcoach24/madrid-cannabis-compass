@@ -31,6 +31,10 @@ const SEOHead = ({
   speakableSelectors = []
 }: SEOHeadProps) => {
   useEffect(() => {
+    // SSG/SEO signal: mark NOT ready while head is being updated
+    // (Puppeteer must wait for this to become "true" before capturing HTML)
+    document.documentElement.setAttribute('data-seo-ready', 'false');
+
     // Update title
     document.title = title;
 
@@ -52,12 +56,12 @@ const SEOHead = ({
     updateMetaTag('og:type', 'website', 'property');
     updateMetaTag('og:locale', ogLocale, 'property');
     if (ogImage) updateMetaTag('og:image', ogImage, 'property');
-    
+
     // CRITICAL: Set og:url to canonical URL (must match exact page URL)
     if (canonical) {
       updateMetaTag('og:url', canonical, 'property');
     }
-    
+
     // Add og:locale:alternate for other languages
     ogLocaleAlternate.forEach((locale, index) => {
       const existingAlternates = document.querySelectorAll('meta[property="og:locale:alternate"]');
@@ -69,7 +73,7 @@ const SEOHead = ({
       }
       element.setAttribute('content', locale);
     });
-    
+
     updateMetaTag('twitter:card', 'summary_large_image');
     updateMetaTag('twitter:title', title);
     updateMetaTag('twitter:description', description);
@@ -121,10 +125,13 @@ const SEOHead = ({
 
       // Add new structured data
       const dataArray = Array.isArray(structuredData) ? structuredData : [structuredData];
-      
+
       // Add SpeakableSpecification if selectors provided
       const enrichedData = dataArray.map((data: any) => {
-        if (speakableSelectors.length > 0 && (data['@type'] === 'Article' || data['@type'] === 'BlogPosting' || data['@type'] === 'NewsArticle')) {
+        if (
+          speakableSelectors.length > 0 &&
+          (data['@type'] === 'Article' || data['@type'] === 'BlogPosting' || data['@type'] === 'NewsArticle')
+        ) {
           return {
             ...data,
             speakable: {
@@ -135,7 +142,7 @@ const SEOHead = ({
         }
         return data;
       });
-      
+
       enrichedData.forEach((data) => {
         const scriptElement = document.createElement('script');
         scriptElement.setAttribute('type', 'application/ld+json');
@@ -143,6 +150,10 @@ const SEOHead = ({
         document.head.appendChild(scriptElement);
       });
     }
+
+    // SSG/SEO signal: mark ready ONLY AFTER all head updates are complete
+    // IMPORTANT: must run after title/canonical/og:url/description/JSON-LD updates.
+    document.documentElement.setAttribute('data-seo-ready', 'true');
   }, [title, description, canonical, ogImage, keywords, structuredData, hreflangLinks, ogLocale, ogLocaleAlternate, speakableSelectors]);
 
   return null;
