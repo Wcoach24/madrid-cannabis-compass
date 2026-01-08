@@ -5,7 +5,8 @@
  * Prerenders ALL public routes to static HTML with correct SEO metadata.
  * Each generated file is validated before saving.
  * 
- * Usage: node scripts/prerender.mjs
+ * CRITICAL: This script must run in an environment with Chrome available
+ * (e.g., GitHub Actions with puppeteer browsers install chrome)
  */
 
 import puppeteer from 'puppeteer';
@@ -25,6 +26,11 @@ const BASE_URL = 'https://www.weedmadrid.com';
 const MIN_TITLE_LENGTH = 10;
 const MIN_CONTENT_LENGTH = 1000;
 const MAX_RETRIES = 2;
+const SEO_READY_TIMEOUT = 30000;
+const STABILITY_WAIT = 500;
+
+// Home page detection - used to prevent home fallback on internal pages
+const HOME_TITLE_PREFIX = 'Best Cannabis Clubs Madrid 2025';
 
 // Track validation results
 const validationResults = {
@@ -41,12 +47,10 @@ const validationResults = {
 function createStaticServer(port) {
   return new Promise((resolve) => {
     const server = createServer((req, res) => {
-      // Parse URL to get clean pathname (strip query strings)
       const urlPath = req.url.split('?')[0];
       const ext = extname(urlPath);
 
-      // PUNTO 4: For requests WITHOUT file extension, ALWAYS serve SPA index.html
-      // This avoids serving already-prerendered dist/{route}/index.html during the loop
+      // For requests WITHOUT file extension, ALWAYS serve SPA index.html
       if (!ext) {
         try {
           const content = readFileSync(join(DIST_DIR, 'index.html'));
@@ -60,7 +64,7 @@ function createStaticServer(port) {
         }
       }
 
-      // For requests WITH extension (.js, .css, .png, etc.), serve the actual file
+      // For requests WITH extension, serve the actual file
       const filePath = join(DIST_DIR, urlPath);
       const contentTypes = {
         '.html': 'text/html',
@@ -100,6 +104,7 @@ function createStaticServer(port) {
 function validateHtml(html, url) {
   const issues = [];
   const fullUrl = `${BASE_URL}${url === '/' ? '' : url}`;
+  const isHome = url === '/' || url === '';
 
   // Extract SEO elements
   const titleMatch = html.match(/<title>([^<]*)<\/title>/i);
@@ -116,10 +121,13 @@ function validateHtml(html, url) {
     issues.push(`Title too short or missing: "${title}"`);
   }
 
-  // For non-home pages, canonical should not be home
-  if (url !== '/' && url !== '') {
+  // CRITICAL: For non-home pages, detect home fallback
+  if (!isHome) {
+    if (title.startsWith(HOME_TITLE_PREFIX)) {
+      issues.push(`CRITICAL: Home title detected on internal page!`);
+    }
     if (canonical === BASE_URL || canonical === `${BASE_URL}/`) {
-      issues.push(`Canonical pointing to home instead of page`);
+      issues.push(`CRITICAL: Canonical pointing to home instead of page!`);
     }
   }
 
@@ -133,7 +141,7 @@ function validateHtml(html, url) {
     issues.push(`Missing H1 tag`);
   }
 
-  // Content length check (rough indicator of proper render)
+  // Content length check
   if (html.length < MIN_CONTENT_LENGTH) {
     issues.push(`HTML content too short (${html.length} chars)`);
   }
@@ -152,13 +160,13 @@ function validateHtml(html, url) {
 function fixSeoMetadata(html, url) {
   const fullUrl = `${BASE_URL}${url === '/' ? '' : url}`;
 
-  // Fix canonical - always use full production URL
+  // Fix canonical
   html = html.replace(
     /<link[^>]*rel="canonical"[^>]*href="[^"]*"[^>]*>/gi,
     `<link rel="canonical" href="${fullUrl}">`
   );
 
-  // Fix og:url - must match canonical exactly
+  // Fix og:url
   html = html.replace(
     /<meta[^>]*property="og:url"[^>]*content="[^"]*"[^>]*>/gi,
     `<meta property="og:url" content="${fullUrl}">`
@@ -180,37 +188,46 @@ function fixSeoMetadata(html, url) {
  */
 async function prerenderRoute(browser, url, serverPort, retryCount = 0) {
   const page = await browser.newPage();
+  const isHome = url === '/' || url === '';
   
-  // Set viewport for consistent rendering
   await page.setViewport({ width: 1280, height: 800 });
-  
-  // Set user agent (simulate Googlebot for consistent behavior)
   await page.setUserAgent('Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)');
 
   try {
-    // Navigate to the route
     await page.goto(`http://localhost:${serverPort}${url}`, {
       waitUntil: 'networkidle0',
       timeout: 45000,
     });
 
-    // PUNTO 2: Wait for SEO-ready marker + H1 with content
-    // This ensures SEOHead has finished updating title/canonical/og:url/description/JSON-LD
-    await page.waitForFunction(() => {
-      // A) data-seo-ready must be 'true' (set by SEOHead after all head updates)
+    // ROBUST WAITING: Wait for ALL conditions to be true
+    await page.waitForFunction((isHomePage, homeTitlePrefix) => {
+      // 1) data-seo-ready must be 'true'
       const seoReady = document.documentElement.getAttribute('data-seo-ready') === 'true';
+      if (!seoReady) return false;
       
-      // B) H1 must exist with non-empty text
+      // 2) H1 must exist with non-empty text
       const h1 = document.querySelector('h1');
       const h1Ok = !!h1 && (h1.textContent || '').trim().length > 0;
+      if (!h1Ok) return false;
       
-      return seoReady && h1Ok;
-    }, { timeout: 30000 }).catch(() => {
-      console.warn(`  ⚠ Timeout waiting for data-seo-ready + H1 on ${url}`);
+      // 3) No "Loading..." visible in root
+      const root = document.getElementById('root');
+      const noLoading = !root || !root.textContent.includes('Loading...');
+      if (!noLoading) return false;
+      
+      // 4) For non-home pages, title must NOT be home title
+      if (!isHomePage) {
+        const title = document.title || '';
+        if (title.startsWith(homeTitlePrefix)) return false;
+      }
+      
+      return true;
+    }, { timeout: SEO_READY_TIMEOUT }, isHome, HOME_TITLE_PREFIX).catch((e) => {
+      console.warn(`  ⚠ Timeout waiting for SEO conditions on ${url}: ${e.message}`);
     });
 
-    // Extra 500ms wait after conditions are met to ensure DOM is stable
-    await new Promise(r => setTimeout(r, 500));
+    // Extra stability wait after conditions are met
+    await new Promise(r => setTimeout(r, STABILITY_WAIT));
 
     // Get rendered HTML
     let html = await page.content();
@@ -221,8 +238,11 @@ async function prerenderRoute(browser, url, serverPort, retryCount = 0) {
     // Validate
     const issues = validateHtml(html, url);
 
-    if (issues.length > 0 && retryCount < MAX_RETRIES) {
-      console.log(`  ⚠ Validation issues, retrying... (${retryCount + 1}/${MAX_RETRIES})`);
+    // Check for CRITICAL issues that should trigger retry
+    const hasCritical = issues.some(i => i.includes('CRITICAL'));
+    
+    if (hasCritical && retryCount < MAX_RETRIES) {
+      console.log(`  ⚠ Critical issues, retrying... (${retryCount + 1}/${MAX_RETRIES})`);
       await page.close();
       await new Promise(r => setTimeout(r, 2000));
       return prerenderRoute(browser, url, serverPort, retryCount + 1);
@@ -249,14 +269,15 @@ async function prerenderRoute(browser, url, serverPort, retryCount = 0) {
   }
 }
 
-// Save HTML to the correct path in dist/
+/**
+ * Save HTML to the correct path in dist/
+ */
 function saveHtml(url, html) {
   let outputPath;
   
   if (url === '/') {
     outputPath = join(DIST_DIR, 'index.html');
   } else {
-    // Create directory structure: /club/slug -> /club/slug/index.html
     const dir = join(DIST_DIR, url);
     mkdirSync(dir, { recursive: true });
     outputPath = join(dir, 'index.html');
@@ -279,10 +300,13 @@ function printSummary() {
   
   if (validationResults.warnings.length > 0) {
     console.log('\n⚠️  Pages with warnings:');
-    validationResults.warnings.forEach(({ url, issues }) => {
+    validationResults.warnings.slice(0, 10).forEach(({ url, issues }) => {
       console.log(`   ${url}`);
       issues.forEach(i => console.log(`      - ${i}`));
     });
+    if (validationResults.warnings.length > 10) {
+      console.log(`   ... and ${validationResults.warnings.length - 10} more`);
+    }
   }
   
   if (validationResults.errors.length > 0) {
@@ -301,28 +325,23 @@ function printSummary() {
 async function main() {
   console.log('\n🚀 Starting Robust SSG Prerender...\n');
 
-  // Verify dist exists
   if (!existsSync(DIST_DIR)) {
     console.error('❌ dist/ directory not found. Run `vite build` first.');
     process.exit(1);
   }
 
-  // Get all URLs from routes inventory
   const urls = await getAllPaths();
   console.log(`📄 Total routes to prerender: ${urls.length}\n`);
 
-  // Start static server
   const PORT = 3456;
   const server = await createStaticServer(PORT);
 
-  // Launch Puppeteer
   console.log('🎭 Launching Puppeteer...\n');
   const browser = await puppeteer.launch({
     headless: 'new',
     args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
   });
 
-  // Prerender each route
   for (let i = 0; i < urls.length; i++) {
     const url = urls[i];
     process.stdout.write(`[${i + 1}/${urls.length}] ${url}...`);
@@ -331,7 +350,10 @@ async function main() {
       const { html, issues } = await prerenderRoute(browser, url, PORT);
       saveHtml(url, html);
       
-      if (issues.length > 0) {
+      const hasCritical = issues.some(i => i.includes('CRITICAL'));
+      if (hasCritical) {
+        console.log(` ❌ CRITICAL`);
+      } else if (issues.length > 0) {
         console.log(` ⚠️ (${issues.length} warnings)`);
       } else {
         console.log(` ✅`);
@@ -341,16 +363,18 @@ async function main() {
     }
   }
 
-  // Cleanup
   await browser.close();
   server.close();
 
-  // Print summary
   printSummary();
 
-  // Exit with error if critical failures
-  if (validationResults.errors.length > 0) {
-    console.log('❌ Prerender completed with errors\n');
+  // Fail build if there are CRITICAL issues or errors
+  const criticalCount = validationResults.warnings.filter(
+    w => w.issues.some(i => i.includes('CRITICAL'))
+  ).length;
+  
+  if (validationResults.errors.length > 0 || criticalCount > 0) {
+    console.log(`❌ Prerender FAILED: ${validationResults.errors.length} errors, ${criticalCount} critical issues\n`);
     process.exit(1);
   }
 
