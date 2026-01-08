@@ -42,6 +42,46 @@
       "destination": "https://sdpmwelfkseuhlhgatsc.supabase.co/functions/v1/ssr-page?path=:path*"
     },
     {
+      "source": "/club/:slug*",
+      "destination": "/api/ssr/club/:slug*"
+    },
+    {
+      "source": "/guide/:slug*",
+      "destination": "/api/ssr/guide/:slug*"
+    },
+    {
+      "source": "/es/club/:slug*",
+      "destination": "/api/ssr/es/club/:slug*"
+    },
+    {
+      "source": "/es/guide/:slug*",
+      "destination": "/api/ssr/es/guide/:slug*"
+    },
+    {
+      "source": "/de/club/:slug*",
+      "destination": "/api/ssr/de/club/:slug*"
+    },
+    {
+      "source": "/de/guide/:slug*",
+      "destination": "/api/ssr/de/guide/:slug*"
+    },
+    {
+      "source": "/fr/club/:slug*",
+      "destination": "/api/ssr/fr/club/:slug*"
+    },
+    {
+      "source": "/fr/guide/:slug*",
+      "destination": "/api/ssr/fr/guide/:slug*"
+    },
+    {
+      "source": "/it/club/:slug*",
+      "destination": "/api/ssr/it/club/:slug*"
+    },
+    {
+      "source": "/it/guide/:slug*",
+      "destination": "/api/ssr/it/guide/:slug*"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }

@@ -7,12 +7,20 @@ const corsHeaders = {
 
 const BASE_URL = 'https://www.weedmadrid.com';
 
+// Ensure image URL is absolute
+function toAbsoluteUrl(url: string | null | undefined): string {
+  if (!url) return `${BASE_URL}/logo.png`;
+  if (url.startsWith('http')) return url;
+  if (url.startsWith('/')) return `${BASE_URL}${url}`;
+  return `${BASE_URL}/${url}`;
+}
+
 // HTML template for club pages
 function renderClubHtml(club: any, language: string = 'en') {
   const title = club.seo_title || `${club.name} - Cannabis Club Madrid`;
   const description = club.seo_description || club.summary || club.description?.substring(0, 160);
   const canonical = `${BASE_URL}${language !== 'en' ? `/${language}` : ''}/club/${club.slug}`;
-  const image = club.main_image_url || `${BASE_URL}/logo.png`;
+  const image = toAbsoluteUrl(club.main_image_url);
 
   // LocalBusiness schema
   const localBusinessSchema = {
@@ -61,10 +69,11 @@ function renderClubHtml(club: any, language: string = 'en') {
   <script type="application/ld+json">${JSON.stringify(localBusinessSchema)}</script>
 </head>
 <body>
-  <h1>${escapeHtml(club.name)}</h1>
-  <p>${escapeHtml(description)}</p>
-  <address>${escapeHtml(club.address)}, ${escapeHtml(club.district)}, ${escapeHtml(club.city)}</address>
-  <script>window.location.href = "${canonical}";</script>
+  <div id="root">
+    <h1>${escapeHtml(club.name)}</h1>
+    <p>${escapeHtml(description)}</p>
+    <address>${escapeHtml(club.address)}, ${escapeHtml(club.district)}, ${escapeHtml(club.city)}</address>
+  </div>
 </body>
 </html>`;
 }
@@ -74,7 +83,7 @@ function renderArticleHtml(article: any, language: string = 'en') {
   const title = article.seo_title || article.title;
   const description = article.seo_description || article.excerpt || article.body_markdown?.substring(0, 160);
   const canonical = `${BASE_URL}${language !== 'en' ? `/${language}` : ''}/guide/${article.slug}`;
-  const image = article.cover_image_url || `${BASE_URL}/logo.png`;
+  const image = toAbsoluteUrl(article.cover_image_url);
 
   // BlogPosting schema
   const articleSchema = {
@@ -124,12 +133,13 @@ function renderArticleHtml(article: any, language: string = 'en') {
   <script type="application/ld+json">${JSON.stringify(articleSchema)}</script>
 </head>
 <body>
-  <article>
-    <h1>${escapeHtml(article.title)}</h1>
-    <p>${escapeHtml(description)}</p>
-    <p>By ${escapeHtml(article.author_name)}</p>
-  </article>
-  <script>window.location.href = "${canonical}";</script>
+  <div id="root">
+    <article>
+      <h1>${escapeHtml(article.title)}</h1>
+      <p>${escapeHtml(description)}</p>
+      <p>By ${escapeHtml(article.author_name)}</p>
+    </article>
+  </div>
 </body>
 </html>`;
 }
