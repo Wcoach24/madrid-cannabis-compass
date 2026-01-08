@@ -53,6 +53,11 @@ const SEOHead = ({
     updateMetaTag('og:locale', ogLocale, 'property');
     if (ogImage) updateMetaTag('og:image', ogImage, 'property');
     
+    // CRITICAL: Set og:url to canonical URL (must match exact page URL)
+    if (canonical) {
+      updateMetaTag('og:url', canonical, 'property');
+    }
+    
     // Add og:locale:alternate for other languages
     ogLocaleAlternate.forEach((locale, index) => {
       const existingAlternates = document.querySelectorAll('meta[property="og:locale:alternate"]');
@@ -70,7 +75,7 @@ const SEOHead = ({
     updateMetaTag('twitter:description', description);
     if (ogImage) updateMetaTag('twitter:image', ogImage);
 
-    // Update canonical link
+    // Update canonical link - MUST be exact page URL, never homepage for internal pages
     if (canonical) {
       let linkElement = document.querySelector('link[rel="canonical"]');
       if (!linkElement) {
