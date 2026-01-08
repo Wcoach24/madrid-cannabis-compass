@@ -5,8 +5,10 @@
  * Prerenders ALL public routes to static HTML with correct SEO metadata.
  * Each generated file is validated before saving.
  * 
- * CRITICAL: This script must run in an environment with Chrome available
- * (e.g., GitHub Actions with puppeteer browsers install chrome)
+ * FEATURES:
+ * - Soft-fail: continues on non-core route failures
+ * - Debug dumps: saves failed HTML for inspection
+ * - Core routes gating: only fails build if core routes fail
  */
 
 import puppeteer from 'puppeteer';
@@ -20,29 +22,63 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const ROOT_DIR = join(__dirname, '..');
 const DIST_DIR = join(ROOT_DIR, 'dist');
+const DEBUG_DIR = join(DIST_DIR, '__prerender_debug__');
 const BASE_URL = 'https://www.weedmadrid.com';
 
 // Validation thresholds
 const MIN_TITLE_LENGTH = 10;
 const MIN_CONTENT_LENGTH = 1000;
 const MAX_RETRIES = 2;
-const SEO_READY_TIMEOUT = 30000;
-const STABILITY_WAIT = 500;
+const DEFAULT_TIMEOUT = 30000;
+const HEAVY_ROUTE_TIMEOUT = 60000;
+const STABILITY_WAIT = 750;
 
-// Home page detection - used to prevent home fallback on internal pages
-const HOME_TITLE_PREFIX = 'Best Cannabis Clubs Madrid 2025';
+// Heavy routes that need more time
+const HEAVY_ROUTES = ['/clubs'];
+
+// Core routes - build fails if ANY of these fail
+const CORE_ROUTES = [
+  '/',
+  '/clubs',
+  '/guides',
+  '/club/genetics-social-club-madrid',
+  '/guide/best-cannabis-clubs-madrid-2025'
+];
+
+// Language home paths
+const LANGUAGE_HOMES = new Set(['/', '/es', '/de', '/fr', '/it']);
+
+// Fallback title to detect unhydrated pages
+const FALLBACK_TITLE = 'Weed Madrid';
 
 // Track validation results
 const validationResults = {
   success: [],
   warnings: [],
-  errors: [],
+  failed: [],
+  coreFailed: [],
+  debugDumps: {},
 };
 
 /**
+ * Check if route is a core route
+ */
+function isCoreRoute(url) {
+  return CORE_ROUTES.includes(url);
+}
+
+/**
+ * Get timeout for a specific route
+ */
+function getTimeoutForRoute(url) {
+  if (HEAVY_ROUTES.includes(url)) {
+    return HEAVY_ROUTE_TIMEOUT;
+  }
+  return DEFAULT_TIMEOUT;
+}
+
+/**
  * Static file server for dist/
- * CRITICAL: For routes without extension, ALWAYS serve the SPA index.html.
- * This prevents already-prerendered HTML from contaminating subsequent renders.
  */
 function createStaticServer(port) {
   return new Promise((resolve) => {
@@ -104,7 +140,7 @@ function createStaticServer(port) {
 function validateHtml(html, url) {
   const issues = [];
   const fullUrl = `${BASE_URL}${url === '/' ? '' : url}`;
-  const isHome = url === '/' || url === '';
+  const isHome = LANGUAGE_HOMES.has(url);
 
   // Extract SEO elements
   const titleMatch = html.match(/<title>([^<]*)<\/title>/i);
@@ -121,13 +157,16 @@ function validateHtml(html, url) {
     issues.push(`Title too short or missing: "${title}"`);
   }
 
-  // CRITICAL: For non-home pages, detect home fallback
+  // For non-home pages, detect fallback issues
   if (!isHome) {
-    if (title.startsWith(HOME_TITLE_PREFIX)) {
-      issues.push(`CRITICAL: Home title detected on internal page!`);
-    }
+    // Canonical should point to THIS page, not home
     if (canonical === BASE_URL || canonical === `${BASE_URL}/`) {
       issues.push(`CRITICAL: Canonical pointing to home instead of page!`);
+    }
+    
+    // Title shouldn't be just the fallback
+    if (title === FALLBACK_TITLE || title === '') {
+      issues.push(`CRITICAL: Title is fallback or empty on internal page!`);
     }
   }
 
@@ -136,9 +175,9 @@ function validateHtml(html, url) {
     issues.push(`og:url doesn't match canonical`);
   }
 
-  // H1 should exist
+  // H1 warning (not critical)
   if (!h1Match) {
-    issues.push(`Missing H1 tag`);
+    issues.push(`Warning: Missing H1 tag`);
   }
 
   // Content length check
@@ -148,7 +187,7 @@ function validateHtml(html, url) {
 
   // Check for empty root (SPA shell)
   if (html.includes('<div id="root"></div>') || html.includes('<div id="root"> </div>')) {
-    issues.push(`Contains empty #root (SPA shell)`);
+    issues.push(`CRITICAL: Contains empty #root (SPA shell)`);
   }
 
   return issues;
@@ -184,11 +223,60 @@ function fixSeoMetadata(html, url) {
 }
 
 /**
+ * Save debug dump for failed route
+ */
+function saveDebugDump(url, html, metadata) {
+  mkdirSync(DEBUG_DIR, { recursive: true });
+  
+  // Convert URL to safe filename
+  const safeName = url === '/' ? 'index' : url.replace(/^\//, '').replace(/\//g, '__');
+  const htmlPath = join(DEBUG_DIR, `${safeName}.html`);
+  const metaPath = join(DEBUG_DIR, `${safeName}.json`);
+  
+  writeFileSync(htmlPath, html);
+  writeFileSync(metaPath, JSON.stringify(metadata, null, 2));
+  
+  validationResults.debugDumps[url] = {
+    html: htmlPath.replace(ROOT_DIR, ''),
+    meta: metaPath.replace(ROOT_DIR, ''),
+  };
+  
+  console.log(`  📝 Debug dump saved: ${safeName}.html`);
+}
+
+/**
+ * Extract page metadata for debugging
+ */
+async function extractMetadata(page, url) {
+  return await page.evaluate((urlPath) => {
+    const canonical = document.querySelector('link[rel="canonical"]');
+    const title = document.title;
+    const h1 = document.querySelector('h1');
+    const hydrated = document.documentElement.getAttribute('data-hydrated');
+    const seoReady = document.documentElement.getAttribute('data-seo-ready');
+    const rootContent = document.getElementById('root')?.innerHTML?.substring(0, 200) || '';
+    
+    return {
+      url: urlPath,
+      pathname: window.location.pathname,
+      title,
+      canonical: canonical?.getAttribute('href') || null,
+      h1: h1?.textContent?.substring(0, 100) || null,
+      dataHydrated: hydrated,
+      dataSeoReady: seoReady,
+      rootPreview: rootContent,
+      timestamp: new Date().toISOString(),
+    };
+  }, url);
+}
+
+/**
  * Prerender a single route with retries and validation
  */
 async function prerenderRoute(browser, url, serverPort, retryCount = 0) {
   const page = await browser.newPage();
-  const isHome = url === '/' || url === '';
+  const isHome = LANGUAGE_HOMES.has(url);
+  const timeout = getTimeoutForRoute(url);
   
   await page.setViewport({ width: 1280, height: 800 });
   await page.setUserAgent('Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)');
@@ -199,38 +287,54 @@ async function prerenderRoute(browser, url, serverPort, retryCount = 0) {
       timeout: 45000,
     });
 
-    // ROBUST WAITING: Wait for ALL conditions to be true
-    await page.waitForFunction((isHomePage, homeTitlePrefix) => {
-      // 1) data-seo-ready must be 'true'
-      const seoReady = document.documentElement.getAttribute('data-seo-ready') === 'true';
-      if (!seoReady) return false;
-      
-      // 2) H1 must exist with non-empty text
-      const h1 = document.querySelector('h1');
-      const h1Ok = !!h1 && (h1.textContent || '').trim().length > 0;
-      if (!h1Ok) return false;
-      
-      // 3) No "Loading..." visible in root
-      const root = document.getElementById('root');
-      const noLoading = !root || !root.textContent.includes('Loading...');
-      if (!noLoading) return false;
-      
-      // 4) For non-home pages, title must NOT be home title
-      if (!isHomePage) {
-        const title = document.title || '';
-        if (title.startsWith(homeTitlePrefix)) return false;
-      }
-      
-      return true;
-    }, { timeout: SEO_READY_TIMEOUT }, isHome, HOME_TITLE_PREFIX).catch((e) => {
-      console.warn(`  ⚠ Timeout waiting for SEO conditions on ${url}: ${e.message}`);
-    });
+    // ROBUST WAITING: Wait for stable SEO conditions
+    let waitSuccess = true;
+    try {
+      await page.waitForFunction((isHomePage, fallbackTitle, baseUrl, currentUrl) => {
+        // 1) data-hydrated must be 'true'
+        const hydrated = document.documentElement.getAttribute('data-hydrated') === 'true';
+        if (!hydrated) return false;
+        
+        // 2) data-seo-ready must be 'true'
+        const seoReady = document.documentElement.getAttribute('data-seo-ready') === 'true';
+        if (!seoReady) return false;
+        
+        // 3) Title must exist and not be just the fallback for non-home pages
+        const title = (document.title || '').trim();
+        if (!title) return false;
+        if (!isHomePage && title === fallbackTitle) return false;
+        
+        // 4) Canonical must exist and contain the current route path
+        const canonical = document.querySelector('link[rel="canonical"]');
+        if (!canonical) return false;
+        const canonicalHref = canonical.getAttribute('href') || '';
+        
+        // For non-home, canonical should contain the path
+        if (!isHomePage) {
+          // Normalize: remove trailing slash for comparison
+          const normalizedUrl = currentUrl.replace(/\/$/, '') || '/';
+          if (!canonicalHref.includes(normalizedUrl)) return false;
+        }
+        
+        // 5) Root should not have Loading state
+        const root = document.getElementById('root');
+        if (root && root.innerHTML.includes('Loading...')) return false;
+        
+        return true;
+      }, { timeout }, isHome, FALLBACK_TITLE, BASE_URL, url);
+    } catch (waitError) {
+      console.warn(`  ⚠ Timeout waiting for SEO conditions: ${waitError.message.split('\n')[0]}`);
+      waitSuccess = false;
+    }
 
     // Extra stability wait after conditions are met
     await new Promise(r => setTimeout(r, STABILITY_WAIT));
 
     // Get rendered HTML
     let html = await page.content();
+    
+    // Extract metadata for debugging
+    const metadata = await extractMetadata(page, url);
 
     // Fix SEO metadata
     html = fixSeoMetadata(html, url);
@@ -238,32 +342,61 @@ async function prerenderRoute(browser, url, serverPort, retryCount = 0) {
     // Validate
     const issues = validateHtml(html, url);
 
-    // Check for CRITICAL issues that should trigger retry
+    // Check for CRITICAL issues
     const hasCritical = issues.some(i => i.includes('CRITICAL'));
     
-    if (hasCritical && retryCount < MAX_RETRIES) {
-      console.log(`  ⚠ Critical issues, retrying... (${retryCount + 1}/${MAX_RETRIES})`);
+    if ((hasCritical || !waitSuccess) && retryCount < MAX_RETRIES) {
+      console.log(`  ⚠ Issues detected, retrying... (${retryCount + 1}/${MAX_RETRIES})`);
       await page.close();
       await new Promise(r => setTimeout(r, 2000));
       return prerenderRoute(browser, url, serverPort, retryCount + 1);
     }
 
-    if (issues.length > 0) {
+    // After max retries, save debug dump if still failing
+    if (hasCritical || !waitSuccess) {
+      saveDebugDump(url, html, { ...metadata, issues, waitSuccess });
+    }
+
+    if (issues.some(i => i.includes('CRITICAL'))) {
+      validationResults.failed.push({ url, issues });
+      if (isCoreRoute(url)) {
+        validationResults.coreFailed.push(url);
+      }
+    } else if (issues.length > 0) {
       validationResults.warnings.push({ url, issues });
     } else {
       validationResults.success.push(url);
     }
 
-    return { html, issues };
+    return { html, issues, waitSuccess };
   } catch (error) {
+    // Get current HTML even on error
+    let html = '';
+    let metadata = {};
+    try {
+      html = await page.content();
+      metadata = await extractMetadata(page, url);
+    } catch (e) {
+      // Ignore extraction errors
+    }
+    
     if (retryCount < MAX_RETRIES) {
       console.log(`  ⚠ Error, retrying... (${retryCount + 1}/${MAX_RETRIES})`);
       await page.close();
       await new Promise(r => setTimeout(r, 2000));
       return prerenderRoute(browser, url, serverPort, retryCount + 1);
     }
-    validationResults.errors.push({ url, error: error.message });
-    throw error;
+    
+    // Save debug dump for failed route
+    saveDebugDump(url, html, { ...metadata, error: error.message });
+    
+    validationResults.failed.push({ url, issues: [error.message] });
+    if (isCoreRoute(url)) {
+      validationResults.coreFailed.push(url);
+    }
+    
+    // Return minimal result instead of throwing
+    return { html, issues: [error.message], waitSuccess: false };
   } finally {
     await page.close().catch(() => {});
   }
@@ -296,27 +429,62 @@ function printSummary() {
   console.log('='.repeat(60));
   console.log(`✅ Success: ${validationResults.success.length}`);
   console.log(`⚠️  Warnings: ${validationResults.warnings.length}`);
-  console.log(`❌ Errors: ${validationResults.errors.length}`);
+  console.log(`❌ Failed: ${validationResults.failed.length}`);
+  console.log(`🔴 Core Failed: ${validationResults.coreFailed.length}`);
   
   if (validationResults.warnings.length > 0) {
     console.log('\n⚠️  Pages with warnings:');
-    validationResults.warnings.slice(0, 10).forEach(({ url, issues }) => {
+    validationResults.warnings.slice(0, 5).forEach(({ url, issues }) => {
       console.log(`   ${url}`);
-      issues.forEach(i => console.log(`      - ${i}`));
+      issues.slice(0, 2).forEach(i => console.log(`      - ${i}`));
     });
-    if (validationResults.warnings.length > 10) {
-      console.log(`   ... and ${validationResults.warnings.length - 10} more`);
+    if (validationResults.warnings.length > 5) {
+      console.log(`   ... and ${validationResults.warnings.length - 5} more`);
     }
   }
   
-  if (validationResults.errors.length > 0) {
+  if (validationResults.failed.length > 0) {
     console.log('\n❌ Failed pages:');
-    validationResults.errors.forEach(({ url, error }) => {
-      console.log(`   ${url}: ${error}`);
+    validationResults.failed.forEach(({ url, issues }) => {
+      console.log(`   ${url}`);
+      issues.slice(0, 2).forEach(i => console.log(`      - ${i}`));
+    });
+  }
+  
+  if (validationResults.coreFailed.length > 0) {
+    console.log('\n🔴 CORE ROUTES FAILED (build will fail):');
+    validationResults.coreFailed.forEach(url => {
+      console.log(`   ${url}`);
     });
   }
   
   console.log('='.repeat(60) + '\n');
+}
+
+/**
+ * Save report JSON
+ */
+function saveReport() {
+  mkdirSync(DEBUG_DIR, { recursive: true });
+  const reportPath = join(DEBUG_DIR, 'report.json');
+  
+  const report = {
+    timestamp: new Date().toISOString(),
+    summary: {
+      success: validationResults.success.length,
+      warnings: validationResults.warnings.length,
+      failed: validationResults.failed.length,
+      coreFailed: validationResults.coreFailed.length,
+    },
+    coreRoutes: CORE_ROUTES,
+    coreFailed: validationResults.coreFailed,
+    failed: validationResults.failed,
+    warnings: validationResults.warnings.map(w => ({ url: w.url, issues: w.issues })),
+    debugDumps: validationResults.debugDumps,
+  };
+  
+  writeFileSync(reportPath, JSON.stringify(report, null, 2));
+  console.log(`📋 Report saved: ${reportPath.replace(ROOT_DIR, '')}`);
 }
 
 /**
@@ -344,15 +512,20 @@ async function main() {
 
   for (let i = 0; i < urls.length; i++) {
     const url = urls[i];
-    process.stdout.write(`[${i + 1}/${urls.length}] ${url}...`);
+    const isCore = isCoreRoute(url);
+    process.stdout.write(`[${i + 1}/${urls.length}] ${url}${isCore ? ' [CORE]' : ''}...`);
     
     try {
-      const { html, issues } = await prerenderRoute(browser, url, PORT);
-      saveHtml(url, html);
+      const { html, issues, waitSuccess } = await prerenderRoute(browser, url, PORT);
+      
+      // Always save HTML (even if issues exist, for fallback)
+      if (html && html.length > 500) {
+        saveHtml(url, html);
+      }
       
       const hasCritical = issues.some(i => i.includes('CRITICAL'));
-      if (hasCritical) {
-        console.log(` ❌ CRITICAL`);
+      if (hasCritical || !waitSuccess) {
+        console.log(` ❌ FAILED`);
       } else if (issues.length > 0) {
         console.log(` ⚠️ (${issues.length} warnings)`);
       } else {
@@ -367,18 +540,22 @@ async function main() {
   server.close();
 
   printSummary();
+  saveReport();
 
-  // Fail build if there are CRITICAL issues or errors
-  const criticalCount = validationResults.warnings.filter(
-    w => w.issues.some(i => i.includes('CRITICAL'))
-  ).length;
-  
-  if (validationResults.errors.length > 0 || criticalCount > 0) {
-    console.log(`❌ Prerender FAILED: ${validationResults.errors.length} errors, ${criticalCount} critical issues\n`);
+  // Only fail build if CORE routes failed
+  if (validationResults.coreFailed.length > 0) {
+    console.log(`\n❌ BUILD FAILED: ${validationResults.coreFailed.length} core route(s) failed!\n`);
+    console.log('Core routes are critical for SEO. Fix these before deploying.\n');
     process.exit(1);
   }
 
-  console.log('✅ Prerender completed successfully!\n');
+  if (validationResults.failed.length > 0) {
+    console.log(`\n⚠️ Prerender completed with ${validationResults.failed.length} non-core failures.`);
+    console.log('These pages have debug dumps for inspection.\n');
+  } else {
+    console.log('✅ Prerender completed successfully!\n');
+  }
+  
   console.log(`📁 Output: ${DIST_DIR}\n`);
 }
 

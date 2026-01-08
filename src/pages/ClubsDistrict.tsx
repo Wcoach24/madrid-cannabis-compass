@@ -1,9 +1,11 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { useLanguage } from "@/hooks/useLanguage";
 import { supabase } from "@/integrations/supabase/client";
 import { buildLanguageAwarePath } from "@/lib/languageUtils";
 import { generateHreflangLinks, BASE_URL } from "@/lib/hreflangUtils";
+import { slugifyDistrict, needsSlugNormalization } from "@/lib/slugify";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SEOHead from "@/components/SEOHead";
@@ -52,6 +54,16 @@ const DISTRICT_CONFIG: Record<string, {
 const ClubsDistrict = () => {
   const { district } = useParams<{ district: string }>();
   const { t, language } = useLanguage();
+  const navigate = useNavigate();
+  
+  // Normalize slug if it has accents or special characters
+  useEffect(() => {
+    if (district && needsSlugNormalization(district)) {
+      const normalized = slugifyDistrict(district);
+      const newPath = buildLanguageAwarePath(`/clubs/${normalized}`, language);
+      navigate(newPath, { replace: true });
+    }
+  }, [district, language, navigate]);
 
   const districtConfig = district ? DISTRICT_CONFIG[district.toLowerCase()] : null;
 
