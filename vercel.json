@@ -43,43 +43,43 @@
     },
     {
       "source": "/club/:slug*",
-      "destination": "/api/ssr/club/:slug*"
+      "destination": "https://sdpmwelfkseuhlhgatsc.supabase.co/functions/v1/ssr-page?path=club/:slug*"
     },
     {
       "source": "/guide/:slug*",
-      "destination": "/api/ssr/guide/:slug*"
+      "destination": "https://sdpmwelfkseuhlhgatsc.supabase.co/functions/v1/ssr-page?path=guide/:slug*"
     },
     {
       "source": "/es/club/:slug*",
-      "destination": "/api/ssr/es/club/:slug*"
+      "destination": "https://sdpmwelfkseuhlhgatsc.supabase.co/functions/v1/ssr-page?path=es/club/:slug*"
     },
     {
       "source": "/es/guide/:slug*",
-      "destination": "/api/ssr/es/guide/:slug*"
+      "destination": "https://sdpmwelfkseuhlhgatsc.supabase.co/functions/v1/ssr-page?path=es/guide/:slug*"
     },
     {
       "source": "/de/club/:slug*",
-      "destination": "/api/ssr/de/club/:slug*"
+      "destination": "https://sdpmwelfkseuhlhgatsc.supabase.co/functions/v1/ssr-page?path=de/club/:slug*"
     },
     {
       "source": "/de/guide/:slug*",
-      "destination": "/api/ssr/de/guide/:slug*"
+      "destination": "https://sdpmwelfkseuhlhgatsc.supabase.co/functions/v1/ssr-page?path=de/guide/:slug*"
     },
     {
       "source": "/fr/club/:slug*",
-      "destination": "/api/ssr/fr/club/:slug*"
+      "destination": "https://sdpmwelfkseuhlhgatsc.supabase.co/functions/v1/ssr-page?path=fr/club/:slug*"
     },
     {
       "source": "/fr/guide/:slug*",
-      "destination": "/api/ssr/fr/guide/:slug*"
+      "destination": "https://sdpmwelfkseuhlhgatsc.supabase.co/functions/v1/ssr-page?path=fr/guide/:slug*"
     },
     {
       "source": "/it/club/:slug*",
-      "destination": "/api/ssr/it/club/:slug*"
+      "destination": "https://sdpmwelfkseuhlhgatsc.supabase.co/functions/v1/ssr-page?path=it/club/:slug*"
     },
     {
       "source": "/it/guide/:slug*",
-      "destination": "/api/ssr/it/guide/:slug*"
+      "destination": "https://sdpmwelfkseuhlhgatsc.supabase.co/functions/v1/ssr-page?path=it/guide/:slug*"
     },
     {
       "source": "/(.*)",
