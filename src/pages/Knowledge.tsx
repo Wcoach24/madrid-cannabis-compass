@@ -20,6 +20,7 @@ import { useLanguage } from "@/hooks/useLanguage";
 import { buildLanguageAwarePath } from "@/lib/languageUtils";
 import { generateHreflangLinks, BASE_URL } from "@/lib/hreflangUtils";
 import { generateBreadcrumbSchema, generateSpeakableSchema } from "@/lib/schemaUtils";
+import { slugifyDistrict } from "@/lib/slugify";
 
 interface Article {
   slug: string;
@@ -263,7 +264,7 @@ const Knowledge = () => {
                   <Card key={district} className="hover:shadow-lg transition-shadow">
                     <CardHeader>
                       <Link 
-                        to={buildLanguageAwarePath(`/district/${district.toLowerCase().replace(/\s+/g, '-')}`, language)}
+                        to={buildLanguageAwarePath(`/district/${slugifyDistrict(district)}`, language)}
                         className="flex items-center gap-2 hover:text-primary transition-colors"
                       >
                         <MapPin className="w-5 h-5 text-primary flex-shrink-0" />

@@ -1,5 +1,6 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { useLanguage } from "@/hooks/useLanguage";
 import { supabase } from "@/integrations/supabase/client";
 import Header from "@/components/Header";
@@ -12,10 +13,21 @@ import { buildLanguageAwarePath } from "@/lib/languageUtils";
 import { Button } from "@/components/ui/button";
 import { generateHreflangLinks, BASE_URL } from "@/lib/hreflangUtils";
 import { generateBreadcrumbSchema } from "@/lib/schemaUtils";
+import { slugifyDistrict, needsSlugNormalization } from "@/lib/slugify";
 
 const District = () => {
   const { district } = useParams<{ district: string }>();
   const { t, language } = useLanguage();
+  const navigate = useNavigate();
+  
+  // Normalize slug if it has accents or special characters
+  useEffect(() => {
+    if (district && needsSlugNormalization(district)) {
+      const normalized = slugifyDistrict(district);
+      const newPath = buildLanguageAwarePath(`/district/${normalized}`, language);
+      navigate(newPath, { replace: true });
+    }
+  }, [district, language, navigate]);
 
   // Fetch clubs in this district
   const { data: clubs, isLoading } = useQuery({

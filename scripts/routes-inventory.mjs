@@ -56,6 +56,30 @@ export const NOINDEX_ROUTES = [
 ];
 
 /**
+ * Robust slugify function for URL-safe strings
+ * Removes diacritics, special characters, and normalizes to lowercase kebab-case
+ */
+function slugifyDistrict(input) {
+  if (!input) return '';
+  
+  return input
+    .trim()
+    .toLowerCase()
+    // Normalize and remove diacritics (accents)
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    // Remove & and other special characters
+    .replace(/[&]/g, '')
+    .replace(/[^\w\s-]/g, '')
+    // Replace spaces and underscores with hyphens
+    .replace(/[\s_]+/g, '-')
+    // Collapse multiple hyphens
+    .replace(/-+/g, '-')
+    // Trim hyphens from start and end
+    .replace(/^-+|-+$/g, '');
+}
+
+/**
  * Fetch all dynamic slugs from Supabase
  */
 export async function fetchDynamicData() {
@@ -81,10 +105,18 @@ export async function fetchDynamicData() {
     if (res.ok) {
       const clubs = await res.json();
       data.clubs = clubs.map(c => c.slug);
-      // Extract unique districts
+      
+      // Extract unique districts and slugify them properly (no accents!)
       const uniqueDistricts = [...new Set(clubs.map(c => c.district))];
-      data.districts = uniqueDistricts.map(d => d.toLowerCase().replace(/\s+/g, '-'));
+      const slugifiedDistricts = uniqueDistricts
+        .map(d => slugifyDistrict(d))
+        .filter(d => d !== null && d !== undefined && d !== '');
+      
+      // Deduplicate after slugification (e.g., "Chamberí" and "Chamberi" -> "chamberi")
+      data.districts = [...new Set(slugifiedDistricts)];
+      
       console.log(`  ✓ Found ${data.clubs.length} clubs, ${data.districts.length} districts`);
+      console.log(`  ✓ District slugs: ${data.districts.join(', ')}`);
     }
   } catch (e) {
     console.error('  ✗ Failed to fetch clubs:', e.message);
@@ -149,7 +181,7 @@ export function buildUrlInventory(dynamicData) {
     }
   }
 
-  // 4. District pages
+  // 4. District pages (already slugified without accents)
   for (const district of dynamicData.districts) {
     // District detail page
     urls.push({ path: `/district/${district}`, lang: 'en', type: 'district', slug: district });
