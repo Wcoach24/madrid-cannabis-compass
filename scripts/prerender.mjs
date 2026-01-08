@@ -34,35 +34,52 @@ const validationResults = {
 };
 
 /**
- * Simple static file server for dist/
+ * Static file server for dist/
+ * CRITICAL: For routes without extension, ALWAYS serve the SPA index.html.
+ * This prevents already-prerendered HTML from contaminating subsequent renders.
  */
 function createStaticServer(port) {
   return new Promise((resolve) => {
     const server = createServer((req, res) => {
-      let filePath = join(DIST_DIR, req.url === '/' ? 'index.html' : req.url);
-      
-      // SPA fallback - serve index.html for routes without file extension
-      if (!existsSync(filePath) || !filePath.includes('.')) {
-        filePath = join(DIST_DIR, 'index.html');
+      // Parse URL to get clean pathname (strip query strings)
+      const urlPath = req.url.split('?')[0];
+      const ext = extname(urlPath);
+
+      // PUNTO 4: For requests WITHOUT file extension, ALWAYS serve SPA index.html
+      // This avoids serving already-prerendered dist/{route}/index.html during the loop
+      if (!ext) {
+        try {
+          const content = readFileSync(join(DIST_DIR, 'index.html'));
+          res.writeHead(200, { 'Content-Type': 'text/html' });
+          res.end(content);
+          return;
+        } catch (e) {
+          res.writeHead(500);
+          res.end('SPA index.html not found');
+          return;
+        }
       }
+
+      // For requests WITH extension (.js, .css, .png, etc.), serve the actual file
+      const filePath = join(DIST_DIR, urlPath);
+      const contentTypes = {
+        '.html': 'text/html',
+        '.js': 'application/javascript',
+        '.css': 'text/css',
+        '.json': 'application/json',
+        '.png': 'image/png',
+        '.jpg': 'image/jpeg',
+        '.jpeg': 'image/jpeg',
+        '.svg': 'image/svg+xml',
+        '.webp': 'image/webp',
+        '.woff2': 'font/woff2',
+        '.woff': 'font/woff',
+        '.ico': 'image/x-icon',
+      };
 
       try {
         const content = readFileSync(filePath);
-        const ext = filePath.split('.').pop();
-        const contentTypes = {
-          'html': 'text/html',
-          'js': 'application/javascript',
-          'css': 'text/css',
-          'json': 'application/json',
-          'png': 'image/png',
-          'jpg': 'image/jpeg',
-          'jpeg': 'image/jpeg',
-          'svg': 'image/svg+xml',
-          'webp': 'image/webp',
-          'woff2': 'font/woff2',
-          'woff': 'font/woff',
-        };
-        res.writeHead(200, { 'Content-Type': contentTypes[ext] || 'text/plain' });
+        res.writeHead(200, { 'Content-Type': contentTypes[ext] || 'application/octet-stream' });
         res.end(content);
       } catch (e) {
         res.writeHead(404);
@@ -167,8 +184,8 @@ async function prerenderRoute(browser, url, serverPort, retryCount = 0) {
   // Set viewport for consistent rendering
   await page.setViewport({ width: 1280, height: 800 });
   
-  // Set user agent
-  await page.setUserAgent('Mozilla/5.0 (compatible; PrerenderBot/1.0)');
+  // Set user agent (simulate Googlebot for consistent behavior)
+  await page.setUserAgent('Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)');
 
   try {
     // Navigate to the route
@@ -177,22 +194,23 @@ async function prerenderRoute(browser, url, serverPort, retryCount = 0) {
       timeout: 45000,
     });
 
-    // Wait for hydration indicator
+    // PUNTO 2: Wait for SEO-ready marker + H1 with content
+    // This ensures SEOHead has finished updating title/canonical/og:url/description/JSON-LD
     await page.waitForFunction(() => {
-      // Check multiple indicators of complete render
-      const hasTitle = document.title && document.title.length > 10;
-      const hasH1 = !!document.querySelector('h1');
-      const hasContent = document.body.innerText.length > 100;
-      const isHydrated = document.documentElement.getAttribute('data-hydrated') === 'true' 
-        || document.querySelector('[data-hydrated="true"]')
-        || (hasTitle && hasH1 && hasContent);
-      return isHydrated;
-    }, { timeout: 15000 }).catch(() => {
-      console.warn(`  ⚠ Timeout waiting for full render on ${url}`);
+      // A) data-seo-ready must be 'true' (set by SEOHead after all head updates)
+      const seoReady = document.documentElement.getAttribute('data-seo-ready') === 'true';
+      
+      // B) H1 must exist with non-empty text
+      const h1 = document.querySelector('h1');
+      const h1Ok = !!h1 && (h1.textContent || '').trim().length > 0;
+      
+      return seoReady && h1Ok;
+    }, { timeout: 30000 }).catch(() => {
+      console.warn(`  ⚠ Timeout waiting for data-seo-ready + H1 on ${url}`);
     });
 
-    // Extra wait for async data and SEOHead updates
-    await new Promise(r => setTimeout(r, 1000));
+    // Extra 500ms wait after conditions are met to ensure DOM is stable
+    await new Promise(r => setTimeout(r, 500));
 
     // Get rendered HTML
     let html = await page.content();
