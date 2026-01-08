@@ -1,3 +1,4 @@
+# SEO-optimized build pipeline with prerendering
 name: Build, Prerender & Deploy
 
 on:
