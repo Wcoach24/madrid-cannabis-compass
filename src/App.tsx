@@ -39,6 +39,16 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
+// Mark document as hydrated when React takes over
+if (typeof document !== 'undefined') {
+  document.addEventListener('DOMContentLoaded', () => {
+    // Set hydration marker after a short delay to ensure React has rendered
+    setTimeout(() => {
+      document.documentElement.setAttribute('data-hydrated', 'true');
+    }, 100);
+  });
+}
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>

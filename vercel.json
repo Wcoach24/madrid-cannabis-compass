@@ -7,6 +7,19 @@
         {
           "key": "Link",
           "value": "<https://sdpmwelfkseuhlhgatsc.supabase.co>; rel=preconnect; crossorigin, <https://fonts.googleapis.com>; rel=preconnect, <https://fonts.gstatic.com>; rel=preconnect; crossorigin"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600, stale-while-revalidate=86400"
+        }
+      ]
+    },
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
         }
       ]
     }
@@ -36,54 +49,6 @@
     {
       "source": "/api/rss",
       "destination": "https://sdpmwelfkseuhlhgatsc.supabase.co/functions/v1/generate-rss"
-    },
-    {
-      "source": "/api/ssr/:path*",
-      "destination": "https://sdpmwelfkseuhlhgatsc.supabase.co/functions/v1/ssr-page?path=:path*"
-    },
-    {
-      "source": "/club/:slug*",
-      "destination": "https://sdpmwelfkseuhlhgatsc.supabase.co/functions/v1/ssr-page?path=club/:slug*"
-    },
-    {
-      "source": "/guide/:slug*",
-      "destination": "https://sdpmwelfkseuhlhgatsc.supabase.co/functions/v1/ssr-page?path=guide/:slug*"
-    },
-    {
-      "source": "/es/club/:slug*",
-      "destination": "https://sdpmwelfkseuhlhgatsc.supabase.co/functions/v1/ssr-page?path=es/club/:slug*"
-    },
-    {
-      "source": "/es/guide/:slug*",
-      "destination": "https://sdpmwelfkseuhlhgatsc.supabase.co/functions/v1/ssr-page?path=es/guide/:slug*"
-    },
-    {
-      "source": "/de/club/:slug*",
-      "destination": "https://sdpmwelfkseuhlhgatsc.supabase.co/functions/v1/ssr-page?path=de/club/:slug*"
-    },
-    {
-      "source": "/de/guide/:slug*",
-      "destination": "https://sdpmwelfkseuhlhgatsc.supabase.co/functions/v1/ssr-page?path=de/guide/:slug*"
-    },
-    {
-      "source": "/fr/club/:slug*",
-      "destination": "https://sdpmwelfkseuhlhgatsc.supabase.co/functions/v1/ssr-page?path=fr/club/:slug*"
-    },
-    {
-      "source": "/fr/guide/:slug*",
-      "destination": "https://sdpmwelfkseuhlhgatsc.supabase.co/functions/v1/ssr-page?path=fr/guide/:slug*"
-    },
-    {
-      "source": "/it/club/:slug*",
-      "destination": "https://sdpmwelfkseuhlhgatsc.supabase.co/functions/v1/ssr-page?path=it/club/:slug*"
-    },
-    {
-      "source": "/it/guide/:slug*",
-      "destination": "https://sdpmwelfkseuhlhgatsc.supabase.co/functions/v1/ssr-page?path=it/guide/:slug*"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
     }
   ]
 }
