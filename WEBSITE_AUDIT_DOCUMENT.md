@@ -1,5 +1,5 @@
 # Weed Madrid - Complete Website Audit Document
-> Generated: 2025-12-30  
+> Generated: 2025-12-30 | Updated: 2026-01-08  
 > Purpose: Full website structure, content, and technical audit
 
 ---
@@ -333,11 +333,11 @@ Audit trail for invitation actions.
 
 | Language | Count | Categories |
 |----------|-------|------------|
-| English (en) | ~10 | Guide, Legal |
-| Spanish (es) | ~10 | Guide, Legal |
-| German (de) | ~8 | Guide, Legal |
-| French (fr) | ~8 | Guide, Legal |
-| Italian (it) | ~8 | Guide, Legal |
+| English (en) | 8 | Guide, Legal |
+| Spanish (es) | 8 | Guide, Legal |
+| German (de) | 8 | Guide, Legal |
+| French (fr) | 8 | Guide, Legal |
+| Italian (it) | 8 | Guide, Legal |
 
 ### Article Topics (Core)
 1. Best Cannabis Clubs Madrid 2025
@@ -378,7 +378,7 @@ src/components/
 │       ├── Step4LegalConfirmation.tsx
 │       └── Step5Review.tsx
 ├── ui/                         # Shadcn UI components (50+)
-├── Analytics.tsx               # Google Analytics
+├── Analytics.tsx               # Google Analytics + Microsoft Clarity
 ├── CartDrawer.tsx              # Shopping cart
 ├── ClubCard.tsx                # Club listing card
 ├── FiveStepProcess.tsx         # How it works section
@@ -544,7 +544,8 @@ src/components/
 ### Integrations
 | Service | Purpose |
 |---------|---------|
-| Google Analytics 4 | Analytics |
+| Google Analytics 4 | Web Analytics |
+| Microsoft Clarity | Session Recording & Heatmaps |
 | Shopify Storefront | E-commerce (Shop) |
 
 ---
@@ -682,4 +683,4 @@ See `src/lib/translations.ts` for complete translation dictionary.
 
 ---
 
-*Document generated for website audit purposes. Last updated: 2025-12-30*
+*Document generated for website audit purposes. Last updated: 2026-01-08*
