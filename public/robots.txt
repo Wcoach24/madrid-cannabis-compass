@@ -61,6 +61,7 @@ Disallow: /generate-articles
 Disallow: /bulk-generate
 Disallow: /translate-content
 Disallow: /auth
+Disallow: /invite/
 Disallow: /*.json$
 
 # Dynamic parameters (avoid duplicate content)

@@ -43,6 +43,11 @@
       "permanent": true
     },
     {
+      "source": "/invite/:slug*",
+      "destination": "/clubs",
+      "permanent": true
+    },
+    {
       "source": "/club/chamberi-club-social-madrid",
       "destination": "/club/vallehermoso-club-social-madrid",
       "permanent": true
@@ -194,10 +199,6 @@
     }
   ],
   "rewrites": [
-    {
-      "source": "/sitemap.xml",
-      "destination": "https://sdpmwelfkseuhlhgatsc.supabase.co/functions/v1/generate-sitemap"
-    },
     {
       "source": "/api/rss",
       "destination": "https://sdpmwelfkseuhlhgatsc.supabase.co/functions/v1/generate-rss"
