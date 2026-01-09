@@ -250,6 +250,24 @@ Deno.serve(async (req) => {
       });
     }
 
+    // Add AI-optimized files (GEO)
+    const geoFiles = [
+      { path: '/llm.txt', priority: '1.0' },
+      { path: '/home.geo.txt', priority: '0.9' },
+      { path: '/clubs.geo.txt', priority: '0.8' },
+      { path: '/guides.geo.txt', priority: '0.8' }
+    ];
+
+    geoFiles.forEach(file => {
+      sitemap += `
+  <url>
+    <loc>${baseUrl}${file.path}</loc>
+    <lastmod>${new Date().toISOString()}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>${file.priority}</priority>
+  </url>`;
+    });
+
     sitemap += `
 </urlset>`;
 
