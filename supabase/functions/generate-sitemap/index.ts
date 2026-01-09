@@ -135,6 +135,24 @@ Deno.serve(async (req) => {
     });
 
     const languages = ['', '/es', '/de', '/fr', '/it'];
+
+    // GEO: AI-optimized files (highest priority for LLMs)
+    const geoFiles = [
+      { path: '/llm.txt', priority: '1.0', changefreq: 'weekly' },
+      { path: '/home.geo.txt', priority: '0.9', changefreq: 'weekly' },
+      { path: '/clubs.geo.txt', priority: '0.9', changefreq: 'weekly' },
+      { path: '/guides.geo.txt', priority: '0.9', changefreq: 'weekly' },
+    ];
+
+    geoFiles.forEach(file => {
+      sitemap += `
+  <url>
+    <loc>${baseUrl}${file.path}</loc>
+    <changefreq>${file.changefreq}</changefreq>
+    <priority>${file.priority}</priority>
+    <lastmod>${new Date().toISOString()}</lastmod>
+  </url>`;
+    });
     
     staticPages.forEach(page => {
       languages.forEach(lang => {

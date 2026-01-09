@@ -122,18 +122,32 @@ const Index = () => {
         hreflangLinks={hreflangLinks}
         ogLocale={language === "es" ? "es_ES" : language === "de" ? "de_DE" : language === "fr" ? "fr_FR" : "en_US"}
         ogLocaleAlternate={["en_US", "es_ES", "de_DE", "fr_FR"].filter(l => l !== (language === "es" ? "es_ES" : language === "de" ? "de_DE" : language === "fr" ? "fr_FR" : "en_US"))}
+        ogImage={`${BASE_URL}/logo.png`}
+        // GEO props
+        geoTxtPath="/home.geo.txt"
+        aiPriority="high"
+        contentSummary="Guide to verified cannabis social clubs in Madrid, Spain. Same-day invitation service for tourists 21+."
         structuredData={{
           "@context": "https://schema.org",
-          "@type": "WebSite",
-          "name": "Weed Madrid",
-          "description": t("home.subtitle"),
-          "url": BASE_URL,
-          "inLanguage": language,
-          "potentialAction": {
-            "@type": "SearchAction",
-            "target": `${BASE_URL}/clubs?q={search_term_string}`,
-            "query-input": "required name=search_term_string"
-          }
+          "@graph": [
+            {
+              "@type": "WebSite",
+              "@id": `${BASE_URL}/#website`,
+              "url": BASE_URL,
+              "name": "Weed Madrid",
+              "description": t("home.subtitle"),
+              "inLanguage": language,
+              "publisher": { "@id": `${BASE_URL}/#organization` },
+              "potentialAction": {
+                "@type": "SearchAction",
+                "target": {
+                  "@type": "EntryPoint",
+                  "urlTemplate": `${BASE_URL}/clubs?q={search_term_string}`
+                },
+                "query-input": "required name=search_term_string"
+              }
+            }
+          ]
         }}
       />
       <Header />
