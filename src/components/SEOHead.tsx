@@ -16,6 +16,13 @@ interface SEOHeadProps {
   ogLocale?: string;
   ogLocaleAlternate?: string[];
   speakableSelectors?: string[];
+  // GEO: Generative Engine Optimization props
+  citationTitle?: string;
+  citationAuthor?: string;
+  citationDate?: string;
+  geoTxtPath?: string;
+  aiPriority?: 'high' | 'medium' | 'low';
+  contentSummary?: string;
 }
 
 const SEOHead = ({ 
@@ -28,7 +35,14 @@ const SEOHead = ({
   hreflangLinks,
   ogLocale = "en_US",
   ogLocaleAlternate = [],
-  speakableSelectors = []
+  speakableSelectors = [],
+  // GEO props
+  citationTitle,
+  citationAuthor,
+  citationDate,
+  geoTxtPath,
+  aiPriority,
+  contentSummary
 }: SEOHeadProps) => {
   useEffect(() => {
     // SSG/SEO signal: mark NOT ready while head is being updated
@@ -54,7 +68,14 @@ const SEOHead = ({
     updateMetaTag('og:description', description, 'property');
     updateMetaTag('og:type', 'website', 'property');
     updateMetaTag('og:locale', ogLocale, 'property');
-    if (ogImage) updateMetaTag('og:image', ogImage, 'property');
+    
+    // OG Image with dimensions (GEO improvement)
+    if (ogImage) {
+      updateMetaTag('og:image', ogImage, 'property');
+      updateMetaTag('og:image:width', '1200', 'property');
+      updateMetaTag('og:image:height', '630', 'property');
+      updateMetaTag('og:image:alt', title, 'property');
+    }
 
     // CRITICAL: Set og:url to canonical URL
     if (canonical) {
@@ -77,6 +98,38 @@ const SEOHead = ({
     updateMetaTag('twitter:title', title);
     updateMetaTag('twitter:description', description);
     if (ogImage) updateMetaTag('twitter:image', ogImage);
+
+    // ============================================
+    // GEO: Generative Engine Optimization meta tags
+    // ============================================
+    
+    // Citation meta tags (academic style for AI extraction)
+    updateMetaTag('citation_title', citationTitle || title);
+    updateMetaTag('citation_author', citationAuthor || 'Weed Madrid Team');
+    updateMetaTag('citation_publication_date', citationDate || '2026');
+    updateMetaTag('citation_publisher', 'Weed Madrid');
+    
+    // AI-specific meta tags
+    updateMetaTag('ai-crawl-priority', aiPriority || 'medium');
+    if (contentSummary) {
+      updateMetaTag('llm-content-summary', contentSummary);
+    }
+    if (geoTxtPath) {
+      updateMetaTag('ai-content-files', `${geoTxtPath}, /llm.txt`);
+    }
+
+    // Link alternate for GEO txt file
+    if (geoTxtPath) {
+      let geoLink = document.querySelector('link[rel="alternate"][type="text/plain"]') as HTMLLinkElement;
+      if (!geoLink) {
+        geoLink = document.createElement('link');
+        geoLink.setAttribute('rel', 'alternate');
+        geoLink.setAttribute('type', 'text/plain');
+        geoLink.setAttribute('title', 'AI-optimized content');
+        document.head.appendChild(geoLink);
+      }
+      geoLink.setAttribute('href', geoTxtPath);
+    }
 
     // Update canonical link
     if (canonical) {
@@ -152,7 +205,7 @@ const SEOHead = ({
         document.documentElement.setAttribute('data-seo-ready', 'true');
       });
     });
-  }, [title, description, canonical, ogImage, keywords, structuredData, hreflangLinks, ogLocale, ogLocaleAlternate, speakableSelectors]);
+  }, [title, description, canonical, ogImage, keywords, structuredData, hreflangLinks, ogLocale, ogLocaleAlternate, speakableSelectors, citationTitle, citationAuthor, citationDate, geoTxtPath, aiPriority, contentSummary]);
 
   return null;
 };

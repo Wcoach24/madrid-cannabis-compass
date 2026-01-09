@@ -10,6 +10,7 @@ const OrganizationSchema = () => {
     const schema = {
       "@context": "https://schema.org",
       "@type": "Organization",
+      "@id": `${BASE_URL}/#organization`,
       "name": "Weed Madrid Educational Project",
       "alternateName": ["Weed Madrid", "WeedMadrid.com"],
       "url": BASE_URL,
