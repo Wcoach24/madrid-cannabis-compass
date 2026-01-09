@@ -16,13 +16,6 @@ interface SEOHeadProps {
   ogLocale?: string;
   ogLocaleAlternate?: string[];
   speakableSelectors?: string[];
-  // GEO optimization props
-  citationTitle?: string;
-  citationAuthor?: string;
-  citationDate?: string;
-  geoTxtPath?: string;
-  aiPriority?: 'high' | 'medium' | 'low';
-  noIndex?: boolean;
 }
 
 const SEOHead = ({ 
@@ -35,14 +28,7 @@ const SEOHead = ({
   hreflangLinks,
   ogLocale = "en_US",
   ogLocaleAlternate = [],
-  speakableSelectors = [],
-  // GEO props
-  citationTitle,
-  citationAuthor,
-  citationDate,
-  geoTxtPath,
-  aiPriority = 'medium',
-  noIndex = false
+  speakableSelectors = []
 }: SEOHeadProps) => {
   useEffect(() => {
     // SSG/SEO signal: mark NOT ready while head is being updated
@@ -64,49 +50,11 @@ const SEOHead = ({
 
     updateMetaTag('description', description);
     if (keywords) updateMetaTag('keywords', keywords);
-    
-    // Robots meta tag (noindex for 404, error pages)
-    if (noIndex) {
-      updateMetaTag('robots', 'noindex, nofollow');
-    }
-    
-    // GEO/LLM optimization meta tags
-    updateMetaTag('generative-ai-friendly', 'true');
-    updateMetaTag('ai-crawl-priority', aiPriority);
-    
-    if (citationTitle) {
-      updateMetaTag('citation_title', citationTitle);
-      updateMetaTag('citation_author', citationAuthor || 'Weed Madrid Team');
-      updateMetaTag('citation_publication_date', citationDate || new Date().getFullYear().toString());
-    }
-    
-    if (geoTxtPath) {
-      updateMetaTag('ai-content-files', `${geoTxtPath}, /llm.txt`);
-      
-      // Add link alternate for GEO file
-      let geoLink = document.querySelector('link[rel="alternate"][type="text/plain"]') as HTMLLinkElement;
-      if (!geoLink) {
-        geoLink = document.createElement('link');
-        geoLink.setAttribute('rel', 'alternate');
-        geoLink.setAttribute('type', 'text/plain');
-        geoLink.setAttribute('title', 'AI-optimized content');
-        document.head.appendChild(geoLink);
-      }
-      geoLink.setAttribute('href', geoTxtPath);
-    }
-    
-    // Open Graph tags
     updateMetaTag('og:title', title, 'property');
     updateMetaTag('og:description', description, 'property');
     updateMetaTag('og:type', 'website', 'property');
     updateMetaTag('og:locale', ogLocale, 'property');
-    
-    if (ogImage) {
-      updateMetaTag('og:image', ogImage, 'property');
-      updateMetaTag('og:image:width', '1200', 'property');
-      updateMetaTag('og:image:height', '630', 'property');
-      updateMetaTag('og:image:alt', title, 'property');
-    }
+    if (ogImage) updateMetaTag('og:image', ogImage, 'property');
 
     // CRITICAL: Set og:url to canonical URL
     if (canonical) {
@@ -204,7 +152,7 @@ const SEOHead = ({
         document.documentElement.setAttribute('data-seo-ready', 'true');
       });
     });
-  }, [title, description, canonical, ogImage, keywords, structuredData, hreflangLinks, ogLocale, ogLocaleAlternate, speakableSelectors, citationTitle, citationAuthor, citationDate, geoTxtPath, aiPriority, noIndex]);
+  }, [title, description, canonical, ogImage, keywords, structuredData, hreflangLinks, ogLocale, ogLocaleAlternate, speakableSelectors]);
 
   return null;
 };

@@ -33,28 +33,19 @@ const DEFAULT_TIMEOUT = 30000;
 const HEAVY_ROUTE_TIMEOUT = 60000;
 const STABILITY_WAIT = 750;
 
-// Parallelization settings - increased for speed
-const CONCURRENCY = 12;
+// Parallelization settings - process multiple pages simultaneously
+const CONCURRENCY = 8;
 
 // Heavy routes that need more time
 const HEAVY_ROUTES = ['/clubs'];
 
-// Prerender mode from environment (full, core, skip)
-const PRERENDER_MODE = process.env.PRERENDER_MODE || 'full';
-
 // Core routes - build fails if ANY of these fail
-// Also used for "core" mode quick deploys
 const CORE_ROUTES = [
   '/',
-  '/es',
-  '/de',
   '/clubs',
-  '/es/clubs',
   '/guides',
-  '/es/guides',
   '/club/genetics-social-club-madrid',
-  '/guide/best-cannabis-clubs-madrid-2025',
-  '/es/guide/best-cannabis-clubs-madrid-2025'
+  '/guide/best-cannabis-clubs-madrid-2025'
 ];
 
 // Language home paths
@@ -504,37 +495,21 @@ function saveReport() {
  */
 async function main() {
   console.log('\n🚀 Starting Robust SSG Prerender...\n');
-  console.log(`📋 Mode: ${PRERENDER_MODE.toUpperCase()}\n`);
 
   if (!existsSync(DIST_DIR)) {
     console.error('❌ dist/ directory not found. Run `vite build` first.');
     process.exit(1);
   }
 
-  // Handle skip mode - exit early
-  if (PRERENDER_MODE === 'skip') {
-    console.log('⚡ SKIP MODE: No prerendering. Using SPA fallback only.');
-    console.log('✅ Prerender skipped successfully!\n');
-    return;
-  }
-
   const allUrls = await getAllPaths();
   
-  // Filter based on mode
-  let urls;
-  if (PRERENDER_MODE === 'core') {
-    // Core mode: only prerender essential routes
-    urls = allUrls.filter(u => CORE_ROUTES.includes(u));
-    console.log(`⚡ CORE MODE: Only ${urls.length} essential routes (of ${allUrls.length} total)`);
-  } else {
-    // Full mode: sort with core routes first for early failure detection
-    urls = [
-      ...allUrls.filter(u => CORE_ROUTES.includes(u)),
-      ...allUrls.filter(u => !CORE_ROUTES.includes(u))
-    ];
-  }
+  // Sort: core routes first for early failure detection
+  const urls = [
+    ...allUrls.filter(u => CORE_ROUTES.includes(u)),
+    ...allUrls.filter(u => !CORE_ROUTES.includes(u))
+  ];
   
-  console.log(`📄 Routes to prerender: ${urls.length}`);
+  console.log(`📄 Total routes to prerender: ${urls.length}`);
   console.log(`⚡ Parallelization: ${CONCURRENCY} concurrent pages\n`);
 
   const PORT = 3456;

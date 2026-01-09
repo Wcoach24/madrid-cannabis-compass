@@ -1,8 +1,6 @@
 {
-  "outputDirectory": "dist",
-  "cleanUrls": true,
   "trailingSlash": false,
-
+  "outputDirectory": "dist",
   "headers": [
     {
       "source": "/(.*)",
@@ -36,7 +34,6 @@
       ]
     }
   ],
-
   "redirects": [
     {
       "source": "/:path+/",
@@ -49,13 +46,18 @@
       "permanent": true
     }
   ],
-
-  "routes": [
-    { "handle": "filesystem" },
-
-    { "src": "/sitemap\\.xml", "dest": "https://sdpmwelfkseuhlhgatsc.supabase.co/functions/v1/generate-sitemap" },
-    { "src": "/api/rss", "dest": "https://sdpmwelfkseuhlhgatsc.supabase.co/functions/v1/generate-rss" },
-
-    { "src": "/(.*)", "dest": "/index.html" }
+  "rewrites": [
+    {
+      "source": "/sitemap.xml",
+      "destination": "https://sdpmwelfkseuhlhgatsc.supabase.co/functions/v1/generate-sitemap"
+    },
+    {
+      "source": "/api/rss",
+      "destination": "https://sdpmwelfkseuhlhgatsc.supabase.co/functions/v1/generate-rss"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
   ]
 }

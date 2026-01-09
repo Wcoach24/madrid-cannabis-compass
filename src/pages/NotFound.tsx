@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -6,18 +5,6 @@ import SEOHead from "@/components/SEOHead";
 import { Home, Search } from "lucide-react";
 
 const NotFound = () => {
-  // Add noindex meta tag for 404 pages
-  React.useEffect(() => {
-    const robotsMeta = document.createElement('meta');
-    robotsMeta.name = 'robots';
-    robotsMeta.content = 'noindex, nofollow';
-    document.head.appendChild(robotsMeta);
-    
-    return () => {
-      robotsMeta.remove();
-    };
-  }, []);
-
   return (
     <div className="min-h-screen flex flex-col">
       <SEOHead
