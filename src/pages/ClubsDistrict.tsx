@@ -14,6 +14,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { MapPin, ArrowLeft, Navigation, Info } from "lucide-react";
 
+// Complete district config for all 12 districts
 const DISTRICT_CONFIG: Record<string, { 
   name: string; 
   seoTitle: string; 
@@ -45,9 +46,65 @@ const DISTRICT_CONFIG: Record<string, {
   retiro: {
     name: "Retiro",
     seoTitle: "Cannabis Clubs Near Retiro Park Madrid 2025 | Upscale District",
-    description: "Find cannabis clubs near Retiro Park and Salamanca district. Premium clubs in Madrid's most elegant neighborhood.",
+    description: "Find cannabis clubs near Retiro Park and Salamanca district. Premium clubs in Madrid's most elegant neighborhood with peaceful atmosphere.",
     landmarks: "Retiro Park, Puerta de Alcalá, Calle Serrano, Goya Metro",
     metaKeywords: "cannabis club retiro, weed near retiro park, cannabis salamanca madrid"
+  },
+  tetuan: {
+    name: "Tetuán",
+    seoTitle: "Cannabis Clubs in Tetuán Madrid 2025 | Traditional Neighborhood",
+    description: "Discover authentic cannabis clubs in Tetuán, a traditional Madrid neighborhood near Plaza Castilla. Local atmosphere with genuine Spanish character.",
+    landmarks: "Plaza Castilla, Cuatro Caminos, Bravo Murillo, Paseo de la Castellana",
+    metaKeywords: "cannabis club tetuan, weed club cuatro caminos, tetuan madrid cannabis"
+  },
+  usera: {
+    name: "Usera",
+    seoTitle: "Cannabis Clubs in Usera Madrid 2025 | Multicultural District",
+    description: "Find cannabis clubs in Usera, Madrid's diverse multicultural district. Community-focused clubs with international atmosphere and authentic local vibe.",
+    landmarks: "Plaza de Usera, Marcelo Usera, Oporto Metro, Chinatown",
+    metaKeywords: "cannabis club usera, weed club south madrid, usera cannabis association"
+  },
+  atocha: {
+    name: "Atocha",
+    seoTitle: "Cannabis Clubs Near Atocha Station Madrid 2025 | Central Location",
+    description: "Cannabis clubs near Atocha train station in central Madrid. Convenient for travelers with easy access to clubs. Tourist-friendly with verified associations.",
+    landmarks: "Atocha Station, Reina Sofía Museum, Paseo del Prado, Lavapiés",
+    metaKeywords: "cannabis club atocha, weed near atocha station, atocha madrid cannabis"
+  },
+  "moncloa-aravaca": {
+    name: "Moncloa-Aravaca",
+    seoTitle: "Cannabis Clubs in Moncloa-Aravaca Madrid 2025 | University District",
+    description: "Find cannabis clubs in Moncloa-Aravaca, Madrid's university district. Young atmosphere near Ciudad Universitaria with student-friendly cannabis associations.",
+    landmarks: "Ciudad Universitaria, Faro de Moncloa, Parque del Oeste, Argüelles",
+    metaKeywords: "cannabis club moncloa, weed club university madrid, moncloa cannabis association"
+  },
+  arganzuela: {
+    name: "Arganzuela",
+    seoTitle: "Cannabis Clubs in Arganzuela Madrid 2025 | Madrid Río Area",
+    description: "Discover cannabis clubs in Arganzuela near Madrid Río and Matadero cultural center. Modern neighborhood with creative atmosphere and riverside location.",
+    landmarks: "Madrid Río, Matadero, Paseo de la Chopera, Legazpi",
+    metaKeywords: "cannabis club arganzuela, weed club madrid rio, arganzuela cannabis madrid"
+  },
+  "fuencarral-el-pardo": {
+    name: "Fuencarral-El Pardo",
+    seoTitle: "Cannabis Clubs in Fuencarral Madrid 2025 | Northern District",
+    description: "Find cannabis clubs in Fuencarral-El Pardo in northern Madrid. Residential area with local neighborhood clubs and authentic Spanish atmosphere.",
+    landmarks: "Montecarmelo, Las Tablas, El Pardo, Tres Olivos",
+    metaKeywords: "cannabis club fuencarral, weed club north madrid, fuencarral cannabis association"
+  },
+  salamanca: {
+    name: "Salamanca",
+    seoTitle: "Cannabis Clubs in Salamanca Madrid 2025 | Luxury District",
+    description: "Premium cannabis clubs in Salamanca, Madrid's most exclusive neighborhood. High-end associations near Serrano street with sophisticated atmosphere.",
+    landmarks: "Calle Serrano, Calle Goya, Velázquez, Príncipe de Vergara",
+    metaKeywords: "cannabis club salamanca, weed club luxury madrid, salamanca cannabis premium"
+  },
+  chamartin: {
+    name: "Chamartín",
+    seoTitle: "Cannabis Clubs in Chamartín Madrid 2025 | Business District",
+    description: "Find cannabis clubs in Chamartín, Madrid's business district near Santiago Bernabéu. Professional atmosphere with premium cannabis associations.",
+    landmarks: "Santiago Bernabéu, AZCA, Paseo de la Castellana, Chamartín Station",
+    metaKeywords: "cannabis club chamartin, weed club bernabeu, chamartin cannabis madrid"
   }
 };
 
@@ -65,36 +122,46 @@ const ClubsDistrict = () => {
     }
   }, [district, language, navigate]);
 
-  const districtConfig = district ? DISTRICT_CONFIG[district.toLowerCase()] : null;
+  const districtKey = district?.toLowerCase() || '';
+  const districtConfig = DISTRICT_CONFIG[districtKey];
 
-  // Fetch clubs in this district
+  // Fetch clubs in this district - match by slugified district name
   const { data: clubs, isLoading } = useQuery({
     queryKey: ["clubs", district],
     queryFn: async () => {
-      if (!districtConfig) return [];
+      if (!district) return [];
       
       const { data, error } = await supabase
         .from("clubs")
         .select("*")
         .eq("status", "active")
-        .ilike("district", districtConfig.name)
         .order("is_featured", { ascending: false })
         .order("rating_editorial", { ascending: false });
 
       if (error) throw error;
-      return data || [];
+      
+      // Filter by slugified district name to handle accents properly
+      return (data || []).filter(club => 
+        slugifyDistrict(club.district) === districtKey
+      );
     },
-    enabled: !!districtConfig
+    enabled: !!district
   });
 
-  if (!district || !districtConfig) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p>District not found</p>
-      </div>
-    );
-  }
+  // Get display name - use config or capitalize slug
+  const districtDisplayName = districtConfig?.name || 
+    districtKey.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+  
+  // SEO values with fallbacks
+  const seoTitle = districtConfig?.seoTitle || 
+    `Cannabis Clubs in ${districtDisplayName} Madrid 2025 | Weed Madrid`;
+  const seoDescription = districtConfig?.description || 
+    `Find verified cannabis clubs in ${districtDisplayName}, Madrid. Browse local cannabis social clubs and request membership invitations. Tourist-friendly options available.`;
+  const metaKeywords = districtConfig?.metaKeywords || 
+    `cannabis club ${districtKey}, weed ${districtKey} madrid, ${districtKey} cannabis association`;
+  const landmarks = districtConfig?.landmarks || districtDisplayName;
 
+  const canonicalPath = `${BASE_URL}${buildLanguageAwarePath(`/clubs/${district}`, language)}`;
   const hreflangLinks = generateHreflangLinks(BASE_URL, `/clubs/${district}`);
 
   // LocalBusiness schema for each club
@@ -146,19 +213,20 @@ const ClubsDistrict = () => {
       {
         "@type": "ListItem",
         "position": 3,
-        "name": `${districtConfig.name} District`,
-        "item": `${BASE_URL}/clubs/${district}`
+        "name": `${districtDisplayName} District`,
+        "item": canonicalPath
       }
     ]
   };
 
+  // Always render SEOHead to ensure prerender succeeds
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <SEOHead
-        title={districtConfig.seoTitle}
-        description={districtConfig.description}
-        canonical={`${BASE_URL}${buildLanguageAwarePath(`/clubs/${district}`, language)}`}
-        keywords={districtConfig.metaKeywords}
+        title={seoTitle}
+        description={seoDescription}
+        canonical={canonicalPath}
+        keywords={metaKeywords}
         hreflangLinks={hreflangLinks}
         ogLocale={language === "es" ? "es_ES" : language === "de" ? "de_DE" : language === "fr" ? "fr_FR" : "en_US"}
         ogLocaleAlternate={["en_US", "es_ES", "de_DE", "fr_FR"].filter(l => l !== (language === "es" ? "es_ES" : language === "de" ? "de_DE" : language === "fr" ? "fr_FR" : "en_US"))}
@@ -182,15 +250,15 @@ const ClubsDistrict = () => {
               <div className="flex items-center gap-3 mb-4">
                 <MapPin className="h-8 w-8 text-primary" />
                 <h1 className="text-4xl md:text-5xl font-bold">
-                  Cannabis Clubs in {districtConfig.name}
+                  Cannabis Clubs in {districtDisplayName}
                 </h1>
               </div>
               <p className="text-xl text-muted-foreground mb-4">
-                {districtConfig.description}
+                {seoDescription}
               </p>
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Navigation className="h-4 w-4" />
-                <span>Near: {districtConfig.landmarks}</span>
+                <span>Near: {landmarks}</span>
               </div>
             </div>
           </div>
@@ -204,7 +272,7 @@ const ClubsDistrict = () => {
                 <div className="flex gap-3">
                   <Info className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
                   <div>
-                    <p className="font-semibold mb-2">About {districtConfig.name} Cannabis Clubs</p>
+                    <p className="font-semibold mb-2">About {districtDisplayName} Cannabis Clubs</p>
                     <p className="text-sm text-muted-foreground">
                       {clubs && clubs.length > 0 
                         ? `${clubs.length} verified ${clubs.length === 1 ? 'club' : 'clubs'} in this district. All clubs require membership invitation. Tourist-friendly options available.`
@@ -230,7 +298,7 @@ const ClubsDistrict = () => {
               ) : clubs && clubs.length > 0 ? (
                 <>
                   <h2 className="text-2xl font-bold mb-6">
-                    {clubs.length} {clubs.length === 1 ? 'Club' : 'Clubs'} in {districtConfig.name}
+                    {clubs.length} {clubs.length === 1 ? 'Club' : 'Clubs'} in {districtDisplayName}
                   </h2>
                   <div className="grid grid-cols-1 gap-6">
                     {clubs.map((club) => (
@@ -252,7 +320,7 @@ const ClubsDistrict = () => {
                 </>
               ) : (
                 <div className="text-center py-12">
-                  <p className="text-xl font-medium mb-2">No clubs found in {districtConfig.name}</p>
+                  <p className="text-xl font-medium mb-2">No clubs found in {districtDisplayName}</p>
                   <p className="text-muted-foreground mb-6">
                     Try browsing clubs in other districts or view all available clubs.
                   </p>
@@ -271,7 +339,7 @@ const ClubsDistrict = () => {
             <div className="max-w-3xl mx-auto text-center">
               <h2 className="text-3xl font-bold mb-4">Ready to Visit?</h2>
               <p className="text-muted-foreground mb-8">
-                Request your invitation to cannabis clubs in {districtConfig.name}. Fast approval, same-day access.
+                Request your invitation to cannabis clubs in {districtDisplayName}. Fast approval, same-day access.
               </p>
               <Link to={buildLanguageAwarePath("/how-it-works", language)}>
                 <Button size="lg">Get Your Invitation</Button>

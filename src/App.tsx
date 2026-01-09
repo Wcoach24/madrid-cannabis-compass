@@ -120,6 +120,8 @@ const App = () => {
             <Route path="/:lang/about" element={<About />} />
             <Route path="/:lang/safety/scams" element={<ScamWarning />} />
             <Route path="/:lang/club-cannabis-madrid" element={<CannabisClubMadrid />} />
+            {/* Legacy alias for already indexed URLs */}
+            <Route path="/:lang/cannabis-club-madrid" element={<CannabisClubMadrid />} />
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
