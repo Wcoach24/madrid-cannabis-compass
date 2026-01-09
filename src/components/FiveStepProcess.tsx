@@ -56,9 +56,9 @@ const FiveStepProcess = () => {
           <Badge variant="outline" className="mb-4">
             {t('process.badge')}
           </Badge>
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+          <p className="text-3xl md:text-4xl font-bold mb-4" role="heading" aria-level={2}>
             {t('process.title')}
-          </h2>
+          </p>
           <p className="text-muted-foreground max-w-2xl mx-auto">
             {t('process.subtitle')}
           </p>

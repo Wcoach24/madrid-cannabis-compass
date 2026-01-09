@@ -25,6 +25,9 @@ const Clubs = () => {
   const [districtFilter, setDistrictFilter] = useState(searchParams.get("district") || "all");
   const [touristFilter, setTouristFilter] = useState(searchParams.get("tourist") || "all");
 
+  // Check if URL has filter parameters - if so, this is a noindex page
+  const hasFilterParams = searchParams.has("district") || searchParams.has("tourist") || searchParams.has("q");
+
   useEffect(() => {
     fetchClubs();
   }, [districtFilter, touristFilter]);
@@ -128,18 +131,27 @@ const Clubs = () => {
     }))
   };
 
+  // SEO: noindex for parameter pages, canonical always to clean URL
+  const seoTitle = language === "es" 
+    ? "Clubs de Cannabis Madrid 2026 | Directorio Verificado"
+    : "Cannabis Clubs Madrid 2026 | Verified Directory";
+
   return (
     <div className="min-h-screen flex flex-col">
       <SEOHead
-        title={t("clubs.title") + " | Madrid Cannabis Clubs"}
+        title={seoTitle}
         description={t("clubs.subtitle")}
         canonical={`${BASE_URL}${buildLanguageAwarePath("/clubs", language)}`}
         keywords="cannabis clubs madrid, weed clubs madrid directory, verified cannabis clubs, madrid districts cannabis"
-        hreflangLinks={hreflangLinks}
+        hreflangLinks={hasFilterParams ? undefined : hreflangLinks}
         ogLocale={language === "es" ? "es_ES" : language === "de" ? "de_DE" : language === "fr" ? "fr_FR" : "en_US"}
         ogLocaleAlternate={["en_US", "es_ES", "de_DE", "fr_FR"].filter(l => l !== (language === "es" ? "es_ES" : language === "de" ? "de_DE" : language === "fr" ? "fr_FR" : "en_US"))}
-        structuredData={[breadcrumbSchema, itemListSchema]}
+        structuredData={hasFilterParams ? undefined : [breadcrumbSchema, itemListSchema]}
       />
+      {/* Add noindex for parameter pages */}
+      {hasFilterParams && (
+        <meta name="robots" content="noindex, follow" />
+      )}
       <Header />
       
       <main className="flex-1">

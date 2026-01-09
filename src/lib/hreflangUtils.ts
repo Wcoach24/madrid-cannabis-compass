@@ -6,6 +6,15 @@ export interface HreflangLink {
   href: string;
 }
 
+/**
+ * Generates complete bidirectional hreflang links for SEO.
+ * Includes x-default, self-reference, and regional variants.
+ * 
+ * @param baseUrl - The base URL (e.g., https://www.weedmadrid.com)
+ * @param path - The path without language prefix (e.g., /clubs)
+ * @param availableLanguages - Optional array of available languages for this page
+ * @returns Array of HreflangLink objects with complete bidirectional references
+ */
 export const generateHreflangLinks = (
   baseUrl: string,
   path: string,
@@ -14,87 +23,62 @@ export const generateHreflangLinks = (
   const languages = availableLanguages || SUPPORTED_LANGUAGES;
   const links: HreflangLink[] = [];
   
-  // Add x-default (points to English version)
+  // Normalize path - remove trailing slash except for root
+  const normalizedPath = path === "/" ? "" : path.replace(/\/$/, "");
+  
+  // Add x-default (points to English version - the default language)
+  const defaultHref = `${baseUrl}${normalizedPath}`;
   links.push({
     lang: "x-default",
-    href: `${baseUrl}${path}`,
+    href: defaultHref,
   });
   
-  // Add each language version
+  // Add each language version with self-reference and regional variants
   languages.forEach((lang) => {
-    const langPath = lang === DEFAULT_LANGUAGE ? path : `/${lang}${path}`;
+    const langPath = lang === DEFAULT_LANGUAGE 
+      ? normalizedPath 
+      : `/${lang}${normalizedPath}`;
+    const href = `${baseUrl}${langPath}`;
     
+    // Add primary language code (self-reference included)
     links.push({
       lang: lang,
-      href: `${baseUrl}${langPath}`,
+      href: href,
     });
     
     // Add regional variants for Spanish
     if (lang === "es") {
-      links.push({
-        lang: "es-ES",
-        href: `${baseUrl}${langPath}`,
-      });
-      links.push({
-        lang: "es-MX",
-        href: `${baseUrl}${langPath}`,
-      });
+      links.push({ lang: "es-ES", href });
+      links.push({ lang: "es-MX", href });
+      links.push({ lang: "es-AR", href });
     }
     
     // Add regional variants for English
     if (lang === "en") {
-      links.push({
-        lang: "en-US",
-        href: `${baseUrl}${langPath}`,
-      });
-      links.push({
-        lang: "en-GB",
-        href: `${baseUrl}${langPath}`,
-      });
+      links.push({ lang: "en-US", href });
+      links.push({ lang: "en-GB", href });
+      links.push({ lang: "en-AU", href });
     }
     
     // Add regional variants for German
     if (lang === "de") {
-      links.push({
-        lang: "de-DE",
-        href: `${baseUrl}${langPath}`,
-      });
-      links.push({
-        lang: "de-AT",
-        href: `${baseUrl}${langPath}`,
-      });
-      links.push({
-        lang: "de-CH",
-        href: `${baseUrl}${langPath}`,
-      });
+      links.push({ lang: "de-DE", href });
+      links.push({ lang: "de-AT", href });
+      links.push({ lang: "de-CH", href });
     }
     
     // Add regional variants for French
     if (lang === "fr") {
-      links.push({
-        lang: "fr-FR",
-        href: `${baseUrl}${langPath}`,
-      });
-      links.push({
-        lang: "fr-BE",
-        href: `${baseUrl}${langPath}`,
-      });
-      links.push({
-        lang: "fr-CH",
-        href: `${baseUrl}${langPath}`,
-      });
+      links.push({ lang: "fr-FR", href });
+      links.push({ lang: "fr-BE", href });
+      links.push({ lang: "fr-CH", href });
+      links.push({ lang: "fr-CA", href });
     }
     
     // Add regional variants for Italian
     if (lang === "it") {
-      links.push({
-        lang: "it-IT",
-        href: `${baseUrl}${langPath}`,
-      });
-      links.push({
-        lang: "it-CH",
-        href: `${baseUrl}${langPath}`,
-      });
+      links.push({ lang: "it-IT", href });
+      links.push({ lang: "it-CH", href });
     }
   });
   
