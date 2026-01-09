@@ -1,4 +1,5 @@
 {
+  "cleanUrls": true,
   "trailingSlash": false,
   "outputDirectory": "dist",
   "headers": [
@@ -56,7 +57,7 @@
       "destination": "https://sdpmwelfkseuhlhgatsc.supabase.co/functions/v1/generate-rss"
     },
     {
-      "source": "/(.*)",
+      "source": "/:path*",
       "destination": "/index.html"
     }
   ]
