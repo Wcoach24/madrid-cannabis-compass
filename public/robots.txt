@@ -80,4 +80,4 @@ Allow: /*.geo.txt
 # ============================================
 # SITEMAPS (Critical for SEO Discovery)
 # ============================================
-Sitemap: https://www.weedmadrid.com/api/generate-sitemap
+Sitemap: https://www.weedmadrid.com/sitemap.xml

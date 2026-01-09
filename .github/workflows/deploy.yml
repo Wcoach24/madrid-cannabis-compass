@@ -35,6 +35,9 @@ jobs:
       - name: Prerender all routes
         run: node scripts/prerender.mjs
 
+      - name: Generate static sitemap
+        run: node scripts/generate-sitemap.mjs
+
       - name: Validate SEO
         run: node scripts/validate-seo.mjs
 

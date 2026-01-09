@@ -46,6 +46,151 @@
       "source": "/club/chamberi-club-social-madrid",
       "destination": "/club/vallehermoso-club-social-madrid",
       "permanent": true
+    },
+    {
+      "source": "/club/malasana-club-social-madrid",
+      "destination": "/club/malasana-private-club",
+      "permanent": true
+    },
+    {
+      "source": "/club/greenhouse-social-club-madrid",
+      "destination": "/club/genetics-social-club-madrid",
+      "permanent": true
+    },
+    {
+      "source": "/club/retiro-cannabis-club-madrid",
+      "destination": "/club/retiro-botanico-club",
+      "permanent": true
+    },
+    {
+      "source": "/club/wellness-cannabis-club-madrid",
+      "destination": "/club/chamberi-wellness-association",
+      "permanent": true
+    },
+    {
+      "source": "/club/la-latina-social-club",
+      "destination": "/club/lavapies-cannabis-association-madrid",
+      "permanent": true
+    },
+    {
+      "source": "/club/lavapies-social-collective",
+      "destination": "/club/lavapies-cannabis-association-madrid",
+      "permanent": true
+    },
+    {
+      "source": "/how-to-join-cannabis-club-madrid",
+      "destination": "/guide/how-to-join-cannabis-club-madrid",
+      "permanent": true
+    },
+    {
+      "source": "/cannabis-tourism-madrid",
+      "destination": "/guide/cannabis-tourism-madrid-guide",
+      "permanent": true
+    },
+    {
+      "source": "/best-cannabis-clubs-madrid",
+      "destination": "/guide/best-cannabis-clubs-madrid-2025",
+      "permanent": true
+    },
+    {
+      "source": "/complete-guide-cannabis-clubs-madrid",
+      "destination": "/guide/complete-guide-cannabis-clubs-madrid",
+      "permanent": true
+    },
+    {
+      "source": "/cannabis-laws-spain-2025",
+      "destination": "/guide/cannabis-laws-spain-2025",
+      "permanent": true
+    },
+    {
+      "source": "/cannabis-club-madrid-tourists-2025-guide",
+      "destination": "/guide/cannabis-club-madrid-tourists-2025-guide",
+      "permanent": true
+    },
+    {
+      "source": "/how-to-join-club-madrid",
+      "destination": "/guide/how-to-join-cannabis-club-madrid",
+      "permanent": true
+    },
+    {
+      "source": "/guide/cannabis-laws-spain-legal-guide",
+      "destination": "/guide/cannabis-laws-spain-2025",
+      "permanent": true
+    },
+    {
+      "source": "/invitation",
+      "destination": "/clubs",
+      "permanent": true
+    },
+    {
+      "source": "/faq/:slug",
+      "destination": "/faq",
+      "permanent": false
+    },
+    {
+      "source": "/district/lavapies",
+      "destination": "/district/centro",
+      "permanent": true
+    },
+    {
+      "source": "/clubs/club-tetuan",
+      "destination": "/club/norte-verde-association",
+      "permanent": true
+    },
+    {
+      "source": "/clubs/club-retiro",
+      "destination": "/club/retiro-botanico-club",
+      "permanent": true
+    },
+    {
+      "source": "/clubs/club-atocha",
+      "destination": "/club/atocha-leaf-society",
+      "permanent": true
+    },
+    {
+      "source": "/clubs/club-greenhouse",
+      "destination": "/club/genetics-social-club-madrid",
+      "permanent": true
+    },
+    {
+      "source": "/clubs/club-latina",
+      "destination": "/club/lavapies-cannabis-association-madrid",
+      "permanent": true
+    },
+    {
+      "source": "/clubs/club-granvia",
+      "destination": "/club/gran-via-green-circle",
+      "permanent": true
+    },
+    {
+      "source": "/clubs/club-vallehermoso",
+      "destination": "/club/vallehermoso-club-social-madrid",
+      "permanent": true
+    },
+    {
+      "source": "/clubs/club-malasana",
+      "destination": "/club/malasana-private-club",
+      "permanent": true
+    },
+    {
+      "source": "/clubs/club-wellness",
+      "destination": "/club/chamberi-wellness-association",
+      "permanent": true
+    },
+    {
+      "source": "/guides/best-cannabis-clubs-madrid-2025",
+      "destination": "/guide/best-cannabis-clubs-madrid-2025",
+      "permanent": true
+    },
+    {
+      "source": "/guides/cannabis-laws-spain-2025",
+      "destination": "/guide/cannabis-laws-spain-2025",
+      "permanent": true
+    },
+    {
+      "source": "/guides/how-to-join-cannabis-club-madrid",
+      "destination": "/guide/how-to-join-cannabis-club-madrid",
+      "permanent": true
     }
   ],
   "rewrites": [

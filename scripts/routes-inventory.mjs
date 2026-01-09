@@ -32,6 +32,8 @@ export const STATIC_ROUTES = [
   '/how-it-works',
   '/districts',
   '/legal',
+  '/privacy',
+  '/terms',
   '/safety',
   '/about',
   '/contact',
