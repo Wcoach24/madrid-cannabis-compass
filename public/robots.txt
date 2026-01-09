@@ -1,13 +1,12 @@
 # ============================================
-# WEED MADRID - CLEANED ROBOTS.TXT
+# WEED MADRID - ROBOTS.TXT (SEO + GEO Optimized)
 # ============================================
-# Removes unsupported directives (Host, Crawl-delay, Request-rate, Visit-time)
-# Last updated: 2025-12-14
+# Last updated: 2026-01-09
+# Includes AI crawler directives for GEO optimization
 
 # ============================================
 # GOOGLE & MAJOR SEARCH ENGINES
 # ============================================
-# Grant full access to all Google crawlers
 User-agent: Googlebot
 Allow: /
 
@@ -20,11 +19,36 @@ Allow: /
 User-agent: Google-Extended
 Allow: /
 
-# Grant full access to other major engines
 User-agent: Bingbot
 Allow: /
 
 User-agent: Slurp
+Allow: /
+
+# ============================================
+# AI CRAWLERS - Full Access (GEO Optimization)
+# ============================================
+User-agent: GPTBot
+Allow: /
+Allow: /llm.txt
+Allow: /*.geo.txt
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: Anthropic-AI
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Cohere-AI
+Allow: /
+
+User-agent: Google-Extended
 Allow: /
 
 # ============================================
@@ -52,5 +76,13 @@ Allow: /
 # ============================================
 # SITEMAPS (Critical for SEO Discovery)
 # ============================================
-# Single primary sitemap (dynamically generated)
 Sitemap: https://www.weedmadrid.com/api/generate-sitemap
+
+# ============================================
+# AI-OPTIMIZED FILES (GEO)
+# ============================================
+# These files contain structured content for AI systems
+Allow: /llm.txt
+Allow: /home.geo.txt
+Allow: /clubs.geo.txt
+Allow: /guides.geo.txt

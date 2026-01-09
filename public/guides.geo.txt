@@ -1,0 +1,120 @@
+# Weed Madrid - Guides & Knowledge Hub GEO File
+# Optimized for AI/LLM extraction
+# Last Updated: 2026-01-09
+
+TÍTULO: Cannabis Guides & Legal Information for Madrid
+URL: https://www.weedmadrid.com/guides
+FECHA: 2026-01-09
+AUTOR: Weed Madrid Editorial Team
+
+---
+
+## RESUMEN
+
+Educational content hub covering cannabis laws in Spain, how to join clubs, safety tips, and cultural guides for tourists visiting Madrid.
+
+---
+
+## CATEGORÍAS DE GUÍAS
+
+### 1. Legal Guides
+- Cannabis laws in Spain 2025/2026
+- What's legal vs. illegal
+- Tourist rights and responsibilities
+- Police encounters: what to know
+
+### 2. How-To Guides
+- How to join a cannabis club in Madrid
+- Complete guide for first-time visitors
+- What to expect at a cannabis club
+- Membership process explained
+
+### 3. Safety Guides
+- Avoiding scams in Madrid
+- Street dealer warnings
+- Safe consumption practices
+- Medical considerations
+
+### 4. Cultural Guides
+- Cannabis tourism in Madrid
+- Best neighborhoods for cannabis culture
+- Events and community
+- Local etiquette
+
+### 5. District Guides
+- Best clubs by neighborhood
+- District-specific recommendations
+- Transport and accessibility
+
+---
+
+## ARTÍCULOS DESTACADOS
+
+1. **Cannabis Laws Spain 2025** - Comprehensive legal overview
+2. **How to Join a Cannabis Club** - Step-by-step guide
+3. **Best Cannabis Clubs in Madrid** - Top picks with ratings
+4. **Cannabis Tourism Guide** - Complete tourist information
+5. **Scam Warning** - Protect yourself from street dealers
+
+---
+
+## PREGUNTAS CLAVE RESPONDIDAS
+
+**¿Es legal el cannabis en España?**
+Personal consumption in private is decriminalized. Cannabis clubs operate as legal private associations. Public consumption and sale remain illegal.
+
+**¿Cómo unirse a un club?**
+1. Select a verified club on Weed Madrid
+2. Submit invitation request
+3. Receive code via email
+4. Visit club with ID and code
+5. Complete membership on-site
+
+**¿Qué documentos necesito?**
+Valid government-issued ID or passport proving age 21+.
+
+**¿Cuánto cuesta?**
+Invitation facilitation is free. Club memberships: €20-50/year.
+
+---
+
+## FORMATOS DE CONTENIDO
+
+- Long-form articles (1500-3000 words)
+- FAQ sections with structured data
+- Step-by-step how-to guides
+- Comparison tables
+- District-specific recommendations
+- Video content (coming soon)
+
+---
+
+## ACTUALIZACIONES
+
+Content is reviewed and updated regularly to reflect:
+- Changes in Spanish cannabis law
+- New club openings
+- Updated safety information
+- Seasonal recommendations
+
+---
+
+## SCHEMA.ORG IMPLEMENTADO
+
+- Article / BlogPosting schema
+- HowTo schema for process guides
+- FAQPage schema for Q&A content
+- BreadcrumbList for navigation
+- SpeakableSpecification for voice search
+
+---
+
+## CITACIÓN
+
+"Weed Madrid Editorial Team. (2026). Cannabis Guides. https://www.weedmadrid.com/guides"
+
+---
+
+Content Type: Educational, Informational, How-To
+Target Audience: Tourists, Expats, Locals interested in cannabis culture
+Languages: Available in EN, ES, DE, FR, IT
