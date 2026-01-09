@@ -13,9 +13,10 @@
 
 import puppeteer from 'puppeteer';
 import { createServer } from 'http';
-import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'fs';
+import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync, statSync } from 'fs';
 import { join, dirname, extname } from 'path';
 import { fileURLToPath } from 'url';
+import { createHash } from 'crypto';
 import { getAllPaths } from './routes-inventory.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -23,6 +24,8 @@ const __dirname = dirname(__filename);
 const ROOT_DIR = join(__dirname, '..');
 const DIST_DIR = join(ROOT_DIR, 'dist');
 const DEBUG_DIR = join(DIST_DIR, '__prerender_debug__');
+const CACHE_DIR = join(ROOT_DIR, '.prerender-cache');
+const CACHE_FILE = join(CACHE_DIR, 'hashes.json');
 const BASE_URL = 'https://www.weedmadrid.com';
 
 // Validation thresholds
@@ -35,6 +38,39 @@ const STABILITY_WAIT = 750;
 
 // Parallelization settings - process multiple pages simultaneously
 const CONCURRENCY = 8;
+
+// Incremental cache settings
+const CACHE_ENABLED = process.env.PRERENDER_CACHE !== 'false';
+const FORCE_PRERENDER = process.env.FORCE_PRERENDER === 'true';
+
+// Files/folders that affect all pages (global dependencies)
+const GLOBAL_DEPS = [
+  'src/components/SEOHead.tsx',
+  'src/components/Header.tsx',
+  'src/components/Footer.tsx',
+  'src/lib/translations.ts',
+  'src/contexts/LanguageContext.tsx',
+  'src/index.css',
+  'tailwind.config.ts',
+];
+
+// Route-specific dependencies mapping
+const ROUTE_DEPS = {
+  '/': ['src/pages/Index.tsx', 'src/components/FiveStepProcess.tsx', 'src/components/QuickClubFinder.tsx'],
+  '/clubs': ['src/pages/Clubs.tsx', 'src/components/ClubCard.tsx'],
+  '/club/': ['src/pages/ClubDetail.tsx', 'src/components/ClubGallery.tsx'],
+  '/guides': ['src/pages/Guides.tsx'],
+  '/guide/': ['src/pages/GuideDetail.tsx'],
+  '/faq': ['src/pages/FAQ.tsx'],
+  '/about': ['src/pages/About.tsx'],
+  '/contact': ['src/pages/Contact.tsx'],
+  '/how-it-works': ['src/pages/HowItWorks.tsx'],
+  '/shop': ['src/pages/Shop.tsx'],
+  '/safety': ['src/pages/Safety.tsx'],
+  '/legal': ['src/pages/Legal.tsx'],
+  '/districts': ['src/pages/Districts.tsx', 'src/pages/District.tsx'],
+  '/cannabis-club-madrid': ['src/pages/CannabisClubMadrid.tsx'],
+};
 
 // Heavy routes that need more time
 const HEAVY_ROUTES = ['/clubs'];
@@ -68,6 +104,123 @@ const validationResults = {
  */
 function isCoreRoute(url) {
   return CORE_ROUTES.includes(url);
+}
+
+/**
+ * Generate hash for a file
+ */
+function hashFile(filePath) {
+  try {
+    const content = readFileSync(filePath);
+    return createHash('md5').update(content).digest('hex');
+  } catch (e) {
+    return null;
+  }
+}
+
+/**
+ * Get all files in a directory recursively
+ */
+function getFilesRecursive(dir, files = []) {
+  if (!existsSync(dir)) return files;
+  
+  const entries = readdirSync(dir);
+  for (const entry of entries) {
+    const fullPath = join(dir, entry);
+    const stat = statSync(fullPath);
+    if (stat.isDirectory()) {
+      // Skip node_modules, .git, dist, etc.
+      if (!['node_modules', '.git', 'dist', '.prerender-cache'].includes(entry)) {
+        getFilesRecursive(fullPath, files);
+      }
+    } else if (entry.endsWith('.tsx') || entry.endsWith('.ts') || entry.endsWith('.css')) {
+      files.push(fullPath);
+    }
+  }
+  return files;
+}
+
+/**
+ * Get dependencies for a specific route
+ */
+function getRouteDeps(url) {
+  const deps = [...GLOBAL_DEPS];
+  
+  // Find matching route pattern
+  for (const [pattern, files] of Object.entries(ROUTE_DEPS)) {
+    if (url === pattern || (pattern.endsWith('/') && url.startsWith(pattern))) {
+      deps.push(...files);
+    }
+  }
+  
+  return deps.map(dep => join(ROOT_DIR, dep));
+}
+
+/**
+ * Generate hash for a route based on its dependencies
+ */
+function generateRouteHash(url) {
+  const deps = getRouteDeps(url);
+  const hashes = deps.map(dep => hashFile(dep)).filter(Boolean);
+  return createHash('md5').update(hashes.join('')).digest('hex');
+}
+
+/**
+ * Load cached hashes
+ */
+function loadCache() {
+  try {
+    if (existsSync(CACHE_FILE)) {
+      return JSON.parse(readFileSync(CACHE_FILE, 'utf-8'));
+    }
+  } catch (e) {
+    console.warn('⚠️ Could not load cache:', e.message);
+  }
+  return { globalHash: null, routes: {} };
+}
+
+/**
+ * Save cache
+ */
+function saveCache(cache) {
+  try {
+    mkdirSync(CACHE_DIR, { recursive: true });
+    writeFileSync(CACHE_FILE, JSON.stringify(cache, null, 2));
+  } catch (e) {
+    console.warn('⚠️ Could not save cache:', e.message);
+  }
+}
+
+/**
+ * Generate global hash (for files that affect all pages)
+ */
+function generateGlobalHash() {
+  const hashes = GLOBAL_DEPS
+    .map(dep => hashFile(join(ROOT_DIR, dep)))
+    .filter(Boolean);
+  return createHash('md5').update(hashes.join('')).digest('hex');
+}
+
+/**
+ * Check if a prerendered file exists and is valid
+ */
+function hasCachedOutput(url) {
+  let outputPath;
+  if (url === '/') {
+    outputPath = join(DIST_DIR, 'index.html');
+  } else {
+    outputPath = join(DIST_DIR, url, 'index.html');
+  }
+  
+  if (!existsSync(outputPath)) return false;
+  
+  // Check minimum file size
+  try {
+    const stat = statSync(outputPath);
+    return stat.size > 1000; // At least 1KB
+  } catch (e) {
+    return false;
+  }
 }
 
 /**
@@ -504,13 +657,60 @@ async function main() {
   const allUrls = await getAllPaths();
   
   // Sort: core routes first for early failure detection
-  const urls = [
+  const sortedUrls = [
     ...allUrls.filter(u => CORE_ROUTES.includes(u)),
     ...allUrls.filter(u => !CORE_ROUTES.includes(u))
   ];
+
+  // Incremental cache logic
+  let urlsToPrerender = sortedUrls;
+  let skippedUrls = [];
+  const cache = loadCache();
+  const currentGlobalHash = generateGlobalHash();
+  const globalChanged = cache.globalHash !== currentGlobalHash;
+
+  if (CACHE_ENABLED && !FORCE_PRERENDER) {
+    console.log('📦 Incremental cache: ENABLED');
+    
+    if (globalChanged) {
+      console.log('🔄 Global dependencies changed - full prerender required');
+    } else {
+      // Filter to only routes that changed
+      urlsToPrerender = [];
+      skippedUrls = [];
+      
+      for (const url of sortedUrls) {
+        const currentHash = generateRouteHash(url);
+        const cachedHash = cache.routes[url];
+        const hasOutput = hasCachedOutput(url);
+        
+        // Re-prerender if: hash changed OR no cached output OR is core route (always validate core)
+        if (currentHash !== cachedHash || !hasOutput || isCoreRoute(url)) {
+          urlsToPrerender.push(url);
+        } else {
+          skippedUrls.push(url);
+        }
+      }
+      
+      if (skippedUrls.length > 0) {
+        console.log(`⏭️  Skipping ${skippedUrls.length} unchanged pages`);
+      }
+    }
+  } else if (FORCE_PRERENDER) {
+    console.log('🔄 Force prerender: ALL pages will be re-rendered');
+  } else {
+    console.log('📦 Incremental cache: DISABLED');
+  }
   
-  console.log(`📄 Total routes to prerender: ${urls.length}`);
+  console.log(`📄 Routes to prerender: ${urlsToPrerender.length}/${sortedUrls.length}`);
   console.log(`⚡ Parallelization: ${CONCURRENCY} concurrent pages\n`);
+
+  // If nothing to prerender, exit early
+  if (urlsToPrerender.length === 0) {
+    console.log('✅ No changes detected - using cached prerender!');
+    console.log(`📁 Output: ${DIST_DIR}\n`);
+    return;
+  }
 
   const PORT = 3456;
   const server = await createStaticServer(PORT);
@@ -521,21 +721,27 @@ async function main() {
     args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
   });
 
+  // Prepare new cache
+  const newCache = {
+    globalHash: currentGlobalHash,
+    routes: { ...cache.routes }, // Keep old hashes for skipped routes
+    timestamp: new Date().toISOString(),
+  };
+
   // Process in parallel batches
   const startTime = Date.now();
   let completed = 0;
 
-  for (let i = 0; i < urls.length; i += CONCURRENCY) {
-    const batch = urls.slice(i, i + CONCURRENCY);
+  for (let i = 0; i < urlsToPrerender.length; i += CONCURRENCY) {
+    const batch = urlsToPrerender.slice(i, i + CONCURRENCY);
     const batchNum = Math.floor(i / CONCURRENCY) + 1;
-    const totalBatches = Math.ceil(urls.length / CONCURRENCY);
+    const totalBatches = Math.ceil(urlsToPrerender.length / CONCURRENCY);
     
     console.log(`\n📦 Batch ${batchNum}/${totalBatches} (${batch.length} pages)`);
     
     const results = await Promise.allSettled(
       batch.map(async (url) => {
         const isCore = isCoreRoute(url);
-        const shortUrl = url.length > 50 ? url.substring(0, 47) + '...' : url;
         
         try {
           const { html, issues, waitSuccess } = await prerenderRoute(browser, url, PORT);
@@ -543,6 +749,8 @@ async function main() {
           // Always save HTML (even if issues exist, for fallback)
           if (html && html.length > 500) {
             saveHtml(url, html);
+            // Update cache hash on successful save
+            newCache.routes[url] = generateRouteHash(url);
           }
           
           const hasCritical = issues.some(i => i.includes('CRITICAL'));
@@ -569,7 +777,7 @@ async function main() {
     completed += batch.length;
     const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
     const rate = (completed / parseFloat(elapsed)).toFixed(1);
-    console.log(`  ⏱️ Progress: ${completed}/${urls.length} (${rate} pages/sec)`);
+    console.log(`  ⏱️ Progress: ${completed}/${urlsToPrerender.length} (${rate} pages/sec)`);
   }
 
   const totalTime = ((Date.now() - startTime) / 1000).toFixed(1);
@@ -577,6 +785,10 @@ async function main() {
 
   await browser.close();
   server.close();
+
+  // Save updated cache
+  saveCache(newCache);
+  console.log(`💾 Cache saved (${Object.keys(newCache.routes).length} routes)`);
 
   printSummary();
   saveReport();
