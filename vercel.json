@@ -1,6 +1,8 @@
 {
-  "trailingSlash": false,
+  "buildCommand": "",
+  "framework": null,
   "outputDirectory": "dist",
+  "trailingSlash": false,
   "headers": [
     {
       "source": "/(.*)",
@@ -54,10 +56,6 @@
     {
       "source": "/api/rss",
       "destination": "https://sdpmwelfkseuhlhgatsc.supabase.co/functions/v1/generate-rss"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
     }
   ]
 }

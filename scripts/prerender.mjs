@@ -375,6 +375,10 @@ function fixSeoMetadata(html, url) {
     html = '<!DOCTYPE html>' + html;
   }
 
+  // Inject forensic build stamp for production verification
+  const buildStamp = `<!-- GH_ACTIONS_${new Date().toISOString()}_SHA_${process.env.GITHUB_SHA || 'local'} -->`;
+  html = html.replace('</head>', `${buildStamp}\n</head>`);
+
   return html;
 }
 

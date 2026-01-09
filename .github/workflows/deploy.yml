@@ -38,14 +38,84 @@ jobs:
       - name: Validate SEO
         run: node scripts/validate-seo.mjs
 
-      - name: Deploy to Vercel
-        uses: amondnet/vercel-action@v25
+      - name: Verify prerender artifacts
+        run: |
+          echo "🔍 Verificando artefactos prerenderizados..."
+          
+          # Check 1: Archivo existe
+          if [ ! -f "dist/clubs/index.html" ]; then
+            echo "❌ FATAL: dist/clubs/index.html NO EXISTE"
+            exit 1
+          fi
+          
+          # Check 2: Title NO es genérico
+          if grep -q "<title>Weed Madrid</title>" dist/clubs/index.html; then
+            echo "❌ FATAL: Title genérico 'Weed Madrid' detectado (SPA shell)"
+            exit 1
+          fi
+          
+          # Check 3: data-seo-ready=true
+          if ! grep -q 'data-seo-ready="true"' dist/clubs/index.html; then
+            echo "❌ FATAL: data-seo-ready NO es true en /clubs"
+            exit 1
+          fi
+          
+          # Check 4: NO contiene Loading
+          if grep -q ">Loading...<" dist/clubs/index.html; then
+            echo "❌ FATAL: Contiene 'Loading...' (no hidratado)"
+            exit 1
+          fi
+          
+          # Check 5: Build stamp presente
+          if ! grep -q "GH_ACTIONS_" dist/clubs/index.html; then
+            echo "❌ FATAL: Build stamp forense no encontrado"
+            exit 1
+          fi
+          
+          echo "✅ Verificación de /clubs pasada"
+          
+          # Repetir para home
+          if ! grep -q 'data-seo-ready="true"' dist/index.html; then
+            echo "❌ FATAL: Home no tiene data-seo-ready=true"
+            exit 1
+          fi
+          
+          if ! grep -q "GH_ACTIONS_" dist/index.html; then
+            echo "❌ FATAL: Home sin build stamp"
+            exit 1
+          fi
+          
+          echo "✅ Todas las verificaciones de prerender pasadas"
+
+      - name: Upload prerendered dist as artifact
+        uses: actions/upload-artifact@v4
         with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          working-directory: ./
-          vercel-args: '--prod'
+          name: prerendered-dist-${{ github.sha }}
+          path: |
+            dist/
+            !dist/assets/
+          retention-days: 7
+
+      - name: Install Vercel CLI
+        run: npm install -g vercel@latest
+
+      - name: Pull Vercel Environment
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+      - name: Build Vercel Output
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+      - name: Deploy Prebuilt to Production
+        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
       - name: Notify IndexNow (Bing/Yandex)
         run: |
