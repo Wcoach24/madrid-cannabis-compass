@@ -1,10 +1,21 @@
 # SEO-optimized build pipeline with prerendering
+# Supports quick deploy modes: full, core, skip
 name: Build, Prerender & Deploy
 
 on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      prerender_mode:
+        description: 'Prerender mode'
+        required: false
+        default: 'full'
+        type: choice
+        options:
+          - full
+          - core
+          - skip
 
 env:
   VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
@@ -23,31 +34,49 @@ jobs:
         with:
           bun-version: latest
 
+      - name: Install Vercel CLI
+        run: npm i -g vercel@latest
+
       - name: Install dependencies
         run: bun install
+
+      - name: Pull Vercel Environment
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
       - name: Build Vite
         run: bun run build
 
       - name: Setup Puppeteer
+        if: ${{ github.event.inputs.prerender_mode != 'skip' }}
         run: npx puppeteer browsers install chrome
 
-      - name: Prerender all routes
+      - name: Prerender routes
+        if: ${{ github.event.inputs.prerender_mode != 'skip' }}
         run: node scripts/prerender.mjs
+        env:
+          PRERENDER_MODE: ${{ github.event.inputs.prerender_mode || 'full' }}
 
       - name: Validate SEO
+        if: ${{ github.event.inputs.prerender_mode != 'skip' }}
         run: node scripts/validate-seo.mjs
 
-      - name: Deploy to Vercel
-        uses: amondnet/vercel-action@v25
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          working-directory: ./
-          vercel-args: '--prod'
+      - name: Build for Vercel (prebuilt)
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+      - name: Deploy Prebuilt
+        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
       - name: Notify IndexNow (Bing/Yandex)
+        if: ${{ github.event.inputs.prerender_mode != 'skip' }}
         run: |
           echo "🔔 Submitting URLs to IndexNow..."
           curl -s -X POST "https://sdpmwelfkseuhlhgatsc.supabase.co/functions/v1/index-now" \
