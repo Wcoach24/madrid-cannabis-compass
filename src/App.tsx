@@ -36,6 +36,8 @@ import Shop from "./pages/Shop";
 import About from "./pages/About";
 import ScamWarning from "./pages/ScamWarning";
 import CannabisClubMadrid from "./pages/CannabisClubMadrid";
+import Privacy from "./pages/Privacy";
+import Terms from "./pages/Terms";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -73,6 +75,8 @@ const App = () => {
             <Route path="/guide/:slug" element={<GuideDetail />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/legal" element={<Legal />} />
+            <Route path="/privacy" element={<Privacy />} />
+            <Route path="/terms" element={<Terms />} />
             <Route path="/how-it-works" element={<HowItWorks />} />
             <Route path="/safety" element={<Safety />} />
             <Route path="/seed-data" element={<SeedData />} />
@@ -104,6 +108,8 @@ const App = () => {
             <Route path="/:lang/guide/:slug" element={<GuideDetail />} />
             <Route path="/:lang/contact" element={<Contact />} />
             <Route path="/:lang/legal" element={<Legal />} />
+            <Route path="/:lang/privacy" element={<Privacy />} />
+            <Route path="/:lang/terms" element={<Terms />} />
             <Route path="/:lang/how-it-works" element={<HowItWorks />} />
             <Route path="/:lang/safety" element={<Safety />} />
             <Route path="/:lang/auth" element={<Auth />} />
