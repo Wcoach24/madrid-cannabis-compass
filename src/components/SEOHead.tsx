@@ -153,11 +153,12 @@ const SEOHead = ({
     }
     rssLink.setAttribute('href', 'https://www.weedmadrid.com/api/rss');
 
-    // Update hreflang links
+    // Update hreflang links with complete bidirectional references
+    // Remove existing hreflang links first
+    const existingHreflangs = document.querySelectorAll('link[rel="alternate"][hreflang]');
+    existingHreflangs.forEach(link => link.remove());
+    
     if (hreflangLinks && hreflangLinks.length > 0) {
-      const existingHreflangs = document.querySelectorAll('link[rel="alternate"][hreflang]');
-      existingHreflangs.forEach(link => link.remove());
-
       hreflangLinks.forEach(({ lang, href }) => {
         const linkElement = document.createElement('link');
         linkElement.setAttribute('rel', 'alternate');
