@@ -113,9 +113,17 @@ Deno.serve(async (req) => {
       { path: '/safety', priority: '0.8', changefreq: 'monthly' },
       { path: '/districts', priority: '0.8', changefreq: 'weekly' },
       { path: '/contact', priority: '0.7', changefreq: 'monthly' },
+      { path: '/shop', priority: '0.7', changefreq: 'weekly' },
+      { path: '/about', priority: '0.7', changefreq: 'monthly' },
+      { path: '/safety/scams', priority: '0.7', changefreq: 'monthly' },
     ];
 
-    const districts = ['centro', 'chamberi', 'salamanca', 'retiro', 'tetuan', 'chamartin', 'moncloa-aravaca'];
+    // All 12 districts synchronized with routes-inventory.mjs
+    const districts = [
+      'centro', 'chamberi', 'malasana', 'retiro', 'tetuan', 'usera',
+      'atocha', 'moncloa-aravaca', 'arganzuela', 'fuencarral-el-pardo',
+      'salamanca', 'chamartin'
+    ];
     
     // Add "Near Me" pages
     staticPages.push({ path: '/clubs/near-me', priority: '0.8', changefreq: 'weekly' });
@@ -138,6 +146,38 @@ Deno.serve(async (req) => {
     <lastmod>${new Date().toISOString()}</lastmod>
   </url>`;
       });
+    });
+
+    // Add pillar page: cannabis-club-madrid (English version)
+    sitemap += `
+  <url>
+    <loc>${baseUrl}/cannabis-club-madrid</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="${baseUrl}/cannabis-club-madrid"/>
+    <xhtml:link rel="alternate" hreflang="en" href="${baseUrl}/cannabis-club-madrid"/>
+    <xhtml:link rel="alternate" hreflang="es" href="${baseUrl}/es/club-cannabis-madrid"/>
+    <xhtml:link rel="alternate" hreflang="de" href="${baseUrl}/de/club-cannabis-madrid"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="${baseUrl}/fr/club-cannabis-madrid"/>
+    <xhtml:link rel="alternate" hreflang="it" href="${baseUrl}/it/club-cannabis-madrid"/>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <lastmod>${new Date().toISOString()}</lastmod>
+  </url>`;
+
+    // Add pillar page localized versions
+    ['es', 'de', 'fr', 'it'].forEach(lang => {
+      sitemap += `
+  <url>
+    <loc>${baseUrl}/${lang}/club-cannabis-madrid</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="${baseUrl}/cannabis-club-madrid"/>
+    <xhtml:link rel="alternate" hreflang="en" href="${baseUrl}/cannabis-club-madrid"/>
+    <xhtml:link rel="alternate" hreflang="es" href="${baseUrl}/es/club-cannabis-madrid"/>
+    <xhtml:link rel="alternate" hreflang="de" href="${baseUrl}/de/club-cannabis-madrid"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="${baseUrl}/fr/club-cannabis-madrid"/>
+    <xhtml:link rel="alternate" hreflang="it" href="${baseUrl}/it/club-cannabis-madrid"/>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <lastmod>${new Date().toISOString()}</lastmod>
+  </url>`;
     });
 
     // Add club URLs with images and dynamic priority
