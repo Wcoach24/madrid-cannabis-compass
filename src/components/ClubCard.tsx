@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { MapPin, Star, Languages } from "lucide-react";
+import { MapPin, Star, Languages, Award } from "lucide-react";
 import { useLanguage } from "@/hooks/useLanguage";
 import { buildLanguageAwarePath } from "@/lib/languageUtils";
 import { isOpenNow, Timetable } from "@/lib/timetableUtils";
@@ -18,6 +18,8 @@ interface ClubCardProps {
   languages?: string[];
   main_image_url?: string;
   timetable?: Timetable | null;
+  isEditorsPick?: boolean;
+  editorsPickReason?: string;
 }
 
 const ClubCard = ({
@@ -31,13 +33,22 @@ const ClubCard = ({
   languages,
   main_image_url,
   timetable,
+  isEditorsPick,
+  editorsPickReason,
 }: ClubCardProps) => {
   const { language, t } = useLanguage();
   const clubIsOpen = timetable ? isOpenNow(timetable) : false;
   
   return (
     <Link to={buildLanguageAwarePath(`/club/${slug}`, language)}>
-      <Card className="h-full overflow-hidden transition-all hover:shadow-lg hover:-translate-y-1 duration-300 bg-gradient-to-b from-card to-muted/20">
+      <Card className={`h-full overflow-hidden transition-all hover:shadow-lg hover:-translate-y-1 duration-300 bg-gradient-to-b from-card to-muted/20 ${isEditorsPick ? 'ring-2 ring-gold/50' : ''}`}>
+        {/* Editor's Pick Badge */}
+        {isEditorsPick && (
+          <div className="bg-gradient-to-r from-gold to-gold/80 text-gold-foreground px-4 py-2 flex items-center gap-2">
+            <Award className="w-4 h-4" />
+            <span className="text-sm font-semibold">{t("clubcard.editorspick")}</span>
+          </div>
+        )}
         {main_image_url && (
           <ImageWithSkeleton
             src={main_image_url}
@@ -80,7 +91,14 @@ const ClubCard = ({
             </div>
           )}
 
-          {summary && (
+          {/* Editor's Pick Reason */}
+          {isEditorsPick && editorsPickReason && (
+            <p className="text-sm text-gold font-medium mb-3 italic">
+              "{editorsPickReason}"
+            </p>
+          )}
+
+          {summary && !editorsPickReason && (
             <p className="text-sm text-muted-foreground line-clamp-2 mb-4">
               {summary}
             </p>
