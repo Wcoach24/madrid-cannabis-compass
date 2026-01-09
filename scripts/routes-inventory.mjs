@@ -23,6 +23,7 @@ const SUPABASE_ANON_KEY = process.env.VITE_SUPABASE_ANON_KEY;
 export const LANGUAGES = ['en', 'es', 'de', 'fr', 'it'];
 
 // Static routes that exist for all languages (INDEXABLE)
+// NOTE: /cannabis-club-madrid is handled specially - EN uses /cannabis-club-madrid, other langs use /club-cannabis-madrid
 export const STATIC_ROUTES = [
   '/',
   '/clubs',
@@ -36,9 +37,24 @@ export const STATIC_ROUTES = [
   '/contact',
   '/knowledge',
   '/shop',
-  '/cannabis-club-madrid',
   '/safety/scams',
   '/clubs/near-me',
+];
+
+// Districts that have full DISTRICT_CONFIG in ClubsDistrict.tsx (SEO ready)
+export const SUPPORTED_DISTRICT_SLUGS = [
+  'centro',
+  'chamberi', 
+  'malasana',
+  'retiro',
+  'tetuan',
+  'usera',
+  'atocha',
+  'moncloa-aravaca',
+  'arganzuela',
+  'fuencarral-el-pardo',
+  'salamanca',
+  'chamartin',
 ];
 
 // Routes that should NOT be indexed (noindex)
@@ -162,6 +178,15 @@ export function buildUrlInventory(dynamicData) {
     }
   }
 
+  // 1b. Special pillar page: cannabis-club-madrid
+  // EN uses /cannabis-club-madrid, other langs use /:lang/club-cannabis-madrid
+  urls.push({ path: '/cannabis-club-madrid', lang: 'en', type: 'pillar' });
+  for (const lang of LANGUAGES) {
+    if (lang !== 'en') {
+      urls.push({ path: `/${lang}/club-cannabis-madrid`, lang, type: 'pillar' });
+    }
+  }
+
   // 2. Club pages (same content, different lang UI)
   for (const slug of dynamicData.clubs) {
     urls.push({ path: `/club/${slug}`, lang: 'en', type: 'club', slug });
@@ -181,17 +206,26 @@ export function buildUrlInventory(dynamicData) {
     }
   }
 
-  // 4. District pages (already slugified without accents)
+  // 4. District pages - only for districts with full DISTRICT_CONFIG support
   for (const district of dynamicData.districts) {
-    // District detail page
-    urls.push({ path: `/district/${district}`, lang: 'en', type: 'district', slug: district });
-    // Clubs by district page
-    urls.push({ path: `/clubs/${district}`, lang: 'en', type: 'clubs-district', slug: district });
+    // Only generate routes for supported districts to avoid timeouts
+    const isSupported = SUPPORTED_DISTRICT_SLUGS.includes(district);
     
+    // District detail page - always generate (uses translations fallback)
+    urls.push({ path: `/district/${district}`, lang: 'en', type: 'district', slug: district });
     for (const lang of LANGUAGES) {
       if (lang !== 'en') {
         urls.push({ path: `/${lang}/district/${district}`, lang, type: 'district', slug: district });
-        urls.push({ path: `/${lang}/clubs/${district}`, lang, type: 'clubs-district', slug: district });
+      }
+    }
+    
+    // Clubs by district page - only for supported districts
+    if (isSupported) {
+      urls.push({ path: `/clubs/${district}`, lang: 'en', type: 'clubs-district', slug: district });
+      for (const lang of LANGUAGES) {
+        if (lang !== 'en') {
+          urls.push({ path: `/${lang}/clubs/${district}`, lang, type: 'clubs-district', slug: district });
+        }
       }
     }
   }

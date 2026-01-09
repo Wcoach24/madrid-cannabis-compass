@@ -623,6 +623,60 @@ export const translations: Record<Language, Record<string, string>> = {
     "process.step5.title": "Enjoy Safely",
     "process.step5.description": "Experience Madrid's cannabis culture responsibly",
     "process.timeEstimate": "Total time: 2 minutes to apply, 24 hours for approval",
+    
+    // Districts - SEO descriptions (120+ chars for meta description compliance)
+    "districts.meta.title": "Cannabis Clubs by District - Madrid",
+    "districts.meta.description": "Explore Madrid cannabis clubs organized by district. Discover the best neighborhoods for cannabis social associations and find clubs near you.",
+    "districts.hero.title": "Madrid Cannabis Clubs by District",
+    "districts.hero.subtitle": "Find the perfect club in your preferred neighborhood. Each district offers unique atmosphere and accessibility.",
+    
+    "districts.centro.name": "Centro",
+    "districts.centro.seo.title": "Cannabis Clubs in Centro Madrid 2025 | Puerta del Sol Area",
+    "districts.centro.seo.description": "Discover cannabis clubs in Centro, Madrid's historic heart. Tourist-friendly associations near Puerta del Sol, Gran Vía and major attractions with English-speaking staff.",
+    
+    "districts.chamberi.name": "Chamberí",
+    "districts.chamberi.seo.title": "Cannabis Clubs in Chamberí Madrid 2025 | Elegant District",
+    "districts.chamberi.seo.description": "Find premium cannabis clubs in Chamberí, one of Madrid's most elegant residential districts. Professional atmosphere near Plaza de Chamberí with sophisticated service.",
+    
+    "districts.malasana.name": "Malasaña",
+    "districts.malasana.seo.title": "Cannabis Clubs in Malasaña Madrid 2025 | Hipster District",
+    "districts.malasana.seo.description": "Explore cannabis clubs in Malasaña, Madrid's alternative and artistic neighborhood. Trendy atmosphere near Tribunal Metro with creative vibes and young crowds.",
+    
+    "districts.retiro.name": "Retiro",
+    "districts.retiro.seo.title": "Cannabis Clubs Near Retiro Park Madrid 2025 | Upscale Area",
+    "districts.retiro.seo.description": "Find cannabis clubs near Retiro Park in Madrid's elegant eastern district. Peaceful atmosphere with quality associations near the famous royal gardens.",
+    
+    "districts.tetuan.name": "Tetuán",
+    "districts.tetuan.seo.title": "Cannabis Clubs in Tetuán Madrid 2025 | Traditional Neighborhood",
+    "districts.tetuan.seo.description": "Discover authentic cannabis clubs in Tetuán, a traditional Madrid neighborhood near Plaza Castilla. Local atmosphere with genuine Spanish character and good value.",
+    
+    "districts.usera.name": "Usera",
+    "districts.usera.seo.title": "Cannabis Clubs in Usera Madrid 2025 | Multicultural District",
+    "districts.usera.seo.description": "Find cannabis clubs in Usera, Madrid's diverse multicultural district. Community-focused associations with international atmosphere and authentic local character.",
+    
+    "districts.atocha.name": "Atocha",
+    "districts.atocha.seo.title": "Cannabis Clubs Near Atocha Station Madrid 2025 | Central Location",
+    "districts.atocha.seo.description": "Discover cannabis clubs near Atocha train station in central Madrid. Convenient for travelers with easy access to verified cannabis social associations nearby.",
+    
+    "districts.moncloa-aravaca.name": "Moncloa-Aravaca",
+    "districts.moncloa-aravaca.seo.title": "Cannabis Clubs in Moncloa Madrid 2025 | University District",
+    "districts.moncloa-aravaca.seo.description": "Find cannabis clubs in Moncloa-Aravaca, Madrid's university district. Young atmosphere near Ciudad Universitaria with student-friendly cannabis associations.",
+    
+    "districts.arganzuela.name": "Arganzuela",
+    "districts.arganzuela.seo.title": "Cannabis Clubs in Arganzuela Madrid 2025 | Madrid Río Area",
+    "districts.arganzuela.seo.description": "Discover cannabis clubs in Arganzuela near Madrid Río and Matadero. Modern neighborhood with creative atmosphere and riverside location near the cultural center.",
+    
+    "districts.fuencarral-el-pardo.name": "Fuencarral-El Pardo",
+    "districts.fuencarral-el-pardo.seo.title": "Cannabis Clubs in Fuencarral Madrid 2025 | Northern District",
+    "districts.fuencarral-el-pardo.seo.description": "Find cannabis clubs in Fuencarral-El Pardo in northern Madrid. Residential area with local neighborhood clubs offering authentic Spanish atmosphere and service.",
+    
+    "districts.salamanca.name": "Salamanca",
+    "districts.salamanca.seo.title": "Cannabis Clubs in Salamanca Madrid 2025 | Luxury District",
+    "districts.salamanca.seo.description": "Explore premium cannabis clubs in Salamanca, Madrid's most exclusive neighborhood. High-end associations near Serrano street with sophisticated atmosphere.",
+    
+    "districts.chamartin.name": "Chamartín",
+    "districts.chamartin.seo.title": "Cannabis Clubs in Chamartín Madrid 2025 | Business District",
+    "districts.chamartin.seo.description": "Find cannabis clubs in Chamartín, Madrid's business district near Santiago Bernabéu stadium. Professional atmosphere with premium cannabis social associations.",
   },
   es: {
     // Navigation
@@ -1799,6 +1853,58 @@ export const translations: Record<Language, Record<string, string>> = {
     "process.step5.title": "Sicher Genießen",
     "process.step5.description": "Erlebe Madrids Cannabis-Kultur verantwortungsvoll",
     "process.timeEstimate": "Gesamtzeit: 2 Minuten Antrag, 24 Stunden Genehmigung",
+    
+    // Districts - SEO descriptions (120+ chars for meta description compliance)
+    "districts.meta.title": "Cannabis Clubs nach Bezirk - Madrid",
+    "districts.meta.description": "Entdecke Madrids Cannabis Clubs nach Bezirk sortiert. Finde die besten Viertel für Cannabis-Vereine und Clubs in deiner Nähe.",
+    
+    "districts.centro.name": "Centro",
+    "districts.centro.seo.title": "Cannabis Clubs im Centro Madrid 2025 | Puerta del Sol Bereich",
+    "districts.centro.seo.description": "Entdecke Cannabis Clubs im Centro, dem historischen Herzen Madrids. Touristenfreundliche Vereine nahe Puerta del Sol, Gran Vía und Hauptattraktionen mit englischsprachigem Personal.",
+    
+    "districts.chamberi.name": "Chamberí",
+    "districts.chamberi.seo.title": "Cannabis Clubs in Chamberí Madrid 2025 | Elegantes Viertel",
+    "districts.chamberi.seo.description": "Finde Premium Cannabis Clubs in Chamberí, einem der elegantesten Wohnviertel Madrids. Professionelle Atmosphäre nahe Plaza de Chamberí mit gehobener Servicequalität.",
+    
+    "districts.malasana.name": "Malasaña",
+    "districts.malasana.seo.title": "Cannabis Clubs in Malasaña Madrid 2025 | Hipster-Viertel",
+    "districts.malasana.seo.description": "Erkunde Cannabis Clubs in Malasaña, dem alternativen und künstlerischen Viertel Madrids. Trendige Atmosphäre nahe Metro Tribunal mit kreativer Stimmung und jungem Publikum.",
+    
+    "districts.retiro.name": "Retiro",
+    "districts.retiro.seo.title": "Cannabis Clubs am Retiro-Park Madrid 2025 | Gehobenes Viertel",
+    "districts.retiro.seo.description": "Finde Cannabis Clubs nahe dem Retiro-Park im eleganten östlichen Bezirk Madrids. Friedliche Atmosphäre mit hochwertigen Vereinen nahe den berühmten königlichen Gärten.",
+    
+    "districts.tetuan.name": "Tetuán",
+    "districts.tetuan.seo.title": "Cannabis Clubs in Tetuán Madrid 2025 | Traditionelles Viertel",
+    "districts.tetuan.seo.description": "Entdecke authentische Cannabis Clubs in Tetuán, einem traditionellen Madrider Viertel nahe Plaza Castilla. Lokale Atmosphäre mit echtem spanischem Charakter und gutem Preis-Leistungs-Verhältnis.",
+    
+    "districts.usera.name": "Usera",
+    "districts.usera.seo.title": "Cannabis Clubs in Usera Madrid 2025 | Multikulturelles Viertel",
+    "districts.usera.seo.description": "Finde Cannabis Clubs in Usera, Madrids vielfältigem multikulturellem Bezirk. Gemeinschaftsorientierte Vereine mit internationaler Atmosphäre und authentischem lokalen Charakter.",
+    
+    "districts.atocha.name": "Atocha",
+    "districts.atocha.seo.title": "Cannabis Clubs am Bahnhof Atocha Madrid 2025 | Zentrale Lage",
+    "districts.atocha.seo.description": "Entdecke Cannabis Clubs nahe dem Bahnhof Atocha im Zentrum Madrids. Praktisch für Reisende mit einfachem Zugang zu verifizierten Cannabis-Vereinen in der Nähe.",
+    
+    "districts.moncloa-aravaca.name": "Moncloa-Aravaca",
+    "districts.moncloa-aravaca.seo.title": "Cannabis Clubs in Moncloa Madrid 2025 | Universitätsviertel",
+    "districts.moncloa-aravaca.seo.description": "Finde Cannabis Clubs in Moncloa-Aravaca, dem Universitätsviertel Madrids. Junge Atmosphäre nahe der Ciudad Universitaria mit studentenfreundlichen Cannabis-Vereinen.",
+    
+    "districts.arganzuela.name": "Arganzuela",
+    "districts.arganzuela.seo.title": "Cannabis Clubs in Arganzuela Madrid 2025 | Madrid Río Bereich",
+    "districts.arganzuela.seo.description": "Entdecke Cannabis Clubs in Arganzuela nahe Madrid Río und Matadero. Modernes Viertel mit kreativer Atmosphäre und Lage am Fluss nahe dem Kulturzentrum.",
+    
+    "districts.fuencarral-el-pardo.name": "Fuencarral-El Pardo",
+    "districts.fuencarral-el-pardo.seo.title": "Cannabis Clubs in Fuencarral Madrid 2025 | Nördlicher Bezirk",
+    "districts.fuencarral-el-pardo.seo.description": "Finde Cannabis Clubs in Fuencarral-El Pardo im Norden Madrids. Wohngebiet mit lokalen Viertel-Clubs, die authentische spanische Atmosphäre und Service bieten.",
+    
+    "districts.salamanca.name": "Salamanca",
+    "districts.salamanca.seo.title": "Cannabis Clubs in Salamanca Madrid 2025 | Luxusviertel",
+    "districts.salamanca.seo.description": "Erkunde Premium Cannabis Clubs in Salamanca, dem exklusivsten Viertel Madrids. Hochwertige Vereine nahe der Calle Serrano mit gehobener und anspruchsvoller Atmosphäre.",
+    
+    "districts.chamartin.name": "Chamartín",
+    "districts.chamartin.seo.title": "Cannabis Clubs in Chamartín Madrid 2025 | Geschäftsviertel",
+    "districts.chamartin.seo.description": "Finde Cannabis Clubs in Chamartín, dem Geschäftsviertel Madrids nahe dem Santiago-Bernabéu-Stadion. Professionelle Atmosphäre mit Premium Cannabis-Vereinen.",
   },
   
   fr: {
@@ -2343,6 +2449,58 @@ export const translations: Record<Language, Record<string, string>> = {
     "process.step5.title": "Profiter en Sécurité",
     "process.step5.description": "Découvrez la culture cannabis de Madrid de manière responsable",
     "process.timeEstimate": "Temps total: 2 minutes pour postuler, 24 heures pour l'approbation",
+    
+    // Districts - SEO descriptions (120+ chars for meta description compliance)
+    "districts.meta.title": "Clubs de Cannabis par Quartier - Madrid",
+    "districts.meta.description": "Explorez les clubs de cannabis de Madrid organisés par quartier. Découvrez les meilleurs quartiers pour les associations de cannabis près de chez vous.",
+    
+    "districts.centro.name": "Centro",
+    "districts.centro.seo.title": "Clubs de Cannabis dans le Centro Madrid 2025 | Quartier Puerta del Sol",
+    "districts.centro.seo.description": "Découvrez les clubs de cannabis dans le Centro, le cœur historique de Madrid. Associations accueillantes pour les touristes près de Puerta del Sol, Gran Vía et attractions principales.",
+    
+    "districts.chamberi.name": "Chamberí",
+    "districts.chamberi.seo.title": "Clubs de Cannabis à Chamberí Madrid 2025 | Quartier Élégant",
+    "districts.chamberi.seo.description": "Trouvez des clubs de cannabis premium à Chamberí, l'un des quartiers résidentiels les plus élégants de Madrid. Atmosphère professionnelle près de Plaza de Chamberí avec service de qualité.",
+    
+    "districts.malasana.name": "Malasaña",
+    "districts.malasana.seo.title": "Clubs de Cannabis à Malasaña Madrid 2025 | Quartier Hipster",
+    "districts.malasana.seo.description": "Explorez les clubs de cannabis à Malasaña, le quartier alternatif et artistique de Madrid. Atmosphère tendance près du métro Tribunal avec ambiance créative et jeune public.",
+    
+    "districts.retiro.name": "Retiro",
+    "districts.retiro.seo.title": "Clubs de Cannabis près du Parc du Retiro Madrid 2025 | Quartier Huppé",
+    "districts.retiro.seo.description": "Trouvez des clubs de cannabis près du Parc du Retiro dans le quartier est élégant de Madrid. Atmosphère paisible avec associations de qualité près des célèbres jardins royaux.",
+    
+    "districts.tetuan.name": "Tetuán",
+    "districts.tetuan.seo.title": "Clubs de Cannabis à Tetuán Madrid 2025 | Quartier Traditionnel",
+    "districts.tetuan.seo.description": "Découvrez des clubs de cannabis authentiques à Tetuán, un quartier traditionnel de Madrid près de Plaza Castilla. Atmosphère locale avec caractère espagnol authentique et bon rapport qualité-prix.",
+    
+    "districts.usera.name": "Usera",
+    "districts.usera.seo.title": "Clubs de Cannabis à Usera Madrid 2025 | Quartier Multiculturel",
+    "districts.usera.seo.description": "Trouvez des clubs de cannabis à Usera, le quartier multiculturel diversifié de Madrid. Associations axées sur la communauté avec atmosphère internationale et caractère local authentique.",
+    
+    "districts.atocha.name": "Atocha",
+    "districts.atocha.seo.title": "Clubs de Cannabis près de la Gare d'Atocha Madrid 2025 | Emplacement Central",
+    "districts.atocha.seo.description": "Découvrez des clubs de cannabis près de la gare d'Atocha au centre de Madrid. Pratique pour les voyageurs avec accès facile aux associations de cannabis vérifiées à proximité.",
+    
+    "districts.moncloa-aravaca.name": "Moncloa-Aravaca",
+    "districts.moncloa-aravaca.seo.title": "Clubs de Cannabis à Moncloa Madrid 2025 | Quartier Universitaire",
+    "districts.moncloa-aravaca.seo.description": "Trouvez des clubs de cannabis à Moncloa-Aravaca, le quartier universitaire de Madrid. Atmosphère jeune près de la Ciudad Universitaria avec associations de cannabis accueillantes pour étudiants.",
+    
+    "districts.arganzuela.name": "Arganzuela",
+    "districts.arganzuela.seo.title": "Clubs de Cannabis à Arganzuela Madrid 2025 | Quartier Madrid Río",
+    "districts.arganzuela.seo.description": "Découvrez des clubs de cannabis à Arganzuela près de Madrid Río et Matadero. Quartier moderne avec atmosphère créative et emplacement en bord de rivière près du centre culturel.",
+    
+    "districts.fuencarral-el-pardo.name": "Fuencarral-El Pardo",
+    "districts.fuencarral-el-pardo.seo.title": "Clubs de Cannabis à Fuencarral Madrid 2025 | Quartier Nord",
+    "districts.fuencarral-el-pardo.seo.description": "Trouvez des clubs de cannabis à Fuencarral-El Pardo dans le nord de Madrid. Zone résidentielle avec clubs de quartier locaux offrant atmosphère espagnole authentique et service de qualité.",
+    
+    "districts.salamanca.name": "Salamanca",
+    "districts.salamanca.seo.title": "Clubs de Cannabis à Salamanca Madrid 2025 | Quartier de Luxe",
+    "districts.salamanca.seo.description": "Explorez des clubs de cannabis premium à Salamanca, le quartier le plus exclusif de Madrid. Associations haut de gamme près de la rue Serrano avec atmosphère sophistiquée et élégante.",
+    
+    "districts.chamartin.name": "Chamartín",
+    "districts.chamartin.seo.title": "Clubs de Cannabis à Chamartín Madrid 2025 | Quartier d'Affaires",
+    "districts.chamartin.seo.description": "Trouvez des clubs de cannabis à Chamartín, le quartier d'affaires de Madrid près du stade Santiago Bernabéu. Atmosphère professionnelle avec associations de cannabis premium.",
   },
   it: {
     // Navigation
@@ -2957,16 +3115,57 @@ export const translations: Record<Language, Record<string, string>> = {
     "agegate.deny": "No, Sono Minorenne",
     "agegate.disclaimer": "Questo sito contiene informazioni sulla cannabis destinate solo agli adulti. Devi avere 18 anni o più per accedere.",
     
-    // Districts
-    "districts.title": "Cannabis Club per Quartiere di Madrid",
-    "districts.subtitle": "Trova cannabis club nel tuo quartiere preferito",
-    "districts.centro": "Centro",
-    "districts.chamberi": "Chamberí",
-    "districts.salamanca": "Salamanca",
-    "districts.retiro": "Retiro",
-    "districts.tetuan": "Tetuán",
-    "districts.chamartin": "Chamartín",
-    "districts.moncloa": "Moncloa-Aravaca",
+    // Districts - SEO descriptions (120+ chars for meta description compliance)
+    "districts.meta.title": "Cannabis Club per Quartiere - Madrid",
+    "districts.meta.description": "Esplora i cannabis club di Madrid organizzati per quartiere. Scopri i migliori quartieri per le associazioni di cannabis e trova club vicino a te.",
+    
+    "districts.centro.name": "Centro",
+    "districts.centro.seo.title": "Cannabis Club nel Centro Madrid 2025 | Zona Puerta del Sol",
+    "districts.centro.seo.description": "Scopri i cannabis club nel Centro, il cuore storico di Madrid. Associazioni accoglienti per turisti vicino a Puerta del Sol, Gran Vía e principali attrazioni con personale anglofono.",
+    
+    "districts.chamberi.name": "Chamberí",
+    "districts.chamberi.seo.title": "Cannabis Club a Chamberí Madrid 2025 | Quartiere Elegante",
+    "districts.chamberi.seo.description": "Trova cannabis club premium a Chamberí, uno dei quartieri residenziali più eleganti di Madrid. Atmosfera professionale vicino a Plaza de Chamberí con servizio di qualità superiore.",
+    
+    "districts.malasana.name": "Malasaña",
+    "districts.malasana.seo.title": "Cannabis Club a Malasaña Madrid 2025 | Quartiere Hipster",
+    "districts.malasana.seo.description": "Esplora i cannabis club a Malasaña, il quartiere alternativo e artistico di Madrid. Atmosfera trendy vicino alla Metro Tribunal con vibrazioni creative e pubblico giovane.",
+    
+    "districts.retiro.name": "Retiro",
+    "districts.retiro.seo.title": "Cannabis Club vicino al Parco del Retiro Madrid 2025 | Zona Elegante",
+    "districts.retiro.seo.description": "Trova cannabis club vicino al Parco del Retiro nel quartiere est elegante di Madrid. Atmosfera pacifica con associazioni di qualità vicino ai famosi giardini reali.",
+    
+    "districts.tetuan.name": "Tetuán",
+    "districts.tetuan.seo.title": "Cannabis Club a Tetuán Madrid 2025 | Quartiere Tradizionale",
+    "districts.tetuan.seo.description": "Scopri autentici cannabis club a Tetuán, un quartiere tradizionale di Madrid vicino a Plaza Castilla. Atmosfera locale con genuino carattere spagnolo e ottimo rapporto qualità-prezzo.",
+    
+    "districts.usera.name": "Usera",
+    "districts.usera.seo.title": "Cannabis Club a Usera Madrid 2025 | Quartiere Multiculturale",
+    "districts.usera.seo.description": "Trova cannabis club a Usera, il diversificato quartiere multiculturale di Madrid. Associazioni orientate alla comunità con atmosfera internazionale e autentico carattere locale.",
+    
+    "districts.atocha.name": "Atocha",
+    "districts.atocha.seo.title": "Cannabis Club vicino alla Stazione di Atocha Madrid 2025 | Posizione Centrale",
+    "districts.atocha.seo.description": "Scopri cannabis club vicino alla stazione di Atocha nel centro di Madrid. Comodo per viaggiatori con facile accesso alle associazioni di cannabis verificate nelle vicinanze.",
+    
+    "districts.moncloa-aravaca.name": "Moncloa-Aravaca",
+    "districts.moncloa-aravaca.seo.title": "Cannabis Club a Moncloa Madrid 2025 | Quartiere Universitario",
+    "districts.moncloa-aravaca.seo.description": "Trova cannabis club a Moncloa-Aravaca, il quartiere universitario di Madrid. Atmosfera giovane vicino alla Ciudad Universitaria con associazioni di cannabis adatte agli studenti.",
+    
+    "districts.arganzuela.name": "Arganzuela",
+    "districts.arganzuela.seo.title": "Cannabis Club ad Arganzuela Madrid 2025 | Zona Madrid Río",
+    "districts.arganzuela.seo.description": "Scopri cannabis club ad Arganzuela vicino a Madrid Río e Matadero. Quartiere moderno con atmosfera creativa e posizione sul fiume vicino al centro culturale.",
+    
+    "districts.fuencarral-el-pardo.name": "Fuencarral-El Pardo",
+    "districts.fuencarral-el-pardo.seo.title": "Cannabis Club a Fuencarral Madrid 2025 | Quartiere Nord",
+    "districts.fuencarral-el-pardo.seo.description": "Trova cannabis club a Fuencarral-El Pardo nel nord di Madrid. Zona residenziale con club di quartiere locali che offrono autentica atmosfera spagnola e servizio di qualità.",
+    
+    "districts.salamanca.name": "Salamanca",
+    "districts.salamanca.seo.title": "Cannabis Club a Salamanca Madrid 2025 | Quartiere di Lusso",
+    "districts.salamanca.seo.description": "Esplora cannabis club premium a Salamanca, il quartiere più esclusivo di Madrid. Associazioni di alto livello vicino a Calle Serrano con atmosfera sofisticata ed elegante.",
+    
+    "districts.chamartin.name": "Chamartín",
+    "districts.chamartin.seo.title": "Cannabis Club a Chamartín Madrid 2025 | Quartiere degli Affari",
+    "districts.chamartin.seo.description": "Trova cannabis club a Chamartín, il quartiere degli affari di Madrid vicino allo stadio Santiago Bernabéu. Atmosfera professionale con associazioni di cannabis premium.",
     
     // Near Me
     "nearme.title": "Cannabis Club Vicino a Me - Madrid",
