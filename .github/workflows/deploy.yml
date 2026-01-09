@@ -46,3 +46,11 @@ jobs:
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
           working-directory: ./
           vercel-args: '--prod'
+
+      - name: Notify IndexNow (Bing/Yandex)
+        run: |
+          echo "🔔 Submitting URLs to IndexNow..."
+          curl -s -X POST "https://sdpmwelfkseuhlhgatsc.supabase.co/functions/v1/index-now" \
+            -H "Content-Type: application/json" \
+            --max-time 120 || echo "IndexNow notification failed (non-blocking)"
+          echo "✅ IndexNow notification sent"
