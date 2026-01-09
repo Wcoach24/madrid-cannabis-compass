@@ -22,6 +22,16 @@ const OrganizationSchema = () => {
         "@type": "Organization",
         "name": "Weed Madrid Team"
       },
+      "employee": [
+        {
+          "@type": "Person",
+          "@id": `${BASE_URL}/#editor`,
+          "name": "Weed Madrid Editorial Team",
+          "jobTitle": "Cannabis Tourism Experts",
+          "description": "Expert team providing verified information about cannabis social clubs in Madrid, Spain.",
+          "worksFor": { "@id": `${BASE_URL}/#organization` }
+        }
+      ],
       "sameAs": [
         `${BASE_URL}/guides`,
         `${BASE_URL}/clubs`,
@@ -33,7 +43,7 @@ const OrganizationSchema = () => {
         "@type": "ContactPoint",
         "contactType": "Customer Service",
         "email": "info@weedmadrid.com",
-        "availableLanguage": ["English", "Spanish"],
+        "availableLanguage": ["English", "Spanish", "German", "French", "Italian"],
         "areaServed": {
           "@type": "City",
           "name": "Madrid",
@@ -50,7 +60,9 @@ const OrganizationSchema = () => {
         "Spanish Cannabis Legislation",
         "Madrid Tourism",
         "Cannabis Club Membership",
-        "Legal Cannabis Access Spain"
+        "Legal Cannabis Access Spain",
+        "Decriminalization",
+        "Private Associations"
       ],
       "slogan": "Your Guide to Legal Cannabis Clubs in Madrid",
       "aggregateRating": {

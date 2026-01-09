@@ -407,7 +407,7 @@ const GuideDetail = () => {
               </div>
             )}
 
-            <div className="prose prose-lg max-w-none mb-12">
+            <div className="prose prose-lg max-w-none mb-12 markdown-content" data-speakable="true">
               <ReactMarkdown remarkPlugins={[remarkGfm]}>{article.body_markdown}</ReactMarkdown>
             </div>
 

@@ -143,15 +143,39 @@ function generateUrlEntry(path) {
 }
 
 /**
+ * Generate GEO file entries for AI crawlers
+ */
+function generateGeoFileEntries() {
+  const geoFiles = [
+    { path: '/llm.txt', priority: 0.9 },
+    { path: '/home.geo.txt', priority: 0.8 },
+    { path: '/clubs.geo.txt', priority: 0.8 },
+    { path: '/guides.geo.txt', priority: 0.8 },
+    { path: '/faq.geo.txt', priority: 0.7 },
+    { path: '/knowledge.geo.txt', priority: 0.7 },
+    { path: '/how-it-works.geo.txt', priority: 0.6 },
+  ];
+
+  return geoFiles.map(file => `  <url>
+    <loc>${BASE_URL}${file.path}</loc>
+    <lastmod>${TODAY}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>${file.priority.toFixed(1)}</priority>
+  </url>`).join('\n');
+}
+
+/**
  * Generate complete sitemap XML
  */
 function generateSitemap(urls) {
   const urlEntries = urls.map(generateUrlEntry).join('\n');
+  const geoEntries = generateGeoFileEntries();
   
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
 ${urlEntries}
+${geoEntries}
 </urlset>`;
 }
 

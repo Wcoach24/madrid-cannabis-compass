@@ -41,6 +41,7 @@ export const STATIC_ROUTES = [
   '/shop',
   '/safety/scams',
   '/clubs/near-me',
+  '/glossary',
 ];
 
 // Districts that have full DISTRICT_CONFIG in ClubsDistrict.tsx (SEO ready)

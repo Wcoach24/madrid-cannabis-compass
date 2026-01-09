@@ -94,6 +94,9 @@ const SEOHead = ({
       element.setAttribute('content', locale);
     });
 
+    // og:site_name for brand consistency
+    updateMetaTag('og:site_name', 'Weed Madrid', 'property');
+
     updateMetaTag('twitter:card', 'summary_large_image');
     updateMetaTag('twitter:title', title);
     updateMetaTag('twitter:description', description);

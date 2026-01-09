@@ -82,3 +82,8 @@ Allow: /*.geo.txt
 # SITEMAPS (Critical for SEO Discovery)
 # ============================================
 Sitemap: https://www.weedmadrid.com/sitemap.xml
+
+# ============================================
+# HOST DIRECTIVE (Canonical Domain)
+# ============================================
+Host: https://www.weedmadrid.com

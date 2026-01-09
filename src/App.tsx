@@ -38,6 +38,7 @@ import ScamWarning from "./pages/ScamWarning";
 import CannabisClubMadrid from "./pages/CannabisClubMadrid";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
+import Glossary from "./pages/Glossary";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -97,6 +98,7 @@ const App = () => {
             <Route path="/about" element={<About />} />
             <Route path="/safety/scams" element={<ScamWarning />} />
             <Route path="/cannabis-club-madrid" element={<CannabisClubMadrid />} />
+            <Route path="/glossary" element={<Glossary />} />
             
             {/* Language-prefixed routes */}
             <Route path="/:lang" element={<Index />} />
@@ -128,6 +130,7 @@ const App = () => {
             <Route path="/:lang/club-cannabis-madrid" element={<CannabisClubMadrid />} />
             {/* Legacy alias for already indexed URLs */}
             <Route path="/:lang/cannabis-club-madrid" element={<CannabisClubMadrid />} />
+            <Route path="/:lang/glossary" element={<Glossary />} />
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
