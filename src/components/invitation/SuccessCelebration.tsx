@@ -86,9 +86,9 @@ export function SuccessCelebration({ visitorName, clubName, clubSlug, language }
 
         {/* Main Message */}
         <div className="space-y-4 mb-6">
-          <h1 className="text-4xl font-bold">
+          <h2 className="text-4xl font-bold">
             {t("title")}
-          </h1>
+          </h2>
           <p className="text-xl text-muted-foreground">
             Thanks, {visitorName}! {t("message")}
           </p>

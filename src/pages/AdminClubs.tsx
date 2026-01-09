@@ -138,7 +138,7 @@ export default function AdminClubs() {
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="text-center">
-          <h1 className="text-2xl font-bold mb-4">Access Denied</h1>
+          <h2 className="text-2xl font-bold mb-4">Access Denied</h2>
           <p className="text-muted-foreground mb-4">
             You don't have permission to access this page.
           </p>

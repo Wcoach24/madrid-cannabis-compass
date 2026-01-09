@@ -81,7 +81,7 @@ const ClubDetail = () => {
         <Header />
         <main className="flex-1 flex items-center justify-center">
           <div className="text-center">
-            <h1 className="text-2xl font-bold mb-4">{t("clubs.nofound")}</h1>
+            <h2 className="text-2xl font-bold mb-4">{t("clubs.nofound")}</h2>
             <Button asChild>
               <Link to={buildLanguageAwarePath("/clubs", language)}>{t("club.backtoclubs")}</Link>
             </Button>
