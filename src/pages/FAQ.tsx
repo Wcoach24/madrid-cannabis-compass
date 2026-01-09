@@ -97,8 +97,8 @@ const FAQ = () => {
                           <AccordionTrigger className="text-left hover:no-underline">
                             <span className="text-lg font-medium pr-4">{faq.question}</span>
                           </AccordionTrigger>
-                          <AccordionContent className="text-muted-foreground prose prose-sm max-w-none">
-                            <p>{faq.answer}</p>
+                        <AccordionContent className="text-muted-foreground prose prose-sm max-w-none accordion-content">
+                            <p data-speakable="true" data-answer="true">{faq.answer}</p>
                           </AccordionContent>
                         </AccordionItem>
                       ))}
