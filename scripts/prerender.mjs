@@ -33,6 +33,9 @@ const DEFAULT_TIMEOUT = 30000;
 const HEAVY_ROUTE_TIMEOUT = 60000;
 const STABILITY_WAIT = 750;
 
+// Parallelization settings - process multiple pages simultaneously
+const CONCURRENCY = 8;
+
 // Heavy routes that need more time
 const HEAVY_ROUTES = ['/clubs'];
 
@@ -498,8 +501,16 @@ async function main() {
     process.exit(1);
   }
 
-  const urls = await getAllPaths();
-  console.log(`📄 Total routes to prerender: ${urls.length}\n`);
+  const allUrls = await getAllPaths();
+  
+  // Sort: core routes first for early failure detection
+  const urls = [
+    ...allUrls.filter(u => CORE_ROUTES.includes(u)),
+    ...allUrls.filter(u => !CORE_ROUTES.includes(u))
+  ];
+  
+  console.log(`📄 Total routes to prerender: ${urls.length}`);
+  console.log(`⚡ Parallelization: ${CONCURRENCY} concurrent pages\n`);
 
   const PORT = 3456;
   const server = await createStaticServer(PORT);
@@ -510,31 +521,59 @@ async function main() {
     args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
   });
 
-  for (let i = 0; i < urls.length; i++) {
-    const url = urls[i];
-    const isCore = isCoreRoute(url);
-    process.stdout.write(`[${i + 1}/${urls.length}] ${url}${isCore ? ' [CORE]' : ''}...`);
+  // Process in parallel batches
+  const startTime = Date.now();
+  let completed = 0;
+
+  for (let i = 0; i < urls.length; i += CONCURRENCY) {
+    const batch = urls.slice(i, i + CONCURRENCY);
+    const batchNum = Math.floor(i / CONCURRENCY) + 1;
+    const totalBatches = Math.ceil(urls.length / CONCURRENCY);
     
-    try {
-      const { html, issues, waitSuccess } = await prerenderRoute(browser, url, PORT);
-      
-      // Always save HTML (even if issues exist, for fallback)
-      if (html && html.length > 500) {
-        saveHtml(url, html);
-      }
-      
-      const hasCritical = issues.some(i => i.includes('CRITICAL'));
-      if (hasCritical || !waitSuccess) {
-        console.log(` ❌ FAILED`);
-      } else if (issues.length > 0) {
-        console.log(` ⚠️ (${issues.length} warnings)`);
+    console.log(`\n📦 Batch ${batchNum}/${totalBatches} (${batch.length} pages)`);
+    
+    const results = await Promise.allSettled(
+      batch.map(async (url) => {
+        const isCore = isCoreRoute(url);
+        const shortUrl = url.length > 50 ? url.substring(0, 47) + '...' : url;
+        
+        try {
+          const { html, issues, waitSuccess } = await prerenderRoute(browser, url, PORT);
+          
+          // Always save HTML (even if issues exist, for fallback)
+          if (html && html.length > 500) {
+            saveHtml(url, html);
+          }
+          
+          const hasCritical = issues.some(i => i.includes('CRITICAL'));
+          const status = hasCritical || !waitSuccess ? '❌' : issues.length > 0 ? '⚠️' : '✅';
+          
+          return { url, status, isCore, issues };
+        } catch (error) {
+          return { url, status: '❌', isCore, error: error.message };
+        }
+      })
+    );
+    
+    // Log batch results
+    results.forEach((result, idx) => {
+      if (result.status === 'fulfilled') {
+        const { url, status, isCore } = result.value;
+        const coreTag = isCore ? ' [CORE]' : '';
+        console.log(`  ${status} ${url}${coreTag}`);
       } else {
-        console.log(` ✅`);
+        console.log(`  ❌ ${batch[idx]} (Promise rejected)`);
       }
-    } catch (error) {
-      console.log(` ❌ ${error.message}`);
-    }
+    });
+    
+    completed += batch.length;
+    const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
+    const rate = (completed / parseFloat(elapsed)).toFixed(1);
+    console.log(`  ⏱️ Progress: ${completed}/${urls.length} (${rate} pages/sec)`);
   }
+
+  const totalTime = ((Date.now() - startTime) / 1000).toFixed(1);
+  console.log(`\n⚡ Total prerender time: ${totalTime}s`);
 
   await browser.close();
   server.close();
