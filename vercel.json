@@ -57,7 +57,7 @@
       "destination": "https://sdpmwelfkseuhlhgatsc.supabase.co/functions/v1/generate-rss"
     },
     {
-      "source": "/:path*",
+      "source": "/:path((?!.*\\.).*)",
       "destination": "/index.html"
     }
   ]
