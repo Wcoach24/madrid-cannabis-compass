@@ -101,7 +101,7 @@ const GuideDetail = () => {
       <div className="min-h-screen flex flex-col">
         <Header />
         <main className="flex-1 container mx-auto px-4 py-12 text-center">
-          <h2 className="text-3xl font-bold mb-4">{t("guides.nofound")}</h2>
+          <h1 className="text-3xl font-bold mb-4">{t("guides.nofound")}</h1>
           <Button asChild>
             <Link to={buildLanguageAwarePath("/guides", language)}>
               <ChevronLeft className="w-4 h-4 mr-2" />

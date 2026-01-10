@@ -9,31 +9,6 @@ interface ClubGalleryProps {
   clubName: string;
 }
 
-// Helper to generate descriptive alt text from image URL
-const getDescriptiveAlt = (imageUrl: string, clubName: string, index: number): string => {
-  const filename = imageUrl.split('/').pop()?.replace(/\.[^/.]+$/, '') || '';
-  
-  // Map common image name patterns to descriptions
-  const patterns: Record<string, string> = {
-    'lounge': 'cozy lounge seating area',
-    'bar': 'bar and service counter',
-    'staircase': 'interior staircase entrance',
-    'entrance': 'entrance and reception',
-    'terrace': 'outdoor terrace area',
-    'interior': 'interior atmosphere',
-    'wide': 'wide interior view',
-    'large': 'spacious lounge area',
-  };
-  
-  for (const [key, description] of Object.entries(patterns)) {
-    if (filename.toLowerCase().includes(key)) {
-      return `${clubName} - ${description}`;
-    }
-  }
-  
-  return `${clubName} - interior view ${index + 1}`;
-};
-
 export function ClubGallery({ mainImage, galleryImages = [], clubName }: ClubGalleryProps) {
   const allImages = [mainImage, ...galleryImages];
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
@@ -46,7 +21,7 @@ export function ClubGallery({ mainImage, galleryImages = [], clubName }: ClubGal
       <div className="w-full h-64 md:h-96">
         <ImageWithSkeleton
           src={mainImage}
-          alt={getDescriptiveAlt(mainImage, clubName, 0)}
+          alt={`${clubName} - Cannabis social club interior`}
           aspectRatio="video"
           className="h-64 md:h-96"
           loading="eager"
@@ -78,7 +53,7 @@ export function ClubGallery({ mainImage, galleryImages = [], clubName }: ClubGal
               >
                 <ImageWithSkeleton
                   src={image}
-                  alt={getDescriptiveAlt(image, clubName, index)}
+                  alt={`${clubName} - Photo ${index + 1}`}
                   aspectRatio="video"
                   className="h-64 md:h-96"
                   loading={index === 0 ? "eager" : "lazy"}
@@ -125,7 +100,7 @@ export function ClubGallery({ mainImage, galleryImages = [], clubName }: ClubGal
           {selectedImageIndex !== null && (
             <img 
               src={allImages[selectedImageIndex]} 
-              alt={getDescriptiveAlt(allImages[selectedImageIndex], clubName, selectedImageIndex)} 
+              alt={`${clubName} - Photo ${selectedImageIndex + 1}`} 
               className="w-full h-auto max-h-[80vh] object-contain"
             />
           )}
