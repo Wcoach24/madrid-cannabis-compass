@@ -13,27 +13,11 @@ import { MapPin, Navigation, Star, CheckCircle } from "lucide-react";
 const DISTRICTS = [
   {
     slug: "centro",
-    name: "Centro",
-    description: "Near Puerta del Sol, Gran Vía, and Plaza Mayor",
+    name: "Centro / Sol / Gran Vía",
+    description: "Puerta del Sol, Gran Vía, Plaza Mayor & La Latina – heart of Madrid",
     clubCount: 3,
-    keywords: "puerta del sol, gran via, centro madrid",
+    keywords: "puerta del sol, gran via, centro madrid, la latina",
     landmark: "Puerta del Sol"
-  },
-  {
-    slug: "sol",
-    name: "Puerta del Sol",
-    description: "Heart of Madrid, 5 min walk from main tourist attractions",
-    clubCount: 2,
-    keywords: "puerta del sol, weed near sol, cannabis sol madrid",
-    landmark: "Puerta del Sol"
-  },
-  {
-    slug: "gran-via",
-    name: "Gran Vía",
-    description: "Famous shopping street, nightlife hub near major hotels",
-    clubCount: 2,
-    keywords: "gran via madrid, weed gran via, cannabis club gran via",
-    landmark: "Gran Vía"
   },
   {
     slug: "chamberi",
@@ -66,14 +50,6 @@ const DISTRICTS = [
     clubCount: 1,
     keywords: "atocha station, weed near atocha, cannabis atocha madrid",
     landmark: "Atocha Station"
-  },
-  {
-    slug: "latina",
-    name: "La Latina",
-    description: "Historic tapas district with local atmosphere",
-    clubCount: 1,
-    keywords: "la latina madrid, weed latina, cannabis club latina",
-    landmark: "La Latina"
   },
   {
     slug: "salamanca",
