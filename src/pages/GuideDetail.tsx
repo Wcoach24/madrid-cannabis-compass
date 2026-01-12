@@ -115,7 +115,11 @@ const GuideDetail = () => {
   }
 
   const currentPath = removeLanguageFromPath(window.location.pathname);
-  const hreflangLinks = generateHreflangLinks(BASE_URL, currentPath);
+  
+  // Don't generate hreflang for articles with language-specific slug suffixes
+  // These have unique URLs per language (e.g., -it, -de, -fr, -es) and hreflang would point to non-existent URLs
+  const hasLanguageSuffix = slug?.match(/-(es|en|de|fr|it)$/);
+  const hreflangLinks = hasLanguageSuffix ? [] : generateHreflangLinks(BASE_URL, `/guide/${slug}`);
 
   const breadcrumbSchema = {
     "@context": "https://schema.org",
