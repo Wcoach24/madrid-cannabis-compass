@@ -358,7 +358,7 @@ const ClubDetail = () => {
                   </p>
                 </div>
                 <Button asChild className="w-full h-12 text-base shadow-md hover:shadow-lg transition-shadow">
-                  <Link to={buildLanguageAwarePath(`/invite/${DEFAULT_INVITATION_CLUB_SLUG}`, language)}>
+                  <Link to={buildLanguageAwarePath("/how-it-works", language)}>
                     <UserPlus className="w-5 h-5 mr-2" />
                     {t("club.cta.button")}
                   </Link>
@@ -428,7 +428,7 @@ const ClubDetail = () => {
                       </p>
                     </div>
                     <Button asChild className="w-full h-12 text-base shadow-md hover:shadow-lg transition-shadow">
-                      <Link to={buildLanguageAwarePath(`/invite/${DEFAULT_INVITATION_CLUB_SLUG}`, language)}>
+                      <Link to={buildLanguageAwarePath("/how-it-works", language)}>
                         <UserPlus className="w-5 h-5 mr-2" />
                         {t("club.cta.button")}
                       </Link>

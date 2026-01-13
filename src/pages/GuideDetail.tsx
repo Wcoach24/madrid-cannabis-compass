@@ -182,7 +182,7 @@ const GuideDetail = () => {
         "name": "Request Club Invitation",
         "text": "Submit an invitation request through the club's official contact method or our platform.",
         "position": 3,
-        "url": `${BASE_URL}/invitation`
+        "url": `${BASE_URL}/how-it-works`
       },
       {
         "@type": "HowToStep",

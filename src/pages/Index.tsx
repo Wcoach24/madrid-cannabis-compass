@@ -424,9 +424,11 @@ const Index = () => {
                         asChild 
                         variant="gold" 
                         className="w-full text-base md:text-lg py-5 md:py-6 shadow-gold md:group-hover:shadow-gold-intense transition-all"
-                        onClick={() => trackClubView(club.slug, club.name)}
                       >
-                        <Link to={buildLanguageAwarePath(`/invite/${DEFAULT_INVITATION_CLUB_SLUG}`, language)}>
+                        <Link 
+                          to={buildLanguageAwarePath("/how-it-works", language)}
+                          onClick={() => trackClubView(club.slug, club.name)}
+                        >
                           {t("home.featured.getinvitation")}
                         </Link>
                       </Button>
