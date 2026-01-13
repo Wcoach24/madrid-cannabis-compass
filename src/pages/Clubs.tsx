@@ -246,11 +246,8 @@ const Clubs = () => {
         ogLocale={language === "es" ? "es_ES" : language === "de" ? "de_DE" : language === "fr" ? "fr_FR" : "en_US"}
         ogLocaleAlternate={["en_US", "es_ES", "de_DE", "fr_FR"].filter(l => l !== (language === "es" ? "es_ES" : language === "de" ? "de_DE" : language === "fr" ? "fr_FR" : "en_US"))}
         structuredData={hasFilterParams ? undefined : [breadcrumbSchema, itemListSchema, faqSchema, speakableSchema]}
+        robots={hasFilterParams ? "noindex, follow" : undefined}
       />
-      {/* Add noindex for parameter pages */}
-      {hasFilterParams && (
-        <meta name="robots" content="noindex, follow" />
-      )}
       <Header />
       
       <main className="flex-1">
