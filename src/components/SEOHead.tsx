@@ -16,6 +16,8 @@ interface SEOHeadProps {
   ogLocale?: string;
   ogLocaleAlternate?: string[];
   speakableSelectors?: string[];
+  // Robots directive (noindex, follow, etc.)
+  robots?: string;
   // GEO: Generative Engine Optimization props
   citationTitle?: string;
   citationAuthor?: string;
@@ -36,6 +38,7 @@ const SEOHead = ({
   ogLocale = "en_US",
   ogLocaleAlternate = [],
   speakableSelectors = [],
+  robots,
   // GEO props
   citationTitle,
   citationAuthor,
@@ -64,6 +67,12 @@ const SEOHead = ({
 
     updateMetaTag('description', description);
     if (keywords) updateMetaTag('keywords', keywords);
+    
+    // CAMBIO 3: robots directive siempre en <head>
+    if (robots) {
+      updateMetaTag('robots', robots);
+    }
+    
     updateMetaTag('og:title', title, 'property');
     updateMetaTag('og:description', description, 'property');
     updateMetaTag('og:type', 'website', 'property');
@@ -171,9 +180,10 @@ const SEOHead = ({
       });
     }
 
-    // Add structured data
+    // Add structured data - only remove SEOHead-created scripts, not external ones like OrganizationSchema
     if (structuredData) {
-      const existingScripts = document.querySelectorAll('script[type="application/ld+json"]');
+      // CAMBIO 2: Solo eliminar scripts creados por SEOHead (con data-seohead="true")
+      const existingScripts = document.querySelectorAll('script[type="application/ld+json"][data-seohead="true"]');
       existingScripts.forEach(script => script.remove());
 
       const dataArray = Array.isArray(structuredData) ? structuredData : [structuredData];
@@ -197,6 +207,8 @@ const SEOHead = ({
       enrichedData.forEach((data) => {
         const scriptElement = document.createElement('script');
         scriptElement.setAttribute('type', 'application/ld+json');
+        // CAMBIO 2: Marcar scripts creados por SEOHead para no eliminar schemas externos
+        scriptElement.setAttribute('data-seohead', 'true');
         scriptElement.textContent = JSON.stringify(data);
         document.head.appendChild(scriptElement);
       });
@@ -209,7 +221,7 @@ const SEOHead = ({
         document.documentElement.setAttribute('data-seo-ready', 'true');
       });
     });
-  }, [title, description, canonical, ogImage, keywords, structuredData, hreflangLinks, ogLocale, ogLocaleAlternate, speakableSelectors, citationTitle, citationAuthor, citationDate, geoTxtPath, aiPriority, contentSummary]);
+  }, [title, description, canonical, ogImage, keywords, structuredData, hreflangLinks, ogLocale, ogLocaleAlternate, speakableSelectors, robots, citationTitle, citationAuthor, citationDate, geoTxtPath, aiPriority, contentSummary]);
 
   return null;
 };

@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { ShoppingBag, Loader2, Package } from "lucide-react";
 import { useLanguage } from "@/hooks/useLanguage";
 import { buildLanguageAwarePath } from "@/lib/languageUtils";
+import { BASE_URL } from "@/lib/hreflangUtils";
 import { fetchProducts, ShopifyProduct } from "@/lib/shopify";
 import { useCartStore } from "@/stores/cartStore";
 import { toast } from "sonner";
@@ -57,13 +58,13 @@ const Shop = () => {
         "@type": "ListItem",
         "position": 1,
         "name": "Home",
-        "item": "https://weedmadrid.com"
+        "item": BASE_URL
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": t("nav.shop"),
-        "item": `https://weedmadrid.com${buildLanguageAwarePath("/shop", language)}`
+        "item": `${BASE_URL}${buildLanguageAwarePath("/shop", language)}`
       }
     ]
   };
@@ -73,7 +74,7 @@ const Shop = () => {
       <SEOHead
         title={`${t("shop.title")} | Weed Madrid`}
         description={t("shop.description")}
-        canonical={`https://weedmadrid.com${buildLanguageAwarePath("/shop", language)}`}
+        canonical={`${BASE_URL}${buildLanguageAwarePath("/shop", language)}`}
       />
       
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />

@@ -18,9 +18,9 @@ const ScamWarning = () => {
   const hreflangLinks = generateHreflangLinks(BASE_URL, '/safety/scams');
 
   const breadcrumbSchema = generateBreadcrumbSchema([
-    { name: t('nav.home'), url: 'https://www.weedmadrid.com' },
-    { name: t('nav.safety'), url: 'https://www.weedmadrid.com/safety' },
-    { name: t('scams.title'), url: 'https://www.weedmadrid.com/safety/scams' }
+    { name: t('nav.home'), url: BASE_URL },
+    { name: t('nav.safety'), url: `${BASE_URL}/safety` },
+    { name: t('scams.title'), url: `${BASE_URL}/safety/scams` }
   ]);
 
   const faqSchema = {
@@ -103,7 +103,7 @@ const ScamWarning = () => {
       <SEOHead
         title={t('scams.seoTitle')}
         description={t('scams.seoDescription')}
-        canonical={`https://www.weedmadrid.com${language !== 'en' ? `/${language}` : ''}/safety/scams`}
+        canonical={`${BASE_URL}${language !== 'en' ? `/${language}` : ''}/safety/scams`}
         keywords="cannabis scams madrid, weed scams spain, fake cannabis clubs madrid, avoid street dealers madrid, safe cannabis madrid"
         hreflangLinks={hreflangLinks}
         structuredData={[faqSchema, breadcrumbSchema]}

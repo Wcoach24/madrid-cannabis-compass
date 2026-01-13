@@ -95,9 +95,10 @@ export default function InvitationForm() {
       <SEOHead 
         title={pageTitle}
         description={pageDescription}
-        canonical={`/invite/${slug}`}
-        hreflangLinks={hreflangLinks}
+        canonical={`${BASE_URL}/invite/${slug}`}
+        hreflangLinks={[]} // Don't generate hreflang for invitation pages - they should be noindex
         structuredData={serviceSchema}
+        robots="noindex, follow"
       />
       <div className="min-h-screen flex flex-col bg-background">
         <Header />

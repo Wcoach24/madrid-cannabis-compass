@@ -15,8 +15,8 @@ const About = () => {
   const hreflangLinks = generateHreflangLinks(BASE_URL, '/about');
 
   const breadcrumbSchema = generateBreadcrumbSchema([
-    { name: t('nav.home'), url: 'https://www.weedmadrid.com' },
-    { name: t('about.title'), url: 'https://www.weedmadrid.com/about' }
+    { name: t('nav.home'), url: BASE_URL },
+    { name: t('about.title'), url: `${BASE_URL}/about` }
   ]);
 
   const organizationSchema = {
@@ -24,8 +24,8 @@ const About = () => {
     "@type": "Organization",
     "name": "Weed Madrid",
     "alternateName": "Weed Madrid Educational Project",
-    "url": "https://www.weedmadrid.com",
-    "logo": "https://www.weedmadrid.com/logo.png",
+    "url": BASE_URL,
+    "logo": `${BASE_URL}/logo.png`,
     "description": t('about.orgDescription'),
     "foundingDate": "2019",
     "foundingLocation": {
@@ -83,7 +83,7 @@ const About = () => {
       <SEOHead
         title={t('about.seoTitle')}
         description={t('about.seoDescription')}
-        canonical={`https://www.weedmadrid.com${language !== 'en' ? `/${language}` : ''}/about`}
+        canonical={`${BASE_URL}${language !== 'en' ? `/${language}` : ''}/about`}
         keywords="weed madrid team, cannabis club guide madrid, madrid cannabis experts, weed madrid about us"
         hreflangLinks={hreflangLinks}
         structuredData={[organizationSchema, breadcrumbSchema]}

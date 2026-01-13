@@ -33,53 +33,18 @@ export const generateHreflangLinks = (
     href: defaultHref,
   });
   
-  // Add each language version with self-reference and regional variants
+  // Add each language version - ONLY primary language codes, no regional variants (CAMBIO 4)
   languages.forEach((lang) => {
     const langPath = lang === DEFAULT_LANGUAGE 
       ? normalizedPath 
       : `/${lang}${normalizedPath}`;
     const href = `${baseUrl}${langPath}`;
     
-    // Add primary language code (self-reference included)
+    // Add primary language code only (es, en, de, fr, it)
     links.push({
       lang: lang,
       href: href,
     });
-    
-    // Add regional variants for Spanish
-    if (lang === "es") {
-      links.push({ lang: "es-ES", href });
-      links.push({ lang: "es-MX", href });
-      links.push({ lang: "es-AR", href });
-    }
-    
-    // Add regional variants for English
-    if (lang === "en") {
-      links.push({ lang: "en-US", href });
-      links.push({ lang: "en-GB", href });
-      links.push({ lang: "en-AU", href });
-    }
-    
-    // Add regional variants for German
-    if (lang === "de") {
-      links.push({ lang: "de-DE", href });
-      links.push({ lang: "de-AT", href });
-      links.push({ lang: "de-CH", href });
-    }
-    
-    // Add regional variants for French
-    if (lang === "fr") {
-      links.push({ lang: "fr-FR", href });
-      links.push({ lang: "fr-BE", href });
-      links.push({ lang: "fr-CH", href });
-      links.push({ lang: "fr-CA", href });
-    }
-    
-    // Add regional variants for Italian
-    if (lang === "it") {
-      links.push({ lang: "it-IT", href });
-      links.push({ lang: "it-CH", href });
-    }
   });
   
   return links;

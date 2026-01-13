@@ -7,6 +7,7 @@ import SEOHead from "@/components/SEOHead";
 import ClubCard from "@/components/ClubCard";
 import { useLanguageContext } from "@/contexts/LanguageContext";
 import { buildLanguageAwarePath } from "@/lib/languageUtils";
+import { BASE_URL } from "@/lib/hreflangUtils";
 import { 
   Scale, 
   Sparkles,
@@ -21,7 +22,6 @@ import {
 } from "@/components/ui/accordion";
 import { Timetable } from "@/lib/timetableUtils";
 import { Json } from "@/integrations/supabase/types";
-
 interface Club {
   id: number;
   name: string;
@@ -127,9 +127,9 @@ const CannabisClubMadrid = () => {
 
   const canonicalPath = isSpanish ? "/es/club-cannabis-madrid" : "/cannabis-club-madrid";
   const hreflangLinks = [
-    { lang: "en", href: "https://weed-madrid.es/cannabis-club-madrid" },
-    { lang: "es", href: "https://weed-madrid.es/es/club-cannabis-madrid" },
-    { lang: "x-default", href: "https://weed-madrid.es/cannabis-club-madrid" }
+    { lang: "en", href: `${BASE_URL}/cannabis-club-madrid` },
+    { lang: "es", href: `${BASE_URL}/es/club-cannabis-madrid` },
+    { lang: "x-default", href: `${BASE_URL}/cannabis-club-madrid` }
   ];
 
   const faqSchema = {
@@ -149,17 +149,16 @@ const CannabisClubMadrid = () => {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     "itemListElement": [
-      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://weed-madrid.es" },
-      { "@type": "ListItem", "position": 2, "name": t.title, "item": `https://weed-madrid.es${canonicalPath}` }
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": BASE_URL },
+      { "@type": "ListItem", "position": 2, "name": t.title, "item": `${BASE_URL}${canonicalPath}` }
     ]
   };
-
   const webPageSchema = {
     "@context": "https://schema.org",
     "@type": "WebPage",
     "name": t.title,
     "description": t.subtitle,
-    "url": `https://weed-madrid.es${canonicalPath}`,
+    "url": `${BASE_URL}${canonicalPath}`,
     "inLanguage": isSpanish ? "es" : "en",
     "dateModified": new Date().toISOString(),
     "speakable": {
@@ -175,7 +174,7 @@ const CannabisClubMadrid = () => {
       <SEOHead
         title={`${t.title} | Weed Madrid`}
         description={t.subtitle}
-        canonical={`https://weed-madrid.es${canonicalPath}`}
+        canonical={`${BASE_URL}${canonicalPath}`}
         keywords="cannabis club madrid, weed club madrid, asociacion cannabica madrid, marijuana club madrid, cannabis social club spain"
         hreflangLinks={hreflangLinks}
         structuredData={structuredData}
