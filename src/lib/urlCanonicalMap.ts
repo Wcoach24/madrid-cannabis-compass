@@ -18,9 +18,7 @@ export const LEGACY_TO_CANONICAL: Record<string, string> = {
   '/guides/cannabis-laws-spain-2025': '/guide/cannabis-laws-spain-2025',
   '/guides/best-cannabis-clubs-madrid-2025': '/guide/best-cannabis-clubs-madrid-2025',
   
-  // Invitation routes -> clubs (these should not be linked)
-  '/invitation': '/clubs',
-  // Note: /invite/* are dynamic, handled separately
+  // Invitation route now redirects at component level to canonical slug
   
   // District redirects
   '/district/lavapies': '/district/centro',
@@ -48,10 +46,7 @@ export function isLegacyRoute(path: string): boolean {
     return true;
   }
   
-  // Check /invite/* pattern
-  if (normalizedPath.startsWith('/invite/')) {
-    return true;
-  }
+  // /invite/* handled at component level
   
   // Check /clubs/club-* pattern
   if (normalizedPath.startsWith('/clubs/club-')) {
@@ -72,10 +67,6 @@ export function getCanonicalPath(path: string): string {
     return LEGACY_TO_CANONICAL[normalizedPath];
   }
   
-  // /invite/* -> /clubs
-  if (normalizedPath.startsWith('/invite/')) {
-    return '/clubs';
-  }
   
   return path;
 }
@@ -86,7 +77,6 @@ export function getCanonicalPath(path: string): string {
  */
 export const NO_LINK_ROUTES = [
   '/invitation',
-  '/invite/',
 ];
 
 /**

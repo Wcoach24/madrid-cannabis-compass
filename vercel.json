@@ -63,11 +63,6 @@
       "permanent": true
     },
     {
-      "source": "/invite/:slug*",
-      "destination": "/clubs",
-      "permanent": true
-    },
-    {
       "source": "/club/chamberi-club-social-madrid",
       "destination": "/club/vallehermoso-club-social-madrid",
       "permanent": true
