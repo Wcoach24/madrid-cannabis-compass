@@ -217,6 +217,14 @@
     {
       "source": "/api/rss",
       "destination": "https://sdpmwelfkseuhlhgatsc.supabase.co/functions/v1/generate-rss"
+    },
+    {
+      "source": "/invite/:slug*",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/invite",
+      "destination": "/index.html"
     }
   ]
 }
