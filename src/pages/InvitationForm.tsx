@@ -16,12 +16,13 @@ export default function InvitationForm() {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
 
-  // Redirect old URLs to the centralized club for backward compatibility
+  // Enforce single canonical invite URL - redirect any other slug to the canonical one
   useEffect(() => {
-    if (slug && slug !== DEFAULT_INVITATION_CLUB_SLUG) {
-      navigate(buildLanguageAwarePath(`/invite/${DEFAULT_INVITATION_CLUB_SLUG}`, language), { replace: true });
+    if (!slug || slug !== DEFAULT_INVITATION_CLUB_SLUG) {
+      // Redirect to canonical invite URL (no trailing slash)
+      navigate(`/invite/${DEFAULT_INVITATION_CLUB_SLUG}`, { replace: true });
     }
-  }, [slug, language, navigate]);
+  }, [slug, navigate]);
 
   const { data: club, isLoading } = useQuery({
     queryKey: ["club", slug],

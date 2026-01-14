@@ -426,7 +426,7 @@ const Index = () => {
                         className="w-full text-base md:text-lg py-5 md:py-6 shadow-gold md:group-hover:shadow-gold-intense transition-all"
                       >
                         <Link 
-                          to={buildLanguageAwarePath("/how-it-works", language)}
+                          to="/invite/vallehermoso-club-social-madrid"
                           onClick={() => trackClubView(club.slug, club.name)}
                         >
                           {t("home.featured.getinvitation")}
