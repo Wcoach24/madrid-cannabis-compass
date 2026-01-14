@@ -29,8 +29,9 @@ export const translations: Record<Language, Record<string, string>> = {
     "shop.noproducts.desc": "Check back soon for new merchandise",
     
     // Homepage
-    "home.title": "Best Cannabis Clubs Madrid 2025 | Legal Access Near You",
-    "home.subtitle": "Learn about Spanish cannabis law, explore verified clubs, and understand safe membership practices",
+    "home.title": "Weed Madrid — Cannabis Clubs & Guides in Madrid",
+    "home.h1": "Weed Madrid",
+    "home.subtitle": "Weed Madrid is a verified directory and educational platform for cannabis social clubs in Madrid, Spain — for tourists and residents.",
     "home.search.placeholder": "Search clubs by name or district...",
     "home.search.button": "Search Clubs",
     "home.features.legal": "Legal & Safe",
@@ -739,8 +740,9 @@ export const translations: Record<Language, Record<string, string>> = {
     "shop.noproducts.desc": "Vuelve pronto para ver nuevo merchandising",
     
     // Homepage
-    "home.title": "Clubes de Cannabis en Madrid - Tu Guía Educativa",
-    "home.subtitle": "Aprende sobre la legislación española del cannabis, explora clubes verificados y entiende las prácticas seguras de membresía",
+    "home.title": "Weed Madrid — Clubes de Cannabis y Guías en Madrid",
+    "home.h1": "Weed Madrid",
+    "home.subtitle": "Weed Madrid es un directorio verificado y una plataforma educativa de clubes sociales de cannabis en Madrid, España — para turistas y residentes.",
     "home.search.placeholder": "Buscar clubes por nombre o distrito...",
     "home.search.button": "Buscar Clubes",
     "home.features.legal": "Legal y Seguro",
@@ -1413,8 +1415,9 @@ export const translations: Record<Language, Record<string, string>> = {
     "shop.noproducts.desc": "Schauen Sie bald wieder vorbei für neue Artikel",
     
     // Homepage
-    "home.title": "Beste Cannabis Clubs Madrid 2025 | Legaler Zugang in Ihrer Nähe",
-    "home.subtitle": "Erfahren Sie mehr über das spanische Cannabis-Gesetz, erkunden Sie verifizierte Clubs und verstehen Sie sichere Mitgliedschaftspraktiken",
+    "home.title": "Weed Madrid — Cannabis Clubs & Guides in Madrid",
+    "home.h1": "Weed Madrid",
+    "home.subtitle": "Weed Madrid ist ein verifiziertes Verzeichnis und eine Bildungsplattform für Cannabis Social Clubs in Madrid, Spanien — für Touristen und Einwohner.",
     "home.search.placeholder": "Clubs nach Name oder Bezirk suchen...",
     "home.search.button": "Clubs Suchen",
     "home.features.legal": "Legal & Sicher",
@@ -2050,8 +2053,9 @@ export const translations: Record<Language, Record<string, string>> = {
     "shop.noproducts.desc": "Revenez bientôt pour de nouveaux articles",
     
     // Homepage
-    "home.title": "Meilleurs Clubs de Cannabis Madrid 2025 | Accès Légal Près de Vous",
-    "home.subtitle": "Découvrez la législation espagnole sur le cannabis, explorez les clubs vérifiés et comprenez les pratiques sûres d'adhésion",
+    "home.title": "Weed Madrid — Clubs de Cannabis & Guides à Madrid",
+    "home.h1": "Weed Madrid",
+    "home.subtitle": "Weed Madrid est un annuaire vérifié et une plateforme éducative pour les clubs sociaux de cannabis à Madrid, Espagne — pour touristes et résidents.",
     "home.search.placeholder": "Rechercher des clubs par nom ou quartier...",
     "home.search.button": "Rechercher des Clubs",
     "home.features.legal": "Légal & Sûr",
@@ -2682,8 +2686,9 @@ export const translations: Record<Language, Record<string, string>> = {
     "shop.noproducts.desc": "Torna presto per nuovi articoli",
     
     // Homepage
-    "home.title": "Migliori Cannabis Club Madrid 2025 | Accesso Legale Vicino a Te",
-    "home.subtitle": "Scopri la legislazione spagnola sulla cannabis, esplora club verificati e comprendi le pratiche sicure di iscrizione",
+    "home.title": "Weed Madrid — Cannabis Club e Guide a Madrid",
+    "home.h1": "Weed Madrid",
+    "home.subtitle": "Weed Madrid è una directory verificata e una piattaforma educativa per i cannabis social club a Madrid, Spagna — per turisti e residenti.",
     "home.search.placeholder": "Cerca club per nome o quartiere...",
     "home.search.button": "Cerca Club",
     "home.features.legal": "Legale e Sicuro",

@@ -192,7 +192,7 @@ const Index = () => {
               </div>
               
               <h1 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 md:mb-6 leading-tight text-gradient-logo animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-150">
-                {t("home.title")}
+                {t("home.h1")}
               </h1>
               
               <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl mb-8 md:mb-10 text-foreground/80 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-300 px-4">
