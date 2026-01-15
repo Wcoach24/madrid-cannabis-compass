@@ -225,6 +225,30 @@
     {
       "source": "/invite",
       "destination": "/index.html"
+    },
+    {
+      "source": "/admin/:path*",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/admin",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/auth",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/:lang/admin/:path*",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/:lang/admin",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/:lang/auth",
+      "destination": "/index.html"
     }
   ]
 }
