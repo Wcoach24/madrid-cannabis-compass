@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import ScrollToTop from "@/components/ScrollToTop";
 import { Analytics } from "@/components/Analytics";
+import WhatsAppWidget from "@/components/WhatsAppWidget";
 
 // Critical homepage - load immediately
 import Index from "./pages/Index";
@@ -151,6 +152,7 @@ const App = () => {
               <Route path="*" element={<NotFound />} />
             </Routes>
             </Suspense>
+            <WhatsAppWidget />
           </LanguageProvider>
         </BrowserRouter>
       </TooltipProvider>
