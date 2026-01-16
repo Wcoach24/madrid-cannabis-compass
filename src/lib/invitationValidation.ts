@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 export const invitationRequestSchema = z.object({
   club_slug: z.string().min(1, "Club is required"),
-  language: z.enum(['en', 'es']),
+  language: z.enum(['en', 'es', 'de', 'fr', 'it']),
   visit_date: z.string().refine((date) => {
     const selectedDate = new Date(date);
     const today = new Date();

@@ -59,6 +59,48 @@ export function Step2VisitorInfo({
         backButton: "Atrás",
         justMe: "Solo yo",
         people: "personas"
+      },
+      de: {
+        headline: "Großartig! Wer wird dabei sein?",
+        subheadline: "Erzählen Sie uns von Ihrer Gruppe",
+        visitorCountLabel: "Anzahl der Besucher",
+        yourName: "Ihr Name",
+        guestName: "Gast",
+        addMessage: "+ Nachricht hinzufügen (optional)",
+        notesPlaceholder: "Diätetische Einschränkungen, besondere Wünsche oder Fragen?",
+        notesLabel: "Zusätzliche Anmerkungen",
+        nextButton: "Weiter",
+        backButton: "Zurück",
+        justMe: "Nur ich",
+        people: "Personen"
+      },
+      fr: {
+        headline: "Super! Qui sera présent?",
+        subheadline: "Parlez-nous de votre groupe",
+        visitorCountLabel: "Nombre de visiteurs",
+        yourName: "Votre nom",
+        guestName: "Invité",
+        addMessage: "+ Ajouter un message (optionnel)",
+        notesPlaceholder: "Restrictions alimentaires, demandes spéciales ou questions?",
+        notesLabel: "Notes supplémentaires",
+        nextButton: "Suivant",
+        backButton: "Retour",
+        justMe: "Juste moi",
+        people: "personnes"
+      },
+      it: {
+        headline: "Ottimo! Chi parteciperà?",
+        subheadline: "Parlaci del tuo gruppo",
+        visitorCountLabel: "Numero di visitatori",
+        yourName: "Il tuo nome",
+        guestName: "Ospite",
+        addMessage: "+ Aggiungi un messaggio (opzionale)",
+        notesPlaceholder: "Restrizioni alimentari, richieste speciali o domande?",
+        notesLabel: "Note aggiuntive",
+        nextButton: "Avanti",
+        backButton: "Indietro",
+        justMe: "Solo io",
+        people: "persone"
       }
     };
     return translations[language]?.[key] || translations.en[key];

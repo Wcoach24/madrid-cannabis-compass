@@ -54,6 +54,45 @@ export function Step4LegalConfirmation({
         nextButton: "Revisar Solicitud",
         backButton: "Atrás",
         required: "Todas las confirmaciones son obligatorias para continuar"
+      },
+      de: {
+        headline: "Schnelle Bestätigung",
+        subheadline: "Gemäß spanischem Recht erforderlich",
+        ageLabel: "Ich bestätige, dass ich 18 Jahre oder älter bin",
+        ageTooltip: "Das spanische Gesetz verlangt, dass alle Besucher von Cannabis-Clubs mindestens 18 Jahre alt sind",
+        knowledgeLabel: "Ich verstehe die spanische Cannabis-Gesetzgebung",
+        knowledgeTooltip: "Cannabis-Clubs unterliegen spanischem Recht. Mitglieder müssen verstehen, dass Cannabis nur vor Ort konsumiert werden darf und nicht nach draußen gebracht werden kann",
+        gdprLabel: "Ich stimme der Datenverarbeitung zu",
+        gdprTooltip: "Ihre persönlichen Daten werden ausschließlich zur Bearbeitung Ihrer Einladungsanfrage verwendet und gemäß DSGVO sicher gespeichert",
+        nextButton: "Anfrage überprüfen",
+        backButton: "Zurück",
+        required: "Alle Bestätigungen sind erforderlich, um fortzufahren"
+      },
+      fr: {
+        headline: "Confirmation rapide",
+        subheadline: "Requis par la loi espagnole",
+        ageLabel: "Je confirme avoir 18 ans ou plus",
+        ageTooltip: "La loi espagnole exige que tous les visiteurs des clubs de cannabis aient au moins 18 ans",
+        knowledgeLabel: "Je comprends la législation espagnole sur le cannabis",
+        knowledgeTooltip: "Les clubs de cannabis fonctionnent selon la loi espagnole. Les membres doivent comprendre que le cannabis ne peut être consommé que sur place et ne peut pas être emporté à l'extérieur",
+        gdprLabel: "J'accepte le traitement des données",
+        gdprTooltip: "Vos informations personnelles seront utilisées uniquement pour traiter votre demande d'invitation et seront stockées en toute sécurité conformément au RGPD",
+        nextButton: "Vérifier la demande",
+        backButton: "Retour",
+        required: "Toutes les confirmations sont requises pour continuer"
+      },
+      it: {
+        headline: "Conferma rapida",
+        subheadline: "Come richiesto dalla legge spagnola",
+        ageLabel: "Confermo di avere 18 anni o più",
+        ageTooltip: "La legge spagnola richiede che tutti i visitatori dei club di cannabis abbiano almeno 18 anni",
+        knowledgeLabel: "Comprendo la legislazione spagnola sulla cannabis",
+        knowledgeTooltip: "I club di cannabis operano secondo la legge spagnola. I membri devono capire che la cannabis può essere consumata solo nei locali e non può essere portata fuori",
+        gdprLabel: "Accetto il trattamento dei dati",
+        gdprTooltip: "Le tue informazioni personali saranno utilizzate esclusivamente per elaborare la tua richiesta di invito e saranno conservate in modo sicuro secondo il GDPR",
+        nextButton: "Verifica richiesta",
+        backButton: "Indietro",
+        required: "Tutte le conferme sono necessarie per procedere"
       }
     };
     return translations[language]?.[key] || translations.en[key];
