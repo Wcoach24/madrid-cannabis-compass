@@ -19,26 +19,11 @@ export default defineConfig(({ mode }) => ({
     rollupOptions: {
       output: {
         manualChunks: {
-          // Vendor chunks for better caching
+          // Only vendor-react - let Vite handle page splitting via React.lazy()
           'vendor-react': ['react', 'react-dom', 'react-router-dom'],
-          'vendor-query': ['@tanstack/react-query'],
-          'vendor-ui': ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-tooltip', '@radix-ui/react-accordion'],
-          'vendor-supabase': ['@supabase/supabase-js'],
-          // Admin pages chunk - rarely accessed
-          'admin': [
-            './src/pages/AdminDashboard.tsx',
-            './src/pages/AdminInvitations.tsx',
-            './src/pages/AdminClubs.tsx',
-            './src/pages/AdminGuides.tsx',
-            './src/pages/SeedData.tsx',
-            './src/pages/GenerateArticles.tsx',
-            './src/pages/BulkGenerate.tsx',
-            './src/pages/TranslateContent.tsx',
-          ],
         },
       },
     },
-    // Optimize chunk size warnings
     chunkSizeWarningLimit: 500,
   },
 }));

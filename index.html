@@ -40,9 +40,7 @@
 
     <!-- Preload critical hero image with high priority -->
     <link rel="preload" as="image" href="/images/hero-custom-bg.webp" type="image/webp" fetchpriority="high" />
-    
-    <!-- Preload optimized logo for loading state -->
-    <link rel="preload" as="image" href="/logo-80.webp" type="image/webp" />
+    <!-- Logo preload removed - using CSS spinner instead -->
 
     <!-- Critical CSS - Inlined for immediate hero rendering -->
     <style>
@@ -155,11 +153,11 @@
 
     <!-- React root - content will be rendered here -->
     <div id="root">
-      <!-- Minimal loading state with optimized logo - will be replaced by React -->
+      <!-- Minimal loading state with CSS spinner - no external image request -->
       <div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background: #0a0a0a;">
         <div style="text-align: center;">
-          <img src="/logo-80.webp" alt="Weed Madrid" width="80" height="80" style="margin-bottom: 1rem;" fetchpriority="high" />
-          <p style="color: #888;">Loading...</p>
+          <div style="width: 48px; height: 48px; border: 3px solid #333; border-top-color: #d4af37; border-radius: 50%; margin: 0 auto 1rem; animation: spin 1s linear infinite;"></div>
+          <p style="color: #888; margin: 0;">Loading...</p>
         </div>
       </div>
     </div>

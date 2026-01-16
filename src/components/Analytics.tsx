@@ -26,7 +26,17 @@ export const Analytics = () => {
   useEffect(() => {
     // Only load in production
     if (import.meta.env.PROD) {
+      // Initialize dataLayer immediately so events can queue before scripts load
+      if (!window.dataLayer) {
+        window.dataLayer = [];
+      }
+
       const loadAnalytics = () => {
+        // Prevent duplicate script injections
+        if (document.querySelector(`script[src*="googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}"]`)) {
+          return;
+        }
+
         // Load Google Analytics
         if (!window.gtag) {
           const script1 = document.createElement('script');
@@ -47,8 +57,8 @@ export const Analytics = () => {
           document.head.appendChild(script2);
         }
 
-        // Load Microsoft Clarity
-        if (!window.clarity) {
+        // Load Microsoft Clarity (prevent duplicates)
+        if (!window.clarity && !document.querySelector('script[src*="clarity.ms"]')) {
           const clarityScript = document.createElement('script');
           clarityScript.innerHTML = `
             (function(c,l,a,r,i,t,y){
@@ -61,12 +71,20 @@ export const Analytics = () => {
         }
       };
 
-      // Defer analytics loading until browser is idle (doesn't block rendering)
-      if ('requestIdleCallback' in window) {
-        (window as Window & { requestIdleCallback: (cb: () => void, opts?: { timeout: number }) => number }).requestIdleCallback(loadAnalytics, { timeout: 3000 });
+      // Defer analytics until after page is fully loaded, then wait for idle time
+      const deferredLoad = () => {
+        if ('requestIdleCallback' in window) {
+          (window as Window & { requestIdleCallback: (cb: () => void, opts?: { timeout: number }) => number }).requestIdleCallback(loadAnalytics, { timeout: 5000 });
+        } else {
+          setTimeout(loadAnalytics, 2000);
+        }
+      };
+
+      // Wait for window.onload to avoid blocking LCP
+      if (document.readyState === 'complete') {
+        deferredLoad();
       } else {
-        // Fallback: load after 2 seconds
-        setTimeout(loadAnalytics, 2000);
+        window.addEventListener('load', deferredLoad, { once: true });
       }
     }
   }, []);
