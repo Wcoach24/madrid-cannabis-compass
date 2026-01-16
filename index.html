@@ -38,36 +38,92 @@
     <link rel="dns-prefetch" href="https://www.google-analytics.com" />
     <link rel="dns-prefetch" href="https://lovable.dev" />
 
+    <!-- Preload critical hero image with high priority -->
+    <link rel="preload" as="image" href="/images/hero-custom-bg.webp" type="image/webp" fetchpriority="high" />
+    
+    <!-- Preload optimized logo for loading state -->
+    <link rel="preload" as="image" href="/logo-80.webp" type="image/webp" />
+
     <!-- Critical CSS - Inlined for immediate hero rendering -->
     <style>
+      /* Base styles */
       html { font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
       body { margin: 0; background: #0a0a0a; color: #fafafa; }
       #root { min-height: 100vh; }
+      
+      /* Font definitions */
       .font-display { font-family: 'Bebas Neue', Impact, sans-serif; }
+      
+      /* Text gradients */
       .text-gradient-logo {
         background: linear-gradient(135deg, #d4af37 0%, #ffd700 50%, #d4af37 100%);
         -webkit-background-clip: text;
         background-clip: text;
         -webkit-text-fill-color: transparent;
       }
+      .text-gradient-primary {
+        background: linear-gradient(135deg, #d4af37 0%, #ffd700 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      
+      /* Header critical styles */
+      .sticky { position: sticky; }
+      .top-0 { top: 0; }
+      .z-50 { z-index: 50; }
+      .backdrop-blur { backdrop-filter: blur(12px); }
+      .bg-background\/95 { background: rgba(10, 10, 10, 0.95); }
+      .border-b { border-bottom-width: 1px; }
+      .border-border\/40 { border-color: rgba(255, 255, 255, 0.1); }
+      
+      /* Button critical styles */
+      .bg-primary { background: #d4af37; }
+      .text-primary-foreground { color: #0a0a0a; }
+      .text-primary { color: #d4af37; }
+      
+      /* Card skeleton critical styles */
+      .skeleton { 
+        background: linear-gradient(90deg, #1a1a1a 25%, #2a2a2a 50%, #1a1a1a 75%);
+        background-size: 200% 100%;
+        animation: skeleton-loading 1.5s ease-in-out infinite;
+      }
+      @keyframes skeleton-loading {
+        0% { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
+      }
+      
+      /* Loading spinner */
+      @keyframes spin { to { transform: rotate(360deg); } }
+      .animate-spin { animation: spin 1s linear infinite; }
+      
+      /* Glass effect for trust badges */
+      .glass-effect {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+      }
     </style>
 
-    <!-- Non-blocking Google Fonts loading -->
+    <!-- Non-blocking Google Fonts loading with direct font preload -->
     <link
       rel="preload"
-      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap"
+      href="https://fonts.gstatic.com/s/bebasneue/v16/JTUSjIg69CK48gW7PXooy_lhyw.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap"
       as="style"
       onload="this.onload=null;this.rel='stylesheet'"
     />
     <noscript>
       <link
         rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap"
       />
     </noscript>
-
-    <!-- Preload critical hero image -->
-    <link rel="preload" as="image" href="/images/hero-custom-bg.webp" type="image/webp" fetchpriority="high" />
 
     <!-- Prefetch next likely navigation -->
     <link rel="prefetch" href="/clubs" as="document" />
@@ -99,10 +155,10 @@
 
     <!-- React root - content will be rendered here -->
     <div id="root">
-      <!-- Minimal loading state - will be replaced by React -->
+      <!-- Minimal loading state with optimized logo - will be replaced by React -->
       <div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background: #0a0a0a;">
         <div style="text-align: center;">
-          <img src="/logo.png" alt="Weed Madrid" width="80" height="80" style="margin-bottom: 1rem;" />
+          <img src="/logo-80.webp" alt="Weed Madrid" width="80" height="80" style="margin-bottom: 1rem;" fetchpriority="high" />
           <p style="color: #888;">Loading...</p>
         </div>
       </div>

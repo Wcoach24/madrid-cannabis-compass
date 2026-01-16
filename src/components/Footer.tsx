@@ -12,14 +12,17 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="space-y-3">
             <div className="flex items-center gap-2 mb-4">
-              <img 
-                src="/logo.png" 
-                alt="Weed Madrid - Cannabis club directory logo" 
-                className="h-8 w-8" 
-                width="32" 
-                height="32"
-                loading="lazy"
-              />
+              <picture>
+                <source srcSet="/logo-32.webp" type="image/webp" />
+                <img 
+                  src="/logo.png" 
+                  alt="Weed Madrid - Cannabis club directory logo" 
+                  className="h-8 w-8" 
+                  width="32" 
+                  height="32"
+                  loading="lazy"
+                />
+              </picture>
               <div className="flex flex-col">
                 <span className="font-bold text-foreground">Weed Madrid</span>
                 <span className="text-sm font-medium text-primary">{t("footer.organization.tagline")}</span>
