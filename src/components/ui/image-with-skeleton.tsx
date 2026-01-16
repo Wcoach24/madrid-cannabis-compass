@@ -7,6 +7,12 @@ interface ImageWithSkeletonProps extends Omit<ImgHTMLAttributes<HTMLImageElement
   webpSrc?: string;
   aspectRatio?: "video" | "square" | "portrait";
   skeletonClassName?: string;
+  /** Responsive image srcset for different viewport sizes */
+  srcSet?: string;
+  /** Sizes attribute for responsive images */
+  sizes?: string;
+  /** Whether this is an above-the-fold image that should load eagerly */
+  priority?: boolean;
 }
 
 export function ImageWithSkeleton({
@@ -18,7 +24,10 @@ export function ImageWithSkeleton({
   alt = "",
   onLoad,
   onError,
-  loading = "lazy",
+  loading,
+  srcSet,
+  sizes,
+  priority = false,
   ...props
 }: ImageWithSkeletonProps) {
   const [isLoading, setIsLoading] = useState(true);
@@ -26,6 +35,9 @@ export function ImageWithSkeleton({
   
   // Only use WebP if explicitly provided
   const finalWebpSrc = webpSrc;
+  
+  // Determine loading strategy
+  const loadingAttr = priority ? "eager" : (loading ?? "lazy");
 
   const aspectClasses = {
     video: "aspect-video",
@@ -61,14 +73,21 @@ export function ImageWithSkeleton({
       ) : (
         <picture translate="no">
           {finalWebpSrc && (
-            <source srcSet={finalWebpSrc} type="image/webp" />
+            <source 
+              srcSet={srcSet ? srcSet : finalWebpSrc} 
+              type="image/webp"
+              sizes={sizes}
+            />
           )}
           <img
             {...props}
             src={src}
             alt={alt}
-            loading={loading}
+            loading={loadingAttr}
             translate="no"
+            srcSet={!finalWebpSrc ? srcSet : undefined}
+            sizes={!finalWebpSrc ? sizes : undefined}
+            fetchPriority={priority ? "high" : undefined}
             onLoad={handleLoad}
             onError={handleError}
             className={cn(
