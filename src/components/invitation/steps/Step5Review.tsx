@@ -59,6 +59,48 @@ export function Step5Review({
         backButton: "Atrás",
         responseTime: "Revisaremos tu solicitud y te responderemos en 24 horas",
         people: "personas"
+      },
+      de: {
+        headline: "Alles bereit!",
+        subheadline: "Überprüfen Sie Ihre Einladungsanfrage vor dem Absenden",
+        visitDateLabel: "Besuchsdatum",
+        visitorsLabel: "Besucher",
+        contactLabel: "Kontaktinformationen",
+        notesLabel: "Zusätzliche Anmerkungen",
+        edit: "Bearbeiten",
+        submitButton: "Meine Einladungsanfrage senden",
+        submitting: "Wird gesendet...",
+        backButton: "Zurück",
+        responseTime: "Wir werden Ihre Anfrage prüfen und uns innerhalb von 24 Stunden bei Ihnen melden",
+        people: "Personen"
+      },
+      fr: {
+        headline: "Vous êtes prêt!",
+        subheadline: "Vérifiez votre demande d'invitation avant de l'envoyer",
+        visitDateLabel: "Date de visite",
+        visitorsLabel: "Visiteurs",
+        contactLabel: "Informations de contact",
+        notesLabel: "Notes supplémentaires",
+        edit: "Modifier",
+        submitButton: "Envoyer ma demande d'invitation",
+        submitting: "Envoi en cours...",
+        backButton: "Retour",
+        responseTime: "Nous examinerons votre demande et vous répondrons dans les 24 heures",
+        people: "personnes"
+      },
+      it: {
+        headline: "Tutto pronto!",
+        subheadline: "Rivedi la tua richiesta di invito prima di inviarla",
+        visitDateLabel: "Data della visita",
+        visitorsLabel: "Visitatori",
+        contactLabel: "Informazioni di contatto",
+        notesLabel: "Note aggiuntive",
+        edit: "Modifica",
+        submitButton: "Invia la mia richiesta di invito",
+        submitting: "Invio in corso...",
+        backButton: "Indietro",
+        responseTime: "Esamineremo la tua richiesta e ti risponderemo entro 24 ore",
+        people: "persone"
       }
     };
     return translations[language]?.[key] || translations.en[key];

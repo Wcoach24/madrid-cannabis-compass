@@ -57,6 +57,51 @@ export function Step3ContactInfo({
         backButton: "Atrás",
         emailInvalid: "Por favor, introduce un correo electrónico válido",
         phoneInvalid: "Por favor, introduce un número de teléfono válido (9-15 dígitos)"
+      },
+      de: {
+        headline: "Fast geschafft! Wie können wir Sie kontaktieren?",
+        subheadline: "Wir senden die Bestätigungsdetails hierher",
+        emailLabel: "E-Mail-Adresse",
+        emailPlaceholder: "ihre@email.com",
+        emailHint: "Wir senden die Bestätigung hierher",
+        phoneLabel: "Telefonnummer",
+        phonePlaceholder: "+49 170 000 0000",
+        phoneHint: "Ländervorwahl angeben (z.B. +49 für Deutschland)",
+        privacyNote: "🔒 Ihre Daten sind sicher und werden niemals weitergegeben",
+        nextButton: "Weiter",
+        backButton: "Zurück",
+        emailInvalid: "Bitte geben Sie eine gültige E-Mail-Adresse ein",
+        phoneInvalid: "Bitte geben Sie eine gültige Telefonnummer ein (9-15 Ziffern)"
+      },
+      fr: {
+        headline: "Presque terminé! Comment pouvons-nous vous contacter?",
+        subheadline: "Nous enverrons les détails de confirmation ici",
+        emailLabel: "Adresse e-mail",
+        emailPlaceholder: "votre@email.com",
+        emailHint: "Nous enverrons la confirmation ici",
+        phoneLabel: "Numéro de téléphone",
+        phonePlaceholder: "+33 6 00 00 00 00",
+        phoneHint: "Incluez l'indicatif du pays (ex: +33 pour la France)",
+        privacyNote: "🔒 Vos informations sont sécurisées et jamais partagées",
+        nextButton: "Suivant",
+        backButton: "Retour",
+        emailInvalid: "Veuillez entrer une adresse e-mail valide",
+        phoneInvalid: "Veuillez entrer un numéro de téléphone valide (9-15 chiffres)"
+      },
+      it: {
+        headline: "Ci siamo quasi! Come possiamo contattarti?",
+        subheadline: "Invieremo i dettagli di conferma qui",
+        emailLabel: "Indirizzo email",
+        emailPlaceholder: "tua@email.com",
+        emailHint: "Invieremo la conferma qui",
+        phoneLabel: "Numero di telefono",
+        phonePlaceholder: "+39 333 000 0000",
+        phoneHint: "Includi il prefisso internazionale (es: +39 per l'Italia)",
+        privacyNote: "🔒 Le tue informazioni sono sicure e mai condivise",
+        nextButton: "Avanti",
+        backButton: "Indietro",
+        emailInvalid: "Inserisci un indirizzo email valido",
+        phoneInvalid: "Inserisci un numero di telefono valido (9-15 cifre)"
       }
     };
     return translations[language]?.[key] || translations.en[key];

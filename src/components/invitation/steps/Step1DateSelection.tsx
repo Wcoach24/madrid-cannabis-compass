@@ -29,6 +29,27 @@ export function Step1DateSelection({ selectedDate, onDateChange, onNext, clubNam
         pickDate: "Elegir fecha",
         nextButton: "Siguiente",
         suggestedHint: "Recomendamos reservar con al menos 3 días de antelación"
+      },
+      de: {
+        headline: `Wann möchten Sie ${clubName} besuchen?`,
+        subheadline: "Wählen Sie Ihr bevorzugtes Datum",
+        pickDate: "Datum wählen",
+        nextButton: "Weiter",
+        suggestedHint: "Wir empfehlen, mindestens 3 Tage im Voraus zu buchen"
+      },
+      fr: {
+        headline: `Quand souhaitez-vous visiter ${clubName}?`,
+        subheadline: "Choisissez votre date préférée",
+        pickDate: "Choisir une date",
+        nextButton: "Suivant",
+        suggestedHint: "Nous recommandons de réserver au moins 3 jours à l'avance"
+      },
+      it: {
+        headline: `Quando vorresti visitare ${clubName}?`,
+        subheadline: "Scegli la tua data preferita",
+        pickDate: "Scegli una data",
+        nextButton: "Avanti",
+        suggestedHint: "Ti consigliamo di prenotare con almeno 3 giorni di anticipo"
       }
     };
     return translations[language]?.[key] || translations.en[key];
