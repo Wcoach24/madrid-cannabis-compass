@@ -6,7 +6,7 @@ import { useLanguage } from "@/hooks/useLanguage";
 import { buildLanguageAwarePath } from "@/lib/languageUtils";
 import { isOpenNow, Timetable } from "@/lib/timetableUtils";
 import { ImageWithSkeleton } from "@/components/ui/image-with-skeleton";
-
+import { getClubCardImageConfig } from "@/lib/imageUtils";
 interface ClubCardProps {
   slug: string;
   name: string;
@@ -49,16 +49,22 @@ const ClubCard = ({
             <span className="text-sm font-semibold">{t("clubcard.editorspick")}</span>
           </div>
         )}
-        {main_image_url && (
-          <ImageWithSkeleton
-            src={main_image_url}
-            webpSrc={main_image_url.replace(/\.(jpg|jpeg|png)$/i, '.webp')}
-            alt={`${name} - Cannabis social club in ${district}, Madrid. ${is_tourist_friendly ? 'Tourist friendly' : ''} ${is_verified ? 'verified' : ''} cannabis club`}
-            aspectRatio="video"
-            className="transition-transform hover:scale-105 duration-300"
-            loading="lazy"
-          />
-        )}
+        {main_image_url && (() => {
+          const webpUrl = main_image_url.replace(/\.(jpg|jpeg|png)$/i, '.webp');
+          const { srcSet, sizes } = getClubCardImageConfig(webpUrl);
+          return (
+            <ImageWithSkeleton
+              src={main_image_url}
+              webpSrc={webpUrl}
+              srcSet={srcSet}
+              sizes={sizes}
+              alt={`${name} - Cannabis social club in ${district}, Madrid. ${is_tourist_friendly ? 'Tourist friendly' : ''} ${is_verified ? 'verified' : ''} cannabis club`}
+              aspectRatio="video"
+              className="transition-transform hover:scale-105 duration-300"
+              loading="lazy"
+            />
+          );
+        })()}
         <CardContent className="p-6">
           <div className="flex items-start justify-between mb-3 gap-2">
             <h3 className="text-xl font-semibold text-foreground line-clamp-1">
