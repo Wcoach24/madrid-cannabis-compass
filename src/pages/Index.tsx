@@ -23,12 +23,14 @@ import { generateHreflangLinks, BASE_URL } from "@/lib/hreflangUtils";
 import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
 import { isOpenNow, Timetable } from "@/lib/timetableUtils";
 import { trackQuickFinderUse, trackClubView } from "@/components/Analytics";
+import { FEATURED_CLUBS_SEED } from "@/data/featuredClubs";
 
 const Index = () => {
   const { language, t } = useLanguage();
   const navigate = useNavigate();
-  const [featuredClubs, setFeaturedClubs] = useState<any[]>([]);
-  const [clubsLoading, setClubsLoading] = useState(true);
+  const [featuredClubs, setFeaturedClubs] = useState<any[]>(FEATURED_CLUBS_SEED);
+  const [clubsLoading, setClubsLoading] = useState(false);
+  const didFetchRef = useRef(false);
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
   const [finderDialogOpen, setFinderDialogOpen] = useState(false);
 
@@ -78,10 +80,24 @@ const Index = () => {
   ];
 
   useEffect(() => {
-    // Defer Supabase fetch to after first paint for better LCP
-    const timer = setTimeout(() => {
-      fetchFeaturedClubs();
-    }, 100);
+    // Schedule Supabase fetch AFTER page load + idle (not critical path)
+    const scheduleFetch = () => {
+      if (didFetchRef.current) return;
+      didFetchRef.current = true;
+
+      const run = () => fetchFeaturedClubs();
+      if ("requestIdleCallback" in window) {
+        (window as any).requestIdleCallback(run, { timeout: 3000 });
+      } else {
+        setTimeout(run, 1500);
+      }
+    };
+
+    if (document.readyState === "complete") {
+      scheduleFetch();
+    } else {
+      window.addEventListener("load", scheduleFetch, { once: true });
+    }
     
     // Testimonial carousel
     const interval = setInterval(() => {
@@ -89,22 +105,27 @@ const Index = () => {
     }, 5000);
     
     return () => {
-      clearTimeout(timer);
       clearInterval(interval);
     };
   }, []);
 
   const fetchFeaturedClubs = async () => {
-    const { data, error } = await supabase
-      .from("clubs")
-      .select("slug, name, summary, district, rating_editorial, is_tourist_friendly, is_verified, languages, main_image_url, timetable")
-      .eq("status", "active")
-      .eq("is_featured", true)
-      .order("rating_editorial", { ascending: false })
-      .limit(3);
+    try {
+      const { data, error } = await supabase
+        .from("clubs")
+        .select("slug, name, summary, district, rating_editorial, is_tourist_friendly, is_verified, languages, main_image_url, timetable")
+        .eq("status", "active")
+        .eq("is_featured", true)
+        .order("rating_editorial", { ascending: false })
+        .limit(3);
 
-    if (data) {
-      setFeaturedClubs(data);
+      // Only update if we got valid data - never wipe the seed
+      if (data && data.length > 0) {
+        setFeaturedClubs(data);
+      }
+    } catch (error) {
+      // Silently fail - keep seed data
+      console.warn("Featured clubs fetch failed, using seed data");
     }
     setClubsLoading(false);
   };
