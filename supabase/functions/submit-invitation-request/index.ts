@@ -46,13 +46,49 @@ serve(async (req) => {
       ip_address: ipAddress,
     });
 
-    // Rate limiting check: Max 3 requests per hour per email
+    // Check for existing request for same email + club in last 24 hours (duplicate detection)
+    const normalizedEmail = requestBody.email.toLowerCase().trim();
+    const oneDayAgo = new Date(Date.now() - 24 * 3600 * 1000).toISOString();
+
+    const { data: existingRequest, error: existingError } = await supabase
+      .from('invitation_requests')
+      .select('id, invitation_code, created_at, visit_date, status')
+      .eq('email', normalizedEmail)
+      .eq('club_slug', requestBody.club_slug)
+      .gte('created_at', oneDayAgo)
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    if (existingError) {
+      console.error('Duplicate check error:', existingError);
+    }
+
+    if (existingRequest) {
+      console.log('Duplicate request detected for email:', normalizedEmail, 'existing code:', existingRequest.invitation_code);
+      
+      return new Response(
+        JSON.stringify({
+          success: true,
+          request_id: existingRequest.id,
+          invitation_code: existingRequest.invitation_code,
+          message: 'You already have a pending invitation. Check your email!',
+          is_duplicate: true
+        }),
+        { 
+          status: 200, 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+        }
+      );
+    }
+
+    // Rate limiting check: Max 1 request per hour per email (reduced from 3)
     const oneHourAgo = new Date(Date.now() - 3600 * 1000).toISOString();
     
     const { count, error: countError } = await supabase
       .from('invitation_requests')
       .select('*', { count: 'exact', head: true })
-      .eq('email', requestBody.email)
+      .eq('email', normalizedEmail)
       .gte('created_at', oneHourAgo);
 
     if (countError) {
@@ -60,12 +96,12 @@ serve(async (req) => {
       throw new Error('Failed to check rate limit');
     }
 
-    if (count !== null && count >= 3) {
-      console.log('Rate limit exceeded for email:', requestBody.email);
+    if (count !== null && count >= 1) {
+      console.log('Rate limit exceeded for email:', normalizedEmail);
       return new Response(
         JSON.stringify({ 
-          error: 'Rate limit exceeded. Please try again later.',
-          code: 'RATE_LIMIT_EXCEEDED'
+          error: 'You already submitted a request. Please check your email or try again in 1 hour.',
+          code: 'ALREADY_SUBMITTED'
         }),
         { 
           status: 429, 

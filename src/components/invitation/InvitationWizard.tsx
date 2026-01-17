@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { format } from "date-fns";
 import { supabase } from "@/integrations/supabase/client";
 import { invitationRequestSchema } from "@/lib/invitationValidation";
@@ -11,6 +11,7 @@ import { Step3ContactInfo } from "./steps/Step3ContactInfo";
 import { Step4LegalConfirmation } from "./steps/Step4LegalConfirmation";
 import { Step5Review } from "./steps/Step5Review";
 import { SuccessCelebration } from "./SuccessCelebration";
+import { AlreadySubmittedMessage } from "./AlreadySubmittedMessage";
 import { Card, CardContent } from "@/components/ui/card";
 
 interface InvitationWizardProps {
@@ -31,11 +32,22 @@ export interface FormData {
   gdprConsent: boolean;
 }
 
+interface StoredSubmission {
+  email: string;
+  timestamp: number;
+  clubSlug: string;
+  invitationCode: string;
+}
+
+const STORAGE_KEY = 'weedmadrid_invitation_submitted';
+
 export function InvitationWizard({ clubName, clubSlug, language }: InvitationWizardProps) {
   const [currentStep, setCurrentStep] = useState(1);
   const [completedSteps, setCompletedSteps] = useState<Set<number>>(new Set());
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [alreadySubmitted, setAlreadySubmitted] = useState(false);
+  const [storedInvitationCode, setStoredInvitationCode] = useState<string | null>(null);
   const [formData, setFormData] = useState<FormData>({
     visitDate: undefined,
     visitorCount: 1,
@@ -47,6 +59,24 @@ export function InvitationWizard({ clubName, clubSlug, language }: InvitationWiz
     legalKnowledgeConfirmed: false,
     gdprConsent: false
   });
+
+  // Check if user recently submitted for this club
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) {
+        const submission: StoredSubmission = JSON.parse(stored);
+        const hourAgo = Date.now() - 3600 * 1000;
+        
+        if (submission.timestamp > hourAgo && submission.clubSlug === clubSlug) {
+          setAlreadySubmitted(true);
+          setStoredInvitationCode(submission.invitationCode);
+        }
+      }
+    } catch (e) {
+      // Ignore localStorage errors
+    }
+  }, [clubSlug]);
 
   const totalSteps = 5;
 
@@ -118,6 +148,27 @@ export function InvitationWizard({ clubName, clubSlug, language }: InvitationWiz
 
       if (error) throw error;
 
+      // Handle duplicate response from backend
+      if (data.is_duplicate) {
+        toast.info(
+          language === 'es' 
+            ? "Ya tienes una invitación pendiente. ¡Revisa tu email!" 
+            : "You already have a pending invitation. Check your email!"
+        );
+      }
+
+      // Store in localStorage to prevent re-filling
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({
+          email: formData.email.trim().toLowerCase(),
+          timestamp: Date.now(),
+          clubSlug,
+          invitationCode: data.invitation_code
+        }));
+      } catch (e) {
+        // Ignore localStorage errors
+      }
+
       setSubmitted(true);
       window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (error: any) {
@@ -125,8 +176,8 @@ export function InvitationWizard({ clubName, clubSlug, language }: InvitationWiz
       
       if (error.name === 'ZodError') {
         toast.error(language === 'es' ? "Por favor verifica todos los campos" : "Please check all fields");
-      } else if (error.message?.includes("rate limit")) {
-        toast.error(language === 'es' ? "Demasiadas solicitudes. Por favor espera unos minutos." : "Too many requests. Please wait a few minutes.");
+      } else if (error.message?.includes("rate limit") || error.message?.includes("ALREADY_SUBMITTED")) {
+        toast.error(language === 'es' ? "Ya enviaste una solicitud. Por favor revisa tu email o espera 1 hora." : "You already submitted a request. Please check your email or wait 1 hour.");
       } else {
         toast.error(language === 'es' ? "Error al enviar la solicitud. Por favor intenta de nuevo." : "Error submitting request. Please try again.");
       }
@@ -134,6 +185,31 @@ export function InvitationWizard({ clubName, clubSlug, language }: InvitationWiz
       setIsSubmitting(false);
     }
   };
+
+  const handleRequestNew = () => {
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+    } catch (e) {
+      // Ignore localStorage errors
+    }
+    setAlreadySubmitted(false);
+    setStoredInvitationCode(null);
+  };
+
+  // If user already submitted recently for this club, show message
+  if (alreadySubmitted) {
+    return (
+      <div className="min-h-screen py-4 md:py-8">
+        <div className="container mx-auto px-3 md:px-4">
+          <AlreadySubmittedMessage
+            invitationCode={storedInvitationCode}
+            language={language}
+            onRequestNew={handleRequestNew}
+          />
+        </div>
+      </div>
+    );
+  }
 
   // If submitted successfully, show celebration
   if (submitted && formData.visitDate) {
