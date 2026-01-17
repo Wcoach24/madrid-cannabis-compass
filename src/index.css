@@ -468,8 +468,20 @@ All colors MUST be HSL.
       background: rgba(10, 10, 10, 0.95);
     }
   }
-  
-  /* Smoke particles removed for LCP performance optimization */
+
+/* Smoke particles removed for LCP performance optimization */
+
+/* Header blur - deferred for LCP performance */
+.header-blur {
+  background: rgba(10, 10, 10, 0.95);
+  transition: backdrop-filter 0.3s ease, background 0.3s ease;
+}
+
+html.hydration-ready .header-blur {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  background: rgba(10, 10, 10, 0.6);
+}
   
   /* Subtle gradient background for hero sections */
   .hero-gradient-bg {

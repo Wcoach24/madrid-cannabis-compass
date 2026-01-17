@@ -59,11 +59,16 @@ const PageLoader = () => (
 );
 
 /**
- * Hook to mark document as hydrated for SSG prerender detection
+ * Hook to mark document as hydrated and remove the static hero shell
  */
 function useHydrationMarker() {
   useEffect(() => {
-    // Mark as hydrated immediately when React mounts
+    // Remove the static hero shell once React has rendered
+    const heroShell = document.getElementById('hero-shell');
+    if (heroShell) {
+      heroShell.remove();
+    }
+    // Mark as hydrated for SSG detection
     document.documentElement.setAttribute('data-hydrated', 'true');
   }, []);
 }
