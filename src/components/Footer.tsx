@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 import { useLanguage } from "@/hooks/useLanguage";
 import { buildLanguageAwarePath } from "@/lib/languageUtils";
 import { Rss, Phone, MessageCircle } from "lucide-react";
+import logoWeedMadridWebp from "@/assets/logo-weed-madrid.webp";
+import logoWeedMadrid from "@/assets/logo-weed-madrid.png";
 
 const Footer = () => {
   const { language, t } = useLanguage();
@@ -13,9 +15,9 @@ const Footer = () => {
           <div className="space-y-3">
             <div className="flex items-center gap-2 mb-4">
               <picture>
-                <source srcSet="/logo-32.webp" type="image/webp" />
+                <source srcSet={logoWeedMadridWebp} type="image/webp" />
                 <img 
-                  src="/logo.png" 
+                  src={logoWeedMadrid} 
                   alt="Weed Madrid - Cannabis club directory logo" 
                   className="h-8 w-8" 
                   width="32" 
