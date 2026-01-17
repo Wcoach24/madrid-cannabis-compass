@@ -103,18 +103,29 @@
       }
 
       /* Defer expensive backdrop-blur until after first paint */
-      .backdrop-blur,
-      [class*="backdrop-blur"] {
+      .header-blur {
         -webkit-backdrop-filter: none !important;
         backdrop-filter: none !important;
-        background: rgba(10, 10, 10, 0.98) !important;
+        background: rgba(10, 10, 10, 0.95) !important;
       }
 
-      html.hydration-ready .backdrop-blur,
-      html.hydration-ready [class*="backdrop-blur"] {
+      html.hydration-ready .header-blur {
         -webkit-backdrop-filter: blur(12px) !important;
         backdrop-filter: blur(12px) !important;
         background: rgba(10, 10, 10, 0.6) !important;
+      }
+
+      /* Glass effect also deferred */
+      .glass-effect {
+        -webkit-backdrop-filter: none;
+        backdrop-filter: none;
+        background: rgba(255, 255, 255, 0.08);
+      }
+
+      html.hydration-ready .glass-effect {
+        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px);
+        background: rgba(255, 255, 255, 0.05);
       }
     </style>
 
@@ -148,14 +159,28 @@
 
     <!-- React root - content will be rendered here -->
     <div id="root">
-      <!-- Minimal loading state with CSS spinner - no external image request -->
-      <div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background: #0a0a0a;">
-        <div style="text-align: center;">
-          <div
-            style="width: 48px; height: 48px; border: 3px solid #333; border-top-color: #d4af37; border-radius: 50%; margin: 0 auto 1rem; animation: spin 1s linear infinite;"
-          ></div>
-          <p style="color: #888; margin: 0;">Loading...</p>
-        </div>
+      <!-- Static Hero Shell - Shows immediately before React hydrates (LCP optimization) -->
+      <div id="hero-shell" aria-hidden="true">
+        <!-- Minimal header placeholder -->
+        <header style="position: sticky; top: 0; z-index: 50; width: 100%; border-bottom: 1px solid rgba(255,255,255,0.1); background: rgba(10,10,10,0.95); padding: 0.75rem 1rem;">
+          <div style="max-width: 80rem; margin: 0 auto; display: flex; align-items: center; gap: 0.5rem;">
+            <img src="/logo-weed-madrid.webp" alt="" width="40" height="40" style="border-radius: 0.5rem;" fetchpriority="low" />
+            <span style="font-family: 'Bebas Neue', Impact, sans-serif; font-size: 1.25rem; background: linear-gradient(135deg, #d4af37, #ffd700); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Weed Madrid</span>
+          </div>
+        </header>
+        <!-- Hero section matching LCP element -->
+        <section style="position: relative; padding: 5rem 1rem; min-height: 60vh; background-image: url(/images/hero-custom-bg.webp); background-size: cover; background-position: center;">
+          <div style="position: absolute; inset: 0; background: rgba(0,0,0,0.5);"></div>
+          <div style="position: relative; z-index: 10; max-width: 64rem; margin: 0 auto; text-align: center; padding-top: 2rem;">
+            <img src="/logo-weed-madrid.webp" alt="" width="128" height="128" style="margin: 0 auto 1rem; border-radius: 1rem;" fetchpriority="low" />
+            <h1 style="font-family: 'Bebas Neue', Impact, sans-serif; font-size: clamp(1.875rem, 5vw, 4.5rem); background: linear-gradient(135deg, #d4af37, #ffd700); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin: 0 0 1rem;">
+              WEED MADRID
+            </h1>
+            <p style="font-size: 1.25rem; color: rgba(250,250,250,0.8); margin: 0 0 2rem;">
+              Madrid's trusted cannabis club directory
+            </p>
+          </div>
+        </section>
       </div>
     </div>
 

@@ -25,7 +25,7 @@ const Header = () => {
   ];
 
   return (
-    <header translate="no" className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header translate="no" className="sticky top-0 z-50 w-full border-b border-border/40 header-blur">
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
           <Link to={buildLanguageAwarePath("/", language)} className="flex items-center space-x-2">
