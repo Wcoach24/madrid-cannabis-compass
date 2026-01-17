@@ -36,6 +36,13 @@ export const isOpenNow = (timetable: Timetable | null): boolean => {
   const now = new Date();
   const currentTime = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
   
+  // Handle overnight schedules (close time is after midnight, e.g., 11:00-01:00)
+  if (daySchedule.close < daySchedule.open) {
+    // For overnight hours: open from opening time until midnight
+    return currentTime >= daySchedule.open;
+  }
+  
+  // Normal schedule: check if current time is within range
   return currentTime >= daySchedule.open && currentTime <= daySchedule.close;
 };
 
