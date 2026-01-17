@@ -23,17 +23,67 @@ jobs:
         with:
           bun-version: latest
 
+      # Cache Puppeteer browser to avoid re-downloading Chrome every run
+      - name: Cache Puppeteer
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/puppeteer
+          key: puppeteer-${{ runner.os }}-${{ hashFiles('package.json') }}
+          restore-keys: |
+            puppeteer-${{ runner.os }}-
+
+      # Cache prerender hashes and HTML pages for incremental builds
+      - name: Cache Prerender Data
+        uses: actions/cache@v4
+        with:
+          path: |
+            .prerender-cache
+            .prerender-dist-cache
+          key: prerender-${{ runner.os }}-${{ github.ref_name }}-${{ github.sha }}
+          restore-keys: |
+            prerender-${{ runner.os }}-${{ github.ref_name }}-
+            prerender-${{ runner.os }}-
+
       - name: Install dependencies
         run: bun install
 
       - name: Build Vite
         run: bun run build
 
+      # Restore cached prerendered HTML pages into dist/ (after build, before prerender)
+      # This enables the prerender script to skip unchanged pages
+      - name: Restore cached prerendered pages
+        run: |
+          if [ -d ".prerender-dist-cache" ]; then
+            echo "📂 Restoring cached prerendered pages..."
+            # Copy cached HTML pages back into dist (excluding assets which are rebuilt)
+            cp -r .prerender-dist-cache/* dist/ 2>/dev/null || true
+            echo "✅ Restored cached pages"
+          else
+            echo "ℹ️ No cached pages found (first run)"
+          fi
+
       - name: Setup Puppeteer
         run: npx puppeteer browsers install chrome
 
       - name: Prerender all routes
         run: node scripts/prerender.mjs
+
+      # Update the prerender cache with new/changed pages
+      - name: Update prerender cache
+        run: |
+          echo "📦 Updating prerender cache..."
+          rm -rf .prerender-dist-cache
+          mkdir -p .prerender-dist-cache
+          # Copy all HTML files from dist, preserving directory structure
+          # Exclude assets folder (large, rebuilt every time) and debug folder
+          cd dist
+          find . -name "*.html" -type f | while read -r file; do
+            mkdir -p "../.prerender-dist-cache/$(dirname "$file")"
+            cp "$file" "../.prerender-dist-cache/$file"
+          done
+          cd ..
+          echo "✅ Cache updated with $(find .prerender-dist-cache -name '*.html' | wc -l) HTML files"
 
       - name: Generate static sitemap
         run: node scripts/generate-sitemap.mjs
