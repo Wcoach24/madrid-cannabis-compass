@@ -101,6 +101,21 @@
         background: rgba(255, 255, 255, 0.05);
         backdrop-filter: blur(10px);
       }
+
+      /* Defer expensive backdrop-blur until after first paint */
+      .backdrop-blur,
+      [class*="backdrop-blur"] {
+        -webkit-backdrop-filter: none !important;
+        backdrop-filter: none !important;
+        background: rgba(10, 10, 10, 0.98) !important;
+      }
+
+      html.hydration-ready .backdrop-blur,
+      html.hydration-ready [class*="backdrop-blur"] {
+        -webkit-backdrop-filter: blur(12px) !important;
+        backdrop-filter: blur(12px) !important;
+        background: rgba(10, 10, 10, 0.6) !important;
+      }
     </style>
 
     <!-- Prefetch next likely navigation -->

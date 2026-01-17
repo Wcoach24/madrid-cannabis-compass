@@ -99,13 +99,22 @@ const Index = () => {
       window.addEventListener("load", scheduleFetch, { once: true });
     }
     
-    // Testimonial carousel
-    const interval = setInterval(() => {
-      setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
-    }, 5000);
-    
+    // Defer testimonial carousel start to after first paint
+    let interval: NodeJS.Timeout;
+    const startCarousel = () => {
+      interval = setInterval(() => {
+        setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
+      }, 5000);
+    };
+
+    if ("requestIdleCallback" in window) {
+      (window as any).requestIdleCallback(startCarousel, { timeout: 1000 });
+    } else {
+      setTimeout(startCarousel, 400);
+    }
+
     return () => {
-      clearInterval(interval);
+      if (interval) clearInterval(interval);
     };
   }, []);
 
@@ -184,21 +193,10 @@ const Index = () => {
           {/* Dark Overlay for Background - Layer 1 */}
           <div className="absolute inset-0 bg-black/50 z-[1]"></div>
           
-          {/* Animated Smoke/Haze Particles - Layer 2 */}
-          <div className="absolute inset-0 z-[2]">
-            <div className="smoke-particle smoke-1"></div>
-            <div className="smoke-particle smoke-2"></div>
-            <div className="smoke-particle smoke-3"></div>
-            <div className="smoke-particle smoke-4"></div>
-            <div className="smoke-particle smoke-5"></div>
-          </div>
-          
-          {/* Ambient Glow Layer - Layer 3 */}
-          <div className="ambient-glow z-[3]"></div>
           
           <div className="container mx-auto px-4 relative z-10">
             <div className="max-w-4xl mx-auto text-center">
-              <div className="mb-6 md:mb-8 animate-in fade-in slide-in-from-bottom-4 duration-1000">
+              <div className="mb-6 md:mb-8">
                 <picture translate="no">
                   <source srcSet={logoWeedMadridWebp} type="image/webp" />
                   <img 
@@ -212,15 +210,15 @@ const Index = () => {
                 </picture>
               </div>
               
-              <h1 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 md:mb-6 leading-tight text-gradient-logo animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-150">
+              <h1 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 md:mb-6 leading-tight text-gradient-logo">
                 {t("home.h1")}
               </h1>
               
-              <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl mb-8 md:mb-10 text-foreground/80 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-300 px-4">
+              <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl mb-8 md:mb-10 text-foreground/80 px-4">
                 {t("home.subtitle")}
               </p>
               
-              <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center mb-8 md:mb-12 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-500 px-4" style={{ minHeight: '56px' }}>
+              <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center mb-8 md:mb-12 px-4" style={{ minHeight: '56px' }}>
                 <Dialog open={finderDialogOpen} onOpenChange={setFinderDialogOpen}>
                   <DialogTrigger asChild>
                     <Button 
@@ -249,7 +247,7 @@ const Index = () => {
               </div>
 
               {/* Trust Signals - Luxury Badges */}
-              <div className="flex flex-wrap justify-center gap-4 md:gap-6 lg:gap-8 mb-6 md:mb-8 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-700 px-2">
+              <div className="flex flex-wrap justify-center gap-4 md:gap-6 lg:gap-8 mb-6 md:mb-8 px-2">
                 <div className="flex items-center gap-2 md:gap-3 glass-effect px-4 md:px-6 py-2 md:py-3 rounded-full border-2 border-primary/30 hover:border-primary/60 transition-all hover:shadow-gold text-sm md:text-base">
                   <Shield className="w-5 h-5 md:w-6 md:h-6 text-primary flex-shrink-0" />
                   <span className="text-foreground font-medium">{t("home.features.legal")}</span>
