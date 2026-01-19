@@ -59,16 +59,13 @@ const PageLoader = () => (
 );
 
 /**
- * Hook to mark document as hydrated and remove the static hero shell
+ * Hook to mark document as hydrated
+ * Shell is hidden via CSS when hydration-ready class is added in main.tsx
  */
 function useHydrationMarker() {
   useEffect(() => {
-    // Remove the static hero shell once React has rendered
-    const heroShell = document.getElementById('hero-shell');
-    if (heroShell) {
-      heroShell.remove();
-    }
     // Mark as hydrated for SSG detection
+    // Shell hiding is handled by CSS rule: html.hydration-ready #hero-shell { display: none; }
     document.documentElement.setAttribute('data-hydrated', 'true');
   }, []);
 }

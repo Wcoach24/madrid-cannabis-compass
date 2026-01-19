@@ -127,6 +127,11 @@
         backdrop-filter: blur(10px);
         background: rgba(255, 255, 255, 0.05);
       }
+
+      /* Hide static hero shell via CSS after React has painted */
+      html.hydration-ready #hero-shell {
+        display: none;
+      }
     </style>
 
     <!-- Prefetch next likely navigation -->
