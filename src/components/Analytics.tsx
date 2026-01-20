@@ -31,13 +31,12 @@ export const Analytics = () => {
         window.dataLayer = [];
       }
 
-      const loadAnalytics = () => {
-        // Prevent duplicate script injections
+      // Load Google Analytics (lightweight, load on idle)
+      const loadGA4 = () => {
         if (document.querySelector(`script[src*="googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}"]`)) {
           return;
         }
 
-        // Load Google Analytics
         if (!window.gtag) {
           const script1 = document.createElement('script');
           script1.async = true;
@@ -56,8 +55,10 @@ export const Analytics = () => {
           `;
           document.head.appendChild(script2);
         }
+      };
 
-        // Load Microsoft Clarity (prevent duplicates)
+      // Load Microsoft Clarity (heavy, load on user interaction)
+      const loadClarity = () => {
         if (!window.clarity && !document.querySelector('script[src*="clarity.ms"]')) {
           const clarityScript = document.createElement('script');
           clarityScript.innerHTML = `
@@ -71,21 +72,52 @@ export const Analytics = () => {
         }
       };
 
-      // Defer analytics until after page is fully loaded, then wait for idle time
-      const deferredLoad = () => {
+      // Defer GA4 until idle (needed for basic tracking)
+      const deferGA4 = () => {
         if ('requestIdleCallback' in window) {
-          (window as Window & { requestIdleCallback: (cb: () => void, opts?: { timeout: number }) => number }).requestIdleCallback(loadAnalytics, { timeout: 5000 });
+          (window as Window & { requestIdleCallback: (cb: () => void, opts?: { timeout: number }) => number }).requestIdleCallback(loadGA4, { timeout: 3000 });
         } else {
-          setTimeout(loadAnalytics, 2000);
+          setTimeout(loadGA4, 1000);
         }
       };
 
-      // Wait for window.onload to avoid blocking LCP
+      // Load Clarity only on user interaction (eliminates 64ms TBT from initial load)
+      let clarityLoaded = false;
+      const loadClarityOnce = () => {
+        if (clarityLoaded) return;
+        clarityLoaded = true;
+        loadClarity();
+        cleanupClarityListeners();
+      };
+
+      const interactionEvents = ['scroll', 'click', 'touchstart', 'keydown'] as const;
+      
+      const cleanupClarityListeners = () => {
+        interactionEvents.forEach(event => {
+          window.removeEventListener(event, loadClarityOnce);
+        });
+      };
+
+      // Add interaction listeners for Clarity
+      interactionEvents.forEach(event => {
+        window.addEventListener(event, loadClarityOnce, { once: true, passive: true });
+      });
+
+      // Fallback: load Clarity after 10s even without interaction (for passive readers)
+      const clarityFallbackTimer = setTimeout(loadClarityOnce, 10000);
+
+      // Wait for window.onload before loading GA4
       if (document.readyState === 'complete') {
-        deferredLoad();
+        deferGA4();
       } else {
-        window.addEventListener('load', deferredLoad, { once: true });
+        window.addEventListener('load', deferGA4, { once: true });
       }
+
+      // Cleanup on unmount
+      return () => {
+        cleanupClarityListeners();
+        clearTimeout(clarityFallbackTimer);
+      };
     }
   }, []);
 
