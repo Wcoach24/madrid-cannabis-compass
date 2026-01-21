@@ -134,6 +134,12 @@
       }
     </style>
 
+    <!-- 
+      CSS Loading Strategy: Non-blocking with media swap
+      The main CSS is loaded with media="print" to prevent render-blocking,
+      then switched to "all" on load. Critical styles are already inlined above.
+    -->
+
     <!-- Prefetch next likely navigation -->
     <link rel="prefetch" href="/clubs" as="document" />
     <link rel="prefetch" href="/guides" as="document" />
