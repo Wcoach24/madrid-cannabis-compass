@@ -23,7 +23,7 @@ export const FEATURED_CLUBS_SEED: FeaturedClubSeed[] = [
     district: "Chamberí",
     rating_editorial: 4.8,
     is_tourist_friendly: true,
-    main_image_url: "/images/clubs/meltz/meltz-featured.webp",
+    main_image_url: "/images/clubs/club-vallehermoso-featured.webp",
     timetable: {
       monday: { open: "11:00", close: "23:00", closed: false },
       tuesday: { open: "11:00", close: "23:00", closed: false },
@@ -40,7 +40,7 @@ export const FEATURED_CLUBS_SEED: FeaturedClubSeed[] = [
     district: "Fuencarral-El Pardo",
     rating_editorial: 4.2,
     is_tourist_friendly: true,
-    main_image_url: "/images/clubs/club-vallehermoso-featured.webp",
+    main_image_url: "/images/clubs/meltz/meltz-featured.webp",
     timetable: {
       monday: { open: "10:00", close: "22:00" },
       tuesday: { open: "10:00", close: "22:00" },
