@@ -15,10 +15,11 @@ function nonBlockingCss(): Plugin {
     name: 'non-blocking-css',
     enforce: 'post',
     transformIndexHtml(html) {
-      // Match CSS link tags and add media swap attributes
+      // Flexible regex to match various Vite CSS output formats
+      // Handles: <link rel="stylesheet" href="..."> with or without crossorigin
       return html.replace(
-        /<link rel="stylesheet" crossorigin href="([^"]+\.css)">/g,
-        '<link rel="stylesheet" href="$1" media="print" onload="this.media=\'all\'">'
+        /<link\s+rel="stylesheet"\s+(crossorigin\s+)?href="([^"]+\.css)"(\s+crossorigin)?>/g,
+        '<link rel="stylesheet" href="$2" media="print" onload="this.media=\'all\'">'
       );
     },
   };

@@ -139,6 +139,9 @@
       The main CSS is loaded with media="print" to prevent render-blocking,
       then switched to "all" on load. Critical styles are already inlined above.
     -->
+    <noscript>
+      <link rel="stylesheet" href="/src/index.css" />
+    </noscript>
 
     <!-- Prefetch next likely navigation -->
     <link rel="prefetch" href="/clubs" as="document" />
