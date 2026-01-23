@@ -6,7 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Search, MapPin, Scale, Users, Plane, Shield, RefreshCw, FileText, ArrowRight, Star, CheckCircle2 } from "lucide-react";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Search, MapPin, Scale, Users, Plane, Shield, RefreshCw, FileText, ArrowRight, Star, CheckCircle2, Eye, ClipboardCheck, Award, Clock } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ClubCard from "@/components/ClubCard";
@@ -280,6 +281,10 @@ const Clubs = () => {
                 {t("clubs.hero.badge3")}
               </Badge>
             </div>
+            {/* Last Updated E-E-A-T Signal */}
+            <p className="text-sm text-primary-foreground/70 mt-6">
+              {t("clubs.lastUpdated")}
+            </p>
           </div>
         </section>
 
@@ -589,6 +594,96 @@ const Clubs = () => {
                   </p>
                 </CardContent>
               </Card>
+            </div>
+          </div>
+        </section>
+
+        {/* Verification Methodology Section - E-E-A-T */}
+        <section className="py-12 bg-muted/30 border-t">
+          <div className="container mx-auto px-4">
+            <h2 className="text-2xl md:text-3xl font-bold mb-4">
+              {t("clubs.verification.title")}
+            </h2>
+            <p className="text-lg text-muted-foreground mb-8 max-w-3xl">
+              {t("clubs.verification.intro")}
+            </p>
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+              <Card>
+                <CardContent className="p-6">
+                  <Eye className="w-8 h-8 text-primary mb-4" />
+                  <h3 className="font-semibold mb-2">{t("clubs.verification.step1.title")}</h3>
+                  <p className="text-sm text-muted-foreground">
+                    {t("clubs.verification.step1.text")}
+                  </p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent className="p-6">
+                  <ClipboardCheck className="w-8 h-8 text-primary mb-4" />
+                  <h3 className="font-semibold mb-2">{t("clubs.verification.step2.title")}</h3>
+                  <p className="text-sm text-muted-foreground">
+                    {t("clubs.verification.step2.text")}
+                  </p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent className="p-6">
+                  <Award className="w-8 h-8 text-primary mb-4" />
+                  <h3 className="font-semibold mb-2">{t("clubs.verification.step3.title")}</h3>
+                  <p className="text-sm text-muted-foreground">
+                    {t("clubs.verification.step3.text")}
+                  </p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent className="p-6">
+                  <Clock className="w-8 h-8 text-primary mb-4" />
+                  <h3 className="font-semibold mb-2">{t("clubs.verification.step4.title")}</h3>
+                  <p className="text-sm text-muted-foreground">
+                    {t("clubs.verification.step4.text")}
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+            <p className="text-sm text-muted-foreground italic">
+              {t("clubs.verification.team")}
+            </p>
+          </div>
+        </section>
+
+        {/* Visible FAQ Section - Featured Snippet Target */}
+        <section className="py-12 bg-background border-t">
+          <div className="container mx-auto px-4">
+            <h2 className="text-2xl md:text-3xl font-bold mb-8">
+              {t("clubs.faq.visible.title")}
+            </h2>
+            <div className="max-w-3xl">
+              <Accordion type="single" collapsible className="w-full">
+                <AccordionItem value="faq-1">
+                  <AccordionTrigger className="text-left text-lg font-medium">
+                    {t("clubs.faq.visible.q1")}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground">
+                    {t("clubs.faq.visible.a1")}
+                  </AccordionContent>
+                </AccordionItem>
+                <AccordionItem value="faq-2">
+                  <AccordionTrigger className="text-left text-lg font-medium">
+                    {t("clubs.faq.visible.q2")}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground">
+                    {t("clubs.faq.visible.a2")}
+                  </AccordionContent>
+                </AccordionItem>
+                <AccordionItem value="faq-3">
+                  <AccordionTrigger className="text-left text-lg font-medium">
+                    {t("clubs.faq.visible.q3")}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground">
+                    {t("clubs.faq.visible.a3")}
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
             </div>
           </div>
         </section>
