@@ -2897,10 +2897,11 @@ export const translations: Record<Language, Record<string, string>> = {
     "shop.noproducts": "Nessun prodotto disponibile",
     "shop.noproducts.desc": "Torna presto per nuovi articoli",
     
-    // Homepage
-    "home.title": "Weed Madrid — Cannabis Club e Guide a Madrid",
-    "home.h1": "Weed Madrid",
-    "home.subtitle": "Weed Madrid è una directory verificata e una piattaforma educativa per i cannabis social club a Madrid, Spagna — per turisti e residenti.",
+    // Homepage - SEO Optimized per PRD
+    "home.title": "Weed Madrid | Come Ottenere Marijuana Legale a Madrid (Guida 2026)",
+    "home.h1": "Weed Madrid – Come Ottenere Marijuana a Madrid in Sicurezza",
+    "home.h2": "Una guida legale ai cannabis social club per turisti e residenti",
+    "home.subtitle": "Trova marijuana legale a Madrid attraverso cannabis social club verificati. Scopri come funzionano i club, cosa è legale e come i turisti possono accedere alla cannabis in sicurezza in Spagna.",
     "home.search.placeholder": "Cerca club per nome o quartiere...",
     "home.search.button": "Cerca Club",
     "home.features.legal": "Legale e Sicuro",
@@ -2918,7 +2919,15 @@ export const translations: Record<Language, Record<string, string>> = {
     "home.testimonials.subtitle": "Esperienze reali da viaggiatori reali",
     "home.featured.viewall": "Vedi Tutti i Club",
     "home.howitworks.title": "Come Funziona",
-    "home.howitworks.subtitle": "Ottieni il tuo invito al club in 3 semplici passi",
+    "home.howitworks.subtitle": "Ottieni il tuo invito al club in 4 semplici passi",
+    "home.howitworks.step1.title": "Scegli un Club Verificato",
+    "home.howitworks.step1.desc": "Sfoglia la nostra lista curata di cannabis club verificati in Madrid e scegli quello che fa per te.",
+    "home.howitworks.step2.title": "Richiedi un Invito",
+    "home.howitworks.step2.desc": "Compila un modulo veloce. Esamineremo la tua richiesta e ti invieremo un codice invito via email.",
+    "home.howitworks.step3.title": "Ricevi Approvazione",
+    "home.howitworks.step3.desc": "Ricevi il tuo codice invito e l'indirizzo del club entro 24 ore via email di conferma.",
+    "home.howitworks.step4.title": "Visita e Consuma Legalmente",
+    "home.howitworks.step4.desc": "Presenta il tuo codice invito al club con il documento d'identità. Benvenuto alla marijuana legale a Madrid!",
     "home.howitworks.private.title": "1. Scegli il Tuo Club",
     "home.howitworks.private.desc": "Sfoglia la nostra lista curata di cannabis club verificati in Madrid e scegli quello che fa per te.",
     "home.howitworks.membership.title": "2. Richiedi Invito",
@@ -2934,11 +2943,13 @@ export const translations: Record<Language, Record<string, string>> = {
     "home.guides.legal.title": "Stato Legale in Spagna",
     "home.guides.legal.desc": "Cosa devono sapere i turisti",
     
-    // Quick Answer Box (GEO/LLM)
-    "home.quickanswer.text": "Madrid ha oltre 9 cannabis social club verificati dove i turisti possono visitare legalmente con un invito di iscrizione. I club sono associazioni private no-profit che operano secondo la legge spagnola. L'accesso in giornata è disponibile con documento d'identità valido.",
-    "home.quickanswer.highlight1": "Oltre 9 club verificati nei quartieri di Madrid",
+    // Quick Answer Box (GEO/LLM) - Featured Snippet Target per PRD (≤45 parole)
+    "home.quickanswer.title": "Dove puoi trovare marijuana a Madrid?",
+    "home.quickanswer.text": "La marijuana a Madrid può essere ottenuta solo nei cannabis social club privati. Sono associazioni no-profit riservate ai membri dove il consumo è limitato agli spazi privati. Il possesso o il fumo in pubblico è illegale e può comportare sanzioni amministrative.",
+    "home.quickanswer.highlight1": "Oltre 15 club verificati nei quartieri di Madrid",
     "home.quickanswer.highlight2": "Adatti ai turisti con personale anglofono",
-    "home.quickanswer.highlight3": "Approvazione invito entro 24 ore",
+    "home.quickanswer.highlight3": "Consumo privato tollerato",
+    "home.quickanswer.highlight4": "Approvazione invito entro 24 ore",
     
     // Quick Stats
     "home.stats.clubs": "15+",
@@ -2947,12 +2958,63 @@ export const translations: Record<Language, Record<string, string>> = {
     "home.stats.tourists.label": "Turisti Aiutati",
     "home.stats.approval": "24h",
     "home.stats.approval.label": "Approvazione Rapida",
-    "home.stats.legal": "100%",
-    "home.stats.legal.label": "Legale e Sicuro",
+    "home.stats.legal": "✓",
+    "home.stats.legal.label": "Privato e Sicuro",
     
-    // Homepage FAQ (Long-tail SEO)
+    // Legal Section - PRD Required (300-400 parole)
+    "home.legal.title": "La Marijuana è Legale a Madrid?",
+    "home.legal.p1": "Il consumo di cannabis in spazi privati è tollerato in Spagna, sebbene il quadro legale rimanga complesso. La Spagna ha un sistema unico che permette ai cannabis social club di operare come associazioni private no-profit. A differenza dei paesi dove la cannabis è completamente legalizzata o proibita, la Spagna occupa una via di mezzo dove il consumo privato è tollerato mentre l'uso pubblico rimane severamente vietato.",
+    "home.legal.p2": "I cannabis social club a Madrid operano secondo la legge spagnola sulle associazioni. Funzionano come organizzazioni chiuse, riservate ai membri, dove la cannabis viene coltivata collettivamente e distribuita tra i membri — mai venduta al pubblico. Questo modello legale è stato confermato dai tribunali spagnoli, rendendo i club un modo legittimo per accedere alla marijuana a Madrid senza infrangere la legge.",
+    "home.legal.private.title": "Consumo Privato",
+    "home.legal.private.text": "Il consumo di cannabis in spazi privati (la tua casa o all'interno di un club) non è un reato penale in Spagna.",
+    "home.legal.public.title": "Consumo Pubblico",
+    "home.legal.public.text": "Fumare marijuana in pubblico è illegale. Le multe vanno da €601 a €30.000. Non consumare mai fuori dal club.",
+    "home.legal.clubs.title": "Cannabis Club",
+    "home.legal.clubs.text": "I club sono associazioni private no-profit dove i membri possono consumare cannabis legalmente in un ambiente sicuro.",
+    "home.legal.tourists.title": "Accesso Turisti",
+    "home.legal.tourists.text": "I turisti 21+ possono iscriversi ai cannabis club con documento d'identità valido. Non serve residenza spagnola. Accesso in giornata disponibile.",
+    "home.legal.cta": "Leggi la guida completa sulla legge cannabis",
+    
+    // Avoid Scams Section - PRD Required
+    "home.scams.title": "Evita le Truffe sulla Marijuana a Madrid",
+    "home.scams.warning1": "Non comprare mai marijuana per strada — è illegale e pericoloso",
+    "home.scams.warning2": "I cannabis club non accettano visite senza appuntamento — richiedi sempre prima un invito",
+    "home.scams.warning3": "Le offerte di marijuana su Telegram e WhatsApp sono spesso truffe",
+    "home.scams.warning4": "Usa sempre sistemi di invito verificati per accedere ai club",
+    "home.scams.safe": "Il nostro sistema di inviti ti connette direttamente con cannabis club verificati che operano come associazioni legali no-profit.",
+    "home.scams.cta": "Scopri come evitare le truffe sulla cannabis a Madrid",
+    
+    // Club Types Section - PRD Required
+    "home.clubtypes.title": "Tipi di Cannabis Club a Madrid",
+    "home.clubtypes.subtitle": "Madrid ha diversi tipi di club per soddisfare varie preferenze e atmosfere",
+    "home.clubtypes.lounge.title": "Club Stile Lounge",
+    "home.clubtypes.lounge.desc": "Ambienti confortevoli e rilassati con divani, illuminazione ambientale e atmosfera chill. Perfetti per rilassarsi.",
+    "home.clubtypes.social.title": "Club Sociali/Comunitari",
+    "home.clubtypes.social.desc": "Focus su eventi comunitari, giochi e interazione sociale. Ottimi per incontrare altri appassionati.",
+    "home.clubtypes.tourist.title": "Club Adatti ai Turisti",
+    "home.clubtypes.tourist.desc": "Personale anglofono, processo di iscrizione semplificato e atmosfera accogliente per visitatori internazionali.",
+    "home.clubtypes.fees.title": "Quote di Iscrizione",
+    "home.clubtypes.fees.desc": "Le quote annuali vanno tipicamente da €20-€50. Questo copre l'iscrizione all'associazione. Nessun obbligo oltre alla quota.",
+    
+    // Safety Tips Section - PRD Required
+    "home.safety.title": "Restare Sicuri Usando Marijuana a Madrid",
+    "home.safety.tip1": "Consuma solo dentro i club privati — non fumare mai marijuana in pubblico a Madrid",
+    "home.safety.tip2": "Porta sempre un documento d'identità valido — ti servirà per entrare al club e per controlli di polizia",
+    "home.safety.tip3": "Inizia con poco, vai piano — specialmente se non conosci la potenza",
+    "home.safety.tip4": "Rispetta le regole del club — rispetta lo spazio e gli altri membri",
+    "home.safety.cta": "Leggi la nostra guida alla sicurezza cannabis",
+    
+    // Homepage FAQ (SEO-Driven) - PRD Mandatory Questions
     "home.faq.title": "Domande Frequenti sui Cannabis Club di Madrid",
     "home.faq.subtitle": "Risposte rapide alle domande più cercate",
+    "home.faq.seo.q1": "Dove possono trovare marijuana i turisti a Madrid?",
+    "home.faq.seo.a1": "I turisti possono ottenere marijuana legale a Madrid iscrivendosi a un cannabis social club. Devi avere 21+, richiedere un invito attraverso una piattaforma verificata come Weed Madrid, ricevere l'approvazione (solitamente entro 24 ore) e visitare il club con documento d'identità valido. Non serve residenza spagnola. Accesso in giornata disponibile nella maggior parte dei club adatti ai turisti.",
+    "home.faq.seo.q2": "È illegale portare marijuana a Madrid?",
+    "home.faq.seo.a2": "Sì, portare marijuana in spazi pubblici a Madrid è illegale e può comportare multe da €601 a €30.000. La cannabis dovrebbe essere posseduta e consumata solo in spazi privati come cannabis social club o la tua residenza privata. All'interno di un club, il possesso e il consumo sono legali.",
+    "home.faq.seo.q3": "Quanto costa l'iscrizione a un cannabis club a Madrid?",
+    "home.faq.seo.a3": "Le quote di iscrizione ai cannabis club a Madrid vanno tipicamente da €20 a €50 all'anno. Questa quota annuale copre l'iscrizione all'associazione privata. Alcuni club potrebbero avere quote di registrazione una tantum. Non c'è obbligo di acquistare nulla oltre alla quota di iscrizione.",
+    
+    // Homepage FAQ (Long-tail SEO) - existing keys continue
     "home.faq.q1": "Come entrare in un cannabis club a Madrid?",
     "home.faq.a1": "Per entrare in un cannabis club a Madrid, hai bisogno di un invito da un membro esistente o attraverso il nostro sistema di inviti. Compila il nostro modulo veloce, ricevi il tuo codice entro 24 ore, poi presentalo con un documento d'identità valido all'ingresso del club.",
     "home.faq.q2": "Quota iscrizione cannabis club Madrid - Quanto costa?",
