@@ -40,7 +40,7 @@ export const FEATURED_CLUBS_SEED: FeaturedClubSeed[] = [
     district: "Fuencarral-El Pardo",
     rating_editorial: 4.2,
     is_tourist_friendly: true,
-    main_image_url: "/images/clubs/meltz/meltz-featured.webp",
+    main_image_url: "/images/clubs/meltz/meltz-v2.webp",
     timetable: {
       monday: { open: "10:00", close: "22:00" },
       tuesday: { open: "10:00", close: "22:00" },
