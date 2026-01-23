@@ -7,6 +7,11 @@ interface QuickAnswerBoxProps {
   highlights?: string[];
   badges?: Array<{ label: string; icon?: "check" | "info" }>;
   className?: string;
+  /** 
+   * PRD-compliant variant for featured snippets
+   * When true: renders only H2 + plain paragraph (no highlights, badges, CTA)
+   */
+  variant?: "default" | "featured-snippet";
 }
 
 /**
@@ -15,19 +20,39 @@ interface QuickAnswerBoxProps {
  * Designed for direct extraction by AI systems (ChatGPT, Perplexity, Bing Copilot).
  * Provides concise, citation-ready answers at the top of pillar articles.
  * 
- * Usage:
- * - Place immediately after hero section
- * - Keep answer to 2-3 declarative sentences
- * - Use highlights for key facts/numbers
- * - Use badges for trust signals
+ * Featured Snippet Variant (PRD-compliant):
+ * - ≤45 words, plain paragraph
+ * - No CTA, no branding, neutral tone
+ * - Only H2 question + answer paragraph
  */
 const QuickAnswerBox = ({
   title = "🔍 Quick Answer",
   answer,
   highlights = [],
   badges = [],
-  className
+  className,
+  variant = "default"
 }: QuickAnswerBoxProps) => {
+  // PRD-compliant Featured Snippet mode: minimal, extract-friendly
+  if (variant === "featured-snippet") {
+    return (
+      <div 
+        className={cn(
+          "bg-background rounded-lg p-6 border-l-4 border-primary shadow-sm",
+          className
+        )}
+        data-speakable="true"
+        aria-label="Quick answer summary"
+      >
+        <h2 className="text-lg font-semibold mb-3">{title}</h2>
+        <p className="text-muted-foreground" data-answer="true">
+          {answer}
+        </p>
+      </div>
+    );
+  }
+
+  // Default mode with highlights and badges
   return (
     <div 
       className={cn(
