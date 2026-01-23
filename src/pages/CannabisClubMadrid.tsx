@@ -175,7 +175,7 @@ const CannabisClubMadrid = () => {
         title={`${t.title} | Weed Madrid`}
         description={t.subtitle}
         canonical={`${BASE_URL}${canonicalPath}`}
-        keywords="cannabis club madrid, weed club madrid, asociacion cannabica madrid, marijuana club madrid, cannabis social club spain"
+        keywords="cannabis club madrid, weed club madrid, asociacion cannabica madrid, cannabis social club spain, private cannabis association madrid, how to join cannabis club madrid"
         hreflangLinks={hreflangLinks}
         structuredData={structuredData}
         speakableSelectors={["h1", "[data-speakable]", "[data-answer]"]}

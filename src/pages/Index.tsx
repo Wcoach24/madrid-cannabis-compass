@@ -120,7 +120,7 @@ const Index = () => {
         title={t("home.title")}
         description={t("home.subtitle")}
         canonical={`${BASE_URL}${buildLanguageAwarePath("/", language)}`}
-        keywords="weed madrid, weed clubs madrid, weed in madrid, legal weed madrid, cannabis club madrid, how to get weed in madrid, cannabis social club madrid, marijuana madrid, donde comprar marihuana madrid"
+        keywords="weed madrid, weed clubs madrid, weed in madrid, cannabis club madrid, how to get weed in madrid safely, cannabis social club madrid, madrid cannabis association, social club cannabis madrid, private cannabis clubs madrid"
         hreflangLinks={hreflangLinks}
         ogLocale={language === "es" ? "es_ES" : language === "de" ? "de_DE" : language === "fr" ? "fr_FR" : "en_US"}
         ogLocaleAlternate={["en_US", "es_ES", "de_DE", "fr_FR"].filter(l => l !== (language === "es" ? "es_ES" : language === "de" ? "de_DE" : language === "fr" ? "fr_FR" : "en_US"))}
