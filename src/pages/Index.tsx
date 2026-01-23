@@ -239,19 +239,14 @@ const Index = () => {
           </div>
         </section>
 
-        {/* 2. QUICK ANSWER BOX - Featured Snippet Target */}
+        {/* 2. QUICK ANSWER BOX - Featured Snippet Target (PRD-Compliant) */}
         <section className="py-8 md:py-12 bg-background">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
               <QuickAnswerBox
                 title={t("home.quickanswer.title")}
                 answer={t("home.quickanswer.text")}
-                highlights={[
-                  t("home.quickanswer.highlight1"),
-                  t("home.quickanswer.highlight2"),
-                  t("home.quickanswer.highlight3"),
-                  t("home.quickanswer.highlight4"),
-                ]}
+                variant="featured-snippet"
               />
             </div>
           </div>
