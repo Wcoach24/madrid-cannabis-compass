@@ -234,7 +234,7 @@ Deno.serve(async (req) => {
     <div style="background-color: rgba(255, 0, 0, 0.1); border: 2px solid rgba(255, 0, 0, 0.3); border-radius: 12px; padding: 20px; margin-bottom: 30px;">
       <h3 style="color: #ff6b6b; margin: 0 0 15px 0; font-size: 18px;">⚖️ Legal Notice for International Visitors</h3>
       <p style="margin: 0 0 10px 0; font-size: 13px; line-height: 1.6; color: #cccccc;">
-        Cannabis social clubs in Spain operate as <strong>private non-profit associations</strong> under Spanish law. Membership and consumption are legal within club premises, but cannabis remains illegal in public spaces.
+        Cannabis social clubs in Spain operate as <strong>private non-profit associations</strong> under Spanish law. Membership and consumption are tolerated within club premises, but cannabis remains illegal in public spaces.
       </p>
       <p style="margin: 0; font-size: 13px; line-height: 1.6; color: #cccccc;">
         <strong style="color: #ff6b6b;">DO:</strong> Consume only inside the club • Respect local laws • Bring valid ID • Follow club etiquette<br>

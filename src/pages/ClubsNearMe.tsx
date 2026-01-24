@@ -158,7 +158,7 @@ const ClubsNearMe = () => {
                   </span>
                   <span className="inline-flex items-center gap-1 text-sm bg-primary/10 text-primary px-3 py-1 rounded-full">
                     <CheckCircle className="h-3 w-3" />
-                    100% Legal
+                    Private & Safe
                   </span>
                 </div>
               </div>

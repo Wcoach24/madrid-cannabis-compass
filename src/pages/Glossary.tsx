@@ -20,7 +20,7 @@ interface GlossaryTerm {
 const GLOSSARY_TERMS: GlossaryTerm[] = [
   {
     term: "Cannabis Social Club (CSC)",
-    definition: "A private, non-profit association where adult members can legally consume cannabis in Spain. Clubs operate under Spanish constitutional rights to private association and personal consumption. Members must be invited, and walk-in access is prohibited.",
+    definition: "A private, non-profit association where adult members can consume cannabis in a tolerated, private environment in Spain. Clubs operate under Spanish constitutional rights to private association and personal consumption. Members must be invited, and walk-in access is prohibited.",
     relatedTerms: ["Private Association", "Membership Fee", "Invitation System"]
   },
   {
