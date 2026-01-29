@@ -13,9 +13,14 @@ import logoWeedMadrid from "@/assets/logo-weed-madrid.png";
 const Header = () => {
   const { language, t } = useLanguage();
   
+  const cannabisClubPath = language === "es" 
+    ? buildLanguageAwarePath("/club-cannabis-madrid", language)
+    : buildLanguageAwarePath("/cannabis-club-madrid", language);
+
   const navigation = [
     { name: t("nav.home"), href: buildLanguageAwarePath("/", language) },
     { name: t("nav.clubs"), href: buildLanguageAwarePath("/clubs", language) },
+    { name: t("nav.cannabisclub"), href: cannabisClubPath },
     { name: t("nav.guides"), href: buildLanguageAwarePath("/guides", language) },
     { name: t("nav.knowledge"), href: buildLanguageAwarePath("/knowledge", language) },
     { name: t("nav.faq"), href: buildLanguageAwarePath("/faq", language) },

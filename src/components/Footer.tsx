@@ -39,6 +39,17 @@ const Footer = () => {
             <h3 className="font-semibold text-foreground">{t("footer.resources")}</h3>
             <ul className="space-y-2 text-sm">
               <li>
+                <Link 
+                  to={language === "es" 
+                    ? buildLanguageAwarePath("/club-cannabis-madrid", language)
+                    : buildLanguageAwarePath("/cannabis-club-madrid", language)
+                  } 
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  {t("footer.cannabisclubguide")}
+                </Link>
+              </li>
+              <li>
                 <Link to={buildLanguageAwarePath("/knowledge", language)} className="text-muted-foreground hover:text-foreground transition-colors">
                   {t("nav.knowledge")}
                 </Link>

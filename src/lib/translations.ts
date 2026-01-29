@@ -12,7 +12,8 @@ export const translations: Record<Language, Record<string, string>> = {
   en: {
     // Navigation
     "nav.home": "Home",
-    "nav.clubs": "Clubs",
+    "nav.clubs": "Directory",
+    "nav.cannabisclub": "Cannabis Club",
     "nav.guides": "Guides",
     "nav.faq": "FAQ",
     "nav.contact": "Contact",
@@ -626,6 +627,7 @@ export const translations: Record<Language, Record<string, string>> = {
     "footer.contact": "Contact",
     "footer.guides": "Guides",
     "footer.clubs": "Club Directory",
+    "footer.cannabisclubguide": "Cannabis Club Guide",
     "footer.privacy": "Privacy Policy",
     "footer.terms": "Terms of Use",
     "footer.getintouch": "Get in Touch",
@@ -802,7 +804,8 @@ export const translations: Record<Language, Record<string, string>> = {
   es: {
     // Navigation
     "nav.home": "Inicio",
-    "nav.clubs": "Clubes",
+    "nav.clubs": "Directorio",
+    "nav.cannabisclub": "Club Cannabis",
     "nav.guides": "Guías",
     "nav.faq": "Preguntas",
     "nav.contact": "Contacto",
@@ -1522,6 +1525,7 @@ export const translations: Record<Language, Record<string, string>> = {
     "footer.contact": "Contacto",
     "footer.guides": "Guías",
     "footer.clubs": "Directorio de Clubes",
+    "footer.cannabisclubguide": "Guía Club Cannabis",
     "footer.privacy": "Política de Privacidad",
     "footer.terms": "Términos de Uso",
     "footer.getintouch": "Ponte en Contacto",
@@ -1556,7 +1560,8 @@ export const translations: Record<Language, Record<string, string>> = {
   de: {
     // Navigation
     "nav.home": "Startseite",
-    "nav.clubs": "Clubs",
+    "nav.clubs": "Verzeichnis",
+    "nav.cannabisclub": "Cannabis Club",
     "nav.guides": "Ratgeber",
     "nav.faq": "FAQ",
     "nav.contact": "Kontakt",
@@ -2173,6 +2178,7 @@ export const translations: Record<Language, Record<string, string>> = {
     "footer.contact": "Kontakt",
     "footer.guides": "Ratgeber",
     "footer.clubs": "Club-Verzeichnis",
+    "footer.cannabisclubguide": "Cannabis Club Ratgeber",
     "footer.privacy": "Datenschutzerklärung",
     "footer.terms": "Nutzungsbedingungen",
     "footer.getintouch": "Kontakt Aufnehmen",
@@ -2259,7 +2265,8 @@ export const translations: Record<Language, Record<string, string>> = {
   fr: {
     // Navigation
     "nav.home": "Accueil",
-    "nav.clubs": "Clubs",
+    "nav.clubs": "Répertoire",
+    "nav.cannabisclub": "Cannabis Club",
     "nav.guides": "Guides",
     "nav.faq": "FAQ",
     "nav.contact": "Contact",
@@ -2872,6 +2879,7 @@ export const translations: Record<Language, Record<string, string>> = {
     "footer.contact": "Contact",
     "footer.guides": "Guides",
     "footer.clubs": "Annuaire des Clubs",
+    "footer.cannabisclubguide": "Guide Cannabis Club",
     "footer.privacy": "Politique de Confidentialité",
     "footer.terms": "Conditions d'Utilisation",
     "footer.getintouch": "Prendre Contact",
@@ -2957,7 +2965,8 @@ export const translations: Record<Language, Record<string, string>> = {
   it: {
     // Navigation
     "nav.home": "Home",
-    "nav.clubs": "Club",
+    "nav.clubs": "Directory",
+    "nav.cannabisclub": "Cannabis Club",
     "nav.guides": "Guide",
     "nav.faq": "FAQ",
     "nav.contact": "Contatti",
@@ -3617,6 +3626,7 @@ export const translations: Record<Language, Record<string, string>> = {
     "footer.contact": "Contatti",
     "footer.guides": "Guide",
     "footer.clubs": "Directory Club",
+    "footer.cannabisclubguide": "Guida Cannabis Club",
     "footer.privacy": "Informativa Privacy",
     "footer.terms": "Termini di Servizio",
     "footer.getintouch": "Mettiti in Contatto",
