@@ -29,7 +29,7 @@ const CACHE_FILE = join(CACHE_DIR, 'hashes.json');
 const BASE_URL = 'https://www.weedmadrid.com';
 
 // Validation thresholds
-const MIN_TITLE_LENGTH = 10;
+const MIN_TITLE_LENGTH = 30;
 const MIN_CONTENT_LENGTH = 1000;
 const MAX_RETRIES = 2;
 const DEFAULT_TIMEOUT = 30000;
@@ -80,6 +80,8 @@ const CORE_ROUTES = [
   '/',
   '/clubs',
   '/guides',
+  '/cannabis-club-madrid',
+  '/es/club-cannabis-madrid',
   '/club/genetics-social-club-madrid',
   '/guide/best-cannabis-clubs-madrid-2025'
 ];
@@ -344,6 +346,33 @@ function validateHtml(html, url) {
   // Check for empty root (SPA shell)
   if (html.includes('<div id="root"></div>') || html.includes('<div id="root"> </div>')) {
     issues.push(`CRITICAL: Contains empty #root (SPA shell)`);
+  }
+
+  // Validate Open Graph tags (warnings only, don't block build)
+  const ogTitleMatch = html.match(/<meta[^>]*property="og:title"[^>]*content="([^"]*)"[^>]*>/i);
+  const ogDescMatch = html.match(/<meta[^>]*property="og:description"[^>]*content="([^"]*)"[^>]*>/i);
+  const ogImageMatch = html.match(/<meta[^>]*property="og:image"[^>]*content="([^"]*)"[^>]*>/i);
+  const metaDescMatch = html.match(/<meta[^>]*name="description"[^>]*content="([^"]*)"[^>]*>/i);
+
+  const ogTitle = ogTitleMatch ? ogTitleMatch[1] : '';
+  const ogDesc = ogDescMatch ? ogDescMatch[1] : '';
+  const ogImage = ogImageMatch ? ogImageMatch[1] : '';
+  const metaDesc = metaDescMatch ? metaDescMatch[1] : '';
+
+  if (!ogTitle || ogTitle.length < 10) {
+    console.warn(`⚠️  [${url}] og:title missing or too short`);
+  }
+
+  if (!ogDesc || ogDesc.length < 50) {
+    console.warn(`⚠️  [${url}] og:description missing or too short`);
+  }
+
+  if (!metaDesc || metaDesc.length < 50) {
+    console.warn(`⚠️  [${url}] meta description missing or too short (${metaDesc.length} chars)`);
+  }
+
+  if (!ogImage) {
+    console.warn(`⚠️  [${url}] og:image missing (recommended for social sharing)`);
   }
 
   return issues;

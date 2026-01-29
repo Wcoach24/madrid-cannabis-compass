@@ -24,6 +24,8 @@ const CORE_ROUTES = [
   '/',
   '/clubs',
   '/guides',
+  '/cannabis-club-madrid',
+  '/es/club-cannabis-madrid',
   '/club/genetics-social-club-madrid',
   '/guide/best-cannabis-clubs-madrid-2025'
 ];
