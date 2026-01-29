@@ -44,20 +44,15 @@ export const STATIC_ROUTES = [
   '/glossary',
 ];
 
-// Districts that have full DISTRICT_CONFIG in ClubsDistrict.tsx (SEO ready)
+// 6 districts with high search volume (prioritized for indexation)
+// Includes malasana and lavapies for SEO value
 export const SUPPORTED_DISTRICT_SLUGS = [
   'centro',
   'chamberi', 
   'malasana',
-  'retiro',
+  'lavapies',
   'tetuan',
-  'usera',
-  'atocha',
-  'moncloa-aravaca',
   'arganzuela',
-  'fuencarral-el-pardo',
-  'salamanca',
-  'chamartin',
 ];
 
 // Routes that should NOT be indexed (noindex)
@@ -209,28 +204,19 @@ export function buildUrlInventory(dynamicData) {
     }
   }
 
-  // 4. District pages - only for districts with full DISTRICT_CONFIG support
+  // 4. District pages - only for supported districts with high search volume
+  // Only EN and ES to focus crawl budget on quality pages
   for (const district of dynamicData.districts) {
-    // Only generate routes for supported districts to avoid timeouts
     const isSupported = SUPPORTED_DISTRICT_SLUGS.includes(district);
     
-    // District detail page - always generate (uses translations fallback)
-    urls.push({ path: `/district/${district}`, lang: 'en', type: 'district', slug: district });
-    for (const lang of LANGUAGES) {
-      if (lang !== 'en') {
-        urls.push({ path: `/${lang}/district/${district}`, lang, type: 'district', slug: district });
-      }
-    }
+    // Only generate routes for supported districts
+    if (!isSupported) continue;
     
-    // Clubs by district page - only for supported districts
-    if (isSupported) {
-      urls.push({ path: `/clubs/${district}`, lang: 'en', type: 'clubs-district', slug: district });
-      for (const lang of LANGUAGES) {
-        if (lang !== 'en') {
-          urls.push({ path: `/${lang}/clubs/${district}`, lang, type: 'clubs-district', slug: district });
-        }
-      }
-    }
+    // District detail page - only EN and ES
+    urls.push({ path: `/district/${district}`, lang: 'en', type: 'district', slug: district });
+    urls.push({ path: `/es/district/${district}`, lang: 'es', type: 'district', slug: district });
+    
+    // NOTE: /clubs/{district} removed to avoid duplicate content with /district/{district}
   }
 
   return urls;
