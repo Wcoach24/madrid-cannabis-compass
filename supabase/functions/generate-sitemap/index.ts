@@ -118,23 +118,22 @@ Deno.serve(async (req) => {
       { path: '/safety/scams', priority: '0.7', changefreq: 'monthly' },
     ];
 
-    // All 12 districts synchronized with routes-inventory.mjs
+    // 6 districts with high search volume (prioritized for indexation)
+    // Includes malasana and lavapies for SEO value despite having fewer clubs
     const districts = [
-      'centro', 'chamberi', 'malasana', 'retiro', 'tetuan', 'usera',
-      'atocha', 'moncloa-aravaca', 'arganzuela', 'fuencarral-el-pardo',
-      'salamanca', 'chamartin'
+      'centro', 'chamberi', 'malasana', 'lavapies', 'tetuan', 'arganzuela'
     ];
     
     // Add "Near Me" pages
     staticPages.push({ path: '/clubs/near-me', priority: '0.8', changefreq: 'weekly' });
     
-    // Add district pages
+    // Add district pages (only /district/, not /clubs/ to avoid duplication)
     districts.forEach(district => {
       staticPages.push({ path: `/district/${district}`, priority: '0.7', changefreq: 'weekly' });
-      staticPages.push({ path: `/clubs/${district}`, priority: '0.7', changefreq: 'weekly' });
     });
 
     const languages = ['', '/es', '/de', '/fr', '/it'];
+    const districtLanguages = ['', '/es']; // Only EN and ES for district pages
 
     // GEO: AI-optimized files (highest priority for LLMs)
     const geoFiles = [
@@ -155,7 +154,9 @@ Deno.serve(async (req) => {
     });
     
     staticPages.forEach(page => {
-      languages.forEach(lang => {
+      // Use districtLanguages for district pages, full languages for others
+      const pageLangs = page.path.startsWith('/district/') ? districtLanguages : languages;
+      pageLangs.forEach(lang => {
         sitemap += `
   <url>
     <loc>${baseUrl}${lang}${page.path}</loc>${addHreflangLinks(page.path)}
