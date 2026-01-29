@@ -145,7 +145,7 @@
     {
       "source": "/faq/:slug",
       "destination": "/faq",
-      "permanent": false
+      "permanent": true
     },
     {
       "source": "/district/lavapies",
@@ -210,6 +210,46 @@
     {
       "source": "/guides/how-to-join-cannabis-club-madrid",
       "destination": "/guide/how-to-join-cannabis-club-madrid",
+      "permanent": true
+    },
+    {
+      "source": "/fr/guide/best-weed-clubs-madrid-top-10-2025",
+      "destination": "/guide/best-cannabis-clubs-madrid-2025",
+      "permanent": true
+    },
+    {
+      "source": "/de/guide/best-weed-clubs-madrid-top-10-2025",
+      "destination": "/guide/best-cannabis-clubs-madrid-2025",
+      "permanent": true
+    },
+    {
+      "source": "/it/guide/best-weed-clubs-madrid-top-10-2025",
+      "destination": "/guide/best-cannabis-clubs-madrid-2025",
+      "permanent": true
+    },
+    {
+      "source": "/:lang/guide/best-weed-clubs-madrid-top-10-2025",
+      "destination": "/guide/best-cannabis-clubs-madrid-2025",
+      "permanent": true
+    },
+    {
+      "source": "/de/invite/:slug*",
+      "destination": "/invite/:slug*",
+      "permanent": true
+    },
+    {
+      "source": "/fr/invite/:slug*",
+      "destination": "/invite/:slug*",
+      "permanent": true
+    },
+    {
+      "source": "/it/invite/:slug*",
+      "destination": "/invite/:slug*",
+      "permanent": true
+    },
+    {
+      "source": "/es/invite/:slug*",
+      "destination": "/invite/:slug*",
       "permanent": true
     }
   ],
