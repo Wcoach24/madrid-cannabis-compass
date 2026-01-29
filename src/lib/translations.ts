@@ -170,6 +170,10 @@ export const translations: Record<Language, Record<string, string>> = {
     "clubs.loading": "Loading clubs...",
     "clubs.nofound": "No clubs found",
     "clubs.nofound.desc": "Try adjusting your filters or search criteria",
+    "clubs.noClubsInDistrict": "No clubs currently available in this district",
+    "clubs.tryOtherDistricts": "Try browsing other districts or view all available clubs.",
+    "clubs.viewAllClubs": "View All Clubs",
+    "clubs.readGuide": "Read Our Guide",
     
     // Clubs Hub - Editorial Sections
     "clubs.hero.title": "Cannabis Clubs Madrid – Verified, Legal & Explained",
@@ -962,6 +966,10 @@ export const translations: Record<Language, Record<string, string>> = {
     "clubs.loading": "Cargando clubes...",
     "clubs.nofound": "No se encontraron clubes",
     "clubs.nofound.desc": "Intenta ajustar tus filtros o criterios de búsqueda",
+    "clubs.noClubsInDistrict": "No hay clubes disponibles actualmente en este distrito",
+    "clubs.tryOtherDistricts": "Prueba a explorar otros distritos o ver todos los clubes disponibles.",
+    "clubs.viewAllClubs": "Ver Todos los Clubs",
+    "clubs.readGuide": "Leer Nuestra Guía",
     
     // Clubs Hub - Editorial Sections
     "clubs.hero.title": "Clubes Cannabis Madrid – Verificados, Legales y Explicados",
@@ -1704,6 +1712,10 @@ export const translations: Record<Language, Record<string, string>> = {
     "clubs.loading": "Clubs werden geladen...",
     "clubs.nofound": "Keine Clubs gefunden",
     "clubs.nofound.desc": "Versuchen Sie, Ihre Filter oder Suchkriterien anzupassen",
+    "clubs.noClubsInDistrict": "Derzeit keine Clubs in diesem Bezirk verfügbar",
+    "clubs.tryOtherDistricts": "Versuchen Sie, andere Bezirke zu erkunden oder alle verfügbaren Clubs anzuzeigen.",
+    "clubs.viewAllClubs": "Alle Clubs Anzeigen",
+    "clubs.readGuide": "Unseren Guide Lesen",
     
     // Clubs Hub - Editorial Sections
     "clubs.hero.title": "Cannabis Clubs Madrid – Verifiziert, Legal & Erklärt",
@@ -2409,6 +2421,10 @@ export const translations: Record<Language, Record<string, string>> = {
     "clubs.loading": "Chargement des clubs...",
     "clubs.nofound": "Aucun club trouvé",
     "clubs.nofound.desc": "Essayez d'ajuster vos filtres ou critères de recherche",
+    "clubs.noClubsInDistrict": "Aucun club actuellement disponible dans ce quartier",
+    "clubs.tryOtherDistricts": "Essayez d'explorer d'autres quartiers ou consultez tous les clubs disponibles.",
+    "clubs.viewAllClubs": "Voir Tous les Clubs",
+    "clubs.readGuide": "Lire Notre Guide",
     "clubs.hero.title": "Clubs Cannabis Madrid – Vérifiés, Légaux & Expliqués",
     "clubs.hero.intro": "Weed Madrid est votre guide de confiance pour les clubs de cannabis légaux à Madrid. Nous vérifions chaque club, expliquons le processus d'adhésion et aidons les touristes et locaux à accéder à des expériences cannabis légales.",
     "clubs.hero.badge1": "15+ Clubs Vérifiés",
@@ -3125,6 +3141,10 @@ export const translations: Record<Language, Record<string, string>> = {
     "clubs.loading": "Caricamento club...",
     "clubs.nofound": "Nessun club trovato",
     "clubs.nofound.desc": "Prova a modificare i filtri o i criteri di ricerca",
+    "clubs.noClubsInDistrict": "Nessun club attualmente disponibile in questo distretto",
+    "clubs.tryOtherDistricts": "Prova a esplorare altri distretti o visualizza tutti i club disponibili.",
+    "clubs.viewAllClubs": "Vedi Tutti i Club",
+    "clubs.readGuide": "Leggi la Nostra Guida",
     "clubs.hero.title": "Cannabis Club Madrid – Verificati, Legali & Spiegati",
     "clubs.hero.intro": "Weed Madrid è la tua guida di fiducia per i cannabis club legali a Madrid. Verifichiamo ogni club, spieghiamo il processo di iscrizione e aiutiamo turisti e locali.",
     "clubs.hero.badge1": "15+ Club Verificati",

@@ -500,11 +500,33 @@ const Clubs = () => {
               <p className="text-center py-12 text-muted-foreground">{t("clubs.loading")}</p>
             ) : clubs.length === 0 ? (
               <div className="text-center py-12">
-                <p className="text-xl font-medium mb-2">{t("clubs.nofound")}</p>
-                <p className="text-muted-foreground mb-6">{t("clubs.nofound.desc")}</p>
-                <Button variant="outline" onClick={clearFilters}>
-                  {t("clubs.filter.clear")}
-                </Button>
+                {districtFilter !== "all" ? (
+                  <>
+                    <MapPin className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                    <h3 className="text-xl font-semibold mb-2">{t("clubs.noClubsInDistrict")}</h3>
+                    <p className="text-muted-foreground mb-6">{t("clubs.tryOtherDistricts")}</p>
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                      <Link to={buildLanguageAwarePath("/clubs", language)}>
+                        <Button variant="default">
+                          {t("clubs.viewAllClubs")}
+                        </Button>
+                      </Link>
+                      <Link to={buildLanguageAwarePath(language === "es" ? "/club-cannabis-madrid" : "/cannabis-club-madrid", language)}>
+                        <Button variant="outline">
+                          {t("clubs.readGuide")}
+                        </Button>
+                      </Link>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <p className="text-xl font-medium mb-2">{t("clubs.nofound")}</p>
+                    <p className="text-muted-foreground mb-6">{t("clubs.nofound.desc")}</p>
+                    <Button variant="outline" onClick={clearFilters}>
+                      {t("clubs.filter.clear")}
+                    </Button>
+                  </>
+                )}
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
