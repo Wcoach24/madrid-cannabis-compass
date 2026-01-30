@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, startTransition } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -40,11 +40,17 @@ const Index = () => {
 
   useEffect(() => {
     // Schedule Supabase fetch AFTER page load + idle (not critical path)
+    // Wrapped in startTransition to mark as non-urgent and not block LCP
     const scheduleFetch = () => {
       if (didFetchRef.current) return;
       didFetchRef.current = true;
 
-      const run = () => fetchFeaturedClubs();
+      const run = () => {
+        startTransition(() => {
+          fetchFeaturedClubs();
+        });
+      };
+      
       if ("requestIdleCallback" in window) {
         (window as any).requestIdleCallback(run, { timeout: 3000 });
       } else {
