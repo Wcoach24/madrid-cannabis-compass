@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef, startTransition, lazy, Suspense } from "react";
+import LazyHydrate from 'react-lazy-hydration';
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -261,19 +262,25 @@ const Index = () => {
         </section>
 
         {/* 3. LEGAL CONTEXT SECTION - PRD Required */}
-        <Suspense fallback={<SectionSkeleton height="h-96" />}>
-          <HomepageLegalSection />
-        </Suspense>
+        <LazyHydrate whenVisible>
+          <Suspense fallback={<SectionSkeleton height="h-96" />}>
+            <HomepageLegalSection />
+          </Suspense>
+        </LazyHydrate>
 
         {/* 4. AVOID SCAMS SECTION - Trust Signal */}
-        <Suspense fallback={<SectionSkeleton height="h-80" />}>
-          <AvoidScamsSection />
-        </Suspense>
+        <LazyHydrate whenVisible>
+          <Suspense fallback={<SectionSkeleton height="h-80" />}>
+            <AvoidScamsSection />
+          </Suspense>
+        </LazyHydrate>
 
         {/* 5. HOW IT WORKS - Single 4-Step Flow (No Duplicates) */}
-        <Suspense fallback={<SectionSkeleton height="h-96" />}>
-          <HowItWorksSection />
-        </Suspense>
+        <LazyHydrate whenVisible>
+          <Suspense fallback={<SectionSkeleton height="h-96" />}>
+            <HowItWorksSection />
+          </Suspense>
+        </LazyHydrate>
 
         {/* 6. FEATURED CLUBS */}
         {featuredClubs.length > 0 && (
@@ -374,19 +381,25 @@ const Index = () => {
         )}
 
         {/* 7. TYPES OF CANNABIS CLUBS */}
-        <Suspense fallback={<SectionSkeleton height="h-80" />}>
-          <ClubTypesSection />
-        </Suspense>
+        <LazyHydrate whenVisible>
+          <Suspense fallback={<SectionSkeleton height="h-80" />}>
+            <ClubTypesSection />
+          </Suspense>
+        </LazyHydrate>
 
         {/* 8. SAFETY TIPS */}
-        <Suspense fallback={<SectionSkeleton height="h-64" />}>
-          <SafetyTipsSection />
-        </Suspense>
+        <LazyHydrate whenVisible>
+          <Suspense fallback={<SectionSkeleton height="h-64" />}>
+            <SafetyTipsSection />
+          </Suspense>
+        </LazyHydrate>
 
         {/* 9. FAQ SECTION - SEO-Driven */}
-        <Suspense fallback={<SectionSkeleton height="h-96" />}>
-          <HomepageFAQ />
-        </Suspense>
+        <LazyHydrate whenVisible>
+          <Suspense fallback={<SectionSkeleton height="h-96" />}>
+            <HomepageFAQ />
+          </Suspense>
+        </LazyHydrate>
 
         {/* 10. GUIDES / INTERNAL LINKS */}
         <section className="py-12 md:py-16 bg-background">
@@ -476,7 +489,9 @@ const Index = () => {
         </section>
       </main>
 
-      <Footer />
+      <LazyHydrate whenIdle>
+        <Footer />
+      </LazyHydrate>
     </div>
   );
 };
