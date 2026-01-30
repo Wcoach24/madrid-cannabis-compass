@@ -1,108 +1,143 @@
 
 
-# LCP Optimization Plan - WebP Only (No PNG Fallbacks)
+# LCP Optimization Plan - Reduce 7.4s Mobile LCP
 
 ## Overview
-Eliminate PNG fallbacks for hero background and logo to reduce LCP element render delay. Modern browsers (99%+ coverage) support WebP natively, making PNG fallbacks unnecessary overhead.
+Optimize Largest Contentful Paint by reducing JavaScript blocking, simplifying hydration timing, and using React's concurrent features for non-critical fetches.
 
 ---
 
 ## Changes
 
-### File 1: `src/pages/Index.tsx`
+### File 1: `src/main.tsx`
 
-**Change 1.1: Hero Background Image (Line 160-165)**
+**Change: Simplify triple requestAnimationFrame to single**
 
-Remove `image-set()` with PNG fallback, use direct WebP URL.
+**Lines 9-18**
 
 Current:
-```jsx
-<section className="relative py-20 md:py-32 overflow-hidden" style={{
-  backgroundImage: 'image-set(url(/images/hero-custom-bg.webp) type("image/webp"), url(/images/hero-custom-bg.png) type("image/png"))',
-  backgroundSize: 'cover',
-  backgroundPosition: 'center',
-  backgroundRepeat: 'no-repeat'
-}}>
+```javascript
+// Signal hydration complete AFTER React has committed AND painted
+// Triple-rAF ensures: 1) React commits, 2) Layout calculated, 3) Browser painted
+// This triggers CSS to hide the static hero shell via: html.hydration-ready #hero-shell { display: none; }
+requestAnimationFrame(() => {
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      document.documentElement.classList.add("hydration-ready");
+    });
+  });
+});
 ```
 
 Change to:
-```jsx
-<section className="relative py-20 md:py-32 overflow-hidden" style={{
-  backgroundImage: 'url(/images/hero-custom-bg.webp)',
-  backgroundSize: 'cover',
-  backgroundPosition: 'center',
-  backgroundRepeat: 'no-repeat'
-}}>
+```javascript
+// Signal hydration complete AFTER React has committed
+// Single rAF is sufficient - React has already committed at this point
+// This triggers CSS to hide the static hero shell via: html.hydration-ready #hero-shell { display: none; }
+requestAnimationFrame(() => {
+  document.documentElement.classList.add("hydration-ready");
+});
 ```
 
-**Change 1.2: Logo Image (Lines 172-182)**
-
-Remove `<picture>` element with PNG fallback, use WebP directly with `<img>`.
-
-Current:
-```jsx
-<picture translate="no">
-  <source srcSet={logoWeedMadridWebp} type="image/webp" />
-  <img 
-    src={logoWeedMadrid} 
-    alt="Weed Madrid - Madrid's trusted cannabis club directory..." 
-    className="w-24 h-24 md:w-32 md:h-32 lg:w-40 lg:h-40 mx-auto mb-4 md:mb-6 drop-shadow-2xl rounded-2xl"
-    width="160"
-    height="160"
-    translate="no"
-  />
-</picture>
-```
-
-Change to:
-```jsx
-<img 
-  src={logoWeedMadridWebp}
-  alt="Weed Madrid - Madrid's trusted cannabis club directory and invitation guide for legal cannabis social clubs" 
-  className="w-24 h-24 md:w-32 md:h-32 lg:w-40 lg:h-40 mx-auto mb-4 md:mb-6 drop-shadow-2xl rounded-2xl"
-  width="160"
-  height="160"
-  translate="no"
-/>
-```
-
-**Change 1.3: Remove unused PNG import (Line 22)**
-
-Current:
-```jsx
-import logoWeedMadrid from "@/assets/logo-weed-madrid.png";
-```
-
-Remove this line entirely (unused after changes).
+**Impact**: Reduces delay by ~32ms (2 fewer animation frames at ~16ms each)
 
 ---
 
-### File 2: `index.html`
+### File 2: `src/pages/Index.tsx`
 
-**Change 2.1: Static Hero Shell Background (Line 207)**
+**Change 2.1: Add startTransition import**
 
-Remove `image-set()` syntax, use direct WebP URL.
+**Line 1**
 
 Current:
-```html
-style="background-image: image-set(url('/images/hero-custom-bg.webp') 1x type('image/webp')); ..."
+```javascript
+import { useEffect, useState, useRef } from "react";
 ```
 
 Change to:
+```javascript
+import { useEffect, useState, useRef, startTransition } from "react";
+```
+
+**Change 2.2: Wrap fetch scheduling with startTransition**
+
+**Lines 41-60**
+
+Current:
+```javascript
+useEffect(() => {
+  // Schedule Supabase fetch AFTER page load + idle (not critical path)
+  const scheduleFetch = () => {
+    if (didFetchRef.current) return;
+    didFetchRef.current = true;
+
+    const run = () => fetchFeaturedClubs();
+    if ("requestIdleCallback" in window) {
+      (window as any).requestIdleCallback(run, { timeout: 3000 });
+    } else {
+      setTimeout(run, 1500);
+    }
+  };
+
+  if (document.readyState === "complete") {
+    scheduleFetch();
+  } else {
+    window.addEventListener("load", scheduleFetch, { once: true });
+  }
+}, []);
+```
+
+Change to:
+```javascript
+useEffect(() => {
+  // Schedule Supabase fetch AFTER page load + idle (not critical path)
+  // Wrapped in startTransition to mark as non-urgent and not block LCP
+  const scheduleFetch = () => {
+    if (didFetchRef.current) return;
+    didFetchRef.current = true;
+
+    const run = () => {
+      startTransition(() => {
+        fetchFeaturedClubs();
+      });
+    };
+    
+    if ("requestIdleCallback" in window) {
+      (window as any).requestIdleCallback(run, { timeout: 3000 });
+    } else {
+      setTimeout(run, 1500);
+    }
+  };
+
+  if (document.readyState === "complete") {
+    scheduleFetch();
+  } else {
+    window.addEventListener("load", scheduleFetch, { once: true });
+  }
+}, []);
+```
+
+**Impact**: React will treat the fetch and its state update as low-priority, preventing it from blocking the initial paint.
+
+---
+
+### File 3: `index.html`
+
+**No changes needed** - Line 40 already has `fetchpriority="high"`:
 ```html
-style="background-image: url('/images/hero-custom-bg.webp'); ..."
+<link rel="preload" as="image" href="/images/hero-custom-bg.webp" type="image/webp" fetchpriority="high" />
 ```
 
 ---
 
 ## Summary
 
-| File | Location | Change |
-|------|----------|--------|
-| `src/pages/Index.tsx` | Line 22 | Remove PNG import |
-| `src/pages/Index.tsx` | Lines 160-165 | Simplify backgroundImage to direct WebP |
-| `src/pages/Index.tsx` | Lines 172-182 | Replace `<picture>` with simple `<img>` WebP |
-| `index.html` | Line 207 | Simplify backgroundImage to direct WebP |
+| File | Lines | Change |
+|------|-------|--------|
+| `src/main.tsx` | 9-18 | Simplify triple rAF to single rAF |
+| `src/pages/Index.tsx` | 1 | Add `startTransition` import |
+| `src/pages/Index.tsx` | 41-60 | Wrap fetch in `startTransition()` |
+| `index.html` | 40 | Already correct (no change) |
 
 ---
 
@@ -110,16 +145,16 @@ style="background-image: url('/images/hero-custom-bg.webp'); ..."
 
 | Metric | Before | After |
 |--------|--------|-------|
-| CSS parsing complexity | `image-set()` with type declarations | Simple `url()` |
-| DOM elements for logo | 3 (`<picture>`, `<source>`, `<img>`) | 1 (`<img>`) |
-| Browser compatibility | 99%+ (WebP) | 99%+ (unchanged) |
-| LCP improvement | - | ~50-100ms faster |
+| rAF delay | ~48ms (3 frames) | ~16ms (1 frame) |
+| JS blocking during fetch | Yes | No (low-priority) |
+| Hero preload priority | high | high (unchanged) |
+| Expected LCP reduction | - | 100-500ms |
 
 ---
 
 ## Technical Notes
 
-- WebP support is 97%+ globally (caniuse.com)
-- Safari 14+ (2020), Chrome 32+ (2014), Firefox 65+ (2019) all support WebP
-- The preload in index.html (line 40) already targets only WebP, so this aligns the actual usage
+- `startTransition` marks state updates as non-urgent, allowing React to prioritize rendering
+- The existing `requestIdleCallback` already defers the fetch, but `startTransition` ensures the subsequent render is also low-priority
+- Single rAF is sufficient because React's `render()` is synchronous - by the time it returns, the DOM has been committed
 
