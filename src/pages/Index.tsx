@@ -19,7 +19,7 @@ import SafetyTipsSection from "@/components/home/SafetyTipsSection";
 import HomepageFAQ from "@/components/home/HomepageFAQ";
 
 import logoWeedMadridWebp from "@/assets/logo-weed-madrid.webp";
-import logoWeedMadrid from "@/assets/logo-weed-madrid.png";
+
 import SEOHead from "@/components/SEOHead";
 import OrganizationSchema from "@/components/OrganizationSchema";
 
@@ -158,7 +158,7 @@ const Index = () => {
       <main className="flex-1">
         {/* 1. HERO SECTION - Intent Clarification */}
         <section className="relative py-20 md:py-32 overflow-hidden" style={{
-          backgroundImage: 'image-set(url(/images/hero-custom-bg.webp) type("image/webp"), url(/images/hero-custom-bg.png) type("image/png"))',
+          backgroundImage: 'url(/images/hero-custom-bg.webp)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat'
@@ -169,17 +169,14 @@ const Index = () => {
           <div className="container mx-auto px-4 relative z-10">
             <div className="max-w-4xl mx-auto text-center">
               <div className="mb-6 md:mb-8">
-                <picture translate="no">
-                  <source srcSet={logoWeedMadridWebp} type="image/webp" />
-                  <img 
-                    src={logoWeedMadrid} 
-                    alt="Weed Madrid - Madrid's trusted cannabis club directory and invitation guide for legal cannabis social clubs" 
-                    className="w-24 h-24 md:w-32 md:h-32 lg:w-40 lg:h-40 mx-auto mb-4 md:mb-6 drop-shadow-2xl rounded-2xl"
-                    width="160"
-                    height="160"
-                    translate="no"
-                  />
-                </picture>
+                <img 
+                  src={logoWeedMadridWebp}
+                  alt="Weed Madrid - Madrid's trusted cannabis club directory and invitation guide for legal cannabis social clubs" 
+                  className="w-24 h-24 md:w-32 md:h-32 lg:w-40 lg:h-40 mx-auto mb-4 md:mb-6 drop-shadow-2xl rounded-2xl"
+                  width="160"
+                  height="160"
+                  translate="no"
+                />
               </div>
               
               {/* H1 - PRD Required */}
