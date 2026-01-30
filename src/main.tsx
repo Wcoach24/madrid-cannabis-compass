@@ -6,13 +6,9 @@ import "./index.css";
 const root = createRoot(document.getElementById("root")!);
 root.render(<App />);
 
-// Signal hydration complete AFTER React has committed AND painted
-// Triple-rAF ensures: 1) React commits, 2) Layout calculated, 3) Browser painted
+// Signal hydration complete AFTER React has committed
+// Single rAF is sufficient - React has already committed at this point
 // This triggers CSS to hide the static hero shell via: html.hydration-ready #hero-shell { display: none; }
 requestAnimationFrame(() => {
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      document.documentElement.classList.add("hydration-ready");
-    });
-  });
+  document.documentElement.classList.add("hydration-ready");
 });
