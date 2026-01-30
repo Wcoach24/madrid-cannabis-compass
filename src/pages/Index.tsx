@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, startTransition } from "react";
+import { useEffect, useState, useRef, startTransition, lazy, Suspense } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -10,13 +10,18 @@ import Footer from "@/components/Footer";
 import QuickClubFinder from "@/components/QuickClubFinder";
 import QuickAnswerBox from "@/components/QuickAnswerBox";
 
-// New SEO sections per PRD
-import HomepageLegalSection from "@/components/home/HomepageLegalSection";
-import AvoidScamsSection from "@/components/home/AvoidScamsSection";
-import HowItWorksSection from "@/components/home/HowItWorksSection";
-import ClubTypesSection from "@/components/home/ClubTypesSection";
-import SafetyTipsSection from "@/components/home/SafetyTipsSection";
-import HomepageFAQ from "@/components/home/HomepageFAQ";
+// Lazy load below-the-fold sections for better LCP
+const HomepageLegalSection = lazy(() => import("@/components/home/HomepageLegalSection"));
+const AvoidScamsSection = lazy(() => import("@/components/home/AvoidScamsSection"));
+const HowItWorksSection = lazy(() => import("@/components/home/HowItWorksSection"));
+const ClubTypesSection = lazy(() => import("@/components/home/ClubTypesSection"));
+const SafetyTipsSection = lazy(() => import("@/components/home/SafetyTipsSection"));
+const HomepageFAQ = lazy(() => import("@/components/home/HomepageFAQ"));
+
+// Minimal skeleton for lazy-loaded sections
+const SectionSkeleton = ({ height = "h-64" }: { height?: string }) => (
+  <div className={`${height} bg-muted/30 animate-pulse rounded-lg`} />
+);
 
 import logoWeedMadridWebp from "@/assets/logo-weed-madrid.webp";
 
@@ -256,13 +261,19 @@ const Index = () => {
         </section>
 
         {/* 3. LEGAL CONTEXT SECTION - PRD Required */}
-        <HomepageLegalSection />
+        <Suspense fallback={<SectionSkeleton height="h-96" />}>
+          <HomepageLegalSection />
+        </Suspense>
 
         {/* 4. AVOID SCAMS SECTION - Trust Signal */}
-        <AvoidScamsSection />
+        <Suspense fallback={<SectionSkeleton height="h-80" />}>
+          <AvoidScamsSection />
+        </Suspense>
 
         {/* 5. HOW IT WORKS - Single 4-Step Flow (No Duplicates) */}
-        <HowItWorksSection />
+        <Suspense fallback={<SectionSkeleton height="h-96" />}>
+          <HowItWorksSection />
+        </Suspense>
 
         {/* 6. FEATURED CLUBS */}
         {featuredClubs.length > 0 && (
@@ -363,13 +374,19 @@ const Index = () => {
         )}
 
         {/* 7. TYPES OF CANNABIS CLUBS */}
-        <ClubTypesSection />
+        <Suspense fallback={<SectionSkeleton height="h-80" />}>
+          <ClubTypesSection />
+        </Suspense>
 
         {/* 8. SAFETY TIPS */}
-        <SafetyTipsSection />
+        <Suspense fallback={<SectionSkeleton height="h-64" />}>
+          <SafetyTipsSection />
+        </Suspense>
 
         {/* 9. FAQ SECTION - SEO-Driven */}
-        <HomepageFAQ />
+        <Suspense fallback={<SectionSkeleton height="h-96" />}>
+          <HomepageFAQ />
+        </Suspense>
 
         {/* 10. GUIDES / INTERNAL LINKS */}
         <section className="py-12 md:py-16 bg-background">
