@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Input } from "@/components/ui/input";
@@ -72,11 +72,7 @@ const Clubs = () => {
   // Check if URL has filter parameters - if so, this is a noindex page
   const hasFilterParams = searchParams.has("district") || searchParams.has("tourist") || searchParams.has("q");
 
-  useEffect(() => {
-    fetchClubs();
-  }, [districtFilter, touristFilter]);
-
-  const fetchClubs = async () => {
+  const fetchClubs = useCallback(async () => {
     setLoading(true);
     
     let query = supabase
@@ -118,32 +114,49 @@ const Clubs = () => {
     }
     
     setLoading(false);
-  };
+  }, [districtFilter, touristFilter, searchQuery]);
 
-  const handleSearch = (e: React.FormEvent) => {
+  useEffect(() => {
+    fetchClubs();
+  }, [fetchClubs]);
+
+  const handleSearch = useCallback((e: React.FormEvent) => {
     e.preventDefault();
     fetchClubs();
-  };
+  }, [fetchClubs]);
 
-  const clearFilters = () => {
+  const clearFilters = useCallback(() => {
     setSearchQuery("");
     setDistrictFilter("all");
     setTouristFilter("all");
-  };
+  }, []);
 
   // Separate featured (Editor's Picks) from regular clubs
-  const featuredClubs = clubs.filter(club => club.is_featured || EDITORIAL_PICKS[club.slug]);
-  const regularClubs = clubs.filter(club => !club.is_featured && !EDITORIAL_PICKS[club.slug]);
+  const featuredClubs = useMemo(
+    () => clubs.filter(club => club.is_featured || EDITORIAL_PICKS[club.slug]),
+    [clubs]
+  );
+  
+  const regularClubs = useMemo(
+    () => clubs.filter(club => !club.is_featured && !EDITORIAL_PICKS[club.slug]),
+    [clubs]
+  );
 
-  const hreflangLinks = generateHreflangLinks(BASE_URL, "/clubs");
+  const hreflangLinks = useMemo(
+    () => generateHreflangLinks(BASE_URL, "/clubs"),
+    []
+  );
 
-  const breadcrumbSchema = generateBreadcrumbSchema([
-    { name: "Home", url: BASE_URL },
-    { name: "Clubs", url: `${BASE_URL}/clubs` }
-  ]);
+  const breadcrumbSchema = useMemo(
+    () => generateBreadcrumbSchema([
+      { name: "Home", url: BASE_URL },
+      { name: "Clubs", url: `${BASE_URL}/clubs` }
+    ]),
+    []
+  );
 
-  // ItemList schema for the clubs directory
-  const itemListSchema = {
+  // ItemList schema for the clubs directory - memoized
+  const itemListSchema = useMemo(() => ({
     "@context": "https://schema.org",
     "@type": "ItemList",
     "name": "Cannabis Clubs in Madrid",
@@ -177,10 +190,10 @@ const Clubs = () => {
         ...(club.is_tourist_friendly ? { "touristType": "International Tourists" } : {})
       }
     }))
-  };
+  }), [clubs]);
 
-  // FAQPage schema for editorial sections
-  const faqSchema = {
+  // FAQPage schema for editorial sections - memoized
+  const faqSchema = useMemo(() => ({
     "@context": "https://schema.org",
     "@type": "FAQPage",
     "mainEntity": [
@@ -215,17 +228,17 @@ const Clubs = () => {
         }
       }
     ]
-  };
+  }), [language]);
 
-  // Speakable schema
-  const speakableSchema = {
+  // Speakable schema - memoized (static, no deps)
+  const speakableSchema = useMemo(() => ({
     "@context": "https://schema.org",
     "@type": "WebPage",
     "speakable": {
       "@type": "SpeakableSpecification",
       "cssSelector": ["[data-speakable='true']", ".passage-answer", "h1", "h2"]
     }
-  };
+  }), []);
 
   // SEO: noindex for parameter pages, canonical always to clean URL
   const seoTitle = language === "es" 
