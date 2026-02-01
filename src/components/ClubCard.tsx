@@ -1,3 +1,4 @@
+import { memo, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -7,6 +8,7 @@ import { buildLanguageAwarePath } from "@/lib/languageUtils";
 import { isOpenNow, Timetable } from "@/lib/timetableUtils";
 import { ImageWithSkeleton } from "@/components/ui/image-with-skeleton";
 import { getClubCardImageConfig } from "@/lib/imageUtils";
+
 interface ClubCardProps {
   slug: string;
   name: string;
@@ -22,7 +24,7 @@ interface ClubCardProps {
   editorsPickReason?: string;
 }
 
-const ClubCard = ({
+const ClubCard = memo(({
   slug,
   name,
   summary,
@@ -37,7 +39,20 @@ const ClubCard = ({
   editorsPickReason,
 }: ClubCardProps) => {
   const { language, t } = useLanguage();
-  const clubIsOpen = timetable ? isOpenNow(timetable) : false;
+  
+  // Memoize expensive calculation
+  const clubIsOpen = useMemo(
+    () => timetable ? isOpenNow(timetable) : false,
+    [timetable]
+  );
+
+  // Memoize image config to avoid recalculation
+  const imageConfig = useMemo(() => {
+    if (!main_image_url) return null;
+    const webpUrl = main_image_url.replace(/\.(jpg|jpeg|png)$/i, '.webp');
+    const { srcSet, sizes } = getClubCardImageConfig(webpUrl);
+    return { webpUrl, srcSet, sizes };
+  }, [main_image_url]);
   
   return (
     <Link to={buildLanguageAwarePath(`/club/${slug}`, language)}>
@@ -49,22 +64,18 @@ const ClubCard = ({
             <span className="text-sm font-semibold">{t("clubcard.editorspick")}</span>
           </div>
         )}
-        {main_image_url && (() => {
-          const webpUrl = main_image_url.replace(/\.(jpg|jpeg|png)$/i, '.webp');
-          const { srcSet, sizes } = getClubCardImageConfig(webpUrl);
-          return (
-            <ImageWithSkeleton
-              src={main_image_url}
-              webpSrc={webpUrl}
-              srcSet={srcSet}
-              sizes={sizes}
-              alt={`${name} - Cannabis social club in ${district}, Madrid. ${is_tourist_friendly ? 'Tourist friendly' : ''} ${is_verified ? 'verified' : ''} cannabis club`}
-              aspectRatio="video"
-              className="transition-transform hover:scale-105 duration-300"
-              loading="lazy"
-            />
-          );
-        })()}
+        {imageConfig && (
+          <ImageWithSkeleton
+            src={main_image_url!}
+            webpSrc={imageConfig.webpUrl}
+            srcSet={imageConfig.srcSet}
+            sizes={imageConfig.sizes}
+            alt={`${name} - Cannabis social club in ${district}, Madrid. ${is_tourist_friendly ? 'Tourist friendly' : ''} ${is_verified ? 'verified' : ''} cannabis club`}
+            aspectRatio="video"
+            className="transition-transform hover:scale-105 duration-300"
+            loading="lazy"
+          />
+        )}
         <CardContent className="p-6">
           <div className="flex items-start justify-between mb-3 gap-2">
             <h3 className="text-xl font-semibold text-foreground line-clamp-1">
@@ -127,6 +138,8 @@ const ClubCard = ({
       </Card>
     </Link>
   );
-};
+});
+
+ClubCard.displayName = "ClubCard";
 
 export default ClubCard;
