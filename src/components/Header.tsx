@@ -10,6 +10,25 @@ import { buildLanguageAwarePath } from "@/lib/languageUtils";
 import logoWeedMadridWebp from "@/assets/logo-weed-madrid.webp";
 import logoWeedMadrid from "@/assets/logo-weed-madrid.png";
 
+// Preload functions for route chunks
+const preloadRoutes: Record<string, () => void> = {
+  "/clubs": () => import("@/pages/Clubs"),
+  "/cannabis-club-madrid": () => import("@/pages/CannabisClubMadrid"),
+  "/club-cannabis-madrid": () => import("@/pages/ClubCannabisMadrid"),
+  "/guides": () => import("@/pages/Guides"),
+  "/knowledge": () => import("@/pages/Knowledge"),
+  "/faq": () => import("@/pages/FAQ"),
+  "/shop": () => import("@/pages/Shop"),
+  "/legal": () => import("@/pages/Legal"),
+  "/contact": () => import("@/pages/Contact"),
+};
+
+// Extract base path without language prefix for preloading
+const getBasePath = (href: string): string => {
+  // Remove language prefix like /es, /de, /fr
+  return href.replace(/^\/(es|de|fr)/, "") || "/";
+};
+
 const Header = () => {
   const { language, t } = useLanguage();
   
@@ -28,6 +47,15 @@ const Header = () => {
     { name: "Legal", href: buildLanguageAwarePath("/legal", language) },
     { name: t("nav.contact"), href: buildLanguageAwarePath("/contact", language) },
   ];
+
+  // Preload route on hover
+  const handleMouseEnter = (href: string) => {
+    const basePath = getBasePath(href);
+    const preload = preloadRoutes[basePath];
+    if (preload) {
+      preload();
+    }
+  };
 
   return (
     <header translate="no" className="sticky top-0 z-50 w-full border-b border-border/40 header-blur">
@@ -53,7 +81,11 @@ const Header = () => {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-6">
             {navigation.slice(1).map((item) => (
-              <NavLink key={item.name} to={item.href}>
+              <NavLink 
+                key={item.name} 
+                to={item.href}
+                onMouseEnter={() => handleMouseEnter(item.href)}
+              >
                 {item.name}
               </NavLink>
             ))}
@@ -78,6 +110,7 @@ const Header = () => {
                       key={item.name}
                       to={item.href}
                       className="text-lg font-medium text-foreground/80 transition-colors hover:text-foreground"
+                      onMouseEnter={() => handleMouseEnter(item.href)}
                     >
                       {item.name}
                     </Link>
