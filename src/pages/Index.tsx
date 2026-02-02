@@ -9,8 +9,9 @@ import { Search, Shield, Clock, CheckCircle, Users, Star, Zap } from "lucide-rea
 // Lazy load Header and Footer for better LCP - static shells exist in index.html
 const Header = lazy(() => import("@/components/Header"));
 const Footer = lazy(() => import("@/components/Footer"));
-import QuickClubFinder from "@/components/QuickClubFinder";
-import QuickAnswerBox from "@/components/QuickAnswerBox";
+// Lazy load below-hero components - not part of LCP
+const QuickClubFinder = lazy(() => import("@/components/QuickClubFinder"));
+const QuickAnswerBox = lazy(() => import("@/components/QuickAnswerBox"));
 
 // Lazy load below-the-fold sections for better LCP
 const HomepageLegalSection = lazy(() => import("@/components/home/HomepageLegalSection"));
@@ -222,7 +223,9 @@ const Index = () => {
                     </Button>
                   </DialogTrigger>
                   <DialogContent className="sm:max-w-md">
-                    <QuickClubFinder onClose={() => setFinderDialogOpen(false)} />
+                    <Suspense fallback={<div className="h-48 bg-muted/30 animate-pulse rounded-lg" />}>
+                      <QuickClubFinder onClose={() => setFinderDialogOpen(false)} />
+                    </Suspense>
                   </DialogContent>
                 </Dialog>
                 <Button 
@@ -260,11 +263,15 @@ const Index = () => {
         <section className="py-8 md:py-12 bg-background">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
-              <QuickAnswerBox
-                title={t("home.quickanswer.title")}
-                answer={t("home.quickanswer.text")}
-                variant="featured-snippet"
-              />
+              <LazyHydrate whenVisible>
+                <Suspense fallback={<div className="h-24 bg-muted/30 animate-pulse rounded-lg" />}>
+                  <QuickAnswerBox
+                    title={t("home.quickanswer.title")}
+                    answer={t("home.quickanswer.text")}
+                    variant="featured-snippet"
+                  />
+                </Suspense>
+              </LazyHydrate>
             </div>
           </div>
         </section>
