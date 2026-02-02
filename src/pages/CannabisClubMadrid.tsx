@@ -62,9 +62,9 @@ const CannabisClubMadrid = () => {
   
   const content = {
     en: {
-      title: "Cannabis Club Madrid: Complete 2026 Guide",
-      subtitle: "Everything you need to know about private cannabis social clubs in Madrid. Discover top-rated clubs, membership requirements, legal information, and insider tips for tourists and residents.",
-      quickAnswer: "Cannabis clubs (asociaciones cannábicas) in Madrid are private, members-only associations where adults can consume cannabis in a tolerated, private environment. Tourists can join with a valid invitation from an existing member. The process takes 24-48 hours.",
+      title: "Cannabis Club Madrid | Social Club Guide 2026",
+      subtitle: "Complete guide to cannabis social clubs in Madrid - how to join, requirements & verified clubs",
+      quickAnswer: "Cannabis social clubs in Madrid (also known as 'asociaciones cannábicas' or weed social clubs) are private, members-only associations where adults can legally consume cannabis. Tourists can join these social clubs with a valid invitation from an existing member. The membership process takes 24-48 hours.",
       whatIsTitle: "What is a Cannabis Club in Madrid?",
       whatIsText: "A cannabis club in Madrid is a private, non-profit association where members collectively cultivate and share cannabis for personal use. These clubs operate in a legal grey area under Spanish law, which permits private consumption but prohibits public sale. Members must be 21+ and invited by an existing member.",
       howToJoinTitle: "How to Join a Cannabis Club",
@@ -92,9 +92,9 @@ const CannabisClubMadrid = () => {
       ]
     },
     es: {
-      title: "Club de Cannabis Madrid: Guía Completa 2026",
-      subtitle: "Todo lo que necesitas saber sobre las asociaciones cannábicas privadas en Madrid. Descubre los mejores clubes, requisitos de membresía, información legal y consejos para turistas y residentes.",
-      quickAnswer: "Las asociaciones cannábicas en Madrid son asociaciones privadas solo para miembros donde los adultos pueden consumir cannabis en un ambiente privado y tolerado. Los turistas pueden unirse con una invitación válida de un miembro existente. El proceso tarda 24-48 horas.",
+      title: "Club de Cannabis Madrid | Guía Club Social 2026",
+      subtitle: "Guía completa de clubs sociales de cannabis en Madrid - cómo unirse, requisitos y clubs verificados",
+      quickAnswer: "Los clubs sociales de cannabis en Madrid (también conocidos como 'asociaciones cannábicas') son asociaciones privadas solo para miembros donde los adultos pueden consumir cannabis legalmente. Los turistas pueden unirse a estos clubs sociales con una invitación válida de un miembro existente. El proceso de membresía tarda 24-48 horas.",
       whatIsTitle: "¿Qué es un Club de Cannabis en Madrid?",
       whatIsText: "Un club de cannabis en Madrid es una asociación privada sin ánimo de lucro donde los miembros cultivan y comparten colectivamente cannabis para uso personal. Estos clubes operan en una zona gris legal bajo la ley española, que permite el consumo privado pero prohíbe la venta pública. Los miembros deben ser mayores de 21 años e invitados por un miembro existente.",
       howToJoinTitle: "Cómo Unirse a un Club de Cannabis",
@@ -175,14 +175,10 @@ const CannabisClubMadrid = () => {
         title={`${t.title} | Weed Madrid`}
         description={t.subtitle}
         canonical={`${BASE_URL}${canonicalPath}`}
-        keywords="cannabis club madrid, weed club madrid, asociacion cannabica madrid, cannabis social club spain, private cannabis association madrid, how to join cannabis club madrid"
+        keywords="cannabis club madrid, social club madrid, weed club madrid, cannabis social club madrid, asociacion cannabica madrid, social club weed madrid, private cannabis association madrid, how to join cannabis club madrid, madrid weed social club"
         hreflangLinks={hreflangLinks}
         structuredData={structuredData}
         speakableSelectors={["h1", "[data-speakable]", "[data-answer]"]}
-        ogImage="/images/hero-custom-bg.webp"
-        geoTxtPath="/geo/cannabis-club-madrid.txt"
-        aiPriority="high"
-        contentSummary="Complete guide to cannabis social clubs in Madrid. Learn membership requirements, legal status, top-rated clubs, and how to join safely as a tourist or resident."
       />
       <Header />
       
