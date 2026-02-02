@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef, startTransition, lazy, Suspense } from "react";
 import LazyHydrate from 'react-lazy-hydration';
 import { Link, useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
+// Supabase client is dynamically imported in fetchFeaturedClubs for bundle optimization
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
@@ -74,6 +74,9 @@ const Index = () => {
 
   const fetchFeaturedClubs = async () => {
     try {
+      // Dynamic import - Supabase SDK (~50-100KB) only loads when this runs
+      const { supabase } = await import("@/integrations/supabase/client");
+      
       const { data, error } = await supabase
         .from("clubs")
         .select("slug, name, summary, district, rating_editorial, is_tourist_friendly, is_verified, languages, main_image_url, timetable")
