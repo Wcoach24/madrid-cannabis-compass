@@ -1,18 +1,18 @@
 
 
-# Lazy Load Header & Footer Plan - Further LCP Optimization
+# Defer Supabase Client Loading Plan - Reduce Initial Bundle
 
 ## Overview
-Convert Header and Footer to lazy-loaded components with progressive hydration to reduce main-thread blocking during initial hydration.
+Convert the static Supabase client import to a dynamic import so the ~50-100KB Supabase SDK is not included in the initial JavaScript bundle. This defers the SDK loading until user interaction or when the browser has idle time.
 
 ---
 
 ## Current State
 
-| Component | Import Type | Render Wrapper | Has Default Export |
-|-----------|-------------|----------------|-------------------|
-| Header | Static (line 9) | None (line 168) | ✓ (line 95) |
-| Footer | Static (line 10) | `<LazyHydrate whenIdle>` (line 492-494) | ✓ (line 172) |
+Based on the codebase, `src/pages/Index.tsx` has:
+- Static import of Supabase client at the top of the file
+- Usage in a `useEffect` to fetch featured clubs data
+- The fetch is already wrapped in `startTransition` and deferred via `requestIdleCallback`
 
 ---
 
@@ -20,61 +20,79 @@ Convert Header and Footer to lazy-loaded components with progressive hydration t
 
 ### File: `src/pages/Index.tsx`
 
-**Change 1: Convert Header/Footer to lazy imports**
+**Change 1: Remove static Supabase import**
 
-**Lines 9-10**
+Find and remove this import (should be around line 3-4):
 
-Current:
 ```javascript
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+// REMOVE THIS LINE:
+import { supabase } from "@/integrations/supabase/client";
 ```
 
-Change to:
+**Change 2: Convert to dynamic import inside useEffect**
+
+The current `useEffect` that fetches featured clubs needs to dynamically import Supabase instead of using the static import.
+
+Find the section that looks like this:
+
 ```javascript
-// Lazy load Header and Footer for better LCP - static shells exist in index.html
-const Header = lazy(() => import("@/components/Header"));
-const Footer = lazy(() => import("@/components/Footer"));
+useEffect(() => {
+  // ... logic that uses supabase
+  const fetchLatest = async () => {
+    const { supabase } = await import("@/integrations/supabase/client"); // if already dynamic, keep it
+    // OR if it references static import:
+    const { data } = await supabase
+      .from("clubs")
+      .select("...")
+      // ...
+  };
+  // ...
+}, []);
 ```
 
-**Change 2: Wrap Header with LazyHydrate whenIdle and Suspense**
+If the `useEffect` body references the static `supabase` import, update it to use dynamic import:
 
-**Line 168**
+```javascript
+useEffect(() => {
+  const fetchLatest = async () => {
+    // Dynamic import - Supabase only loads when this function runs
+    const { supabase } = await import("@/integrations/supabase/client");
 
-Current:
-```jsx
-<Header />
+    const { data } = await supabase
+      .from("clubs")
+      .select("id, name, slug, district, cover_image, is_featured, is_verified, rating_editorial, is_open_now, hours_today")
+      .eq("status", "active")
+      .eq("is_featured", true)
+      .order("rating_editorial", { ascending: false })
+      .limit(6);
+    
+    // ... rest of the logic remains the same
+  };
+
+  // Existing deferred execution pattern
+  if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
+    window.requestIdleCallback(() => {
+      startTransition(() => {
+        fetchLatest();
+      });
+    });
+  } else {
+    // Fallback for Safari
+    window.addEventListener('load', () => {
+      startTransition(() => {
+        fetchLatest();
+      });
+    }, { once: true });
+  }
+}, []);
 ```
 
-Change to:
-```jsx
-<LazyHydrate whenIdle>
-  <Suspense fallback={null}>
-    <Header />
-  </Suspense>
-</LazyHydrate>
-```
+**Change 3: Verify startTransition is imported**
 
-Using `fallback={null}` because `index.html` already contains a static header shell for instant paint.
+Ensure the React import includes `startTransition`:
 
-**Change 3: Add Suspense around Footer inside LazyHydrate**
-
-**Lines 492-494**
-
-Current:
-```jsx
-<LazyHydrate whenIdle>
-  <Footer />
-</LazyHydrate>
-```
-
-Change to:
-```jsx
-<LazyHydrate whenIdle>
-  <Suspense fallback={null}>
-    <Footer />
-  </Suspense>
-</LazyHydrate>
+```javascript
+import { useEffect, useState, useRef, startTransition, lazy, Suspense } from "react";
 ```
 
 ---
@@ -83,9 +101,9 @@ Change to:
 
 | Location | Change |
 |----------|--------|
-| Lines 9-10 | Convert static imports to `lazy()` imports |
-| Line 168 | Wrap Header with `<LazyHydrate whenIdle><Suspense fallback={null}>` |
-| Lines 492-494 | Add `<Suspense fallback={null}>` inside existing LazyHydrate |
+| Top of file | Remove static `import { supabase }` |
+| useEffect body | Add `const { supabase } = await import(...)` inside async function |
+| React import | Verify `startTransition` is included (already present) |
 
 ---
 
@@ -93,17 +111,18 @@ Change to:
 
 | Metric | Before | After |
 |--------|--------|-------|
-| Header hydration | Immediate (blocking) | When browser idle |
-| Footer hydration | When idle (no Suspense) | When idle (with Suspense) |
-| Initial bundle | Includes Header + Footer JS | Deferred loading |
-| LCP blocking | Header blocks critical path | Header deferred |
+| Supabase in initial bundle | ✓ (~50-100KB) | ✗ (deferred) |
+| Initial JS parse time | Includes Supabase SDK | Excludes Supabase SDK |
+| Data fetch timing | After idle callback | Same (after idle callback) |
+| LCP blocking | Supabase parsed before LCP | Supabase parsed after LCP |
 
 ---
 
 ## Technical Notes
 
-- `lazy()` requires `Suspense` wrapper for React to handle the async loading
-- `fallback={null}` is safe because the static HTML shell in `index.html` provides immediate visual content
-- `whenIdle` ensures both components hydrate when the browser has spare cycles, after LCP is stable
-- The Header and Footer already have `export default`, so they're compatible with `lazy()`
+- The dynamic `import()` returns a Promise that resolves to the module
+- We destructure `{ supabase }` from the imported module since it's a named export
+- The existing `requestIdleCallback` + `startTransition` pattern already defers execution
+- This change ensures the SDK code itself is also deferred, not just the execution
+- The featured clubs data is seeded from `src/data/featuredClubs.ts`, so the UI renders immediately with seed data while Supabase loads in the background
 
