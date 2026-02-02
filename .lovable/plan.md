@@ -1,18 +1,20 @@
 
 
-# Defer Supabase Client Loading Plan - Reduce Initial Bundle
+# Lazy Load QuickClubFinder & QuickAnswerBox Plan
 
 ## Overview
-Convert the static Supabase client import to a dynamic import so the ~50-100KB Supabase SDK is not included in the initial JavaScript bundle. This defers the SDK loading until user interaction or when the browser has idle time.
+Convert `QuickClubFinder` and `QuickAnswerBox` from static imports to lazy imports with progressive hydration. These components are below the hero title and are not part of the LCP critical path.
 
 ---
 
 ## Current State
 
-Based on the codebase, `src/pages/Index.tsx` has:
-- Static import of Supabase client at the top of the file
-- Usage in a `useEffect` to fetch featured clubs data
-- The fetch is already wrapped in `startTransition` and deferred via `requestIdleCallback`
+| Component | Import Location | Render Location | Export Type |
+|-----------|----------------|-----------------|-------------|
+| QuickClubFinder | Line 12 (static) | Line 225 (inside Dialog) | `export default function` ✓ |
+| QuickAnswerBox | Line 13 (static) | Lines 263-267 | `export default` ✓ |
+
+Both components have compatible `export default` declarations and can be lazy loaded.
 
 ---
 
@@ -20,79 +22,83 @@ Based on the codebase, `src/pages/Index.tsx` has:
 
 ### File: `src/pages/Index.tsx`
 
-**Change 1: Remove static Supabase import**
+**Change 1: Convert static imports to lazy imports**
 
-Find and remove this import (should be around line 3-4):
+**Lines 12-13**
 
+Current:
 ```javascript
-// REMOVE THIS LINE:
-import { supabase } from "@/integrations/supabase/client";
+import QuickClubFinder from "@/components/QuickClubFinder";
+import QuickAnswerBox from "@/components/QuickAnswerBox";
 ```
 
-**Change 2: Convert to dynamic import inside useEffect**
-
-The current `useEffect` that fetches featured clubs needs to dynamically import Supabase instead of using the static import.
-
-Find the section that looks like this:
-
+Change to:
 ```javascript
-useEffect(() => {
-  // ... logic that uses supabase
-  const fetchLatest = async () => {
-    const { supabase } = await import("@/integrations/supabase/client"); // if already dynamic, keep it
-    // OR if it references static import:
-    const { data } = await supabase
-      .from("clubs")
-      .select("...")
-      // ...
-  };
-  // ...
-}, []);
+// Lazy load below-hero components - not part of LCP
+const QuickClubFinder = lazy(() => import("@/components/QuickClubFinder"));
+const QuickAnswerBox = lazy(() => import("@/components/QuickAnswerBox"));
 ```
 
-If the `useEffect` body references the static `supabase` import, update it to use dynamic import:
+**Change 2: Wrap QuickClubFinder with Suspense (inside Dialog)**
 
-```javascript
-useEffect(() => {
-  const fetchLatest = async () => {
-    // Dynamic import - Supabase only loads when this function runs
-    const { supabase } = await import("@/integrations/supabase/client");
+**Line 225** (inside `<DialogContent>`)
 
-    const { data } = await supabase
-      .from("clubs")
-      .select("id, name, slug, district, cover_image, is_featured, is_verified, rating_editorial, is_open_now, hours_today")
-      .eq("status", "active")
-      .eq("is_featured", true)
-      .order("rating_editorial", { ascending: false })
-      .limit(6);
-    
-    // ... rest of the logic remains the same
-  };
-
-  // Existing deferred execution pattern
-  if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
-    window.requestIdleCallback(() => {
-      startTransition(() => {
-        fetchLatest();
-      });
-    });
-  } else {
-    // Fallback for Safari
-    window.addEventListener('load', () => {
-      startTransition(() => {
-        fetchLatest();
-      });
-    }, { once: true });
-  }
-}, []);
+Current:
+```jsx
+<DialogContent className="sm:max-w-md">
+  <QuickClubFinder onClose={() => setFinderDialogOpen(false)} />
+</DialogContent>
 ```
 
-**Change 3: Verify startTransition is imported**
+Change to:
+```jsx
+<DialogContent className="sm:max-w-md">
+  <Suspense fallback={<div className="h-48 bg-muted/30 animate-pulse rounded-lg" />}>
+    <QuickClubFinder onClose={() => setFinderDialogOpen(false)} />
+  </Suspense>
+</DialogContent>
+```
 
-Ensure the React import includes `startTransition`:
+Note: `QuickClubFinder` is inside a Dialog which only opens on user interaction, so we don't need `LazyHydrate whenVisible` - it only loads when the dialog opens.
 
-```javascript
-import { useEffect, useState, useRef, startTransition, lazy, Suspense } from "react";
+**Change 3: Wrap QuickAnswerBox with LazyHydrate whenVisible and Suspense**
+
+**Lines 259-270** (Quick Answer Box section)
+
+Current:
+```jsx
+{/* 2. QUICK ANSWER BOX - Featured Snippet Target (PRD-Compliant) */}
+<section className="py-8 md:py-12 bg-background">
+  <div className="container mx-auto px-4">
+    <div className="max-w-4xl mx-auto">
+      <QuickAnswerBox
+        title={t("home.quickanswer.title")}
+        answer={t("home.quickanswer.text")}
+        variant="featured-snippet"
+      />
+    </div>
+  </div>
+</section>
+```
+
+Change to:
+```jsx
+{/* 2. QUICK ANSWER BOX - Featured Snippet Target (PRD-Compliant) */}
+<section className="py-8 md:py-12 bg-background">
+  <div className="container mx-auto px-4">
+    <div className="max-w-4xl mx-auto">
+      <LazyHydrate whenVisible>
+        <Suspense fallback={<div className="h-24 bg-muted/30 animate-pulse rounded-lg" />}>
+          <QuickAnswerBox
+            title={t("home.quickanswer.title")}
+            answer={t("home.quickanswer.text")}
+            variant="featured-snippet"
+          />
+        </Suspense>
+      </LazyHydrate>
+    </div>
+  </div>
+</section>
 ```
 
 ---
@@ -101,9 +107,9 @@ import { useEffect, useState, useRef, startTransition, lazy, Suspense } from "re
 
 | Location | Change |
 |----------|--------|
-| Top of file | Remove static `import { supabase }` |
-| useEffect body | Add `const { supabase } = await import(...)` inside async function |
-| React import | Verify `startTransition` is included (already present) |
+| Lines 12-13 | Convert static imports to `lazy()` imports |
+| Line 225 | Wrap `QuickClubFinder` in `<Suspense>` inside Dialog |
+| Lines 263-267 | Wrap `QuickAnswerBox` in `<LazyHydrate whenVisible><Suspense>` |
 
 ---
 
@@ -111,18 +117,19 @@ import { useEffect, useState, useRef, startTransition, lazy, Suspense } from "re
 
 | Metric | Before | After |
 |--------|--------|-------|
-| Supabase in initial bundle | ✓ (~50-100KB) | ✗ (deferred) |
-| Initial JS parse time | Includes Supabase SDK | Excludes Supabase SDK |
-| Data fetch timing | After idle callback | Same (after idle callback) |
-| LCP blocking | Supabase parsed before LCP | Supabase parsed after LCP |
+| QuickClubFinder in initial bundle | ✓ (includes Supabase client import) | ✗ (loads on dialog open) |
+| QuickAnswerBox in initial bundle | ✓ | ✗ (loads when visible) |
+| QuickClubFinder hydration | Immediate | On dialog open |
+| QuickAnswerBox hydration | Immediate | When enters viewport |
+| Additional bundle reduction | - | ~15-25KB (includes Select components, Supabase usage) |
 
 ---
 
 ## Technical Notes
 
-- The dynamic `import()` returns a Promise that resolves to the module
-- We destructure `{ supabase }` from the imported module since it's a named export
-- The existing `requestIdleCallback` + `startTransition` pattern already defers execution
-- This change ensures the SDK code itself is also deferred, not just the execution
-- The featured clubs data is seeded from `src/data/featuredClubs.ts`, so the UI renders immediately with seed data while Supabase loads in the background
+- `QuickClubFinder` imports `supabase` statically - by lazy loading this component, we also defer that import chain
+- The Dialog only opens on user click, so `QuickClubFinder` JS will only load when needed
+- `QuickAnswerBox` uses `whenVisible` because it's positioned below the hero and may not be in the initial viewport on mobile
+- Both components already have `export default`, so they're compatible with `lazy()`
+- The fallback skeletons use `animate-pulse` for a consistent loading experience
 
