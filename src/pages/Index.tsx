@@ -6,8 +6,9 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Search, Shield, Clock, CheckCircle, Users, Star, Zap } from "lucide-react";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+// Lazy load Header and Footer for better LCP - static shells exist in index.html
+const Header = lazy(() => import("@/components/Header"));
+const Footer = lazy(() => import("@/components/Footer"));
 import QuickClubFinder from "@/components/QuickClubFinder";
 import QuickAnswerBox from "@/components/QuickAnswerBox";
 
@@ -165,7 +166,11 @@ const Index = () => {
           ]
         }}
       />
-      <Header />
+      <LazyHydrate whenIdle>
+        <Suspense fallback={null}>
+          <Header />
+        </Suspense>
+      </LazyHydrate>
       
       <main className="flex-1">
         {/* 1. HERO SECTION - Intent Clarification */}
@@ -490,7 +495,9 @@ const Index = () => {
       </main>
 
       <LazyHydrate whenIdle>
-        <Footer />
+        <Suspense fallback={null}>
+          <Footer />
+        </Suspense>
       </LazyHydrate>
     </div>
   );
