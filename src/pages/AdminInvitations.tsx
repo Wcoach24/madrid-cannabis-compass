@@ -44,6 +44,7 @@ type InvitationRequest = {
   attended?: boolean;
   actual_attendee_count?: number;
   attendance_marked_at?: string;
+  auto_reminder_sent_at?: string;
 };
 
 type Metrics = {
@@ -344,6 +345,7 @@ const AdminInvitations = () => {
                   <TableHead>Code</TableHead>
                   <TableHead>Attended</TableHead>
                   <TableHead>Actual Count</TableHead>
+                  <TableHead>Auto Reminder</TableHead>
                   <TableHead>Actions</TableHead>
                 </TableRow>
               </TableHeader>
@@ -393,6 +395,15 @@ const AdminInvitations = () => {
                       {request.actual_attendee_count !== null && request.actual_attendee_count !== undefined
                         ? request.actual_attendee_count
                         : "-"}
+                    </TableCell>
+                    <TableCell>
+                      {request.auto_reminder_sent_at ? (
+                        <span className="text-xs text-muted-foreground">
+                          {new Date(request.auto_reminder_sent_at).toLocaleDateString()}
+                        </span>
+                      ) : (
+                        <span className="text-muted-foreground text-sm">-</span>
+                      )}
                     </TableCell>
                     <TableCell>
                       {(request.status === "sent" || request.status === "approved") && 

@@ -277,6 +277,7 @@ export type Database = {
           attendance_marked_at: string | null
           attendance_marked_by: string | null
           attended: boolean | null
+          auto_reminder_sent_at: string | null
           club_slug: string
           created_at: string | null
           email: string
@@ -305,6 +306,7 @@ export type Database = {
           attendance_marked_at?: string | null
           attendance_marked_by?: string | null
           attended?: boolean | null
+          auto_reminder_sent_at?: string | null
           club_slug: string
           created_at?: string | null
           email: string
@@ -333,6 +335,7 @@ export type Database = {
           attendance_marked_at?: string | null
           attendance_marked_by?: string | null
           attended?: boolean | null
+          auto_reminder_sent_at?: string | null
           club_slug?: string
           created_at?: string | null
           email?: string
