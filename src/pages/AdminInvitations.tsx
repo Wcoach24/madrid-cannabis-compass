@@ -27,6 +27,8 @@ import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2, Check, X, TrendingUp, Mail } from "lucide-react";
+import SortableHeader, { type SortDirection } from "@/components/admin/SortableHeader";
+import { handleSortToggle, sortRequests } from "@/lib/sortInvitations";
 
 type InvitationRequest = {
   id: number;
@@ -73,6 +75,14 @@ const AdminInvitations = () => {
   const [actualCount, setActualCount] = useState<number>(1);
   const [processingId, setProcessingId] = useState<number | null>(null);
   const [sendingReminderId, setSendingReminderId] = useState<number | null>(null);
+  const [sortColumn, setSortColumn] = useState<string | null>(null);
+  const [sortDirection, setSortDirection] = useState<SortDirection>(null);
+
+  const onSort = (columnKey: string) => {
+    const { column, direction } = handleSortToggle(columnKey, sortColumn, sortDirection);
+    setSortColumn(column);
+    setSortDirection(direction);
+  };
 
   useEffect(() => {
     if (!authLoading && !isAdmin) {
@@ -211,6 +221,8 @@ const AdminInvitations = () => {
     return req.status === filter;
   });
 
+  const sortedRequests = sortRequests(filteredRequests, sortColumn, sortDirection);
+
   if (authLoading || loading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -326,7 +338,7 @@ const AdminInvitations = () => {
           </TabsList>
         </Tabs>
 
-        {filteredRequests.length === 0 ? (
+        {sortedRequests.length === 0 ? (
           <div className="text-center py-12 text-muted-foreground">
             No requests found
           </div>
@@ -335,22 +347,22 @@ const AdminInvitations = () => {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>ID</TableHead>
-                  <TableHead>Club</TableHead>
-                  <TableHead>Email</TableHead>
-                  <TableHead>Phone</TableHead>
-                  <TableHead>Visitors</TableHead>
-                  <TableHead>Visit Date</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Code</TableHead>
-                  <TableHead>Attended</TableHead>
-                  <TableHead>Actual Count</TableHead>
-                  <TableHead>Auto Reminder</TableHead>
+                  <TableHead><SortableHeader label="ID" columnKey="id" activeColumn={sortColumn} direction={sortDirection} onSort={onSort} /></TableHead>
+                  <TableHead><SortableHeader label="Club" columnKey="club_slug" activeColumn={sortColumn} direction={sortDirection} onSort={onSort} /></TableHead>
+                  <TableHead><SortableHeader label="Email" columnKey="email" activeColumn={sortColumn} direction={sortDirection} onSort={onSort} /></TableHead>
+                  <TableHead><SortableHeader label="Phone" columnKey="phone" activeColumn={sortColumn} direction={sortDirection} onSort={onSort} /></TableHead>
+                  <TableHead><SortableHeader label="Visitors" columnKey="visitor_count" activeColumn={sortColumn} direction={sortDirection} onSort={onSort} /></TableHead>
+                  <TableHead><SortableHeader label="Visit Date" columnKey="visit_date" activeColumn={sortColumn} direction={sortDirection} onSort={onSort} /></TableHead>
+                  <TableHead><SortableHeader label="Status" columnKey="status" activeColumn={sortColumn} direction={sortDirection} onSort={onSort} /></TableHead>
+                  <TableHead><SortableHeader label="Code" columnKey="invitation_code" activeColumn={sortColumn} direction={sortDirection} onSort={onSort} /></TableHead>
+                  <TableHead><SortableHeader label="Attended" columnKey="attended" activeColumn={sortColumn} direction={sortDirection} onSort={onSort} /></TableHead>
+                  <TableHead><SortableHeader label="Actual Count" columnKey="actual_attendee_count" activeColumn={sortColumn} direction={sortDirection} onSort={onSort} /></TableHead>
+                  <TableHead><SortableHeader label="Auto Reminder" columnKey="auto_reminder_sent_at" activeColumn={sortColumn} direction={sortDirection} onSort={onSort} /></TableHead>
                   <TableHead>Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredRequests.map((request) => (
+                {sortedRequests.map((request) => (
                   <TableRow key={request.id}>
                     <TableCell className="font-mono text-sm">{request.id}</TableCell>
                     <TableCell>{request.club_slug}</TableCell>
