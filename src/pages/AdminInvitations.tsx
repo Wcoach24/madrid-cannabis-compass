@@ -197,6 +197,31 @@ const AdminInvitations = () => {
     setAttendanceDialogOpen(true);
   };
 
+  const handleMarkAttendanceDirectly = async (requestId: number, attended: boolean, count: number) => {
+    try {
+      setProcessingId(requestId);
+      const { error } = await supabase.functions.invoke("mark-attendance", {
+        body: { requestId, attended, actualAttendeeCount: count },
+      });
+      if (error) throw error;
+      toast({
+        title: attended ? "Corrected to attended" : "Corrected to no-show",
+        description: "Attendance status has been updated",
+      });
+      fetchRequests();
+      fetchMetrics();
+    } catch (error) {
+      console.error("Error correcting attendance:", error);
+      toast({
+        title: "Error",
+        description: "Failed to update attendance",
+        variant: "destructive",
+      });
+    } finally {
+      setProcessingId(null);
+    }
+  };
+
   const handleSendReminder = async (request: InvitationRequest) => {
     try {
       setSendingReminderId(request.id);
