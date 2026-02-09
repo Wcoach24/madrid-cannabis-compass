@@ -231,7 +231,7 @@ export function InvitationWizard({ clubName, clubSlug, language }: InvitationWiz
   if (submitted && formData.visitDate) {
     return (
       <SuccessCelebration
-        visitorName={formData.visitorNames[0]}
+        visitorName={`${formData.visitorFirstNames[0] || ""} ${formData.visitorLastNames[0] || ""}`.trim()}
         clubName={clubName}
         clubSlug={clubSlug}
         language={language}
