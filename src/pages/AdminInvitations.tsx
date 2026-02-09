@@ -87,6 +87,9 @@ const AdminInvitations = () => {
   const [sendingReminderId, setSendingReminderId] = useState<number | null>(null);
   const [sortColumn, setSortColumn] = useState<string | null>(null);
   const [sortDirection, setSortDirection] = useState<SortDirection>(null);
+  const [correctionDialogOpen, setCorrectionDialogOpen] = useState(false);
+  const [correctionRequest, setCorrectionRequest] = useState<InvitationRequest | null>(null);
+  const [correctionAction, setCorrectionAction] = useState<'attended' | 'no-show'>('no-show');
 
   const onSort = (columnKey: string) => {
     const { column, direction } = handleSortToggle(columnKey, sortColumn, sortDirection);
