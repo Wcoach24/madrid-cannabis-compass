@@ -7,22 +7,114 @@ import { useState } from "react";
 
 interface Step2VisitorInfoProps {
   visitorCount: number;
-  visitorNames: string[];
+  visitorFirstNames: string[];
+  visitorLastNames: string[];
   notes: string;
   onVisitorCountChange: (count: number) => void;
-  onVisitorNameChange: (index: number, name: string) => void;
+  onVisitorFirstNameChange: (index: number, name: string) => void;
+  onVisitorLastNameChange: (index: number, name: string) => void;
   onNotesChange: (notes: string) => void;
   onNext: () => void;
   onBack: () => void;
   language: string;
 }
 
+const translations: Record<string, Record<string, string>> = {
+  en: {
+    headline: "Great! Who will be joining?",
+    subheadline: "Tell us about your group",
+    visitorCountLabel: "Number of visitors",
+    firstName: "First name",
+    lastName: "Last name",
+    yourFirstName: "Your first name",
+    yourLastName: "Your last name",
+    guestName: "Guest",
+    addMessage: "+ Add a message (optional)",
+    notesPlaceholder: "Any dietary restrictions, special requests, or questions?",
+    notesLabel: "Additional notes",
+    nextButton: "Next",
+    backButton: "Back",
+    justMe: "Just me",
+    people: "people"
+  },
+  es: {
+    headline: "¡Genial! ¿Quién vendrá?",
+    subheadline: "Cuéntanos sobre tu grupo",
+    visitorCountLabel: "Número de visitantes",
+    firstName: "Nombre",
+    lastName: "Apellido",
+    yourFirstName: "Tu nombre",
+    yourLastName: "Tu apellido",
+    guestName: "Invitado",
+    addMessage: "+ Añadir mensaje (opcional)",
+    notesPlaceholder: "¿Alguna restricción alimentaria, solicitud especial o pregunta?",
+    notesLabel: "Notas adicionales",
+    nextButton: "Siguiente",
+    backButton: "Atrás",
+    justMe: "Solo yo",
+    people: "personas"
+  },
+  de: {
+    headline: "Großartig! Wer wird dabei sein?",
+    subheadline: "Erzählen Sie uns von Ihrer Gruppe",
+    visitorCountLabel: "Anzahl der Besucher",
+    firstName: "Vorname",
+    lastName: "Nachname",
+    yourFirstName: "Ihr Vorname",
+    yourLastName: "Ihr Nachname",
+    guestName: "Gast",
+    addMessage: "+ Nachricht hinzufügen (optional)",
+    notesPlaceholder: "Diätetische Einschränkungen, besondere Wünsche oder Fragen?",
+    notesLabel: "Zusätzliche Anmerkungen",
+    nextButton: "Weiter",
+    backButton: "Zurück",
+    justMe: "Nur ich",
+    people: "Personen"
+  },
+  fr: {
+    headline: "Super! Qui sera présent?",
+    subheadline: "Parlez-nous de votre groupe",
+    visitorCountLabel: "Nombre de visiteurs",
+    firstName: "Prénom",
+    lastName: "Nom",
+    yourFirstName: "Votre prénom",
+    yourLastName: "Votre nom",
+    guestName: "Invité",
+    addMessage: "+ Ajouter un message (optionnel)",
+    notesPlaceholder: "Restrictions alimentaires, demandes spéciales ou questions?",
+    notesLabel: "Notes supplémentaires",
+    nextButton: "Suivant",
+    backButton: "Retour",
+    justMe: "Juste moi",
+    people: "personnes"
+  },
+  it: {
+    headline: "Ottimo! Chi parteciperà?",
+    subheadline: "Parlaci del tuo gruppo",
+    visitorCountLabel: "Numero di visitatori",
+    firstName: "Nome",
+    lastName: "Cognome",
+    yourFirstName: "Il tuo nome",
+    yourLastName: "Il tuo cognome",
+    guestName: "Ospite",
+    addMessage: "+ Aggiungi un messaggio (opzionale)",
+    notesPlaceholder: "Restrizioni alimentari, richieste speciali o domande?",
+    notesLabel: "Note aggiuntive",
+    nextButton: "Avanti",
+    backButton: "Indietro",
+    justMe: "Solo io",
+    people: "persone"
+  }
+};
+
 export function Step2VisitorInfo({
   visitorCount,
-  visitorNames,
+  visitorFirstNames,
+  visitorLastNames,
   notes,
   onVisitorCountChange,
-  onVisitorNameChange,
+  onVisitorFirstNameChange,
+  onVisitorLastNameChange,
   onNotesChange,
   onNext,
   onBack,
@@ -30,88 +122,17 @@ export function Step2VisitorInfo({
 }: Step2VisitorInfoProps) {
   const [showNotes, setShowNotes] = useState(notes.length > 0);
 
-  const t = (key: string) => {
-    const translations: Record<string, Record<string, string>> = {
-      en: {
-        headline: "Great! Who will be joining?",
-        subheadline: "Tell us about your group",
-        visitorCountLabel: "Number of visitors",
-        yourName: "Your name",
-        guestName: "Guest",
-        addMessage: "+ Add a message (optional)",
-        notesPlaceholder: "Any dietary restrictions, special requests, or questions?",
-        notesLabel: "Additional notes",
-        nextButton: "Next",
-        backButton: "Back",
-        justMe: "Just me",
-        people: "people"
-      },
-      es: {
-        headline: "¡Genial! ¿Quién vendrá?",
-        subheadline: "Cuéntanos sobre tu grupo",
-        visitorCountLabel: "Número de visitantes",
-        yourName: "Tu nombre",
-        guestName: "Invitado",
-        addMessage: "+ Añadir mensaje (opcional)",
-        notesPlaceholder: "¿Alguna restricción alimentaria, solicitud especial o pregunta?",
-        notesLabel: "Notas adicionales",
-        nextButton: "Siguiente",
-        backButton: "Atrás",
-        justMe: "Solo yo",
-        people: "personas"
-      },
-      de: {
-        headline: "Großartig! Wer wird dabei sein?",
-        subheadline: "Erzählen Sie uns von Ihrer Gruppe",
-        visitorCountLabel: "Anzahl der Besucher",
-        yourName: "Ihr Name",
-        guestName: "Gast",
-        addMessage: "+ Nachricht hinzufügen (optional)",
-        notesPlaceholder: "Diätetische Einschränkungen, besondere Wünsche oder Fragen?",
-        notesLabel: "Zusätzliche Anmerkungen",
-        nextButton: "Weiter",
-        backButton: "Zurück",
-        justMe: "Nur ich",
-        people: "Personen"
-      },
-      fr: {
-        headline: "Super! Qui sera présent?",
-        subheadline: "Parlez-nous de votre groupe",
-        visitorCountLabel: "Nombre de visiteurs",
-        yourName: "Votre nom",
-        guestName: "Invité",
-        addMessage: "+ Ajouter un message (optionnel)",
-        notesPlaceholder: "Restrictions alimentaires, demandes spéciales ou questions?",
-        notesLabel: "Notes supplémentaires",
-        nextButton: "Suivant",
-        backButton: "Retour",
-        justMe: "Juste moi",
-        people: "personnes"
-      },
-      it: {
-        headline: "Ottimo! Chi parteciperà?",
-        subheadline: "Parlaci del tuo gruppo",
-        visitorCountLabel: "Numero di visitatori",
-        yourName: "Il tuo nome",
-        guestName: "Ospite",
-        addMessage: "+ Aggiungi un messaggio (opzionale)",
-        notesPlaceholder: "Restrizioni alimentari, richieste speciali o domande?",
-        notesLabel: "Note aggiuntive",
-        nextButton: "Avanti",
-        backButton: "Indietro",
-        justMe: "Solo io",
-        people: "persone"
-      }
-    };
-    return translations[language]?.[key] || translations.en[key];
-  };
+  const t = (key: string) => translations[language]?.[key] || translations.en[key];
 
   const handleCountChange = (delta: number) => {
     const newCount = Math.max(1, Math.min(10, visitorCount + delta));
     onVisitorCountChange(newCount);
   };
 
-  const isValid = visitorNames.slice(0, visitorCount).every(name => name.trim().length > 0);
+  const isValid = Array.from({ length: visitorCount }, (_, i) =>
+    (visitorFirstNames[i] || "").trim().length > 0 &&
+    (visitorLastNames[i] || "").trim().length > 0
+  ).every(Boolean);
 
   return (
     <div className="space-y-8 animate-fade-in">
@@ -158,17 +179,23 @@ export function Step2VisitorInfo({
         <div className="space-y-4">
           {Array.from({ length: visitorCount }, (_, i) => (
             <div key={i} className="space-y-2 animate-scale-in">
-              <Label htmlFor={`visitor-${i}`} className="text-sm font-medium">
-                {i === 0 ? t("yourName") : `${t("guestName")} ${i + 1}`}
+              <Label className="text-sm font-medium">
+                {i === 0 ? t("firstName") : `${t("guestName")} ${i + 1}`}
               </Label>
-              <div className="relative">
-                <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <div className="grid grid-cols-2 gap-3">
+                <div className="relative">
+                  <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    value={visitorFirstNames[i] || ""}
+                    onChange={(e) => onVisitorFirstNameChange(i, e.target.value)}
+                    placeholder={i === 0 ? t("yourFirstName") : t("firstName")}
+                    className="pl-10"
+                  />
+                </div>
                 <Input
-                  id={`visitor-${i}`}
-                  value={visitorNames[i] || ""}
-                  onChange={(e) => onVisitorNameChange(i, e.target.value)}
-                  placeholder={i === 0 ? t("yourName") : `${t("guestName")} ${i + 1}`}
-                  className="pl-10"
+                  value={visitorLastNames[i] || ""}
+                  onChange={(e) => onVisitorLastNameChange(i, e.target.value)}
+                  placeholder={i === 0 ? t("yourLastName") : t("lastName")}
                 />
               </div>
             </div>

@@ -14,6 +14,8 @@ interface InvitationRequestBody {
   phone: string;
   visitor_count: number;
   visitor_names: string[];
+  visitor_first_names: string[];
+  visitor_last_names: string[];
   legal_age_confirmed: boolean;
   legal_knowledge_confirmed: boolean;
   gdpr_consent: boolean;
@@ -157,6 +159,8 @@ serve(async (req) => {
         phone: requestBody.phone.trim(),
         visitor_count: requestBody.visitor_count,
         visitor_names: requestBody.visitor_names,
+        visitor_first_names: requestBody.visitor_first_names,
+        visitor_last_names: requestBody.visitor_last_names,
         legal_age_confirmed: requestBody.legal_age_confirmed,
         legal_knowledge_confirmed: requestBody.legal_knowledge_confirmed,
         gdpr_consent: requestBody.gdpr_consent,

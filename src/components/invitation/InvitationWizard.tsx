@@ -23,7 +23,8 @@ interface InvitationWizardProps {
 export interface FormData {
   visitDate: Date | undefined;
   visitorCount: number;
-  visitorNames: string[];
+  visitorFirstNames: string[];
+  visitorLastNames: string[];
   notes: string;
   email: string;
   phone: string;
@@ -51,7 +52,8 @@ export function InvitationWizard({ clubName, clubSlug, language }: InvitationWiz
   const [formData, setFormData] = useState<FormData>({
     visitDate: undefined,
     visitorCount: 1,
-    visitorNames: [""],
+    visitorFirstNames: [""],
+    visitorLastNames: [""],
     notes: "",
     email: "",
     phone: "",
@@ -107,17 +109,25 @@ export function InvitationWizard({ clubName, clubSlug, language }: InvitationWiz
   };
 
   const handleVisitorCountChange = (count: number) => {
-    const newNames = [...formData.visitorNames];
-    while (newNames.length < count) {
-      newNames.push("");
+    const newFirstNames = [...formData.visitorFirstNames];
+    const newLastNames = [...formData.visitorLastNames];
+    while (newFirstNames.length < count) {
+      newFirstNames.push("");
+      newLastNames.push("");
     }
-    updateFormData({ visitorCount: count, visitorNames: newNames });
+    updateFormData({ visitorCount: count, visitorFirstNames: newFirstNames, visitorLastNames: newLastNames });
   };
 
-  const handleVisitorNameChange = (index: number, name: string) => {
-    const newNames = [...formData.visitorNames];
+  const handleVisitorFirstNameChange = (index: number, name: string) => {
+    const newNames = [...formData.visitorFirstNames];
     newNames[index] = name;
-    updateFormData({ visitorNames: newNames });
+    updateFormData({ visitorFirstNames: newNames });
+  };
+
+  const handleVisitorLastNameChange = (index: number, name: string) => {
+    const newNames = [...formData.visitorLastNames];
+    newNames[index] = name;
+    updateFormData({ visitorLastNames: newNames });
   };
 
   const handleSubmit = async () => {
@@ -127,6 +137,10 @@ export function InvitationWizard({ clubName, clubSlug, language }: InvitationWiz
 
     try {
       // Validate with zod schema
+      const visitorFirstNames = formData.visitorFirstNames.slice(0, formData.visitorCount).map(n => n.trim());
+      const visitorLastNames = formData.visitorLastNames.slice(0, formData.visitorCount).map(n => n.trim());
+      const visitorNames = visitorFirstNames.map((fn, i) => `${fn} ${visitorLastNames[i]}`);
+
       const validatedData = invitationRequestSchema.parse({
         club_slug: clubSlug,
         language,
@@ -134,7 +148,9 @@ export function InvitationWizard({ clubName, clubSlug, language }: InvitationWiz
         email: formData.email.trim(),
         phone: formData.phone.trim(),
         visitor_count: formData.visitorCount,
-        visitor_names: formData.visitorNames.slice(0, formData.visitorCount).map(n => n.trim()),
+        visitor_names: visitorNames,
+        visitor_first_names: visitorFirstNames,
+        visitor_last_names: visitorLastNames,
         legal_age_confirmed: formData.legalAgeConfirmed,
         legal_knowledge_confirmed: formData.legalKnowledgeConfirmed,
         gdpr_consent: formData.gdprConsent,
@@ -215,7 +231,7 @@ export function InvitationWizard({ clubName, clubSlug, language }: InvitationWiz
   if (submitted && formData.visitDate) {
     return (
       <SuccessCelebration
-        visitorName={formData.visitorNames[0]}
+        visitorName={`${formData.visitorFirstNames[0] || ""} ${formData.visitorLastNames[0] || ""}`.trim()}
         clubName={clubName}
         clubSlug={clubSlug}
         language={language}
@@ -251,10 +267,12 @@ export function InvitationWizard({ clubName, clubSlug, language }: InvitationWiz
               {currentStep === 2 && (
                 <Step2VisitorInfo
                   visitorCount={formData.visitorCount}
-                  visitorNames={formData.visitorNames}
+                  visitorFirstNames={formData.visitorFirstNames}
+                  visitorLastNames={formData.visitorLastNames}
                   notes={formData.notes}
                   onVisitorCountChange={handleVisitorCountChange}
-                  onVisitorNameChange={handleVisitorNameChange}
+                  onVisitorFirstNameChange={handleVisitorFirstNameChange}
+                  onVisitorLastNameChange={handleVisitorLastNameChange}
                   onNotesChange={(notes) => updateFormData({ notes })}
                   onNext={handleNext}
                   onBack={handleBack}
@@ -292,7 +310,8 @@ export function InvitationWizard({ clubName, clubSlug, language }: InvitationWiz
                 <Step5Review
                   visitDate={formData.visitDate}
                   visitorCount={formData.visitorCount}
-                  visitorNames={formData.visitorNames}
+                  visitorFirstNames={formData.visitorFirstNames}
+                  visitorLastNames={formData.visitorLastNames}
                   email={formData.email}
                   phone={formData.phone}
                   notes={formData.notes}
