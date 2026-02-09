@@ -267,10 +267,12 @@ export function InvitationWizard({ clubName, clubSlug, language }: InvitationWiz
               {currentStep === 2 && (
                 <Step2VisitorInfo
                   visitorCount={formData.visitorCount}
-                  visitorNames={formData.visitorNames}
+                  visitorFirstNames={formData.visitorFirstNames}
+                  visitorLastNames={formData.visitorLastNames}
                   notes={formData.notes}
                   onVisitorCountChange={handleVisitorCountChange}
-                  onVisitorNameChange={handleVisitorNameChange}
+                  onVisitorFirstNameChange={handleVisitorFirstNameChange}
+                  onVisitorLastNameChange={handleVisitorLastNameChange}
                   onNotesChange={(notes) => updateFormData({ notes })}
                   onNext={handleNext}
                   onBack={handleBack}
