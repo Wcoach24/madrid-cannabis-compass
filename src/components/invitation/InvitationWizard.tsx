@@ -109,17 +109,25 @@ export function InvitationWizard({ clubName, clubSlug, language }: InvitationWiz
   };
 
   const handleVisitorCountChange = (count: number) => {
-    const newNames = [...formData.visitorNames];
-    while (newNames.length < count) {
-      newNames.push("");
+    const newFirstNames = [...formData.visitorFirstNames];
+    const newLastNames = [...formData.visitorLastNames];
+    while (newFirstNames.length < count) {
+      newFirstNames.push("");
+      newLastNames.push("");
     }
-    updateFormData({ visitorCount: count, visitorNames: newNames });
+    updateFormData({ visitorCount: count, visitorFirstNames: newFirstNames, visitorLastNames: newLastNames });
   };
 
-  const handleVisitorNameChange = (index: number, name: string) => {
-    const newNames = [...formData.visitorNames];
+  const handleVisitorFirstNameChange = (index: number, name: string) => {
+    const newNames = [...formData.visitorFirstNames];
     newNames[index] = name;
-    updateFormData({ visitorNames: newNames });
+    updateFormData({ visitorFirstNames: newNames });
+  };
+
+  const handleVisitorLastNameChange = (index: number, name: string) => {
+    const newNames = [...formData.visitorLastNames];
+    newNames[index] = name;
+    updateFormData({ visitorLastNames: newNames });
   };
 
   const handleSubmit = async () => {
