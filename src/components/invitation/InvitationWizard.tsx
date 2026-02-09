@@ -310,7 +310,8 @@ export function InvitationWizard({ clubName, clubSlug, language }: InvitationWiz
                 <Step5Review
                   visitDate={formData.visitDate}
                   visitorCount={formData.visitorCount}
-                  visitorNames={formData.visitorNames}
+                  visitorFirstNames={formData.visitorFirstNames}
+                  visitorLastNames={formData.visitorLastNames}
                   email={formData.email}
                   phone={formData.phone}
                   notes={formData.notes}
