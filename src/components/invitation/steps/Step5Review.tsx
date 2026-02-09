@@ -152,9 +152,9 @@ export function Step5Review({
                     {visitorCount} {visitorCount === 1 ? "person" : t("people")}
                   </p>
                   <ul className="space-y-1">
-                    {visitorNames.slice(0, visitorCount).map((name, i) => (
+                    {Array.from({ length: visitorCount }, (_, i) => (
                       <li key={i} className="text-sm text-muted-foreground">
-                        {i + 1}. {name}
+                        {i + 1}. {(visitorFirstNames[i] || "")} {(visitorLastNames[i] || "")}
                       </li>
                     ))}
                   </ul>
