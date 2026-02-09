@@ -52,7 +52,8 @@ export function InvitationWizard({ clubName, clubSlug, language }: InvitationWiz
   const [formData, setFormData] = useState<FormData>({
     visitDate: undefined,
     visitorCount: 1,
-    visitorNames: [""],
+    visitorFirstNames: [""],
+    visitorLastNames: [""],
     notes: "",
     email: "",
     phone: "",

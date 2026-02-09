@@ -20,8 +20,11 @@ export const invitationRequestSchema = z.object({
     .min(1, "At least 1 visitor is required")
     .max(10, "Maximum 10 visitors allowed"),
   visitor_names: z.array(z.string().trim().min(1, "Name cannot be empty"))
-    .min(1, "At least one visitor name is required")
-    .refine((names) => names.every(name => name.length > 0), "All names must be filled"),
+    .min(1, "At least one visitor name is required"),
+  visitor_first_names: z.array(z.string().trim().min(1, "First name cannot be empty"))
+    .min(1, "At least one first name is required"),
+  visitor_last_names: z.array(z.string().trim().min(1, "Last name cannot be empty"))
+    .min(1, "At least one last name is required"),
   legal_age_confirmed: z.boolean().refine((val) => val === true, "You must confirm you are 18 or older"),
   legal_knowledge_confirmed: z.boolean().refine((val) => val === true, "You must confirm you understand Spanish cannabis legislation"),
   gdpr_consent: z.boolean().refine((val) => val === true, "You must consent to data processing"),
