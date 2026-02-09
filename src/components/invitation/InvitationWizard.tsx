@@ -23,7 +23,8 @@ interface InvitationWizardProps {
 export interface FormData {
   visitDate: Date | undefined;
   visitorCount: number;
-  visitorNames: string[];
+  visitorFirstNames: string[];
+  visitorLastNames: string[];
   notes: string;
   email: string;
   phone: string;
