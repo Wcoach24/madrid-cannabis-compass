@@ -1,64 +1,91 @@
 
 
-# Add Sortable Columns to Admin Invitations Table
+# Add Separate First Name and Last Name Fields to Invitation Form
 
 ## Overview
-Add click-to-sort functionality on the table headers in the Admin Invitations page. Clicking a column header will toggle between ascending, descending, and default order. A small arrow icon will indicate the current sort direction.
+Split the current single "name" field per visitor into two separate fields: **First Name** and **Last Name**. This requires changes to the database, form UI, validation, edge function, and admin panel.
 
-## How It Works
-- Click any sortable column header to sort ascending
-- Click again to sort descending
-- Click a third time to reset to default order (newest first by created_at)
-- A small up/down arrow icon appears next to the active sort column
-- The "Actions" column will NOT be sortable (it contains buttons, not data)
+## Backward Compatibility Strategy
 
-## Sortable Columns
-| Column | Sort Type |
-|--------|-----------|
-| ID | Numeric |
-| Club | Alphabetical |
-| Email | Alphabetical |
-| Phone | Alphabetical |
-| Visitors | Numeric |
-| Visit Date | Date |
-| Status | Alphabetical |
-| Code | Alphabetical |
-| Attended | Boolean (attended first or last) |
-| Actual Count | Numeric |
-| Auto Reminder | Date |
+The current database stores visitor names as a `text[]` array (`visitor_names`). Rather than altering this existing column (which would break existing data), we will:
+
+1. **Add two new columns**: `visitor_first_names` (text[]) and `visitor_last_names` (text[])
+2. **Keep `visitor_names` populated** as a combined "First Last" array for backward compatibility (used in emails, admin panel display, audit logs, etc.)
+3. Existing rows remain untouched -- they only have `visitor_names` filled, the new columns will be NULL for old records
+
+This ensures nothing breaks.
+
+---
+
+## Changes Summary
+
+| File / Resource | Change |
+|-----------------|--------|
+| **Database** | Add `visitor_first_names` and `visitor_last_names` text[] columns to `invitation_requests` |
+| **`src/components/invitation/InvitationWizard.tsx`** | Add `visitorFirstNames` and `visitorLastNames` to FormData state |
+| **`src/components/invitation/steps/Step2VisitorInfo.tsx`** | Replace single name input with two inputs (First Name + Last Name) per visitor |
+| **`src/components/invitation/steps/Step5Review.tsx`** | Display "First Last" combined in review |
+| **`src/lib/invitationValidation.ts`** | Add `visitor_first_names` and `visitor_last_names` to zod schema |
+| **`supabase/functions/submit-invitation-request/index.ts`** | Accept and store new fields, auto-populate `visitor_names` as combined |
+| **`src/pages/AdminInvitations.tsx`** | No change needed -- still reads `visitor_names` which remains populated |
+
+---
 
 ## Technical Details
 
-### Changes to `src/pages/AdminInvitations.tsx` only
+### Step 1: Database Migration
 
-**1. Add new state variables:**
-- `sortColumn`: tracks which column is currently sorted (or null for default)
-- `sortDirection`: tracks 'asc' or 'desc'
+```sql
+ALTER TABLE invitation_requests 
+ADD COLUMN visitor_first_names text[] DEFAULT NULL,
+ADD COLUMN visitor_last_names text[] DEFAULT NULL;
+```
 
-**2. Add a sort handler function:**
-- Clicking a column that is not currently sorted sets it to ascending
-- Clicking the same column toggles between ascending, descending, and reset (null)
+Both columns are nullable so existing rows are unaffected.
 
-**3. Add a `SortableHeader` inline component:**
-- Wraps each `TableHead` content in a clickable button
-- Shows `ArrowUp`, `ArrowDown`, or `ArrowUpDown` (neutral) icon from lucide-react
-- Uses `cursor-pointer` styling for sortable headers
+### Step 2: Update Zod Validation (`src/lib/invitationValidation.ts`)
 
-**4. Add a sort comparator function:**
-- Handles string, number, date, and boolean comparisons
-- Applied to `filteredRequests` before rendering (sorting happens after filtering)
-- Null/undefined values are pushed to the end
+Add two new array fields:
+- `visitor_first_names`: array of trimmed non-empty strings
+- `visitor_last_names`: array of trimmed non-empty strings
+- Keep `visitor_names` as a combined "First Last" array (computed before validation)
 
-**5. No changes to:**
-- Data fetching logic
-- Filter logic
-- Attendance/reminder functionality
-- Table UI component (`src/components/ui/table.tsx`)
-- Any other files
+### Step 3: Update Form State (`InvitationWizard.tsx`)
 
-### Minimal risk approach
-- All sorting is done client-side on the already-fetched data
-- No database queries or API calls are modified
-- The existing `filteredRequests` array is simply sorted before mapping to rows
-- No new dependencies needed (uses existing `lucide-react` icons)
+- Add `visitorFirstNames: string[]` and `visitorLastNames: string[]` to `FormData`
+- Add handlers: `handleVisitorFirstNameChange`, `handleVisitorLastNameChange`
+- On submit, compute `visitor_names` as `firstName + " " + lastName` for each visitor
+- Pass new fields to Step2 and Step5
+
+### Step 4: Update Step 2 UI (`Step2VisitorInfo.tsx`)
+
+- Replace single `Input` per visitor with two side-by-side inputs: "First Name" and "Last Name"
+- Add translations for "firstName" and "lastName" labels in all 5 languages (EN, ES, DE, FR, IT)
+- Validation: both first name AND last name must be non-empty for each visitor
+
+### Step 5: Update Step 5 Review (`Step5Review.tsx`)
+
+- Accept `visitorFirstNames` and `visitorLastNames` props
+- Display combined "First Last" in the review list
+
+### Step 6: Update Edge Function (`submit-invitation-request/index.ts`)
+
+- Add `visitor_first_names` and `visitor_last_names` to the request interface
+- Store them in the database insert
+- Continue computing `visitor_names` as the combined array for backward compatibility (emails, admin notifications, audit logs all use this field)
+
+### Step 7: Admin Panel
+
+No changes needed -- the admin panel reads `visitor_names` which will continue to be populated with combined "First Last" values.
+
+---
+
+## What Won't Break
+
+- Existing invitation records (new columns are nullable, old data untouched)
+- Email templates (still use `visitor_names` combined array)
+- Admin panel display (still reads `visitor_names`)
+- Auto-reminder system (doesn't depend on name fields)
+- Audit logs (use `visitor_names`)
+- Duplicate detection (uses email, not names)
 
