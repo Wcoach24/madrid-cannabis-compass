@@ -1,91 +1,80 @@
 
 
-# Add Separate First Name and Last Name Fields to Invitation Form
+# Add Show/No-Show Buttons to Already-Marked Invitations (Safe & Reversible)
 
 ## Overview
-Split the current single "name" field per visitor into two separate fields: **First Name** and **Last Name**. This requires changes to the database, form UI, validation, edge function, and admin panel.
+Currently, once an invitation is marked as "No-Show", the admin only sees a "Send Reminder" button and a timestamp -- there's no way to correct mistakes. Similarly, once marked as "Attended", there's only a read-only timestamp. This change adds the ability to **re-mark** attendance at any time, with a confirmation dialog to prevent accidental clicks.
 
-## Backward Compatibility Strategy
+## What Changes
 
-The current database stores visitor names as a `text[]` array (`visitor_names`). Rather than altering this existing column (which would break existing data), we will:
+### 1. Admin UI (`src/pages/AdminInvitations.tsx`)
 
-1. **Add two new columns**: `visitor_first_names` (text[]) and `visitor_last_names` (text[])
-2. **Keep `visitor_names` populated** as a combined "First Last" array for backward compatibility (used in emails, admin panel display, audit logs, etc.)
-3. Existing rows remain untouched -- they only have `visitor_names` filled, the new columns will be NULL for old records
+**When attendance is already marked as No-Show** (currently shows only "Send Reminder"):
+- Keep the "Send Reminder" button
+- Add a "Mark Attended" button (green/outline) so admins can correct mistakes
 
-This ensures nothing breaks.
+**When attendance is already marked as Attended** (currently shows only a timestamp):
+- Add a "Mark No-Show" button (red/outline) so admins can correct mistakes
+- Keep the attended date info
 
----
+**Confirmation dialog for corrections:**
+- When changing an already-marked record, show an `AlertDialog` asking "Are you sure you want to change the attendance status?" with the current and new status displayed
+- This prevents accidental clicks since these are corrections to existing data
 
-## Changes Summary
+### 2. Edge Function (`supabase/functions/mark-attendance/index.ts`)
 
-| File / Resource | Change |
-|-----------------|--------|
-| **Database** | Add `visitor_first_names` and `visitor_last_names` text[] columns to `invitation_requests` |
-| **`src/components/invitation/InvitationWizard.tsx`** | Add `visitorFirstNames` and `visitorLastNames` to FormData state |
-| **`src/components/invitation/steps/Step2VisitorInfo.tsx`** | Replace single name input with two inputs (First Name + Last Name) per visitor |
-| **`src/components/invitation/steps/Step5Review.tsx`** | Display "First Last" combined in review |
-| **`src/lib/invitationValidation.ts`** | Add `visitor_first_names` and `visitor_last_names` to zod schema |
-| **`supabase/functions/submit-invitation-request/index.ts`** | Accept and store new fields, auto-populate `visitor_names` as combined |
-| **`src/pages/AdminInvitations.tsx`** | No change needed -- still reads `visitor_names` which remains populated |
+The edge function already supports re-marking (it simply updates the record with new values). No logic changes needed -- it already:
+- Sets `attended`, `actual_attendee_count`, `attendance_marked_at`, `attendance_marked_by`
+- Logs an audit entry each time
 
----
+The only improvement: log the action as `corrected_to_attended` or `corrected_to_no_show` (instead of the regular action) when the record was already marked, so the audit trail clearly shows corrections.
+
+### 3. Audit Trail Safety
+
+Every change (including corrections) is logged in `invitation_audit_log` with:
+- The admin who made the change
+- Timestamp
+- Previous and new attendance status in metadata
+
+This provides full traceability -- no data is ever lost.
 
 ## Technical Details
 
-### Step 1: Database Migration
+### Changes to `src/pages/AdminInvitations.tsx`
 
-```sql
-ALTER TABLE invitation_requests 
-ADD COLUMN visitor_first_names text[] DEFAULT NULL,
-ADD COLUMN visitor_last_names text[] DEFAULT NULL;
-```
+1. **Add a confirmation state** for corrections:
+   - `confirmCorrectionRequest`: holds the request being corrected (or null)
+   - `confirmCorrectionAction`: 'attended' or 'no-show'
 
-Both columns are nullable so existing rows are unaffected.
+2. **Modify the "No-Show" section** (around line 322-340):
+   - After the Send Reminder button, add a "Mark Attended" button
+   - Clicking opens the attendance dialog (to also capture actual count)
 
-### Step 2: Update Zod Validation (`src/lib/invitationValidation.ts`)
+3. **Modify the "Attended" section** (around line 341-345):
+   - After the date text, add a "Mark No-Show" button
+   - Clicking opens an AlertDialog confirmation, then calls `handleMarkAttendance(false)` with count 0
 
-Add two new array fields:
-- `visitor_first_names`: array of trimmed non-empty strings
-- `visitor_last_names`: array of trimmed non-empty strings
-- Keep `visitor_names` as a combined "First Last" array (computed before validation)
+4. **Add an AlertDialog** for confirming corrections:
+   - Uses the existing `@radix-ui/react-alert-dialog` already in the project
+   - Shows: "This invitation was already marked as [current status]. Change to [new status]?"
+   - Cancel and Confirm buttons
 
-### Step 3: Update Form State (`InvitationWizard.tsx`)
+### Changes to `supabase/functions/mark-attendance/index.ts`
 
-- Add `visitorFirstNames: string[]` and `visitorLastNames: string[]` to `FormData`
-- Add handlers: `handleVisitorFirstNameChange`, `handleVisitorLastNameChange`
-- On submit, compute `visitor_names` as `firstName + " " + lastName` for each visitor
-- Pass new fields to Step2 and Step5
+1. **Check previous attendance state** before updating
+2. **Use distinct audit action names** for corrections:
+   - `corrected_to_attended` / `corrected_to_no_show` (when changing existing)
+   - `marked_attended` / `marked_no_show` (when marking for the first time)
+3. **Include previous state in audit metadata**: `previous_attended`, `previous_actual_count`
 
-### Step 4: Update Step 2 UI (`Step2VisitorInfo.tsx`)
+### Files Modified
+| File | Change |
+|------|--------|
+| `src/pages/AdminInvitations.tsx` | Add correction buttons + confirmation AlertDialog |
+| `supabase/functions/mark-attendance/index.ts` | Distinguish corrections in audit log |
 
-- Replace single `Input` per visitor with two side-by-side inputs: "First Name" and "Last Name"
-- Add translations for "firstName" and "lastName" labels in all 5 languages (EN, ES, DE, FR, IT)
-- Validation: both first name AND last name must be non-empty for each visitor
-
-### Step 5: Update Step 5 Review (`Step5Review.tsx`)
-
-- Accept `visitorFirstNames` and `visitorLastNames` props
-- Display combined "First Last" in the review list
-
-### Step 6: Update Edge Function (`submit-invitation-request/index.ts`)
-
-- Add `visitor_first_names` and `visitor_last_names` to the request interface
-- Store them in the database insert
-- Continue computing `visitor_names` as the combined array for backward compatibility (emails, admin notifications, audit logs all use this field)
-
-### Step 7: Admin Panel
-
-No changes needed -- the admin panel reads `visitor_names` which will continue to be populated with combined "First Last" values.
-
----
-
-## What Won't Break
-
-- Existing invitation records (new columns are nullable, old data untouched)
-- Email templates (still use `visitor_names` combined array)
-- Admin panel display (still reads `visitor_names`)
-- Auto-reminder system (doesn't depend on name fields)
-- Audit logs (use `visitor_names`)
-- Duplicate detection (uses email, not names)
+### No other files changed
+- No database migration needed (existing columns support re-marking)
+- No new edge functions
+- No new dependencies
 
