@@ -299,6 +299,8 @@ export type Database = {
           user_agent: string | null
           visit_date: string
           visitor_count: number
+          visitor_first_names: string[] | null
+          visitor_last_names: string[] | null
           visitor_names: string[]
         }
         Insert: {
@@ -328,6 +330,8 @@ export type Database = {
           user_agent?: string | null
           visit_date: string
           visitor_count: number
+          visitor_first_names?: string[] | null
+          visitor_last_names?: string[] | null
           visitor_names: string[]
         }
         Update: {
@@ -357,6 +361,8 @@ export type Database = {
           user_agent?: string | null
           visit_date?: string
           visitor_count?: number
+          visitor_first_names?: string[] | null
+          visitor_last_names?: string[] | null
           visitor_names?: string[]
         }
         Relationships: []
