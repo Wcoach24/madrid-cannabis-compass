@@ -455,7 +455,7 @@ const AdminInvitations = () => {
                         </div>
                       )}
                       {request.attendance_marked_at && !request.attended && (
-                        <div className="flex gap-2">
+                        <div className="flex gap-2 flex-wrap items-center">
                           <Button
                             size="sm"
                             variant="outline"
@@ -474,15 +474,45 @@ const AdminInvitations = () => {
                               </>
                             )}
                           </Button>
-                          <span className="text-xs text-muted-foreground self-center">
-                            No-show on {new Date(request.attendance_marked_at).toLocaleDateString()}
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="border-green-500 text-green-600 hover:bg-green-50"
+                            onClick={() => {
+                              setCorrectionRequest(request);
+                              setCorrectionAction('attended');
+                              setCorrectionDialogOpen(true);
+                            }}
+                            disabled={processingId === request.id}
+                          >
+                            <Check className="mr-1 h-3 w-3" />
+                            Mark Attended
+                          </Button>
+                          <span className="text-xs text-muted-foreground">
+                            No-show {new Date(request.attendance_marked_at).toLocaleDateString()}
                           </span>
                         </div>
                       )}
                       {request.attendance_marked_at && request.attended && (
-                        <span className="text-xs text-muted-foreground">
-                          Attended {new Date(request.attendance_marked_at).toLocaleDateString()}
-                        </span>
+                        <div className="flex gap-2 flex-wrap items-center">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="border-red-500 text-red-600 hover:bg-red-50"
+                            onClick={() => {
+                              setCorrectionRequest(request);
+                              setCorrectionAction('no-show');
+                              setCorrectionDialogOpen(true);
+                            }}
+                            disabled={processingId === request.id}
+                          >
+                            <X className="mr-1 h-3 w-3" />
+                            Mark No-Show
+                          </Button>
+                          <span className="text-xs text-muted-foreground">
+                            Attended {new Date(request.attendance_marked_at).toLocaleDateString()}
+                          </span>
+                        </div>
                       )}
                     </TableCell>
                   </TableRow>
