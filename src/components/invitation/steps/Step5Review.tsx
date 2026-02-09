@@ -21,7 +21,8 @@ interface Step5ReviewProps {
 export function Step5Review({
   visitDate,
   visitorCount,
-  visitorNames,
+  visitorFirstNames,
+  visitorLastNames,
   email,
   phone,
   notes,
