@@ -77,6 +77,11 @@ serve(async (req) => {
       );
     }
 
+    // Determine if this is a correction (already marked before)
+    const wasAlreadyMarked = invitation.attendance_marked_at !== null;
+    const previousAttended = invitation.attended;
+    const previousCount = invitation.actual_attendee_count;
+
     // Update attendance
     const { data: updated, error: updateError } = await supabase
       .from('invitation_requests')
@@ -95,17 +100,30 @@ serve(async (req) => {
       throw updateError;
     }
 
+    // Determine audit action
+    let action: string;
+    if (wasAlreadyMarked) {
+      action = attended ? 'corrected_to_attended' : 'corrected_to_no_show';
+    } else {
+      action = attended ? 'marked_attended' : 'marked_no_show';
+    }
+
     // Log audit entry
     await supabase
       .from('invitation_audit_log')
       .insert({
         request_id: requestId,
-        action: attended ? 'marked_attended' : 'marked_no_show',
+        action,
         admin_id: user.id,
         admin_email: user.email,
         metadata: {
           actual_attendee_count: actualAttendeeCount,
           visitor_count: invitation.visitor_count,
+          ...(wasAlreadyMarked && {
+            previous_attended: previousAttended,
+            previous_actual_count: previousCount,
+            is_correction: true,
+          }),
         },
       });
 

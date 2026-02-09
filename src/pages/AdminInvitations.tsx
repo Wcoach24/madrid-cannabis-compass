@@ -23,6 +23,16 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
@@ -77,6 +87,9 @@ const AdminInvitations = () => {
   const [sendingReminderId, setSendingReminderId] = useState<number | null>(null);
   const [sortColumn, setSortColumn] = useState<string | null>(null);
   const [sortDirection, setSortDirection] = useState<SortDirection>(null);
+  const [correctionDialogOpen, setCorrectionDialogOpen] = useState(false);
+  const [correctionRequest, setCorrectionRequest] = useState<InvitationRequest | null>(null);
+  const [correctionAction, setCorrectionAction] = useState<'attended' | 'no-show'>('no-show');
 
   const onSort = (columnKey: string) => {
     const { column, direction } = handleSortToggle(columnKey, sortColumn, sortDirection);
@@ -182,6 +195,31 @@ const AdminInvitations = () => {
     setSelectedRequest(request);
     setActualCount(request.visitor_count);
     setAttendanceDialogOpen(true);
+  };
+
+  const handleMarkAttendanceDirectly = async (requestId: number, attended: boolean, count: number) => {
+    try {
+      setProcessingId(requestId);
+      const { error } = await supabase.functions.invoke("mark-attendance", {
+        body: { requestId, attended, actualAttendeeCount: count },
+      });
+      if (error) throw error;
+      toast({
+        title: attended ? "Corrected to attended" : "Corrected to no-show",
+        description: "Attendance status has been updated",
+      });
+      fetchRequests();
+      fetchMetrics();
+    } catch (error) {
+      console.error("Error correcting attendance:", error);
+      toast({
+        title: "Error",
+        description: "Failed to update attendance",
+        variant: "destructive",
+      });
+    } finally {
+      setProcessingId(null);
+    }
   };
 
   const handleSendReminder = async (request: InvitationRequest) => {
@@ -442,7 +480,7 @@ const AdminInvitations = () => {
                         </div>
                       )}
                       {request.attendance_marked_at && !request.attended && (
-                        <div className="flex gap-2">
+                        <div className="flex gap-2 flex-wrap items-center">
                           <Button
                             size="sm"
                             variant="outline"
@@ -461,15 +499,45 @@ const AdminInvitations = () => {
                               </>
                             )}
                           </Button>
-                          <span className="text-xs text-muted-foreground self-center">
-                            No-show on {new Date(request.attendance_marked_at).toLocaleDateString()}
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="border-green-500 text-green-600 hover:bg-green-50"
+                            onClick={() => {
+                              setCorrectionRequest(request);
+                              setCorrectionAction('attended');
+                              setCorrectionDialogOpen(true);
+                            }}
+                            disabled={processingId === request.id}
+                          >
+                            <Check className="mr-1 h-3 w-3" />
+                            Mark Attended
+                          </Button>
+                          <span className="text-xs text-muted-foreground">
+                            No-show {new Date(request.attendance_marked_at).toLocaleDateString()}
                           </span>
                         </div>
                       )}
                       {request.attendance_marked_at && request.attended && (
-                        <span className="text-xs text-muted-foreground">
-                          Attended {new Date(request.attendance_marked_at).toLocaleDateString()}
-                        </span>
+                        <div className="flex gap-2 flex-wrap items-center">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="border-red-500 text-red-600 hover:bg-red-50"
+                            onClick={() => {
+                              setCorrectionRequest(request);
+                              setCorrectionAction('no-show');
+                              setCorrectionDialogOpen(true);
+                            }}
+                            disabled={processingId === request.id}
+                          >
+                            <X className="mr-1 h-3 w-3" />
+                            Mark No-Show
+                          </Button>
+                          <span className="text-xs text-muted-foreground">
+                            Attended {new Date(request.attendance_marked_at).toLocaleDateString()}
+                          </span>
+                        </div>
                       )}
                     </TableCell>
                   </TableRow>
@@ -522,6 +590,45 @@ const AdminInvitations = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Correction confirmation dialog */}
+      <AlertDialog open={correctionDialogOpen} onOpenChange={setCorrectionDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Confirm attendance correction</AlertDialogTitle>
+            <AlertDialogDescription>
+              This invitation is currently marked as <strong>{correctionAction === 'attended' ? 'No-Show' : 'Attended'}</strong>. 
+              Change to <strong>{correctionAction === 'attended' ? 'Attended' : 'No-Show'}</strong>?
+              <br /><br />
+              This action will be logged in the audit trail.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                if (!correctionRequest) return;
+                if (correctionAction === 'attended') {
+                  // Open attendance dialog to capture actual count
+                  setCorrectionDialogOpen(false);
+                  openAttendanceDialog(correctionRequest);
+                } else {
+                  // Mark as no-show directly
+                  setSelectedRequest(correctionRequest);
+                  setCorrectionDialogOpen(false);
+                  // Need to set selectedRequest first, then call
+                  setTimeout(() => {
+                    setSelectedRequest(correctionRequest);
+                    handleMarkAttendanceDirectly(correctionRequest.id, false, 0);
+                  }, 0);
+                }
+              }}
+            >
+              Confirm Change
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
