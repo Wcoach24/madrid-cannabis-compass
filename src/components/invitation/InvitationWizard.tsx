@@ -137,6 +137,10 @@ export function InvitationWizard({ clubName, clubSlug, language }: InvitationWiz
 
     try {
       // Validate with zod schema
+      const visitorFirstNames = formData.visitorFirstNames.slice(0, formData.visitorCount).map(n => n.trim());
+      const visitorLastNames = formData.visitorLastNames.slice(0, formData.visitorCount).map(n => n.trim());
+      const visitorNames = visitorFirstNames.map((fn, i) => `${fn} ${visitorLastNames[i]}`);
+
       const validatedData = invitationRequestSchema.parse({
         club_slug: clubSlug,
         language,
@@ -144,7 +148,9 @@ export function InvitationWizard({ clubName, clubSlug, language }: InvitationWiz
         email: formData.email.trim(),
         phone: formData.phone.trim(),
         visitor_count: formData.visitorCount,
-        visitor_names: formData.visitorNames.slice(0, formData.visitorCount).map(n => n.trim()),
+        visitor_names: visitorNames,
+        visitor_first_names: visitorFirstNames,
+        visitor_last_names: visitorLastNames,
         legal_age_confirmed: formData.legalAgeConfirmed,
         legal_knowledge_confirmed: formData.legalKnowledgeConfirmed,
         gdpr_consent: formData.gdprConsent,
