@@ -565,6 +565,45 @@ const AdminInvitations = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Correction confirmation dialog */}
+      <AlertDialog open={correctionDialogOpen} onOpenChange={setCorrectionDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Confirm attendance correction</AlertDialogTitle>
+            <AlertDialogDescription>
+              This invitation is currently marked as <strong>{correctionAction === 'attended' ? 'No-Show' : 'Attended'}</strong>. 
+              Change to <strong>{correctionAction === 'attended' ? 'Attended' : 'No-Show'}</strong>?
+              <br /><br />
+              This action will be logged in the audit trail.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                if (!correctionRequest) return;
+                if (correctionAction === 'attended') {
+                  // Open attendance dialog to capture actual count
+                  setCorrectionDialogOpen(false);
+                  openAttendanceDialog(correctionRequest);
+                } else {
+                  // Mark as no-show directly
+                  setSelectedRequest(correctionRequest);
+                  setCorrectionDialogOpen(false);
+                  // Need to set selectedRequest first, then call
+                  setTimeout(() => {
+                    setSelectedRequest(correctionRequest);
+                    handleMarkAttendanceDirectly(correctionRequest.id, false, 0);
+                  }, 0);
+                }
+              }}
+            >
+              Confirm Change
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
