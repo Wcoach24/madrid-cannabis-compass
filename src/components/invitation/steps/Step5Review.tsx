@@ -6,7 +6,8 @@ import { format } from "date-fns";
 interface Step5ReviewProps {
   visitDate: Date;
   visitorCount: number;
-  visitorNames: string[];
+  visitorFirstNames: string[];
+  visitorLastNames: string[];
   email: string;
   phone: string;
   notes: string;
