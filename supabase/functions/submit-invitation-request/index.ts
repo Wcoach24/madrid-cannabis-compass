@@ -14,6 +14,8 @@ interface InvitationRequestBody {
   phone: string;
   visitor_count: number;
   visitor_names: string[];
+  visitor_first_names: string[];
+  visitor_last_names: string[];
   legal_age_confirmed: boolean;
   legal_knowledge_confirmed: boolean;
   gdpr_consent: boolean;
