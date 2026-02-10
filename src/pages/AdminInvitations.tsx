@@ -402,6 +402,28 @@ const AdminInvitations = () => {
           </div>
         )}
 
+        {/* Time View Toggle */}
+        <div className="flex gap-2 mb-4">
+          <Button
+            variant={timeView === 'upcoming' ? 'default' : 'outline'}
+            onClick={() => setTimeView('upcoming')}
+            className="gap-2"
+          >
+            <Calendar className="h-4 w-4" />
+            Today & Upcoming
+            <Badge variant="secondary" className="ml-1">{upcomingCount}</Badge>
+          </Button>
+          <Button
+            variant={timeView === 'past' ? 'default' : 'outline'}
+            onClick={() => setTimeView('past')}
+            className="gap-2"
+          >
+            <Clock className="h-4 w-4" />
+            Past
+            <Badge variant="secondary" className="ml-1">{pastCount}</Badge>
+          </Button>
+        </div>
+
         <Tabs value={filter} onValueChange={setFilter} className="mb-8">
           <TabsList>
             <TabsTrigger value="all">All</TabsTrigger>
