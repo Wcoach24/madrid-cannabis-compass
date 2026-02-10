@@ -1,80 +1,72 @@
 
-
-# Add Show/No-Show Buttons to Already-Marked Invitations (Safe & Reversible)
+# Split Admin Invitations into Upcoming/Past Tables + Add Name Columns
 
 ## Overview
-Currently, once an invitation is marked as "No-Show", the admin only sees a "Send Reminder" button and a timestamp -- there's no way to correct mistakes. Similarly, once marked as "Attended", there's only a read-only timestamp. This change adds the ability to **re-mark** attendance at any time, with a confirmation dialog to prevent accidental clicks.
+Reorganize the admin invitations panel with a time-based toggle (Today & Upcoming vs Past) and add First Name / Last Name columns for better visitor identification.
 
-## What Changes
+## Changes (single file: `src/pages/AdminInvitations.tsx`)
 
-### 1. Admin UI (`src/pages/AdminInvitations.tsx`)
+### 1. Time-Based View Toggle
+Add a prominent toggle above the existing status filter tabs:
+- **"Today & Upcoming"** (default): shows invitations where `visit_date >= today`, sorted by `visit_date` ascending (soonest first)
+- **"Past"**: shows invitations where `visit_date < today`, sorted by `visit_date` descending (most recent first)
 
-**When attendance is already marked as No-Show** (currently shows only "Send Reminder"):
-- Keep the "Send Reminder" button
-- Add a "Mark Attended" button (green/outline) so admins can correct mistakes
+The toggle will show count badges so the admin instantly knows how many invitations are in each group.
 
-**When attendance is already marked as Attended** (currently shows only a timestamp):
-- Add a "Mark No-Show" button (red/outline) so admins can correct mistakes
-- Keep the attended date info
+The existing status filters (All, Sent, Failed, Attended, No-Shows) continue to work within the selected time view.
 
-**Confirmation dialog for corrections:**
-- When changing an already-marked record, show an `AlertDialog` asking "Are you sure you want to change the attendance status?" with the current and new status displayed
-- This prevents accidental clicks since these are corrections to existing data
+### 2. First Name + Last Name Columns
+Add two new columns between "Club" and "Email":
+- **First Name**: reads from `visitor_first_names` array, comma-separated if multiple visitors. Falls back to extracting from `visitor_names` for older records.
+- **Last Name**: reads from `visitor_last_names` array, comma-separated. Empty for legacy records without split names.
 
-### 2. Edge Function (`supabase/functions/mark-attendance/index.ts`)
-
-The edge function already supports re-marking (it simply updates the record with new values). No logic changes needed -- it already:
-- Sets `attended`, `actual_attendee_count`, `attendance_marked_at`, `attendance_marked_by`
-- Logs an audit entry each time
-
-The only improvement: log the action as `corrected_to_attended` or `corrected_to_no_show` (instead of the regular action) when the record was already marked, so the audit trail clearly shows corrections.
-
-### 3. Audit Trail Safety
-
-Every change (including corrections) is logged in `invitation_audit_log` with:
-- The admin who made the change
-- Timestamp
-- Previous and new attendance status in metadata
-
-This provides full traceability -- no data is ever lost.
+### 3. Default Sort by Visit Date
+When no manual sort is active, the table auto-sorts by `visit_date` -- ascending for upcoming, descending for past. Manual sort headers still work for overriding.
 
 ## Technical Details
 
-### Changes to `src/pages/AdminInvitations.tsx`
+### Type Update
+Add to the `InvitationRequest` type:
+```text
+visitor_first_names?: string[];
+visitor_last_names?: string[];
+```
 
-1. **Add a confirmation state** for corrections:
-   - `confirmCorrectionRequest`: holds the request being corrected (or null)
-   - `confirmCorrectionAction`: 'attended' or 'no-show'
+### State Addition
+```text
+const [timeView, setTimeView] = useState<'upcoming' | 'past'>('upcoming');
+```
 
-2. **Modify the "No-Show" section** (around line 322-340):
-   - After the Send Reminder button, add a "Mark Attended" button
-   - Clicking opens the attendance dialog (to also capture actual count)
+### Filtering Pipeline
+```text
+1. Time filter: visit_date >= today (upcoming) or < today (past)
+2. Status filter: existing All/Sent/Failed/Attended/No-Shows
+3. Sort: default visit_date asc/desc based on view, or manual sort override
+```
 
-3. **Modify the "Attended" section** (around line 341-345):
-   - After the date text, add a "Mark No-Show" button
-   - Clicking opens an AlertDialog confirmation, then calls `handleMarkAttendance(false)` with count 0
+### UI Layout
+```text
+[Today & Upcoming (12)]  [Past (45)]       <-- new time toggle (styled buttons)
 
-4. **Add an AlertDialog** for confirming corrections:
-   - Uses the existing `@radix-ui/react-alert-dialog` already in the project
-   - Shows: "This invitation was already marked as [current status]. Change to [new status]?"
-   - Cancel and Confirm buttons
+[All] [Sent] [Failed] [Attended] [No-Shows] <-- existing status tabs
 
-### Changes to `supabase/functions/mark-attendance/index.ts`
++----+------+------------+-----------+-------+...
+| ID | Club | First Name | Last Name | Email |...
++----+------+------------+-----------+-------+...
+```
 
-1. **Check previous attendance state** before updating
-2. **Use distinct audit action names** for corrections:
-   - `corrected_to_attended` / `corrected_to_no_show` (when changing existing)
-   - `marked_attended` / `marked_no_show` (when marking for the first time)
-3. **Include previous state in audit metadata**: `previous_attended`, `previous_actual_count`
+### Fetch Query Update
+Change the Supabase query to also select `visitor_first_names` and `visitor_last_names` (they already exist in the DB from the previous migration). No database migration needed.
+
+### Name Display Helper
+For each invitation, display names as comma-separated lists:
+- First Names: `request.visitor_first_names?.join(', ')` or fallback to splitting `visitor_names`
+- Last Names: `request.visitor_last_names?.join(', ')` or empty for legacy
 
 ### Files Modified
 | File | Change |
 |------|--------|
-| `src/pages/AdminInvitations.tsx` | Add correction buttons + confirmation AlertDialog |
-| `supabase/functions/mark-attendance/index.ts` | Distinguish corrections in audit log |
+| `src/pages/AdminInvitations.tsx` | Time toggle, name columns, default sort |
+| `src/lib/sortInvitations.ts` | Add `visitor_first_names` / `visitor_last_names` to type, no logic change needed |
 
-### No other files changed
-- No database migration needed (existing columns support re-marking)
-- No new edge functions
-- No new dependencies
-
+No database migrations. No edge function changes. No new dependencies.
