@@ -83,6 +83,7 @@ const AdminInvitations = () => {
   const [loading, setLoading] = useState(true);
   const [metricsLoading, setMetricsLoading] = useState(true);
   const [filter, setFilter] = useState<string>("all");
+  const [timeView, setTimeView] = useState<'upcoming' | 'past'>('upcoming');
   const [attendanceDialogOpen, setAttendanceDialogOpen] = useState(false);
   const [selectedRequest, setSelectedRequest] = useState<InvitationRequest | null>(null);
   const [actualCount, setActualCount] = useState<number>(1);
