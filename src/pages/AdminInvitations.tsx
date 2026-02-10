@@ -445,6 +445,8 @@ const AdminInvitations = () => {
                 <TableRow>
                   <TableHead><SortableHeader label="ID" columnKey="id" activeColumn={sortColumn} direction={sortDirection} onSort={onSort} /></TableHead>
                   <TableHead><SortableHeader label="Club" columnKey="club_slug" activeColumn={sortColumn} direction={sortDirection} onSort={onSort} /></TableHead>
+                  <TableHead>First Name</TableHead>
+                  <TableHead>Last Name</TableHead>
                   <TableHead><SortableHeader label="Email" columnKey="email" activeColumn={sortColumn} direction={sortDirection} onSort={onSort} /></TableHead>
                   <TableHead><SortableHeader label="Phone" columnKey="phone" activeColumn={sortColumn} direction={sortDirection} onSort={onSort} /></TableHead>
                   <TableHead><SortableHeader label="Visitors" columnKey="visitor_count" activeColumn={sortColumn} direction={sortDirection} onSort={onSort} /></TableHead>
