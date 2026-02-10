@@ -292,6 +292,7 @@ export type Database = {
           legal_knowledge_confirmed: boolean
           notes: string | null
           phone: string
+          pre_visit_reminder_sent_at: string | null
           qr_code_url: string | null
           rejection_reason: string | null
           status: string | null
@@ -323,6 +324,7 @@ export type Database = {
           legal_knowledge_confirmed: boolean
           notes?: string | null
           phone: string
+          pre_visit_reminder_sent_at?: string | null
           qr_code_url?: string | null
           rejection_reason?: string | null
           status?: string | null
@@ -354,6 +356,7 @@ export type Database = {
           legal_knowledge_confirmed?: boolean
           notes?: string | null
           phone?: string
+          pre_visit_reminder_sent_at?: string | null
           qr_code_url?: string | null
           rejection_reason?: string | null
           status?: string | null
