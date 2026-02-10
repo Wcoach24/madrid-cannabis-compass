@@ -120,7 +120,7 @@ const AdminInvitations = () => {
       // @ts-ignore - Table types not yet regenerated
       const { data, error } = await (supabase as any)
         .from("invitation_requests")
-        .select("*")
+        .select("id, club_slug, email, phone, visitor_names, visitor_first_names, visitor_last_names, visitor_count, visit_date, status, created_at, notes, invitation_code, email_sent_at, attended, actual_attendee_count, attendance_marked_at, attendance_marked_by, auto_reminder_sent_at")
         .order("created_at", { ascending: false });
 
       if (error) throw error;
