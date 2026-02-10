@@ -36,7 +36,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, Check, X, TrendingUp, Mail } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Loader2, Check, X, TrendingUp, Mail, Calendar, Clock } from "lucide-react";
 import SortableHeader, { type SortDirection } from "@/components/admin/SortableHeader";
 import { handleSortToggle, sortRequests } from "@/lib/sortInvitations";
 
@@ -46,6 +47,8 @@ type InvitationRequest = {
   email: string;
   phone: string;
   visitor_names: string[];
+  visitor_first_names?: string[];
+  visitor_last_names?: string[];
   visitor_count: number;
   visit_date: string;
   status: string;
@@ -80,6 +83,7 @@ const AdminInvitations = () => {
   const [loading, setLoading] = useState(true);
   const [metricsLoading, setMetricsLoading] = useState(true);
   const [filter, setFilter] = useState<string>("all");
+  const [timeView, setTimeView] = useState<'upcoming' | 'past'>('upcoming');
   const [attendanceDialogOpen, setAttendanceDialogOpen] = useState(false);
   const [selectedRequest, setSelectedRequest] = useState<InvitationRequest | null>(null);
   const [actualCount, setActualCount] = useState<number>(1);
@@ -116,7 +120,7 @@ const AdminInvitations = () => {
       // @ts-ignore - Table types not yet regenerated
       const { data, error } = await (supabase as any)
         .from("invitation_requests")
-        .select("*")
+        .select("id, club_slug, email, phone, visitor_names, visitor_first_names, visitor_last_names, visitor_count, visit_date, status, created_at, notes, invitation_code, email_sent_at, attended, actual_attendee_count, attendance_marked_at, attendance_marked_by, auto_reminder_sent_at")
         .order("created_at", { ascending: false });
 
       if (error) throw error;
@@ -250,7 +254,17 @@ const AdminInvitations = () => {
     }
   };
 
-  const filteredRequests = requests.filter((req) => {
+  const today = new Date().toISOString().split('T')[0];
+
+  const timeFilteredRequests = requests.filter((req) => {
+    if (timeView === 'upcoming') return req.visit_date >= today;
+    return req.visit_date < today;
+  });
+
+  const upcomingCount = requests.filter((req) => req.visit_date >= today).length;
+  const pastCount = requests.filter((req) => req.visit_date < today).length;
+
+  const filteredRequests = timeFilteredRequests.filter((req) => {
     if (filter === "all") return true;
     if (filter === "sent") return req.status === "sent" || req.status === "approved";
     if (filter === "failed") return req.status === "failed";
@@ -259,7 +273,29 @@ const AdminInvitations = () => {
     return req.status === filter;
   });
 
-  const sortedRequests = sortRequests(filteredRequests, sortColumn, sortDirection);
+  // Default sort by visit_date when no manual sort is active
+  const sortedRequests = sortColumn && sortDirection
+    ? sortRequests(filteredRequests, sortColumn, sortDirection)
+    : sortRequests(filteredRequests, 'visit_date', timeView === 'upcoming' ? 'asc' : 'desc');
+
+  const getFirstNames = (req: InvitationRequest) => {
+    if (req.visitor_first_names && req.visitor_first_names.length > 0) {
+      return req.visitor_first_names.join(', ');
+    }
+    // Fallback: extract first word from each visitor_names entry
+    return req.visitor_names?.map(n => n.split(' ')[0]).join(', ') || '-';
+  };
+
+  const getLastNames = (req: InvitationRequest) => {
+    if (req.visitor_last_names && req.visitor_last_names.length > 0) {
+      return req.visitor_last_names.join(', ');
+    }
+    // Fallback: extract second+ words from visitor_names
+    return req.visitor_names?.map(n => {
+      const parts = n.split(' ');
+      return parts.length > 1 ? parts.slice(1).join(' ') : '';
+    }).filter(Boolean).join(', ') || '-';
+  };
 
   if (authLoading || loading) {
     return (
@@ -366,6 +402,28 @@ const AdminInvitations = () => {
           </div>
         )}
 
+        {/* Time View Toggle */}
+        <div className="flex gap-2 mb-4">
+          <Button
+            variant={timeView === 'upcoming' ? 'default' : 'outline'}
+            onClick={() => setTimeView('upcoming')}
+            className="gap-2"
+          >
+            <Calendar className="h-4 w-4" />
+            Today & Upcoming
+            <Badge variant="secondary" className="ml-1">{upcomingCount}</Badge>
+          </Button>
+          <Button
+            variant={timeView === 'past' ? 'default' : 'outline'}
+            onClick={() => setTimeView('past')}
+            className="gap-2"
+          >
+            <Clock className="h-4 w-4" />
+            Past
+            <Badge variant="secondary" className="ml-1">{pastCount}</Badge>
+          </Button>
+        </div>
+
         <Tabs value={filter} onValueChange={setFilter} className="mb-8">
           <TabsList>
             <TabsTrigger value="all">All</TabsTrigger>
@@ -387,6 +445,8 @@ const AdminInvitations = () => {
                 <TableRow>
                   <TableHead><SortableHeader label="ID" columnKey="id" activeColumn={sortColumn} direction={sortDirection} onSort={onSort} /></TableHead>
                   <TableHead><SortableHeader label="Club" columnKey="club_slug" activeColumn={sortColumn} direction={sortDirection} onSort={onSort} /></TableHead>
+                  <TableHead>First Name</TableHead>
+                  <TableHead>Last Name</TableHead>
                   <TableHead><SortableHeader label="Email" columnKey="email" activeColumn={sortColumn} direction={sortDirection} onSort={onSort} /></TableHead>
                   <TableHead><SortableHeader label="Phone" columnKey="phone" activeColumn={sortColumn} direction={sortDirection} onSort={onSort} /></TableHead>
                   <TableHead><SortableHeader label="Visitors" columnKey="visitor_count" activeColumn={sortColumn} direction={sortDirection} onSort={onSort} /></TableHead>
@@ -404,6 +464,8 @@ const AdminInvitations = () => {
                   <TableRow key={request.id}>
                     <TableCell className="font-mono text-sm">{request.id}</TableCell>
                     <TableCell>{request.club_slug}</TableCell>
+                    <TableCell className="text-sm">{getFirstNames(request)}</TableCell>
+                    <TableCell className="text-sm">{getLastNames(request)}</TableCell>
                     <TableCell className="text-sm">{request.email}</TableCell>
                     <TableCell>{request.phone}</TableCell>
                     <TableCell>{request.visitor_count}</TableCell>
