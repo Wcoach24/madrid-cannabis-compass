@@ -254,7 +254,17 @@ const AdminInvitations = () => {
     }
   };
 
-  const filteredRequests = requests.filter((req) => {
+  const today = new Date().toISOString().split('T')[0];
+
+  const timeFilteredRequests = requests.filter((req) => {
+    if (timeView === 'upcoming') return req.visit_date >= today;
+    return req.visit_date < today;
+  });
+
+  const upcomingCount = requests.filter((req) => req.visit_date >= today).length;
+  const pastCount = requests.filter((req) => req.visit_date < today).length;
+
+  const filteredRequests = timeFilteredRequests.filter((req) => {
     if (filter === "all") return true;
     if (filter === "sent") return req.status === "sent" || req.status === "approved";
     if (filter === "failed") return req.status === "failed";
@@ -263,7 +273,29 @@ const AdminInvitations = () => {
     return req.status === filter;
   });
 
-  const sortedRequests = sortRequests(filteredRequests, sortColumn, sortDirection);
+  // Default sort by visit_date when no manual sort is active
+  const sortedRequests = sortColumn && sortDirection
+    ? sortRequests(filteredRequests, sortColumn, sortDirection)
+    : sortRequests(filteredRequests, 'visit_date', timeView === 'upcoming' ? 'asc' : 'desc');
+
+  const getFirstNames = (req: InvitationRequest) => {
+    if (req.visitor_first_names && req.visitor_first_names.length > 0) {
+      return req.visitor_first_names.join(', ');
+    }
+    // Fallback: extract first word from each visitor_names entry
+    return req.visitor_names?.map(n => n.split(' ')[0]).join(', ') || '-';
+  };
+
+  const getLastNames = (req: InvitationRequest) => {
+    if (req.visitor_last_names && req.visitor_last_names.length > 0) {
+      return req.visitor_last_names.join(', ');
+    }
+    // Fallback: extract second+ words from visitor_names
+    return req.visitor_names?.map(n => {
+      const parts = n.split(' ');
+      return parts.length > 1 ? parts.slice(1).join(' ') : '';
+    }).filter(Boolean).join(', ') || '-';
+  };
 
   if (authLoading || loading) {
     return (
