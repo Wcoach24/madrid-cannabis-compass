@@ -1,0 +1,2 @@
+ALTER TABLE public.invitation_requests
+ADD COLUMN pre_visit_reminder_sent_at TIMESTAMPTZ;

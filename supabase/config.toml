@@ -41,3 +41,6 @@ verify_jwt = false
 
 [functions.auto-send-reminders]
 verify_jwt = false
+
+[functions.send-pre-visit-reminder]
+verify_jwt = false
