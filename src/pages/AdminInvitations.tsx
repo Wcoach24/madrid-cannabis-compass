@@ -47,6 +47,8 @@ type InvitationRequest = {
   email: string;
   phone: string;
   visitor_names: string[];
+  visitor_first_names?: string[];
+  visitor_last_names?: string[];
   visitor_count: number;
   visit_date: string;
   status: string;
