@@ -464,6 +464,8 @@ const AdminInvitations = () => {
                   <TableRow key={request.id}>
                     <TableCell className="font-mono text-sm">{request.id}</TableCell>
                     <TableCell>{request.club_slug}</TableCell>
+                    <TableCell className="text-sm">{getFirstNames(request)}</TableCell>
+                    <TableCell className="text-sm">{getLastNames(request)}</TableCell>
                     <TableCell className="text-sm">{request.email}</TableCell>
                     <TableCell>{request.phone}</TableCell>
                     <TableCell>{request.visitor_count}</TableCell>
