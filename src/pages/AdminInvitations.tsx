@@ -36,7 +36,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, Check, X, TrendingUp, Mail } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Loader2, Check, X, TrendingUp, Mail, Calendar, Clock } from "lucide-react";
 import SortableHeader, { type SortDirection } from "@/components/admin/SortableHeader";
 import { handleSortToggle, sortRequests } from "@/lib/sortInvitations";
 
