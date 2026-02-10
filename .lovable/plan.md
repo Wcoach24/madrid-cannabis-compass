@@ -1,72 +1,108 @@
 
-# Split Admin Invitations into Upcoming/Past Tables + Add Name Columns
 
-## Overview
-Reorganize the admin invitations panel with a time-based toggle (Today & Upcoming vs Past) and add First Name / Last Name columns for better visitor identification.
+# Pre-Visit Reminder Email (2 Days Before Visit Date)
 
-## Changes (single file: `src/pages/AdminInvitations.tsx`)
+## Context
 
-### 1. Time-Based View Toggle
-Add a prominent toggle above the existing status filter tabs:
-- **"Today & Upcoming"** (default): shows invitations where `visit_date >= today`, sorted by `visit_date` ascending (soonest first)
-- **"Past"**: shows invitations where `visit_date < today`, sorted by `visit_date` descending (most recent first)
+Currently there are two reminder systems, both for **after** the visit date:
+- `send-reminder`: manual admin button for no-shows
+- `auto-send-reminders`: automatic cron 48h after visit date for no-shows
 
-The toggle will show count badges so the admin instantly knows how many invitations are in each group.
+Neither sends a reminder **before** the visit. Many users book for future dates and may forget. This plan adds an automatic friendly reminder 2 days before their visit.
 
-The existing status filters (All, Sent, Failed, Attended, No-Shows) continue to work within the selected time view.
+## What Changes
 
-### 2. First Name + Last Name Columns
-Add two new columns between "Club" and "Email":
-- **First Name**: reads from `visitor_first_names` array, comma-separated if multiple visitors. Falls back to extracting from `visitor_names` for older records.
-- **Last Name**: reads from `visitor_last_names` array, comma-separated. Empty for legacy records without split names.
+### 1. New Database Column
 
-### 3. Default Sort by Visit Date
-When no manual sort is active, the table auto-sorts by `visit_date` -- ascending for upcoming, descending for past. Manual sort headers still work for overriding.
+Add `pre_visit_reminder_sent_at` (TIMESTAMPTZ, nullable) to `invitation_requests` to track whether the pre-visit reminder was already sent (idempotency guard, same pattern as `auto_reminder_sent_at`).
+
+### 2. New Edge Function: `send-pre-visit-reminder`
+
+A new edge function triggered daily by pg_cron that:
+- Finds invitations where:
+  - `status` is 'sent' or 'approved'
+  - `visit_date` is exactly 2 days from now (today + 2)
+  - `pre_visit_reminder_sent_at` is NULL
+  - `attended` is not already true
+- Sends a friendly, warm reminder email (different tone from the no-show reminder -- this is anticipation, not follow-up)
+- Updates `pre_visit_reminder_sent_at` after successful send
+- Logs to `invitation_audit_log` with action `pre_visit_reminder_sent`
+
+### 3. Email Template (Friendly Tone)
+
+The email will have a warm, excited tone (not "you haven't visited" but "your visit is coming up!"):
+- Subject: "Your visit to [Club] is in 2 days!" / "Tu visita a [Club] es en 2 dias!"
+- Content: greeting, visit date, invitation code, what to bring (ID), club address hints, benefits reminder
+- Multi-language support (EN/ES) based on the invitation's `language` field
+
+### 4. pg_cron Job
+
+Schedule the function to run daily at 09:00 UTC (11:00 Madrid time) -- a good time for a "your visit is coming up" email.
 
 ## Technical Details
 
-### Type Update
-Add to the `InvitationRequest` type:
+### Database Migration
+
 ```text
-visitor_first_names?: string[];
-visitor_last_names?: string[];
+ALTER TABLE invitation_requests
+ADD COLUMN pre_visit_reminder_sent_at TIMESTAMPTZ;
 ```
 
-### State Addition
+### Edge Function: `supabase/functions/send-pre-visit-reminder/index.ts`
+
+Query logic:
 ```text
-const [timeView, setTimeView] = useState<'upcoming' | 'past'>('upcoming');
+- status IN ('sent', 'approved')
+- attended IS NULL or attended = false
+- pre_visit_reminder_sent_at IS NULL
+- visit_date = current_date + interval '2 days'
 ```
 
-### Filtering Pipeline
+This uses date comparison (not timestamp math) so it catches all invitations for the day that is exactly 2 days away, regardless of when the cron runs.
+
+### Config: `supabase/config.toml`
+
 ```text
-1. Time filter: visit_date >= today (upcoming) or < today (past)
-2. Status filter: existing All/Sent/Failed/Attended/No-Shows
-3. Sort: default visit_date asc/desc based on view, or manual sort override
+[functions.send-pre-visit-reminder]
+verify_jwt = false
 ```
 
-### UI Layout
+### pg_cron Job (SQL to run manually)
+
 ```text
-[Today & Upcoming (12)]  [Past (45)]       <-- new time toggle (styled buttons)
-
-[All] [Sent] [Failed] [Attended] [No-Shows] <-- existing status tabs
-
-+----+------+------------+-----------+-------+...
-| ID | Club | First Name | Last Name | Email |...
-+----+------+------------+-----------+-------+...
+SELECT cron.schedule(
+  'pre-visit-reminder-daily',
+  '0 9 * * *',
+  $$ SELECT net.http_post(
+    url:='https://sdpmwelfkseuhlhgatsc.supabase.co/functions/v1/send-pre-visit-reminder',
+    headers:='{"Content-Type":"application/json","Authorization":"Bearer ANON_KEY"}'::jsonb,
+    body:='{}'::jsonb
+  ) AS request_id; $$
+);
 ```
 
-### Fetch Query Update
-Change the Supabase query to also select `visitor_first_names` and `visitor_last_names` (they already exist in the DB from the previous migration). No database migration needed.
+### Email Content (Key Differences from No-Show Reminder)
 
-### Name Display Helper
-For each invitation, display names as comma-separated lists:
-- First Names: `request.visitor_first_names?.join(', ')` or fallback to splitting `visitor_names`
-- Last Names: `request.visitor_last_names?.join(', ')` or empty for legacy
+| Aspect | No-Show Reminder | Pre-Visit Reminder |
+|--------|-----------------|-------------------|
+| Tone | "We noticed you haven't visited" | "Your visit is coming up!" |
+| Timing | 48h after visit date | 2 days before visit date |
+| Purpose | Re-engage no-shows | Reduce no-shows proactively |
+| Action | "Your invitation is still active" | "Here's what you need to know" |
 
-### Files Modified
-| File | Change |
+### Admin Visibility
+
+The `pre_visit_reminder_sent_at` column can optionally be shown in the admin table later, but for now it serves as an internal tracking field.
+
+### Files Created/Modified
+
+| File | Action |
 |------|--------|
-| `src/pages/AdminInvitations.tsx` | Time toggle, name columns, default sort |
-| `src/lib/sortInvitations.ts` | Add `visitor_first_names` / `visitor_last_names` to type, no logic change needed |
+| `supabase/functions/send-pre-visit-reminder/index.ts` | Create new edge function |
+| `supabase/config.toml` | Add function config |
+| Migration SQL | Add `pre_visit_reminder_sent_at` column |
+| pg_cron SQL | Schedule daily job at 09:00 UTC |
 
-No database migrations. No edge function changes. No new dependencies.
+### No frontend changes needed
+This is entirely a backend automation feature.
+
