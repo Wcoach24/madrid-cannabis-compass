@@ -281,6 +281,21 @@
       "source": "/es/invite/:slug*",
       "destination": "/invite/:slug*",
       "permanent": true
+    },
+    {
+      "source": "/guide/best-cannabis-clubs-madrid-2025-it",
+      "destination": "/guide/best-cannabis-clubs-madrid-2025",
+      "permanent": true
+    },
+    {
+      "source": "/clubs/retiro",
+      "destination": "/club/retiro-botanico-club",
+      "permanent": true
+    },
+    {
+      "source": "/es/district/fuencarral-el-pardo",
+      "destination": "/es/clubs",
+      "permanent": true
     }
   ],
   "rewrites": [
