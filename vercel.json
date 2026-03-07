@@ -105,17 +105,17 @@
     },
     {
       "source": "/cannabis-tourism-madrid",
-      "destination": "/guide/cannabis-tourism-madrid-guide",
+      "destination": "/guide/cannabis-club-madrid-tourists-2025-guide",
       "permanent": true
     },
     {
       "source": "/best-cannabis-clubs-madrid",
-      "destination": "/guide/best-cannabis-clubs-madrid-2025",
+      "destination": "/guide/best-weed-clubs-madrid-top-10-2025",
       "permanent": true
     },
     {
       "source": "/complete-guide-cannabis-clubs-madrid",
-      "destination": "/guide/complete-guide-cannabis-clubs-madrid",
+      "destination": "/cannabis-club-madrid",
       "permanent": true
     },
     {
@@ -200,7 +200,7 @@
     },
     {
       "source": "/guides/best-cannabis-clubs-madrid-2025",
-      "destination": "/guide/best-cannabis-clubs-madrid-2025",
+      "destination": "/guide/best-weed-clubs-madrid-top-10-2025",
       "permanent": true
     },
     {
@@ -214,28 +214,18 @@
       "permanent": true
     },
     {
-      "source": "/guide/best-weed-clubs-madrid-top-10-2025",
-      "destination": "/guide/best-cannabis-clubs-madrid-2025",
+      "source": "/guide/best-cannabis-clubs-madrid-2025",
+      "destination": "/guide/best-weed-clubs-madrid-top-10-2025",
       "permanent": true
     },
     {
-      "source": "/fr/guide/best-weed-clubs-madrid-top-10-2025",
-      "destination": "/guide/best-cannabis-clubs-madrid-2025",
+      "source": "/guide/cannabis-tourism-madrid-guide",
+      "destination": "/guide/cannabis-club-madrid-tourists-2025-guide",
       "permanent": true
     },
     {
-      "source": "/de/guide/best-weed-clubs-madrid-top-10-2025",
-      "destination": "/guide/best-cannabis-clubs-madrid-2025",
-      "permanent": true
-    },
-    {
-      "source": "/it/guide/best-weed-clubs-madrid-top-10-2025",
-      "destination": "/guide/best-cannabis-clubs-madrid-2025",
-      "permanent": true
-    },
-    {
-      "source": "/:lang/guide/best-weed-clubs-madrid-top-10-2025",
-      "destination": "/guide/best-cannabis-clubs-madrid-2025",
+      "source": "/guide/complete-guide-cannabis-clubs-madrid",
+      "destination": "/cannabis-club-madrid",
       "permanent": true
     },
     {
@@ -255,12 +245,12 @@
     },
     {
       "source": "/fr/guide/complete-guide-cannabis-clubs-madrid-it",
-      "destination": "/guide/complete-guide-cannabis-clubs-madrid",
+      "destination": "/cannabis-club-madrid",
       "permanent": true
     },
     {
       "source": "/guide/complete-guide-cannabis-clubs-madrid-it",
-      "destination": "/guide/complete-guide-cannabis-clubs-madrid",
+      "destination": "/cannabis-club-madrid",
       "permanent": true
     },
     {
@@ -285,7 +275,7 @@
     },
     {
       "source": "/guide/best-cannabis-clubs-madrid-2025-it",
-      "destination": "/guide/best-cannabis-clubs-madrid-2025",
+      "destination": "/guide/best-weed-clubs-madrid-top-10-2025",
       "permanent": true
     },
     {
@@ -355,17 +345,17 @@
     },
     {
       "source": "/guide/best-cannabis-clubs-madrid-2025-de",
-      "destination": "/guide/best-cannabis-clubs-madrid-2025",
+      "destination": "/guide/best-weed-clubs-madrid-top-10-2025",
       "permanent": true
     },
     {
       "source": "/guide/best-cannabis-clubs-madrid-2025-fr",
-      "destination": "/guide/best-cannabis-clubs-madrid-2025",
+      "destination": "/guide/best-weed-clubs-madrid-top-10-2025",
       "permanent": true
     },
     {
       "source": "/guide/best-cannabis-clubs-madrid-2025-es",
-      "destination": "/es/guide/best-cannabis-clubs-madrid-2025",
+      "destination": "/es/guide/best-weed-clubs-madrid-top-10-2025",
       "permanent": true
     },
     {
@@ -410,17 +400,17 @@
     },
     {
       "source": "/guide/complete-guide-cannabis-clubs-madrid-de",
-      "destination": "/guide/complete-guide-cannabis-clubs-madrid",
+      "destination": "/cannabis-club-madrid",
       "permanent": true
     },
     {
       "source": "/guide/complete-guide-cannabis-clubs-madrid-fr",
-      "destination": "/guide/complete-guide-cannabis-clubs-madrid",
+      "destination": "/cannabis-club-madrid",
       "permanent": true
     },
     {
       "source": "/guide/complete-guide-cannabis-clubs-madrid-es",
-      "destination": "/es/guide/complete-guide-cannabis-clubs-madrid",
+      "destination": "/es/club-cannabis-madrid",
       "permanent": true
     },
     {
@@ -445,22 +435,22 @@
     },
     {
       "source": "/guide/cannabis-tourism-madrid-guide-de",
-      "destination": "/guide/cannabis-tourism-madrid-guide",
+      "destination": "/guide/cannabis-club-madrid-tourists-2025-guide",
       "permanent": true
     },
     {
       "source": "/guide/cannabis-tourism-madrid-guide-fr",
-      "destination": "/guide/cannabis-tourism-madrid-guide",
+      "destination": "/guide/cannabis-club-madrid-tourists-2025-guide",
       "permanent": true
     },
     {
       "source": "/guide/cannabis-tourism-madrid-guide-it",
-      "destination": "/guide/cannabis-tourism-madrid-guide",
+      "destination": "/guide/cannabis-club-madrid-tourists-2025-guide",
       "permanent": true
     },
     {
       "source": "/guide/cannabis-tourism-madrid-guide-es",
-      "destination": "/es/guide/cannabis-tourism-madrid-guide",
+      "destination": "/es/guide/cannabis-club-madrid-tourists-2025-guide",
       "permanent": true
     },
     {
@@ -491,6 +481,21 @@
     {
       "source": "/es/district/:slug",
       "destination": "/es/districts",
+      "permanent": true
+    },
+    {
+      "source": "/es/guide/best-cannabis-clubs-madrid-2025",
+      "destination": "/es/guide/best-weed-clubs-madrid-top-10-2025",
+      "permanent": true
+    },
+    {
+      "source": "/es/guide/cannabis-tourism-madrid-guide",
+      "destination": "/es/guide/cannabis-club-madrid-tourists-2025-guide",
+      "permanent": true
+    },
+    {
+      "source": "/es/guide/complete-guide-cannabis-clubs-madrid",
+      "destination": "/es/club-cannabis-madrid",
       "permanent": true
     }
   ],
