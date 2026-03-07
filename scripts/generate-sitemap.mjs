@@ -1,19 +1,21 @@
 #!/usr/bin/env node
 /**
- * Static Sitemap Generator
- * 
- * Generates a static sitemap.xml at build time based on:
- * 1. All prerendered routes from routes-inventory.mjs
- * 2. Only URLs that exist as physical HTML files in dist/
- * 
- * This ensures 100% consistency between sitemap and actual site content.
+ * Static Sitemap Generator v2 — Phase 3 SEO Cleanup
+ *
+ * Changes from v1:
+ * - Removed .geo.txt and llm.txt entries (not web pages)
+ * - Added hreflang annotations for EN↔ES pairs
+ * - Only includes URLs that should be indexed (respects indexability)
+ * - Excludes DE/FR/IT static pages (thin content, auto-noindexed by SEOHead)
+ * - Meaningful priority values (not all 1.0)
+ * - Fixed changefreq to reflect actual update patterns
  */
 
 import { config } from 'dotenv';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { existsSync, writeFileSync, mkdirSync } from 'fs';
-import { getAllPaths } from './routes-inventory.mjs';
+import { existsSync, writeFileSync } from 'fs';
+import { getAllPaths, buildUrlInventory, fetchDynamicData, LANGUAGES } from './routes-inventory.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -25,157 +27,231 @@ config({ path: join(ROOT_DIR, '.env') });
 const BASE_URL = 'https://www.weedmadrid.com';
 const TODAY = new Date().toISOString().split('T')[0];
 
-// Priority configuration by route type
+// ============================================
+// PAGES THAT SHOULD NOT APPEAR IN SITEMAP
+// (legal pages, thin content, no search value)
+// ============================================
+const NOINDEX_PATHS = [
+  '/privacy',
+  '/terms',
+  '/about',
+  '/contact',
+  '/shop',
+  '/auth',
+  '/admin',
+  '/seed-data',
+  '/generate-articles',
+  '/bulk-generate',
+  '/translate-content',
+  '/invite',
+];
+
+// Languages that have FULL content for static pages
+// DE/FR/IT only have guide articles — their static pages are thin
+const SITEMAP_LANGUAGES_STATIC = ['en', 'es'];
+
+// All languages for guide/article content (fetched from Supabase with real translations)
+const SITEMAP_LANGUAGES_GUIDES = ['en', 'es', 'de', 'fr', 'it'];
+
+// ============================================
+// PRIORITY CONFIG — Intentional, not all 1.0
+// ============================================
 const PRIORITY_CONFIG = {
-  '/': 1.0,
-  '/clubs': 0.9,
-  '/guides': 0.9,
-  '/cannabis-club-madrid': 0.9,
-  '/club/': 0.8,
-  '/guide/': 0.8,
-  '/faq': 0.7,
-  '/districts': 0.7,
-  '/district/': 0.6,
-  '/clubs/': 0.6,
-  '/how-it-works': 0.6,
-  '/legal': 0.5,
-  '/privacy': 0.4,
-  '/terms': 0.4,
-  '/safety': 0.5,
-  '/about': 0.5,
-  '/contact': 0.5,
-  '/knowledge': 0.5,
-  '/shop': 0.6,
+  '/': 1.0,                          // Homepage — money page
+  '/clubs': 0.9,                     // Directory — high intent
+  '/cannabis-club-madrid': 0.9,      // Pillar page
+  '/guides': 0.8,                    // Guide hub
+  '/faq': 0.8,                       // FAQ — featured snippets
+  '/how-it-works': 0.8,              // Conversion funnel
+  '/districts': 0.7,                 // District hub
+  '/clubs/near-me': 0.7,             // Local intent
+  '/club/': 0.7,                     // Individual clubs
+  '/guide/': 0.7,                    // Individual guides
+  '/district/': 0.6,                 // Individual districts
+  '/safety': 0.5,                    // E-E-A-T
+  '/safety/scams': 0.5,              // E-E-A-T
+  '/legal': 0.5,                     // E-E-A-T
+  '/knowledge': 0.4,                 // Topical authority
+  '/glossary': 0.4,                  // Long-tail
 };
 
-// Change frequency by route type
+// Localized routes get slightly lower priority than their EN counterpart
+const LANG_PRIORITY_PENALTY = 0.1;
+
+// ============================================
+// CHANGEFREQ — Realistic update patterns
+// ============================================
 const CHANGEFREQ_CONFIG = {
-  '/': 'daily',
-  '/clubs': 'daily',
+  '/': 'weekly',
+  '/clubs': 'weekly',
   '/guides': 'weekly',
-  '/club/': 'weekly',
+  '/faq': 'monthly',
+  '/club/': 'monthly',
   '/guide/': 'monthly',
-  '/faq': 'weekly',
-  '/districts': 'weekly',
-  '/district/': 'weekly',
+  '/district/': 'monthly',
   default: 'monthly',
 };
 
 /**
- * Get priority for a URL
+ * Get priority for a URL path
  */
 function getPriority(path) {
-  // Exact match first
-  if (PRIORITY_CONFIG[path] !== undefined) {
-    return PRIORITY_CONFIG[path];
+  // Strip language prefix to get base path
+  const langMatch = path.match(/^\/(es|de|fr|it)(\/.*)?$/);
+  const basePath = langMatch ? (langMatch[2] || '/') : path;
+  const isLocalized = !!langMatch;
+
+  // Exact match
+  if (PRIORITY_CONFIG[basePath] !== undefined) {
+    const base = PRIORITY_CONFIG[basePath];
+    return Math.max(0.1, isLocalized ? base - LANG_PRIORITY_PENALTY : base);
   }
-  
+
   // Prefix match for dynamic routes
   for (const [prefix, priority] of Object.entries(PRIORITY_CONFIG)) {
-    if (prefix.endsWith('/') && path.startsWith(prefix)) {
-      return priority;
+    if (prefix.endsWith('/') && basePath.startsWith(prefix)) {
+      return Math.max(0.1, isLocalized ? priority - LANG_PRIORITY_PENALTY : priority);
     }
   }
-  
-  // Language-prefixed routes get same priority as base route
-  const langMatch = path.match(/^\/(es|de|fr|it)(\/.*)?$/);
-  if (langMatch) {
-    const basePath = langMatch[2] || '/';
-    return getPriority(basePath);
-  }
-  
-  return 0.5; // Default priority
+
+  return 0.3;
 }
 
 /**
- * Get change frequency for a URL
+ * Get changefreq for a URL path
  */
 function getChangefreq(path) {
-  // Exact match first
-  if (CHANGEFREQ_CONFIG[path]) {
-    return CHANGEFREQ_CONFIG[path];
-  }
-  
-  // Prefix match for dynamic routes
-  for (const [prefix, freq] of Object.entries(CHANGEFREQ_CONFIG)) {
-    if (prefix.endsWith('/') && path.startsWith(prefix)) {
-      return freq;
-    }
-  }
-  
-  // Language-prefixed routes
   const langMatch = path.match(/^\/(es|de|fr|it)(\/.*)?$/);
-  if (langMatch) {
-    const basePath = langMatch[2] || '/';
-    return getChangefreq(basePath);
+  const basePath = langMatch ? (langMatch[2] || '/') : path;
+
+  if (CHANGEFREQ_CONFIG[basePath]) return CHANGEFREQ_CONFIG[basePath];
+
+  for (const [prefix, freq] of Object.entries(CHANGEFREQ_CONFIG)) {
+    if (prefix.endsWith('/') && basePath.startsWith(prefix)) return freq;
   }
-  
+
   return CHANGEFREQ_CONFIG.default;
 }
 
 /**
- * Check if a prerendered HTML file exists for a path
+ * Check if prerendered HTML exists
  */
 function hasPrerenderedFile(path) {
-  let filePath;
-  if (path === '/') {
-    filePath = join(DIST_DIR, 'index.html');
-  } else {
-    filePath = join(DIST_DIR, path, 'index.html');
-  }
+  const filePath = path === '/'
+    ? join(DIST_DIR, 'index.html')
+    : join(DIST_DIR, path, 'index.html');
   return existsSync(filePath);
 }
 
 /**
- * Generate XML for a single URL entry
+ * Should this URL be in the sitemap?
  */
-function generateUrlEntry(path) {
+function shouldIncludeInSitemap(urlItem) {
+  const { path, lang, type } = urlItem;
+  const langMatch = path.match(/^\/(es|de|fr|it)(\/.*)?$/);
+  const basePath = langMatch ? (langMatch[2] || '/') : path;
+
+  // Never include noindex pages
+  if (NOINDEX_PATHS.some(np => basePath === np || basePath.startsWith(np + '/'))) {
+    return false;
+  }
+
+  // For static routes: only include EN and ES
+  if (type === 'static' || type === 'pillar') {
+    if (!SITEMAP_LANGUAGES_STATIC.includes(lang)) {
+      return false; // DE/FR/IT static pages are thin content
+    }
+  }
+
+  // For club pages: only EN and ES (already enforced in routes-inventory)
+  // For guide pages: all languages with actual content (from Supabase)
+  // For district pages: only EN and ES (already enforced)
+
+  return true;
+}
+
+/**
+ * Build hreflang map: group URLs by their base path
+ */
+function buildHreflangMap(urls) {
+  const map = new Map(); // basePath -> { lang: fullPath }
+
+  for (const item of urls) {
+    const { path, lang } = item;
+    const langMatch = path.match(/^\/(es|de|fr|it)(\/.*)?$/);
+    const basePath = langMatch ? (langMatch[2] || '/') : path;
+
+    if (!map.has(basePath)) {
+      map.set(basePath, {});
+    }
+    map.get(basePath)[lang] = path;
+  }
+
+  return map;
+}
+
+/**
+ * Generate hreflang XML for a URL
+ */
+function generateHreflangXml(basePath, hreflangMap) {
+  const langs = hreflangMap.get(basePath);
+  if (!langs || Object.keys(langs).length <= 1) return '';
+
+  const langToHreflang = {
+    'en': 'en',
+    'es': 'es',
+    'de': 'de',
+    'fr': 'fr',
+    'it': 'it',
+  };
+
+  let xml = '';
+  for (const [lang, path] of Object.entries(langs)) {
+    const fullUrl = `${BASE_URL}${path === '/' ? '' : path}`;
+    const hreflangCode = langToHreflang[lang] || lang;
+    xml += `    <xhtml:link rel="alternate" hreflang="${hreflangCode}" href="${fullUrl}" />\n`;
+  }
+
+  // Add x-default pointing to EN version
+  if (langs['en']) {
+    const enUrl = `${BASE_URL}${langs['en'] === '/' ? '' : langs['en']}`;
+    xml += `    <xhtml:link rel="alternate" hreflang="x-default" href="${enUrl}" />\n`;
+  }
+
+  return xml;
+}
+
+/**
+ * Generate XML for a single URL entry with hreflang
+ */
+function generateUrlEntry(path, hreflangMap) {
   const fullUrl = `${BASE_URL}${path === '/' ? '' : path}`;
   const priority = getPriority(path);
   const changefreq = getChangefreq(path);
-  
+
+  // Get base path for hreflang lookup
+  const langMatch = path.match(/^\/(es|de|fr|it)(\/.*)?$/);
+  const basePath = langMatch ? (langMatch[2] || '/') : path;
+  const hreflangXml = generateHreflangXml(basePath, hreflangMap);
+
   return `  <url>
     <loc>${fullUrl}</loc>
     <lastmod>${TODAY}</lastmod>
     <changefreq>${changefreq}</changefreq>
     <priority>${priority.toFixed(1)}</priority>
-  </url>`;
-}
-
-/**
- * Generate GEO file entries for AI crawlers
- */
-function generateGeoFileEntries() {
-  const geoFiles = [
-    { path: '/llm.txt', priority: 0.9 },
-    { path: '/home.geo.txt', priority: 0.8 },
-    { path: '/clubs.geo.txt', priority: 0.8 },
-    { path: '/guides.geo.txt', priority: 0.8 },
-    { path: '/faq.geo.txt', priority: 0.7 },
-    { path: '/knowledge.geo.txt', priority: 0.7 },
-    { path: '/how-it-works.geo.txt', priority: 0.6 },
-  ];
-
-  return geoFiles.map(file => `  <url>
-    <loc>${BASE_URL}${file.path}</loc>
-    <lastmod>${TODAY}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>${file.priority.toFixed(1)}</priority>
-  </url>`).join('\n');
+${hreflangXml}  </url>`;
 }
 
 /**
  * Generate complete sitemap XML
  */
-function generateSitemap(urls) {
-  const urlEntries = urls.map(generateUrlEntry).join('\n');
-  const geoEntries = generateGeoFileEntries();
-  
+function generateSitemap(urls, hreflangMap) {
+  const urlEntries = urls.map(path => generateUrlEntry(path, hreflangMap)).join('\n');
+
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
 ${urlEntries}
-${geoEntries}
 </urlset>`;
 }
 
@@ -183,60 +259,80 @@ ${geoEntries}
  * Main execution
  */
 async function main() {
-  console.log('\n🗺️  Generating Static Sitemap...\n');
-  
-  // Check dist directory exists
+  console.log('\n🗺️  Generating Optimized Sitemap (Phase 3)...\n');
+
   if (!existsSync(DIST_DIR)) {
     console.error('❌ dist/ directory not found. Run prerender first.');
     process.exit(1);
   }
-  
-  // Get all paths from inventory
-  const allPaths = await getAllPaths();
-  console.log(`📊 Total paths from inventory: ${allPaths.length}`);
-  
-  // Filter to only paths with prerendered HTML files
-  const existingPaths = allPaths.filter(path => {
-    const exists = hasPrerenderedFile(path);
+
+  // Get full URL inventory with metadata
+  console.log('📡 Fetching route inventory...');
+  const dynamicData = await fetchDynamicData();
+  const inventory = buildUrlInventory(dynamicData);
+
+  console.log(`📊 Total routes in inventory: ${inventory.length}`);
+
+  // Filter to indexable URLs only
+  const indexableUrls = inventory.filter(item => shouldIncludeInSitemap(item));
+  console.log(`🎯 Indexable URLs (sitemap candidates): ${indexableUrls.length}`);
+  console.log(`🚫 Excluded from sitemap: ${inventory.length - indexableUrls.length}`);
+
+  // Filter to URLs with prerendered HTML
+  const existingUrls = indexableUrls.filter(item => {
+    const exists = hasPrerenderedFile(item.path);
     if (!exists) {
-      console.log(`  ⚠️ Skipping (no HTML): ${path}`);
+      console.log(`  ⚠️ Skipping (no HTML): ${item.path}`);
     }
     return exists;
   });
-  
-  console.log(`✅ Paths with prerendered HTML: ${existingPaths.length}`);
-  
-  // Sort paths for consistent output
-  existingPaths.sort((a, b) => {
-    // Home first
-    if (a === '/') return -1;
-    if (b === '/') return 1;
-    // Then by priority
-    const priorityDiff = getPriority(b) - getPriority(a);
-    if (priorityDiff !== 0) return priorityDiff;
-    // Then alphabetically
-    return a.localeCompare(b);
-  });
-  
+
+  console.log(`✅ Final sitemap URLs: ${existingUrls.length}`);
+
+  // Build hreflang map from ALL indexable URLs (not just existing)
+  const hreflangMap = buildHreflangMap(existingUrls);
+
+  // Sort: homepage first, then by priority, then alphabetically
+  const sortedPaths = existingUrls
+    .map(item => item.path)
+    .sort((a, b) => {
+      if (a === '/') return -1;
+      if (b === '/') return 1;
+      const pDiff = getPriority(b) - getPriority(a);
+      if (pDiff !== 0) return pDiff;
+      return a.localeCompare(b);
+    });
+
   // Generate sitemap
-  const sitemapXml = generateSitemap(existingPaths);
-  
-  // Write to dist/
+  const sitemapXml = generateSitemap(sortedPaths, hreflangMap);
   const sitemapPath = join(DIST_DIR, 'sitemap.xml');
   writeFileSync(sitemapPath, sitemapXml);
-  
-  console.log(`\n✅ Sitemap generated: ${sitemapPath}`);
-  console.log(`📄 Total URLs in sitemap: ${existingPaths.length}`);
-  
-  // Show sample of URLs
-  console.log('\n📋 Sample URLs:');
-  existingPaths.slice(0, 10).forEach(path => {
-    console.log(`   ${BASE_URL}${path === '/' ? '' : path}`);
+
+  // Summary
+  const langCounts = {};
+  existingUrls.forEach(item => {
+    langCounts[item.lang] = (langCounts[item.lang] || 0) + 1;
   });
-  if (existingPaths.length > 10) {
-    console.log(`   ... and ${existingPaths.length - 10} more`);
+
+  console.log(`\n✅ Sitemap generated: ${sitemapPath}`);
+  console.log(`📄 Total URLs: ${sortedPaths.length}`);
+  console.log(`🌐 By language:`, langCounts);
+  console.log(`🔗 Hreflang pairs: ${hreflangMap.size}`);
+
+  // Show what was excluded
+  const excludedCount = inventory.length - existingUrls.length;
+  console.log(`\n🚫 Excluded from sitemap: ${excludedCount} URLs`);
+  console.log('   Reasons: noindex pages, thin DE/FR/IT static pages, missing HTML');
+
+  console.log('\n📋 Sample URLs:');
+  sortedPaths.slice(0, 10).forEach(path => {
+    const p = getPriority(path);
+    console.log(`   [${p.toFixed(1)}] ${BASE_URL}${path === '/' ? '' : path}`);
+  });
+  if (sortedPaths.length > 10) {
+    console.log(`   ... and ${sortedPaths.length - 10} more`);
   }
-  
+
   console.log('\n');
 }
 

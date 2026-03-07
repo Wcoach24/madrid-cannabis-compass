@@ -297,6 +297,201 @@
       "source": "/es/district/fuencarral-el-pardo",
       "destination": "/es/clubs",
       "permanent": true
+    },
+    {
+      "source": "/district/chamartin",
+      "destination": "/district/chamberi",
+      "permanent": true
+    },
+    {
+      "source": "/district/retiro",
+      "destination": "/districts",
+      "permanent": true
+    },
+    {
+      "source": "/district/salamanca",
+      "destination": "/districts",
+      "permanent": true
+    },
+    {
+      "source": "/district/moncloa",
+      "destination": "/districts",
+      "permanent": true
+    },
+    {
+      "source": "/district/fuencarral-el-pardo",
+      "destination": "/districts",
+      "permanent": true
+    },
+    {
+      "source": "/clubs/malasana",
+      "destination": "/district/malasana",
+      "permanent": true
+    },
+    {
+      "source": "/clubs/chamberi",
+      "destination": "/district/chamberi",
+      "permanent": true
+    },
+    {
+      "source": "/clubs/centro",
+      "destination": "/district/centro",
+      "permanent": true
+    },
+    {
+      "source": "/clubs/lavapies",
+      "destination": "/district/centro",
+      "permanent": true
+    },
+    {
+      "source": "/clubs/arganzuela",
+      "destination": "/district/arganzuela",
+      "permanent": true
+    },
+    {
+      "source": "/clubs/tetuan",
+      "destination": "/district/tetuan",
+      "permanent": true
+    },
+    {
+      "source": "/guide/best-cannabis-clubs-madrid-2025-de",
+      "destination": "/guide/best-cannabis-clubs-madrid-2025",
+      "permanent": true
+    },
+    {
+      "source": "/guide/best-cannabis-clubs-madrid-2025-fr",
+      "destination": "/guide/best-cannabis-clubs-madrid-2025",
+      "permanent": true
+    },
+    {
+      "source": "/guide/best-cannabis-clubs-madrid-2025-es",
+      "destination": "/es/guide/best-cannabis-clubs-madrid-2025",
+      "permanent": true
+    },
+    {
+      "source": "/guide/cannabis-laws-spain-2025-de",
+      "destination": "/guide/cannabis-laws-spain-2025",
+      "permanent": true
+    },
+    {
+      "source": "/guide/cannabis-laws-spain-2025-fr",
+      "destination": "/guide/cannabis-laws-spain-2025",
+      "permanent": true
+    },
+    {
+      "source": "/guide/cannabis-laws-spain-2025-it",
+      "destination": "/guide/cannabis-laws-spain-2025",
+      "permanent": true
+    },
+    {
+      "source": "/guide/cannabis-laws-spain-2025-es",
+      "destination": "/es/guide/cannabis-laws-spain-2025",
+      "permanent": true
+    },
+    {
+      "source": "/guide/how-to-join-cannabis-club-madrid-de",
+      "destination": "/guide/how-to-join-cannabis-club-madrid",
+      "permanent": true
+    },
+    {
+      "source": "/guide/how-to-join-cannabis-club-madrid-fr",
+      "destination": "/guide/how-to-join-cannabis-club-madrid",
+      "permanent": true
+    },
+    {
+      "source": "/guide/how-to-join-cannabis-club-madrid-it",
+      "destination": "/guide/how-to-join-cannabis-club-madrid",
+      "permanent": true
+    },
+    {
+      "source": "/guide/how-to-join-cannabis-club-madrid-es",
+      "destination": "/es/guide/how-to-join-cannabis-club-madrid",
+      "permanent": true
+    },
+    {
+      "source": "/guide/complete-guide-cannabis-clubs-madrid-de",
+      "destination": "/guide/complete-guide-cannabis-clubs-madrid",
+      "permanent": true
+    },
+    {
+      "source": "/guide/complete-guide-cannabis-clubs-madrid-fr",
+      "destination": "/guide/complete-guide-cannabis-clubs-madrid",
+      "permanent": true
+    },
+    {
+      "source": "/guide/complete-guide-cannabis-clubs-madrid-es",
+      "destination": "/es/guide/complete-guide-cannabis-clubs-madrid",
+      "permanent": true
+    },
+    {
+      "source": "/guide/cannabis-club-madrid-tourists-2025-guide-de",
+      "destination": "/guide/cannabis-club-madrid-tourists-2025-guide",
+      "permanent": true
+    },
+    {
+      "source": "/guide/cannabis-club-madrid-tourists-2025-guide-fr",
+      "destination": "/guide/cannabis-club-madrid-tourists-2025-guide",
+      "permanent": true
+    },
+    {
+      "source": "/guide/cannabis-club-madrid-tourists-2025-guide-it",
+      "destination": "/guide/cannabis-club-madrid-tourists-2025-guide",
+      "permanent": true
+    },
+    {
+      "source": "/guide/cannabis-club-madrid-tourists-2025-guide-es",
+      "destination": "/es/guide/cannabis-club-madrid-tourists-2025-guide",
+      "permanent": true
+    },
+    {
+      "source": "/guide/cannabis-tourism-madrid-guide-de",
+      "destination": "/guide/cannabis-tourism-madrid-guide",
+      "permanent": true
+    },
+    {
+      "source": "/guide/cannabis-tourism-madrid-guide-fr",
+      "destination": "/guide/cannabis-tourism-madrid-guide",
+      "permanent": true
+    },
+    {
+      "source": "/guide/cannabis-tourism-madrid-guide-it",
+      "destination": "/guide/cannabis-tourism-madrid-guide",
+      "permanent": true
+    },
+    {
+      "source": "/guide/cannabis-tourism-madrid-guide-es",
+      "destination": "/es/guide/cannabis-tourism-madrid-guide",
+      "permanent": true
+    },
+    {
+      "source": "/es/guide/:slug*-es",
+      "destination": "/es/guide/:slug*",
+      "permanent": true
+    },
+    {
+      "source": "/de/guide/:slug*-de",
+      "destination": "/guide/:slug*",
+      "permanent": true
+    },
+    {
+      "source": "/fr/guide/:slug*-fr",
+      "destination": "/guide/:slug*",
+      "permanent": true
+    },
+    {
+      "source": "/it/guide/:slug*-it",
+      "destination": "/guide/:slug*",
+      "permanent": true
+    },
+    {
+      "source": "/club/barrio-pilar-social-club",
+      "destination": "/clubs",
+      "permanent": true
+    },
+    {
+      "source": "/es/district/:slug",
+      "destination": "/es/districts",
+      "permanent": true
     }
   ],
   "rewrites": [
