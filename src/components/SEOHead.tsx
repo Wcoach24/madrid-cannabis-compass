@@ -95,8 +95,9 @@ const SEOHead = ({
     updateMetaTag('og:locale', ogLocale, 'property');
     
     // OG Image with dimensions (GEO improvement)
-    if (ogImage) {
-      updateMetaTag('og:image', ogImage, 'property');
+    const effectiveOgImage = ogImage || 'https://www.weedmadrid.com/og-image.jpg';
+    if (effectiveOgImage) {
+      updateMetaTag('og:image', effectiveOgImage, 'property');
       updateMetaTag('og:image:width', '1200', 'property');
       updateMetaTag('og:image:height', '630', 'property');
       updateMetaTag('og:image:alt', title, 'property');

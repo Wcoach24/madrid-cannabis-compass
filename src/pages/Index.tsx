@@ -141,7 +141,7 @@ const Index = () => {
         hreflangLinks={hreflangLinks}
         ogLocale={language === "es" ? "es_ES" : language === "de" ? "de_DE" : language === "fr" ? "fr_FR" : language === "it" ? "it_IT" : "en_US"}
         ogLocaleAlternate={["en_US", "es_ES", "de_DE", "fr_FR", "it_IT"].filter(l => l !== (language === "es" ? "es_ES" : language === "de" ? "de_DE" : language === "fr" ? "fr_FR" : language === "it" ? "it_IT" : "en_US"))}
-        ogImage={`${BASE_URL}/logo.png`}
+        ogImage={`${BASE_URL}/og-image.jpg`}
         htmlLang={language}
         fullContentLanguages={['en', 'es']}
         // GEO props
