@@ -18,6 +18,10 @@ interface SEOHeadProps {
   speakableSelectors?: string[];
   // Robots directive (noindex, follow, etc.)
   robots?: string;
+  // Dynamic HTML lang attribute
+  htmlLang?: string;
+  // Languages with full real content (others get noindex)
+  fullContentLanguages?: string[];
   // GEO: Generative Engine Optimization props
   citationTitle?: string;
   citationAuthor?: string;
@@ -39,6 +43,8 @@ const SEOHead = ({
   ogLocaleAlternate = [],
   speakableSelectors = [],
   robots,
+  htmlLang,
+  fullContentLanguages,
   // GEO props
   citationTitle,
   citationAuthor,
@@ -50,6 +56,10 @@ const SEOHead = ({
   useEffect(() => {
     // SSG/SEO signal: mark NOT ready while head is being updated
     document.documentElement.setAttribute('data-seo-ready', 'false');
+
+    // Dynamic lang attribute: derive from prop, ogLocale, or default to 'en'
+    const derivedLang = htmlLang || (ogLocale ? ogLocale.split('_')[0] : 'en');
+    document.documentElement.lang = derivedLang;
 
     // Update title
     document.title = title;
@@ -68,9 +78,15 @@ const SEOHead = ({
     updateMetaTag('description', description);
     if (keywords) updateMetaTag('keywords', keywords);
     
-    // CAMBIO 3: robots directive siempre en <head>
-    if (robots) {
-      updateMetaTag('robots', robots);
+    // Robots directive: auto-noindex for languages without full content
+    let effectiveRobots = robots;
+    if (!effectiveRobots && fullContentLanguages && fullContentLanguages.length > 0) {
+      if (!fullContentLanguages.includes(derivedLang)) {
+        effectiveRobots = 'noindex, follow';
+      }
+    }
+    if (effectiveRobots) {
+      updateMetaTag('robots', effectiveRobots);
     }
     
     updateMetaTag('og:title', title, 'property');
@@ -221,7 +237,7 @@ const SEOHead = ({
         document.documentElement.setAttribute('data-seo-ready', 'true');
       });
     });
-  }, [title, description, canonical, ogImage, keywords, structuredData, hreflangLinks, ogLocale, ogLocaleAlternate, speakableSelectors, robots, citationTitle, citationAuthor, citationDate, geoTxtPath, aiPriority, contentSummary]);
+  }, [title, description, canonical, ogImage, keywords, structuredData, hreflangLinks, ogLocale, ogLocaleAlternate, speakableSelectors, robots, htmlLang, fullContentLanguages, citationTitle, citationAuthor, citationDate, geoTxtPath, aiPriority, contentSummary]);
 
   return null;
 };
