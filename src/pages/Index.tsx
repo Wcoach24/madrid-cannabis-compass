@@ -126,6 +126,30 @@ const Index = () => {
           "@type": "Answer",
           "text": t("home.faq.seo.a3")
         }
+      },
+      {
+        "@type": "Question",
+        "name": t("home.faq.seo.q4"),
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": t("home.faq.seo.a4")
+        }
+      },
+      {
+        "@type": "Question",
+        "name": t("home.faq.seo.q5"),
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": t("home.faq.seo.a5")
+        }
+      },
+      {
+        "@type": "Question",
+        "name": t("home.faq.seo.q6"),
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": t("home.faq.seo.a6")
+        }
       }
     ]
   };
@@ -334,10 +358,13 @@ const Index = () => {
                             srcSet={club.main_image_url?.replace(/\.(jpg|jpeg|png)$/i, '.webp')} 
                             type="image/webp" 
                           />
-                          <img 
-                            src={club.main_image_url || "/placeholder.svg"} 
-                            alt={club.name}
+                          <img
+                            src={club.main_image_url || "/placeholder.svg"}
+                            alt={`${club.name} - Cannabis social club in ${club.district}, Madrid`}
+                            width={640}
+                            height={360}
                             className="w-full h-full object-cover transition-transform duration-500 md:group-hover:scale-110"
+                            loading="lazy"
                             translate="no"
                           />
                         </picture>

@@ -84,10 +84,12 @@ export function ClubGallery({ mainImage, galleryImages = [], clubName }: ClubGal
             }}
             aria-label={`View photo ${index + 1}`}
           >
-            <img 
-              src={image} 
-              alt="" 
-              className="w-full h-full object-cover" 
+            <img
+              src={image}
+              alt=""
+              width={64}
+              height={64}
+              className="w-full h-full object-cover"
               loading="lazy"
             />
           </button>
@@ -98,9 +100,11 @@ export function ClubGallery({ mainImage, galleryImages = [], clubName }: ClubGal
       <Dialog open={selectedImageIndex !== null} onOpenChange={() => setSelectedImageIndex(null)}>
         <DialogContent className="max-w-4xl p-0 bg-background/95 backdrop-blur-sm border-border">
           {selectedImageIndex !== null && (
-            <img 
-              src={allImages[selectedImageIndex]} 
-              alt={`${clubName} - Photo ${selectedImageIndex + 1}`} 
+            <img
+              src={allImages[selectedImageIndex]}
+              alt={`${clubName} - Photo ${selectedImageIndex + 1}`}
+              width={1200}
+              height={800}
               className="w-full h-auto max-h-[80vh] object-contain"
             />
           )}
