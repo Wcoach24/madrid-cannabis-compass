@@ -31,6 +31,18 @@ const HomepageFAQ = () => {
       question: t("home.faq.seo.q3"),
       answer: t("home.faq.seo.a3"),
     },
+    {
+      question: t("home.faq.seo.q4"),
+      answer: t("home.faq.seo.a4"),
+    },
+    {
+      question: t("home.faq.seo.q5"),
+      answer: t("home.faq.seo.a5"),
+    },
+    {
+      question: t("home.faq.seo.q6"),
+      answer: t("home.faq.seo.a6"),
+    },
   ];
 
   return (
@@ -53,8 +65,23 @@ const HomepageFAQ = () => {
                 <AccordionTrigger className="text-left font-semibold text-lg hover:no-underline py-5">
                   {faq.question}
                 </AccordionTrigger>
-                <AccordionContent className="text-muted-foreground pb-5">
+                <AccordionContent className="text-muted-foreground pb-5" data-answer="true">
                   {faq.answer}
+                  {index === 0 && (
+                    <Link to={buildLanguageAwarePath("/clubs", language)} className="block mt-3 text-primary hover:underline font-medium text-sm">
+                      → {t("nav.clubs")}
+                    </Link>
+                  )}
+                  {index === 3 && (
+                    <Link to={buildLanguageAwarePath("/clubs", language)} className="block mt-3 text-primary hover:underline font-medium text-sm">
+                      → {t("nav.clubs")}
+                    </Link>
+                  )}
+                  {index === 5 && (
+                    <Link to={buildLanguageAwarePath("/guide/how-to-join-a-cannabis-club-in-madrid", language)} className="block mt-3 text-primary hover:underline font-medium text-sm">
+                      → {t("guides.cards.howtojoin.title") || "How to Join a Cannabis Club"}
+                    </Link>
+                  )}
                 </AccordionContent>
               </AccordionItem>
             ))}

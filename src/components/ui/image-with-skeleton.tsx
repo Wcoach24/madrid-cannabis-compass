@@ -13,6 +13,10 @@ interface ImageWithSkeletonProps extends Omit<ImgHTMLAttributes<HTMLImageElement
   sizes?: string;
   /** Whether this is an above-the-fold image that should load eagerly */
   priority?: boolean;
+  /** Explicit width for CLS prevention (intrinsic dimension) */
+  imgWidth?: number;
+  /** Explicit height for CLS prevention (intrinsic dimension) */
+  imgHeight?: number;
 }
 
 export function ImageWithSkeleton({
@@ -28,6 +32,8 @@ export function ImageWithSkeleton({
   srcSet,
   sizes,
   priority = false,
+  imgWidth,
+  imgHeight,
   ...props
 }: ImageWithSkeletonProps) {
   const [isLoading, setIsLoading] = useState(true);
@@ -38,6 +44,15 @@ export function ImageWithSkeleton({
   
   // Determine loading strategy
   const loadingAttr = priority ? "eager" : (loading ?? "lazy");
+
+  // Default intrinsic dimensions by aspect ratio for CLS prevention
+  const defaultDimensions = {
+    video: { w: 640, h: 360 },
+    square: { w: 640, h: 640 },
+    portrait: { w: 480, h: 640 },
+  };
+  const resolvedWidth = imgWidth ?? defaultDimensions[aspectRatio].w;
+  const resolvedHeight = imgHeight ?? defaultDimensions[aspectRatio].h;
 
   const aspectClasses = {
     video: "aspect-video",
@@ -83,6 +98,8 @@ export function ImageWithSkeleton({
             {...props}
             src={src}
             alt={alt}
+            width={resolvedWidth}
+            height={resolvedHeight}
             loading={loadingAttr}
             translate="no"
             srcSet={!finalWebpSrc ? srcSet : undefined}
