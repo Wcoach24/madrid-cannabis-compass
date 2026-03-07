@@ -20,23 +20,23 @@ import { generateBreadcrumbSchema } from "@/lib/schemaUtils";
 
 // Editorial picks with reasons - keyed by slug
 const EDITORIAL_PICKS: Record<string, { reason: string; reasonEs: string }> = {
-  "vallehermoso-club-social-madrid": { 
+  "vallehermoso-club-social-madrid": {
     reason: "Highest-rated club with premium lounge atmosphere",
     reasonEs: "Club mejor valorado con ambiente lounge premium"
   },
-  "salamanca-social-club-madrid": { 
+  "salamanca-social-club-madrid": {
     reason: "Best for upscale experience in exclusive neighborhood",
     reasonEs: "Mejor para experiencia exclusiva en barrio elegante"
   },
-  "barrio-pilar-social-club": { 
+  "barrio-pilar-social-club": {
     reason: "Central location, ideal for first-time visitors",
     reasonEs: "Ubicación céntrica, ideal para primera visita"
   },
-  "green-paradise-madrid": { 
+  "green-paradise-madrid": {
     reason: "Most tourist-friendly with multilingual staff",
     reasonEs: "Más amigable para turistas con staff multilingüe"
   },
-  "la-mesa-verde-madrid": { 
+  "la-mesa-verde-madrid": {
     reason: "Best value membership with welcoming community",
     reasonEs: "Mejor relación calidad-precio con comunidad acogedora"
   }
@@ -78,7 +78,7 @@ const Clubs = () => {
 
   const fetchClubs = async () => {
     setLoading(true);
-    
+
     let query = supabase
       .from("clubs")
       .select("id, slug, name, summary, district, rating_editorial, is_tourist_friendly, is_verified, languages, main_image_url, timetable, description, is_featured")
@@ -104,19 +104,19 @@ const Clubs = () => {
 
     if (data) {
       let filtered = data;
-      
+
       if (searchQuery) {
         const lowerQuery = searchQuery.toLowerCase();
-        filtered = data.filter(club => 
+        filtered = data.filter(club =>
           club.name.toLowerCase().includes(lowerQuery) ||
           club.description.toLowerCase().includes(lowerQuery) ||
           club.district.toLowerCase().includes(lowerQuery)
         );
       }
-      
+
       setClubs(filtered);
     }
-    
+
     setLoading(false);
   };
 
@@ -189,7 +189,7 @@ const Clubs = () => {
         "name": language === "es" ? "¿Es legal el cannabis en Madrid?" : "Is cannabis legal in Madrid?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": language === "es" 
+          "text": language === "es"
             ? "El consumo de cannabis en espacios privados es legal en España. Los clubes sociales de cannabis operan como asociaciones privadas sin ánimo de lucro bajo la ley española. El consumo público sigue siendo ilegal con multas de hasta €30.000."
             : "Cannabis consumption in private spaces is legal in Spain. Cannabis social clubs operate as private non-profit associations under Spanish law. Public consumption remains illegal with fines up to €30,000."
         }
@@ -228,7 +228,7 @@ const Clubs = () => {
   };
 
   // SEO: noindex for parameter pages, canonical always to clean URL
-  const seoTitle = language === "es" 
+  const seoTitle = language === "es"
     ? "Clubes Cannabis Madrid 2026 – Verificados y Legales"
     : "Cannabis Clubs Madrid 2026 – Verified, Legal & Explained";
 
@@ -244,24 +244,26 @@ const Clubs = () => {
         canonical={`${BASE_URL}${buildLanguageAwarePath("/clubs", language)}`}
         keywords="cannabis clubs madrid, weed clubs madrid directory, verified cannabis clubs, madrid districts cannabis, how to join cannabis club madrid, cannabis legal madrid"
         hreflangLinks={hasFilterParams ? undefined : hreflangLinks}
-        ogLocale={language === "es" ? "es_ES" : language === "de" ? "de_DE" : language === "fr" ? "fr_FR" : "en_US"}
-        ogLocaleAlternate={["en_US", "es_ES", "de_DE", "fr_FR"].filter(l => l !== (language === "es" ? "es_ES" : language === "de" ? "de_DE" : language === "fr" ? "fr_FR" : "en_US"))}
+        htmlLang={language}
+        fullContentLanguages={['en', 'es']}
+        ogLocale={language === "es" ? "es_ES" : language === "de" ? "de_DE" : language === "fr" ? "fr_FR" : language === "it" ? "it_IT" : "en_US"}
+        ogLocaleAlternate={["en_US", "es_ES", "de_DE", "fr_FR", "it_IT"].filter(l => l !== (language === "es" ? "es_ES" : language === "de" ? "de_DE" : language === "fr" ? "fr_FR" : language === "it" ? "it_IT" : "en_US"))}
         structuredData={hasFilterParams ? undefined : [breadcrumbSchema, itemListSchema, faqSchema, speakableSchema]}
         robots={hasFilterParams ? "noindex, follow" : undefined}
       />
       <Header />
-      
+
       <main className="flex-1">
         {/* Hero Section - Editorial H1 */}
         <section className="py-16 bg-gradient-to-br from-primary via-forest-light to-primary">
           <div className="container mx-auto px-4">
-            <h1 
+            <h1
               className="text-4xl md:text-5xl lg:text-6xl font-bold text-primary-foreground mb-6"
               data-speakable="true"
             >
               {t("clubs.hero.title")}
             </h1>
-            <p 
+            <p
               className="text-xl md:text-2xl text-primary-foreground/90 max-w-3xl mb-8 passage-answer"
               data-speakable="true"
             >
@@ -344,8 +346,8 @@ const Clubs = () => {
             </h2>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
               {FEATURED_DISTRICTS.map((district) => (
-                <Link 
-                  key={district.slug} 
+                <Link
+                  key={district.slug}
                   to={buildLanguageAwarePath(`/clubs/${district.slug}`, language)}
                   className="group"
                 >
@@ -453,7 +455,7 @@ const Clubs = () => {
                   className="h-11"
                 />
               </div>
-              
+
               <Select value={districtFilter} onValueChange={setDistrictFilter}>
                 <SelectTrigger className="w-full md:w-48">
                   <SelectValue placeholder={t("clubs.filter.district")} />
@@ -559,8 +561,8 @@ const Clubs = () => {
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {ESSENTIAL_GUIDES.map((guide) => (
-                <Link 
-                  key={guide.slug} 
+                <Link
+                  key={guide.slug}
                   to={buildLanguageAwarePath(`/guide/${guide.slug}`, language)}
                   className="group"
                 >

@@ -87,7 +87,10 @@ const About = () => {
         keywords="weed madrid team, cannabis club guide madrid, madrid cannabis experts, weed madrid about us"
         hreflangLinks={hreflangLinks}
         structuredData={[organizationSchema, breadcrumbSchema]}
-        ogLocale={language === 'es' ? 'es_ES' : language === 'de' ? 'de_DE' : language === 'fr' ? 'fr_FR' : 'en_US'}
+        htmlLang={language}
+        fullContentLanguages={['en', 'es']}
+        ogLocale={language === 'es' ? 'es_ES' : language === 'de' ? 'de_DE' : language === 'fr' ? 'fr_FR' : language === 'it' ? 'it_IT' : 'en_US'}
+        ogLocaleAlternate={['en_US', 'es_ES', 'de_DE', 'fr_FR', 'it_IT'].filter(l => l !== (language === 'es' ? 'es_ES' : language === 'de' ? 'de_DE' : language === 'fr' ? 'fr_FR' : language === 'it' ? 'it_IT' : 'en_US'))}
       />
       
       <div className="min-h-screen bg-background">

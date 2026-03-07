@@ -137,11 +137,13 @@ const Index = () => {
         title={t("home.title")}
         description={t("home.subtitle")}
         canonical={`${BASE_URL}${buildLanguageAwarePath("/", language)}`}
-        keywords="weed madrid, weed clubs madrid, weed in madrid, cannabis club madrid, how to get weed in madrid safely, cannabis social club madrid, madrid cannabis association, social club cannabis madrid, private cannabis clubs madrid"
+        keywords="weed madrid, weed clubs madrid, weed in madrid, how to get weed in madrid safely, madrid cannabis association, private cannabis clubs madrid, marihuana madrid, hierba madrid"
         hreflangLinks={hreflangLinks}
-        ogLocale={language === "es" ? "es_ES" : language === "de" ? "de_DE" : language === "fr" ? "fr_FR" : "en_US"}
-        ogLocaleAlternate={["en_US", "es_ES", "de_DE", "fr_FR"].filter(l => l !== (language === "es" ? "es_ES" : language === "de" ? "de_DE" : language === "fr" ? "fr_FR" : "en_US"))}
-        ogImage={`${BASE_URL}/logo.png`}
+        ogLocale={language === "es" ? "es_ES" : language === "de" ? "de_DE" : language === "fr" ? "fr_FR" : language === "it" ? "it_IT" : "en_US"}
+        ogLocaleAlternate={["en_US", "es_ES", "de_DE", "fr_FR", "it_IT"].filter(l => l !== (language === "es" ? "es_ES" : language === "de" ? "de_DE" : language === "fr" ? "fr_FR" : language === "it" ? "it_IT" : "en_US"))}
+        ogImage={`${BASE_URL}/og-image.jpg`}
+        htmlLang={language}
+        fullContentLanguages={['en', 'es']}
         // GEO props
         geoTxtPath="/home.geo.txt"
         aiPriority="high"

@@ -826,7 +826,7 @@ export const translations: Record<Language, Record<string, string>> = {
     "shop.noproducts.desc": "Vuelve pronto para ver nuevo merchandising",
     
     // Homepage - SEO Optimized per PRD
-    "home.title": "Weed Madrid | Cómo Conseguir Marihuana en Madrid de Forma Segura (Guía 2026)",
+    "home.title": "Weed Madrid | Marihuana en Madrid – Clubes Legales 2026",
     "home.h1": "Weed Madrid – Cómo Conseguir Marihuana en Madrid de Forma Segura",
     "home.h2": "Una guía legal de clubes sociales de cannabis para turistas y residentes",
     "home.subtitle": "Accede de forma segura al cannabis en Madrid a través de clubes privados de cannabis. Aprende cómo funciona la membresía, qué es legal y cómo pueden unirse los turistas.",
@@ -951,7 +951,11 @@ export const translations: Record<Language, Record<string, string>> = {
     "home.faq.a4": "Tenemos varios clubes verificados en el distrito Centro de Madrid, cerca de Puerta del Sol y Gran Vía. Son populares entre turistas por su ubicación céntrica y personal que habla inglés. Explora nuestro directorio para encontrar clubes por distrito.",
     "home.faq.viewall": "Ver Todas las Preguntas",
     
-    // Clubs page
+    // About page - SEO
+    "about.seoTitle": "Sobre Weed Madrid | Expertos Locales Cannabis desde 2019",
+    "about.seoDescription": "Conoce al equipo de Weed Madrid – madrileños con más de 5 años ayudando a turistas a acceder legalmente a clubes de cannabis. +10.000 visitantes confían en nosotros.",
+    
+        // Clubs page
     "clubs.title": "Clubes de Cannabis en Madrid",
     "clubs.subtitle": "Explora asociaciones cannábicas verificadas y clubes privados",
     "clubs.search.placeholder": "Buscar por nombre o ubicación...",

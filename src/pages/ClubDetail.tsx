@@ -33,7 +33,7 @@ const ClubDetail = () => {
 
   const fetchClub = async () => {
     setLoading(true);
-    
+
     const { data } = await supabase
       .from("clubs")
       .select("*")
@@ -45,7 +45,7 @@ const ClubDetail = () => {
       setClub(data);
       fetchRelatedClubs(data.district, data.id);
     }
-    
+
     setLoading(false);
   };
 
@@ -57,7 +57,7 @@ const ClubDetail = () => {
       .eq("status", "active")
       .neq("id", currentId)
       .limit(3);
-      
+
     if (data) {
       setRelatedClubs(data);
     }
@@ -127,7 +127,7 @@ const ClubDetail = () => {
     "name": club.name,
     "description": club.description,
     "url": `${BASE_URL}/club/${club.slug}`,
-    "image": club.gallery_image_urls?.length 
+    "image": club.gallery_image_urls?.length
       ? [club.main_image_url, ...club.gallery_image_urls].filter(Boolean)
       : club.main_image_url,
     "publicAccess": false, // Members only
@@ -255,16 +255,18 @@ const ClubDetail = () => {
         keywords={`${club.name}, cannabis club ${club.district}, ${club.city} cannabis`}
         ogImage={club.main_image_url}
         hreflangLinks={hreflangLinks}
-        ogLocale={language === "es" ? "es_ES" : language === "de" ? "de_DE" : language === "fr" ? "fr_FR" : "en_US"}
-        ogLocaleAlternate={["en_US", "es_ES", "de_DE", "fr_FR"].filter(l => l !== (language === "es" ? "es_ES" : language === "de" ? "de_DE" : language === "fr" ? "fr_FR" : "en_US"))}
+        htmlLang={language}
+        fullContentLanguages={['en', 'es']}
+        ogLocale={language === "es" ? "es_ES" : language === "de" ? "de_DE" : language === "fr" ? "fr_FR" : language === "it" ? "it_IT" : "en_US"}
+        ogLocaleAlternate={["en_US", "es_ES", "de_DE", "fr_FR", "it_IT"].filter(l => l !== (language === "es" ? "es_ES" : language === "de" ? "de_DE" : language === "fr" ? "fr_FR" : language === "it" ? "it_IT" : "en_US"))}
         structuredData={[
-          breadcrumbSchema, 
+          breadcrumbSchema,
           localBusinessSchema,
           ...(imageSchema ? [imageSchema] : [])
         ]}
       />
       <Header />
-      
+
       <main className="flex-1">
         {club.main_image_url && (
           <ClubGallery
@@ -296,9 +298,9 @@ const ClubDetail = () => {
               </BreadcrumbList>
             </Breadcrumb>
 
-            <Button 
-              variant="outline" 
-              size="sm" 
+            <Button
+              variant="outline"
+              size="sm"
               className="mb-4"
               onClick={() => {
                 // Clear any residual dialog body locks before navigation
@@ -329,9 +331,9 @@ const ClubDetail = () => {
                 </div>
               )}
               {club.instagram_url && (
-                <a 
-                  href={club.instagram_url} 
-                  target="_blank" 
+                <a
+                  href={club.instagram_url}
+                  target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 text-primary hover:text-primary/80 transition-colors"
                   aria-label="Instagram"
@@ -444,7 +446,7 @@ const ClubDetail = () => {
                         <Clock className="h-5 w-5 text-primary" />
                         <h3 className="font-semibold">{t("club.hours.title")}</h3>
                       </div>
-                      
+
                       {/* Open Now Badge */}
                       <div className="mb-4">
                         {isOpenNow(club.timetable as Timetable) ? (
@@ -464,7 +466,7 @@ const ClubDetail = () => {
                           const timetable = club.timetable as Timetable;
                           const schedule = timetable[day as keyof Omit<Timetable, 'notes'>];
                           const isToday = getCurrentDay() === day;
-                          
+
                           return (
                             <div
                               key={day}
@@ -498,7 +500,7 @@ const ClubDetail = () => {
                     </CardContent>
                   </Card>
                 )}
-                
+
                 <Card>
                   <CardContent className="p-6 space-y-4">
                     <div className="flex items-start gap-3">
