@@ -80,8 +80,8 @@ const GuideDetail = () => {
   };
 
   const pillarPagePath = language === "es" ? "/club-cannabis-madrid" : "/cannabis-club-madrid";
-  const pillarPageTitle = language === "es" 
-    ? "Guía Completa: Club de Cannabis Madrid 2026" 
+  const pillarPageTitle = language === "es"
+    ? "Guía Completa: Club de Cannabis Madrid 2026"
     : "Complete Guide: Cannabis Club Madrid 2026";
 
   if (loading) {
@@ -115,7 +115,7 @@ const GuideDetail = () => {
   }
 
   const currentPath = removeLanguageFromPath(window.location.pathname);
-  
+
   // Don't generate hreflang for articles with language-specific slug suffixes
   // These have unique URLs per language (e.g., -it, -de, -fr, -es) and hreflang would point to non-existent URLs
   const hasLanguageSuffix = slug?.match(/-(es|en|de|fr|it)$/);
@@ -147,7 +147,7 @@ const GuideDetail = () => {
   };
 
   // Determine if this is a HowTo article
-  const isHowToArticle = article.title.toLowerCase().includes("how to") || 
+  const isHowToArticle = article.title.toLowerCase().includes("how to") ||
                          article.category.toLowerCase().includes("how-to") ||
                          article.slug.includes("how-to");
 
@@ -319,7 +319,7 @@ const GuideDetail = () => {
   };
 
   const faqSchema = extractFAQSchema(article.body_markdown);
-  
+
   // Build schemas array with all applicable schemas
   const allSchemas = [
     breadcrumbSchema,
@@ -338,13 +338,15 @@ const GuideDetail = () => {
         keywords={article.tags?.join(", ")}
         ogImage={article.cover_image_url}
         hreflangLinks={hreflangLinks}
-        ogLocale={language === "es" ? "es_ES" : language === "de" ? "de_DE" : language === "fr" ? "fr_FR" : "en_US"}
-        ogLocaleAlternate={["en_US", "es_ES", "de_DE", "fr_FR"].filter(l => l !== (language === "es" ? "es_ES" : language === "de" ? "de_DE" : language === "fr" ? "fr_FR" : "en_US"))}
+        htmlLang={language}
+        fullContentLanguages={[language]}
+        ogLocale={language === "es" ? "es_ES" : language === "de" ? "de_DE" : language === "fr" ? "fr_FR" : language === "it" ? "it_IT" : "en_US"}
+        ogLocaleAlternate={["en_US", "es_ES", "de_DE", "fr_FR", "it_IT"].filter(l => l !== (language === "es" ? "es_ES" : language === "de" ? "de_DE" : language === "fr" ? "fr_FR" : language === "it" ? "it_IT" : "en_US"))}
         structuredData={allSchemas}
         speakableSelectors={["h1", "article .text-muted-foreground", ".markdown-content > p:first-of-type", ".markdown-content h2"]}
       />
       <Header />
-      
+
       <main className="flex-1">
         <article className="py-12">
           <div className="container mx-auto px-4 max-w-4xl">
@@ -381,7 +383,7 @@ const GuideDetail = () => {
               {article.subtitle && (
                 <p className="text-xl text-muted-foreground mb-6">{article.subtitle}</p>
               )}
-              
+
               <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
                 <div className="flex items-center gap-2">
                   <User className="w-4 h-4" />
@@ -402,8 +404,8 @@ const GuideDetail = () => {
 
             {article.cover_image_url && (
               <div className="mb-12 rounded-lg overflow-hidden">
-                <img 
-                  src={article.cover_image_url} 
+                <img
+                  src={article.cover_image_url}
                   alt={`${article.title} - Comprehensive guide about ${article.category} for cannabis clubs in Madrid, Spain`}
                   className="w-full h-auto"
                   loading="eager"
@@ -432,7 +434,7 @@ const GuideDetail = () => {
                   <h3 className="font-semibold text-lg mb-2">
                     {language === "es" ? "Lectura Recomendada" : "Recommended Reading"}
                   </h3>
-                  <Link 
+                  <Link
                     to={buildLanguageAwarePath(pillarPagePath, language)}
                     className="text-primary hover:text-primary/80 underline underline-offset-4 font-medium flex items-center gap-2"
                   >
@@ -440,7 +442,7 @@ const GuideDetail = () => {
                     <ArrowRight className="h-4 w-4" />
                   </Link>
                   <p className="text-sm text-muted-foreground mt-2">
-                    {language === "es" 
+                    {language === "es"
                       ? "Todo lo que necesitas saber sobre los clubs de cannabis en Madrid en una guía completa."
                       : "Everything you need to know about cannabis clubs in Madrid in one comprehensive guide."}
                   </p>
@@ -459,8 +461,8 @@ const GuideDetail = () => {
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {featuredClubs.map((club) => (
-                  <Link 
-                    key={club.id} 
+                  <Link
+                    key={club.id}
                     to={buildLanguageAwarePath(`/club/${club.slug}`, language)}
                     className="group"
                   >
@@ -492,7 +494,7 @@ const GuideDetail = () => {
                 ))}
               </div>
               <div className="text-center mt-6">
-                <Link 
+                <Link
                   to={buildLanguageAwarePath("/clubs", language)}
                   className="text-primary hover:text-primary/80 underline underline-offset-4 inline-flex items-center gap-2"
                 >
@@ -513,8 +515,8 @@ const GuideDetail = () => {
                   <Link key={related.id} to={buildLanguageAwarePath(`/guide/${related.slug}`, language)}>
                     <Card className="h-full hover:shadow-lg transition-shadow">
                       {related.cover_image_url && (
-                        <img 
-                          src={related.cover_image_url} 
+                        <img
+                          src={related.cover_image_url}
                           alt={`${related.title} - Related article about cannabis clubs in Madrid`}
                           className="w-full h-48 object-cover"
                           loading="lazy"
