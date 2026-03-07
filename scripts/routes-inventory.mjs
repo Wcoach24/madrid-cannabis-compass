@@ -22,6 +22,9 @@ const SUPABASE_ANON_KEY = process.env.VITE_SUPABASE_ANON_KEY;
 // All supported languages
 export const LANGUAGES = ['en', 'es', 'de', 'fr', 'it'];
 
+// Languages with real club content (others auto-noindexed by SEOHead)
+const CLUB_LANGUAGES = ['en', 'es'];
+
 // Static routes that exist for all languages (INDEXABLE)
 // NOTE: /cannabis-club-madrid is handled specially - EN uses /cannabis-club-madrid, other langs use /club-cannabis-madrid
 export const STATIC_ROUTES = [
@@ -185,10 +188,10 @@ export function buildUrlInventory(dynamicData) {
     }
   }
 
-  // 2. Club pages (same content, different lang UI)
+  // 2. Club pages — only EN and ES (de/fr/it lack translated content, auto-noindexed by SEOHead)
   for (const slug of dynamicData.clubs) {
     urls.push({ path: `/club/${slug}`, lang: 'en', type: 'club', slug });
-    for (const lang of LANGUAGES) {
+    for (const lang of CLUB_LANGUAGES) {
       if (lang !== 'en') {
         urls.push({ path: `/${lang}/club/${slug}`, lang, type: 'club', slug });
       }

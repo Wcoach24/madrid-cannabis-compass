@@ -189,6 +189,8 @@ const CannabisClubMadrid = () => {
         canonical={`${BASE_URL}${canonicalPath}`}
         keywords="cannabis club madrid, social club madrid, weed club madrid, cannabis social club madrid, asociacion cannabica madrid, social club weed madrid, private cannabis association madrid, how to join cannabis club madrid, madrid weed social club"
         hreflangLinks={hreflangLinks}
+        htmlLang={language}
+        fullContentLanguages={['en', 'es']}
         structuredData={structuredData}
         speakableSelectors={["h1", "[data-speakable]", "[data-answer]"]}
       />
