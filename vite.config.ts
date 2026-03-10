@@ -1,7 +1,6 @@
 import { defineConfig, Plugin } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
-import { componentTagger } from "lovable-tagger";
 
 /**
  * Custom plugin to make CSS non-blocking using media swap technique.
@@ -33,7 +32,6 @@ export default defineConfig(({ mode }) => ({
   },
   plugins: [
     react(),
-    mode === "development" && componentTagger(),
     mode === "production" && nonBlockingCss(),
   ].filter(Boolean),
   resolve: {

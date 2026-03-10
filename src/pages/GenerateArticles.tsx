@@ -193,7 +193,7 @@ const GenerateArticles = () => {
           seo_description: generatedContent.substring(0, 160),
           excerpt: generatedContent.substring(0, 200),
           published_at: new Date().toISOString(),
-          canonical_url: `https://lovable.dev/guide/${article.slug}`,
+          canonical_url: `https://www.weedmadrid.com/guide/${article.slug}`,
           is_featured: true
         });
 
@@ -237,7 +237,7 @@ const GenerateArticles = () => {
             <CardHeader>
               <CardTitle className="text-amber-900 dark:text-amber-100">⚠️ Admin Tool</CardTitle>
               <CardDescription className="text-amber-800 dark:text-amber-200">
-                This page generates long-form articles using Lovable AI. Each generation consumes AI credits and takes 30-60 seconds. 
+                This page generates long-form articles using AI. Each generation consumes credits and takes 30-60 seconds.
                 Only run this once to populate the guides section.
               </CardDescription>
             </CardHeader>
