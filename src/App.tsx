@@ -70,14 +70,31 @@ const PageLoader = () => (
 );
 
 /**
- * Hook to mark document as hydrated
- * Shell is hidden via CSS when hydration-ready class is added in main.tsx
+ * Hook to mark document as hydrated and clean up the LCP hero shell.
+ *
+ * The hero-shell exists in index.html OUTSIDE #root for homepage LCP optimization,
+ * but it contains a hardcoded homepage H1 that causes duplicate H1 issues on every
+ * non-homepage route. We remove it from the DOM entirely after React commits.
+ *
+ * Previously this was done via requestAnimationFrame in main.tsx, but the rAF
+ * callback wasn't executing reliably in production builds. useEffect is guaranteed
+ * to fire after React commits to the DOM.
  */
 function useHydrationMarker() {
   useEffect(() => {
     // Mark as hydrated for SSG detection
-    // Shell hiding is handled by CSS rule: html.hydration-ready #hero-shell { display: none; }
     document.documentElement.setAttribute('data-hydrated', 'true');
+
+    // Add hydration-ready class for CSS transitions (backdrop-blur, glass effects)
+    document.documentElement.classList.add('hydration-ready');
+
+    // Remove hero-shell from DOM entirely.
+    // CSS rule html.hydration-ready #hero-shell { display: none } provides
+    // instant visual hiding; DOM removal ensures no duplicate H1 for crawlers.
+    const heroShell = document.getElementById('hero-shell');
+    if (heroShell) {
+      heroShell.remove();
+    }
   }, []);
 }
 
