@@ -73,6 +73,13 @@ export const NEIGHBORHOOD_SLUGS = [
   'tetuan',
 ];
 
+// Blog article slugs - static content, ZERO Supabase dependency
+// Targets high-volume informational keywords
+export const BLOG_ARTICLE_SLUGS = [
+  'is-weed-legal-in-spain-2026',
+  'how-to-join-cannabis-club-madrid',
+];
+
 // Routes that should NOT be indexed (noindex)
 export const NOINDEX_ROUTES = [
   '/auth',
@@ -236,7 +243,19 @@ export function buildUrlInventory(dynamicData) {
     }
   }
 
-  // 5. District pages - only for supported districts with high search volume
+  // 5. Blog article pages — static content, all languages
+  // URL pattern: /blog/{slug}
+  for (const slug of BLOG_ARTICLE_SLUGS) {
+    const blogPath = `/blog/${slug}`;
+    urls.push({ path: blogPath, lang: 'en', type: 'blog', slug });
+    for (const lang of LANGUAGES) {
+      if (lang !== 'en') {
+        urls.push({ path: `/${lang}${blogPath}`, lang, type: 'blog', slug });
+      }
+    }
+  }
+
+  // 6. District pages - only for supported districts with high search volume
   // Only EN and ES to focus crawl budget on quality pages
   for (const district of dynamicData.districts) {
     const isSupported = SUPPORTED_DISTRICT_SLUGS.includes(district);

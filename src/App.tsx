@@ -45,6 +45,7 @@ const Privacy = lazy(() => import("./pages/Privacy"));
 const Terms = lazy(() => import("./pages/Terms"));
 const Glossary = lazy(() => import("./pages/Glossary"));
 const NeighborhoodPage = lazy(() => import("./pages/NeighborhoodPage"));
+const BlogPost = lazy(() => import("./pages/BlogPost"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
@@ -119,6 +120,7 @@ const App = () => {
               <Route path="/cannabis-club-madrid" element={<CannabisClubMadrid />} />
               <Route path="/glossary" element={<Glossary />} />
               <Route path="/weed-:slug-madrid" element={<NeighborhoodPage />} />
+              <Route path="/blog/:slug" element={<BlogPost />} />
 
               {/* Language-prefixed routes */}
               <Route path="/:lang" element={<Index />} />
@@ -152,6 +154,7 @@ const App = () => {
               <Route path="/:lang/cannabis-club-madrid" element={<CannabisClubMadrid />} />
               <Route path="/:lang/glossary" element={<Glossary />} />
               <Route path="/:lang/weed-:slug-madrid" element={<NeighborhoodPage />} />
+              <Route path="/:lang/blog/:slug" element={<BlogPost />} />
 
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
