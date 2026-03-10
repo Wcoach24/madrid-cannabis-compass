@@ -54,8 +54,12 @@ async function main() {
     console.log('\n🎭 STEP 2: Prerendering all routes...\n');
     await run('node', ['scripts/prerender.mjs']);
 
-    // Step 3: Validate SEO
-    console.log('\n🔍 STEP 3: Validating SEO...\n');
+    // Step 3: Generate Sitemap
+    console.log('\n🗺️  STEP 3: Generating sitemap...\n');
+    await run('node', ['scripts/generate-sitemap.mjs']);
+
+    // Step 4: Validate SEO
+    console.log('\n🔍 STEP 4: Validating SEO...\n');
     await run('node', ['scripts/validate-seo.mjs']);
 
     console.log('\n' + '='.repeat(60));
