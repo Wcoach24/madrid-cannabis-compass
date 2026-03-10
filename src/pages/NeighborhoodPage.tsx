@@ -1,4 +1,4 @@
-import { useParams, Link, Navigate } from "react-router-dom";
+import { useLocation, Link, Navigate } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SEOHead from "@/components/SEOHead";
@@ -31,11 +31,19 @@ import {
  *
  * ZERO Supabase dependency. All content from neighborhoodContent.ts.
  * Prerendered by puppeteer for full SSG/SEO.
+ *
+ * NOTE: We extract the slug from the URL via regex instead of useParams
+ * because React Router v6 does NOT support sub-segment params like
+ * /weed-:slug-madrid. The :slug only works as a full segment (after /).
  */
 const NeighborhoodPage = () => {
-  const { slug } = useParams<{ slug: string }>();
+  const location = useLocation();
   const { language } = useLanguageContext();
   const langPrefix = language === "en" ? "" : `/${language}`;
+
+  // Extract slug from URL: /weed-{slug}-madrid or /:lang/weed-{slug}-madrid
+  const slugMatch = location.pathname.match(/\/weed-(.+)-madrid$/);
+  const slug = slugMatch?.[1];
 
   const neighborhood = slug ? NEIGHBORHOODS[slug] : undefined;
 
