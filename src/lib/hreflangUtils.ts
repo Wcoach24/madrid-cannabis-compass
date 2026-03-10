@@ -33,18 +33,39 @@ export const generateHreflangLinks = (
     href: defaultHref,
   });
   
-  // Add each language version - ONLY primary language codes, no regional variants (CAMBIO 4)
+  // Regional variant mapping for better geo-targeting
+  // Google recommends language-region codes (BCP 47) for precise targeting
+  const regionalVariants: Record<string, string[]> = {
+    en: ["en-US", "en-GB"],
+    es: ["es-ES"],
+    de: ["de-DE", "de-AT"],
+    fr: ["fr-FR"],
+    it: ["it-IT"],
+  };
+
+  // Add each language version with primary code + regional variants
   languages.forEach((lang) => {
-    const langPath = lang === DEFAULT_LANGUAGE 
-      ? normalizedPath 
+    const langPath = lang === DEFAULT_LANGUAGE
+      ? normalizedPath
       : `/${lang}${normalizedPath}`;
     const href = `${baseUrl}${langPath}`;
-    
-    // Add primary language code only (es, en, de, fr, it)
+
+    // Add primary language code (es, en, de, fr, it)
     links.push({
       lang: lang,
       href: href,
     });
+
+    // Add regional variants pointing to same URL
+    const variants = regionalVariants[lang];
+    if (variants) {
+      variants.forEach((variant) => {
+        links.push({
+          lang: variant,
+          href: href,
+        });
+      });
+    }
   });
   
   return links;
