@@ -99,15 +99,6 @@ jobs:
             !dist/assets/
           retention-days: 7
 
-      - name: Save prerendered HTML
-        run: |
-          echo "📦 Saving prerendered HTML before Vercel build..."
-          mkdir -p /tmp/prerendered-backup
-          # Copy entire dist/ to backup (HTML + assets + sitemap)
-          cp -r dist/* /tmp/prerendered-backup/
-          HTML_COUNT=$(find /tmp/prerendered-backup -name "*.html" | wc -l)
-          echo "✅ Backed up $HTML_COUNT HTML files"
-
       - name: Install Vercel CLI
         run: npm install -g vercel@latest
 
@@ -123,40 +114,47 @@ jobs:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
-      - name: Restore prerendered HTML
+      - name: Replace Vercel static with prerendered dist
         run: |
-          echo "🔄 Restoring prerendered HTML into Vercel output..."
+          echo "🔄 Replacing Vercel static output with prerendered dist..."
           VERCEL_STATIC=".vercel/output/static"
-          
+
           if [ ! -d "$VERCEL_STATIC" ]; then
             echo "❌ FATAL: Vercel output directory not found at $VERCEL_STATIC"
             exit 1
           fi
-          
-          # Restore all prerendered HTML files (overwrite the SPA shells)
-          find /tmp/prerendered-backup -name "*.html" | while read src; do
-            rel="${src#/tmp/prerendered-backup/}"
-            dest="$VERCEL_STATIC/$rel"
-            mkdir -p "$(dirname "$dest")"
-            cp "$src" "$dest"
-          done
-          
-          # Also restore sitemap.xml and robots.txt if they exist
-          for f in sitemap.xml robots.txt; do
-            if [ -f "/tmp/prerendered-backup/$f" ]; then
-              cp "/tmp/prerendered-backup/$f" "$VERCEL_STATIC/$f"
-              echo "  ✅ Restored $f"
-            fi
-          done
-          
-          RESTORED=$(find "$VERCEL_STATIC" -name "*.html" -path "*/index.html" | wc -l)
-          echo "✅ Restored $RESTORED prerendered HTML files to Vercel output"
-          
-          # Quick sanity check: verify a prerendered file has the build stamp
-          if grep -q "GH_ACTIONS_" "$VERCEL_STATIC/clubs/index.html" 2>/dev/null; then
-            echo "✅ Sanity check passed: /clubs has build stamp"
+
+          # Save Vercel config (routing rules, headers, etc.)
+          cp .vercel/output/config.json /tmp/vercel-config.json
+
+          # Replace ALL static files with our prerendered dist/
+          # This ensures asset hashes in HTML match the actual JS/CSS files
+          rm -rf "$VERCEL_STATIC"/*
+          cp -r dist/* "$VERCEL_STATIC/"
+
+          # Restore Vercel config
+          cp /tmp/vercel-config.json .vercel/output/config.json
+
+          # Verify: JS bundle referenced in index.html must exist
+          BUNDLE_REF=$(grep -oP 'src="/assets/index-[^"]+\.js"' "$VERCEL_STATIC/index.html" | head -1 | grep -oP '/assets/[^"]+')
+          if [ -n "$BUNDLE_REF" ] && [ -f "$VERCEL_STATIC$BUNDLE_REF" ]; then
+            echo "✅ Bundle $BUNDLE_REF exists in static output"
           else
-            echo "⚠️ Warning: /clubs/index.html missing build stamp after restore"
+            echo "❌ FATAL: Bundle referenced in index.html not found!"
+            echo "   Referenced: $BUNDLE_REF"
+            ls -la "$VERCEL_STATIC/assets/" | head -10
+            exit 1
+          fi
+
+          TOTAL_HTML=$(find "$VERCEL_STATIC" -name "*.html" | wc -l)
+          TOTAL_JS=$(find "$VERCEL_STATIC/assets" -name "*.js" 2>/dev/null | wc -l)
+          echo "✅ Replaced Vercel static output: $TOTAL_HTML HTML, $TOTAL_JS JS bundles"
+
+          # Sanity: prerendered /clubs has build stamp
+          if grep -q "GH_ACTIONS_" "$VERCEL_STATIC/clubs/index.html" 2>/dev/null; then
+            echo "✅ Sanity: /clubs has build stamp"
+          else
+            echo "⚠️ Warning: /clubs missing build stamp"
           fi
 
       - name: Deploy Prebuilt to Production
