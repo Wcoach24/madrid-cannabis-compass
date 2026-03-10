@@ -58,6 +58,21 @@ export const SUPPORTED_DISTRICT_SLUGS = [
   'arganzuela',
 ];
 
+// Neighborhood landing pages - 100% static, ZERO Supabase dependency
+// Targets "weed [neighborhood] madrid" keyword cluster
+export const NEIGHBORHOOD_SLUGS = [
+  'malasana',
+  'centro',
+  'sol',
+  'chueca',
+  'chamberi',
+  'lavapies',
+  'gran-via',
+  'moncloa',
+  'arganzuela',
+  'tetuan',
+];
+
 // Routes that should NOT be indexed (noindex)
 export const NOINDEX_ROUTES = [
   '/auth',
@@ -207,7 +222,21 @@ export function buildUrlInventory(dynamicData) {
     }
   }
 
-  // 4. District pages - only for supported districts with high search volume
+  // 4. Neighborhood landing pages — static content, all languages
+  // URL pattern: /weed-{slug}-madrid
+  for (const slug of NEIGHBORHOOD_SLUGS) {
+    const neighborhoodPath = `/weed-${slug}-madrid`;
+    // English (default) - no prefix
+    urls.push({ path: neighborhoodPath, lang: 'en', type: 'neighborhood', slug });
+    // Other languages with prefix
+    for (const lang of LANGUAGES) {
+      if (lang !== 'en') {
+        urls.push({ path: `/${lang}${neighborhoodPath}`, lang, type: 'neighborhood', slug });
+      }
+    }
+  }
+
+  // 5. District pages - only for supported districts with high search volume
   // Only EN and ES to focus crawl budget on quality pages
   for (const district of dynamicData.districts) {
     const isSupported = SUPPORTED_DISTRICT_SLUGS.includes(district);

@@ -44,6 +44,7 @@ const CannabisClubMadrid = lazy(() => import("./pages/CannabisClubMadrid"));
 const Privacy = lazy(() => import("./pages/Privacy"));
 const Terms = lazy(() => import("./pages/Terms"));
 const Glossary = lazy(() => import("./pages/Glossary"));
+const NeighborhoodPage = lazy(() => import("./pages/NeighborhoodPage"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
@@ -117,7 +118,8 @@ const App = () => {
               <Route path="/safety/scams" element={<ScamWarning />} />
               <Route path="/cannabis-club-madrid" element={<CannabisClubMadrid />} />
               <Route path="/glossary" element={<Glossary />} />
-              
+              <Route path="/weed-:slug-madrid" element={<NeighborhoodPage />} />
+
               {/* Language-prefixed routes */}
               <Route path="/:lang" element={<Index />} />
               <Route path="/:lang/clubs" element={<Clubs />} />
@@ -149,7 +151,8 @@ const App = () => {
               {/* Legacy alias for already indexed URLs */}
               <Route path="/:lang/cannabis-club-madrid" element={<CannabisClubMadrid />} />
               <Route path="/:lang/glossary" element={<Glossary />} />
-              
+              <Route path="/:lang/weed-:slug-madrid" element={<NeighborhoodPage />} />
+
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
