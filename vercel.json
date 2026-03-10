@@ -48,7 +48,7 @@
       ]
     },
     {
-      "source": "/(club|guide|district|clubs|es|de|fr|it)/(.*)",
+      "source": "/(blog|club|guide|district|clubs|es|de|fr|it)/(.*)",
       "headers": [
         {
           "key": "Cache-Control",
@@ -503,6 +503,14 @@
     {
       "source": "/api/rss",
       "destination": "https://sdpmwelfkseuhlhgatsc.supabase.co/functions/v1/generate-rss"
+    },
+    {
+      "source": "/blog/:slug*",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/:lang/blog/:slug*",
+      "destination": "/index.html"
     },
     {
       "source": "/invite/:slug*",
