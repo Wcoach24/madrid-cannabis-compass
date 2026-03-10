@@ -70,6 +70,7 @@ const ROUTE_DEPS = {
   '/legal': ['src/pages/Legal.tsx'],
   '/districts': ['src/pages/Districts.tsx', 'src/pages/District.tsx'],
   '/cannabis-club-madrid': ['src/pages/CannabisClubMadrid.tsx'],
+  '/weed-': ['src/pages/NeighborhoodPage.tsx', 'src/data/neighborhoodContent.ts'],
 };
 
 // Heavy routes that need more time
