@@ -99,6 +99,15 @@ jobs:
             !dist/assets/
           retention-days: 7
 
+      - name: Save prerendered HTML
+        run: |
+          echo "📦 Saving prerendered HTML before Vercel build..."
+          mkdir -p /tmp/prerendered-backup
+          # Copy entire dist/ to backup (HTML + assets + sitemap)
+          cp -r dist/* /tmp/prerendered-backup/
+          HTML_COUNT=$(find /tmp/prerendered-backup -name "*.html" | wc -l)
+          echo "✅ Backed up $HTML_COUNT HTML files"
+
       - name: Install Vercel CLI
         run: npm install -g vercel@latest
 
@@ -113,6 +122,42 @@ jobs:
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+      - name: Restore prerendered HTML
+        run: |
+          echo "🔄 Restoring prerendered HTML into Vercel output..."
+          VERCEL_STATIC=".vercel/output/static"
+          
+          if [ ! -d "$VERCEL_STATIC" ]; then
+            echo "❌ FATAL: Vercel output directory not found at $VERCEL_STATIC"
+            exit 1
+          fi
+          
+          # Restore all prerendered HTML files (overwrite the SPA shells)
+          find /tmp/prerendered-backup -name "*.html" | while read src; do
+            rel="${src#/tmp/prerendered-backup/}"
+            dest="$VERCEL_STATIC/$rel"
+            mkdir -p "$(dirname "$dest")"
+            cp "$src" "$dest"
+          done
+          
+          # Also restore sitemap.xml and robots.txt if they exist
+          for f in sitemap.xml robots.txt; do
+            if [ -f "/tmp/prerendered-backup/$f" ]; then
+              cp "/tmp/prerendered-backup/$f" "$VERCEL_STATIC/$f"
+              echo "  ✅ Restored $f"
+            fi
+          done
+          
+          RESTORED=$(find "$VERCEL_STATIC" -name "*.html" -path "*/index.html" | wc -l)
+          echo "✅ Restored $RESTORED prerendered HTML files to Vercel output"
+          
+          # Quick sanity check: verify a prerendered file has the build stamp
+          if grep -q "GH_ACTIONS_" "$VERCEL_STATIC/clubs/index.html" 2>/dev/null; then
+            echo "✅ Sanity check passed: /clubs has build stamp"
+          else
+            echo "⚠️ Warning: /clubs/index.html missing build stamp after restore"
+          fi
 
       - name: Deploy Prebuilt to Production
         run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
