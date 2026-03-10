@@ -8,6 +8,7 @@ import { LanguageProvider } from "@/contexts/LanguageContext";
 import ScrollToTop from "@/components/ScrollToTop";
 import { Analytics } from "@/components/Analytics";
 import WhatsAppWidget from "@/components/WhatsAppWidget";
+import { NEIGHBORHOOD_SLUGS } from "@/data/neighborhoodContent";
 
 // Critical homepage - load immediately
 import Index from "./pages/Index";
@@ -119,8 +120,21 @@ const App = () => {
               <Route path="/safety/scams" element={<ScamWarning />} />
               <Route path="/cannabis-club-madrid" element={<CannabisClubMadrid />} />
               <Route path="/glossary" element={<Glossary />} />
-              <Route path="/weed-:slug-madrid" element={<NeighborhoodPage />} />
               <Route path="/blog/:slug" element={<BlogPost />} />
+
+              {/*
+                Neighborhood routes — explicit paths for each neighborhood.
+                React Router v6 does NOT support sub-segment params like
+                /weed-:slug-madrid, so we generate a static route per slug.
+                NeighborhoodPage extracts the slug from the URL via regex.
+              */}
+              {NEIGHBORHOOD_SLUGS.map((slug) => (
+                <Route
+                  key={`neighborhood-${slug}`}
+                  path={`/weed-${slug}-madrid`}
+                  element={<NeighborhoodPage />}
+                />
+              ))}
 
               {/* Language-prefixed routes */}
               <Route path="/:lang" element={<Index />} />
@@ -153,8 +167,16 @@ const App = () => {
               {/* Legacy alias for already indexed URLs */}
               <Route path="/:lang/cannabis-club-madrid" element={<CannabisClubMadrid />} />
               <Route path="/:lang/glossary" element={<Glossary />} />
-              <Route path="/:lang/weed-:slug-madrid" element={<NeighborhoodPage />} />
               <Route path="/:lang/blog/:slug" element={<BlogPost />} />
+
+              {/* Language-prefixed neighborhood routes */}
+              {NEIGHBORHOOD_SLUGS.map((slug) => (
+                <Route
+                  key={`lang-neighborhood-${slug}`}
+                  path={`/:lang/weed-${slug}-madrid`}
+                  element={<NeighborhoodPage />}
+                />
+              ))}
 
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
