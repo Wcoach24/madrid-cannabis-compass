@@ -8,10 +8,13 @@ import ClubCard from "@/components/ClubCard";
 import { useLanguageContext } from "@/contexts/LanguageContext";
 import { buildLanguageAwarePath } from "@/lib/languageUtils";
 import { BASE_URL } from "@/lib/hreflangUtils";
-import { 
-  Scale, 
+import {
+  Scale,
   Sparkles,
-  ArrowRight
+  ArrowRight,
+  MapPin,
+  Train,
+  ChevronRight
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -22,6 +25,7 @@ import {
 } from "@/components/ui/accordion";
 import { Timetable } from "@/lib/timetableUtils";
 import { Json } from "@/integrations/supabase/types";
+import { NEIGHBORHOODS, NEIGHBORHOOD_SLUGS } from "@/data/neighborhoodContent";
 interface Club {
   id: number;
   name: string;
@@ -313,6 +317,49 @@ const CannabisClubMadrid = () => {
                   </Button>
                 </Link>
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Cannabis Clubs by Neighborhood — Internal Linking */}
+        <section className="py-16 bg-background">
+          <div className="container mx-auto px-4">
+            <h2 className="text-3xl font-bold mb-4 text-foreground">
+              {isSpanish ? "Cannabis Clubs por Barrio en Madrid" : "Cannabis Clubs by Neighborhood in Madrid"}
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-4xl mb-10 leading-relaxed">
+              {isSpanish
+                ? "Cada barrio de Madrid tiene su propia personalidad y oferta de clubs de cannabis. Desde el ambiente bohemio de Malasaña hasta la elegancia de Chamberí, explora nuestras guías detalladas por barrio para encontrar el club perfecto cerca de donde te alojas."
+                : "Every Madrid neighborhood has its own personality and cannabis club offerings. From the bohemian vibe of Malasaña to the elegance of Chamberí, explore our detailed neighborhood guides to find the perfect club near where you're staying."}
+            </p>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {NEIGHBORHOOD_SLUGS.map((slug) => {
+                const n = NEIGHBORHOODS[slug];
+                if (!n) return null;
+                return (
+                  <Link
+                    key={slug}
+                    to={`${langPrefix}/weed-${slug}-madrid`}
+                    className="group flex items-center justify-between p-4 rounded-xl bg-card border border-border hover:border-primary/50 transition-all"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 rounded-lg bg-primary/10">
+                        <MapPin className="w-4 h-4 text-primary" />
+                      </div>
+                      <div>
+                        <h3 className="font-medium text-foreground group-hover:text-primary transition-colors">
+                          {isSpanish ? `Cannabis en ${n.nameWithAccent}` : `Weed in ${n.nameWithAccent}`}
+                        </h3>
+                        <p className="text-xs text-muted-foreground flex items-center gap-1 mt-0.5">
+                          <Train className="w-3 h-3" />
+                          {n.metroStations.slice(0, 2).join(", ")}
+                        </p>
+                      </div>
+                    </div>
+                    <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
+                  </Link>
+                );
+              })}
             </div>
           </div>
         </section>
