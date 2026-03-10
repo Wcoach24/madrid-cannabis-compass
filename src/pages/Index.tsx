@@ -20,6 +20,9 @@ const HowItWorksSection = lazy(() => import("@/components/home/HowItWorksSection
 const ClubTypesSection = lazy(() => import("@/components/home/ClubTypesSection"));
 const SafetyTipsSection = lazy(() => import("@/components/home/SafetyTipsSection"));
 const HomepageFAQ = lazy(() => import("@/components/home/HomepageFAQ"));
+const WhyMadridSection = lazy(() => import("@/components/home/WhyMadridSection"));
+const NeighborhoodExplorer = lazy(() => import("@/components/home/NeighborhoodExplorer"));
+const CannabisTourismGuide = lazy(() => import("@/components/home/CannabisTourismGuide"));
 
 // Minimal skeleton for lazy-loaded sections
 const SectionSkeleton = ({ height = "h-64" }: { height?: string }) => (
@@ -309,6 +312,13 @@ const Index = () => {
           </Suspense>
         </LazyHydrate>
 
+        {/* 3b. WHY MADRID - Long-form SEO content (~800 words) */}
+        <LazyHydrate whenVisible>
+          <Suspense fallback={<SectionSkeleton height="h-96" />}>
+            <WhyMadridSection />
+          </Suspense>
+        </LazyHydrate>
+
         {/* 4. AVOID SCAMS SECTION - Trust Signal */}
         <LazyHydrate whenVisible>
           <Suspense fallback={<SectionSkeleton height="h-80" />}>
@@ -424,10 +434,24 @@ const Index = () => {
           </section>
         )}
 
+        {/* 6b. NEIGHBORHOOD EXPLORER - Internal linking to 10 neighborhood pages */}
+        <LazyHydrate whenVisible>
+          <Suspense fallback={<SectionSkeleton height="h-96" />}>
+            <NeighborhoodExplorer />
+          </Suspense>
+        </LazyHydrate>
+
         {/* 7. TYPES OF CANNABIS CLUBS */}
         <LazyHydrate whenVisible>
           <Suspense fallback={<SectionSkeleton height="h-80" />}>
             <ClubTypesSection />
+          </Suspense>
+        </LazyHydrate>
+
+        {/* 7b. CANNABIS TOURISM GUIDE - Practical tips (~700 words) */}
+        <LazyHydrate whenVisible>
+          <Suspense fallback={<SectionSkeleton height="h-96" />}>
+            <CannabisTourismGuide />
           </Suspense>
         </LazyHydrate>
 
