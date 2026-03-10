@@ -1,8 +1,8 @@
 {
-  "buildCommand": "",
+  "installCommand": "PUPPETEER_SKIP_DOWNLOAD=true npm install",
+  "buildCommand": "npx vite build",
   "framework": null,
   "outputDirectory": "dist",
-  "ignoreCommand": "exit 1",
   "trailingSlash": false,
   "headers": [
     {
