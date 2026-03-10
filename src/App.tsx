@@ -47,9 +47,17 @@ const Terms = lazy(() => import("./pages/Terms"));
 const Glossary = lazy(() => import("./pages/Glossary"));
 const NeighborhoodPage = lazy(() => import("./pages/NeighborhoodPage"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
+const BlogIndex = lazy(() => import("./pages/BlogIndex"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
+
+/**
+ * Valid language codes for the site.
+ * Used to generate explicit /:lang routes instead of a catch-all
+ * that would swallow invalid URLs like /asdfasdf or /blog.
+ */
+const VALID_LANGS = ['es', 'de', 'fr', 'it'] as const;
 
 // Minimal loading fallback - matches the site's dark theme
 const PageLoader = () => (
@@ -120,6 +128,7 @@ const App = () => {
               <Route path="/safety/scams" element={<ScamWarning />} />
               <Route path="/cannabis-club-madrid" element={<CannabisClubMadrid />} />
               <Route path="/glossary" element={<Glossary />} />
+              <Route path="/blog" element={<BlogIndex />} />
               <Route path="/blog/:slug" element={<BlogPost />} />
 
               {/*
@@ -136,8 +145,19 @@ const App = () => {
                 />
               ))}
 
-              {/* Language-prefixed routes */}
-              <Route path="/:lang" element={<Index />} />
+              {/*
+                Language-prefixed homepage routes.
+                IMPORTANT: We use explicit routes for each valid language code
+                instead of a catch-all /:lang to prevent invalid single-segment
+                URLs (e.g., /asdfasdf, /blog) from matching and rendering the
+                homepage. Invalid URLs now correctly fall through to * → NotFound.
+                Note: /en is not needed because / already serves English.
+              */}
+              {VALID_LANGS.map((lang) => (
+                <Route key={`lang-index-${lang}`} path={`/${lang}`} element={<Index />} />
+              ))}
+
+              {/* Language-prefixed content routes */}
               <Route path="/:lang/clubs" element={<Clubs />} />
               <Route path="/:lang/club/:slug" element={<ClubDetail />} />
               <Route path="/:lang/invite/:slug" element={<InvitationForm />} />
@@ -167,6 +187,7 @@ const App = () => {
               {/* Legacy alias for already indexed URLs */}
               <Route path="/:lang/cannabis-club-madrid" element={<CannabisClubMadrid />} />
               <Route path="/:lang/glossary" element={<Glossary />} />
+              <Route path="/:lang/blog" element={<BlogIndex />} />
               <Route path="/:lang/blog/:slug" element={<BlogPost />} />
 
               {/* Language-prefixed neighborhood routes */}
