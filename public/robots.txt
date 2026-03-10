@@ -1,23 +1,30 @@
 # ============================================
-# WEED MADRID - ROBOTS.TXT (Phase 3 SEO Cleanup)
+# WEED MADRID - ROBOTS.TXT
 # ============================================
-# Last updated: 2026-03-07
-# Optimized for crawl budget: blocks thin localized pages
+# Last updated: 2026-03-10
+# Strategy: Block thin/utility pages, allow all valuable content
+# Crawl budget optimized for Googlebot
 
 # ============================================
-# GOOGLE — Protect crawl budget
+# GOOGLE — Granular crawl budget control
 # ============================================
 User-agent: Googlebot
 Allow: /
 Allow: /es/
+Allow: /es/guide/
+Allow: /es/club/
+Allow: /es/club-cannabis-madrid
 
-# Block thin DE/FR/IT static pages (no real content, waste crawl budget)
-# Guide articles in these languages ARE allowed (they have real translated content)
+# Block thin localized pages (DE/FR/IT static pages have no unique content)
+# Guide articles in these languages ARE allowed via default Allow: /
 Disallow: /de/$
 Disallow: /de/clubs
 Disallow: /de/faq
 Disallow: /de/how-it-works
 Disallow: /de/districts
+Disallow: /de/clubs/
+Disallow: /de/district/
+Disallow: /de/club-cannabis-madrid
 Disallow: /de/legal
 Disallow: /de/privacy
 Disallow: /de/terms
@@ -27,15 +34,15 @@ Disallow: /de/contact
 Disallow: /de/knowledge
 Disallow: /de/shop
 Disallow: /de/glossary
-Disallow: /de/clubs/
-Disallow: /de/district/
-Disallow: /de/club-cannabis-madrid
 
 Disallow: /fr/$
 Disallow: /fr/clubs
 Disallow: /fr/faq
 Disallow: /fr/how-it-works
 Disallow: /fr/districts
+Disallow: /fr/clubs/
+Disallow: /fr/district/
+Disallow: /fr/club-cannabis-madrid
 Disallow: /fr/legal
 Disallow: /fr/privacy
 Disallow: /fr/terms
@@ -45,15 +52,15 @@ Disallow: /fr/contact
 Disallow: /fr/knowledge
 Disallow: /fr/shop
 Disallow: /fr/glossary
-Disallow: /fr/clubs/
-Disallow: /fr/district/
-Disallow: /fr/club-cannabis-madrid
 
 Disallow: /it/$
 Disallow: /it/clubs
 Disallow: /it/faq
 Disallow: /it/how-it-works
 Disallow: /it/districts
+Disallow: /it/clubs/
+Disallow: /it/district/
+Disallow: /it/club-cannabis-madrid
 Disallow: /it/legal
 Disallow: /it/privacy
 Disallow: /it/terms
@@ -63,14 +70,8 @@ Disallow: /it/contact
 Disallow: /it/knowledge
 Disallow: /it/shop
 Disallow: /it/glossary
-Disallow: /it/clubs/
-Disallow: /it/district/
-Disallow: /it/club-cannabis-madrid
 
-# Block .geo.txt from Google (these are for AI crawlers only)
-Disallow: /*.geo.txt
-
-# Admin and utility routes
+# Admin, utility, and no-SEO-value routes
 Disallow: /seed-data
 Disallow: /admin
 Disallow: /generate-articles
@@ -79,33 +80,27 @@ Disallow: /translate-content
 Disallow: /auth
 Disallow: /invite/
 
-# Dynamic parameters
+# Dynamic parameters (prevent duplicate content)
 Disallow: /*?*sort=
 Disallow: /*?*filter=
 Disallow: /*?*page=
 
-# Noindex pages (no SEO value)
+# Low-value static pages
 Disallow: /privacy
 Disallow: /terms
-Disallow: /about
-Disallow: /contact
 Disallow: /shop
 
-User-agent: Googlebot-Image
-Allow: /
-
-User-agent: Googlebot-Mobile
-Allow: /
+# Geo files not for Google (AI crawlers only)
+Disallow: /*.geo.txt
 
 # ============================================
-# BING
+# BING — Simplified (less crawl budget concern)
 # ============================================
 User-agent: Bingbot
 Allow: /
 Disallow: /de/
 Disallow: /fr/
 Disallow: /it/
-Disallow: /*.geo.txt
 Disallow: /seed-data
 Disallow: /admin
 Disallow: /generate-articles
@@ -115,12 +110,11 @@ Disallow: /auth
 Disallow: /invite/
 Disallow: /privacy
 Disallow: /terms
-Disallow: /about
-Disallow: /contact
 Disallow: /shop
+Disallow: /*.geo.txt
 
 # ============================================
-# AI CRAWLERS — Full Access (GEO Optimization)
+# AI CRAWLERS — Full Access (GEO Strategy)
 # ============================================
 User-agent: GPTBot
 Allow: /
@@ -147,9 +141,12 @@ User-agent: Google-Extended
 Allow: /
 
 # ============================================
-# GENERIC CRAWLERS
+# ALL OTHER CRAWLERS
 # ============================================
 User-agent: *
+Allow: /
+Allow: /llm.txt
+Allow: /*.geo.txt
 Disallow: /seed-data
 Disallow: /admin
 Disallow: /generate-articles
@@ -160,11 +157,6 @@ Disallow: /invite/
 Disallow: /*?*sort=
 Disallow: /*?*filter=
 Disallow: /*?*page=
-Allow: /
-
-# AI-optimized files (allowed for all)
-Allow: /llm.txt
-Allow: /*.geo.txt
 
 # ============================================
 # SITEMAPS
