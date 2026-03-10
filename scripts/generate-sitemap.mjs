@@ -73,6 +73,7 @@ const PRIORITY_CONFIG = {
   '/legal': 0.5,                     // E-E-A-T
   '/knowledge': 0.4,                 // Topical authority
   '/glossary': 0.4,                  // Long-tail
+  '/blog/': 0.8,                     // Blog articles — E-E-A-T content
 };
 
 // Localized routes get slightly lower priority than their EN counterpart
@@ -89,6 +90,7 @@ const CHANGEFREQ_CONFIG = {
   '/club/': 'monthly',
   '/guide/': 'monthly',
   '/district/': 'monthly',
+  '/blog/': 'monthly',
   default: 'monthly',
 };
 
@@ -166,6 +168,12 @@ function shouldIncludeInSitemap(urlItem) {
   // For club pages: only EN and ES (already enforced in routes-inventory)
   // For guide pages: all languages with actual content (from Supabase)
   // For district pages: only EN and ES (already enforced)
+  // For blog posts: only EN and ES (content only exists in these languages)
+  if (type === 'blog') {
+    if (!SITEMAP_LANGUAGES_STATIC.includes(lang)) {
+      return false;
+    }
+  }
 
   return true;
 }
